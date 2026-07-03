@@ -1,0 +1,22 @@
+{
+  "name": "@plumbcore/ui-components",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./button": "./src/Button/index.tsx",
+    "./card": "./src/Card/index.tsx",
+    "./input": "./src/Input/index.tsx",
+    "./status-badge": "./src/StatusBadge/index.tsx",
+    "./modal": "./src/Modal/index.tsx",
+    "./empty-state": "./src/EmptyState/index.tsx",
+    "./error-state": "./src/ErrorState/index.tsx",
+    "./avatar": "./src/Avatar/index.tsx"
+  },
+  "dependencies": {
+    "react": "^19",
+    "@plumbcore/ui-tokens": "file:../ui-tokens"
+  }
+}

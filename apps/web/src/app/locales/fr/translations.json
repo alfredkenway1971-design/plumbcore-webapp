@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "main": "Principal",
+    "ai_tools": "Outils IA",
+    "finance": "Finance",
+    "admin": "Administration",
+    "dashboard": "Tableau de bord",
+    "jobs_schedule": "Travaux & Planning",
+    "clients": "Clients",
+    "schedule": "Planning",
+    "route_map": "Carte des itinéraires",
+    "leads": "Pistes",
+    "ai_chat": "Chat IA",
+    "voice_notes_invoice": "Notes vocales → Facture",
+    "emergency_triage": "Triage d'urgence",
+    "voice_receptionist": "Réceptionniste vocal",
+    "phone_calls": "Appels téléphoniques",
+    "sms_messaging": "Messagerie SMS",
+    "pricebook": "Liste de prix",
+    "price_increases": "Augmentations de prix",
+    "invoicing": "Facturation",
+    "inventory": "Inventaire",
+    "suppliers": "Fournisseurs",
+    "purchase_orders": "Commandes d'achat",
+    "inventory_insights": "Insights inventaire",
+    "reports": "Rapports",
+    "team": "Équipe",
+    "notifications": "Notifications",
+    "audit_log": "Journal d'audit",
+    "settings": "Paramètres"
+  },
+  "user": {
+    "admin": "Administrateur PlumbCore"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "search": "Rechercher",
+    "add": "Ajouter",
+    "loading": "Chargement..."
+  }
+}

@@ -1,0 +1,630 @@
+'use client';
+
+import { useState, useEffect, useMemo } from 'react';
+import {
+  Button,
+  Card,
+  Input,
+  EmptyState,
+  ErrorState,
+  Modal,
+} from '@/pkg/ui-components';
+import { purchaseOrders as mockPOs, inventory, suppliers } from '@/lib/mock-data';
+import type { POStatus } from '@/lib/mock-data';
+
+interface POItemForm {
+  itemId: string;
+  itemName: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+interface CreatePOForm {
+  supplierId: string;
+  items: POItemForm[];
+  expectedDelivery: string;
+  notes: string;
+}
+
+function SkeletonRow() {
+  return (
+    <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 animate-pulse">
+      <div className="h-4 w-24 rounded bg-white/5" />
+      <div className="h-4 w-36 rounded bg-white/5" />
+      <div className="h-4 w-12 rounded bg-white/5" />
+      <div className="h-4 w-16 rounded bg-white/5" />
+      <div className="h-4 w-20 rounded bg-white/5" />
+      <div className="h-4 w-24 rounded bg-white/5" />
+      <div className="h-5 w-16 rounded bg-white/5" />
+    </div>
+  );
+}
+
+const STATUS_COLORS: Record<POStatus, string> = {
+  Draft: 'bg-white/10 text-gray-400 border border-white/10',
+  Sent: 'bg-blue-50 text-blue-600 border border-electric/20',
+  Received: 'bg-green-50 text-green-600 border border-status-success/20',
+  Cancelled: 'bg-red-50 text-red-600 border border-status-error/20',
+};
+
+export default function PurchaseOrdersPage() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<POStatus | 'All'>('All');
+  const [pos, setPos] = useState(mockPOs);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [detailPO, setDetailPO] = useState<string | null>(null);
+  const [form, setForm] = useState<CreatePOForm>({
+    supplierId: '',
+    items: [],
+    expectedDelivery: '',
+    notes: '',
+  });
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        setLoading(false);
+      } catch {
+        setError('Failed to load purchase orders.');
+        setLoading(false);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setTimeout(() => setLoading(false), 1000);
+  };
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const filtered = useMemo(() => {
+    return pos.filter((po) => {
+      if (statusFilter !== 'All' && po.status !== statusFilter) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          po.poNumber.toLowerCase().includes(q) ||
+          po.supplierName.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
+  }, [search, statusFilter, pos]);
+
+  const selectedSupplier = suppliers.find((s) => s.id === form.supplierId);
+  const supplierInventory = useMemo(() => {
+    if (!selectedSupplier) return [];
+    const catLower = selectedSupplier.categories.map((c) => c.toLowerCase());
+    return inventory.filter((item) => catLower.includes(item.category));
+  }, [form.supplierId]);
+
+  const addItemToForm = (itemId: string) => {
+    const item = inventory.find((i) => i.id === itemId);
+    if (!item) return;
+    if (form.items.some((i) => i.itemId === itemId)) return;
+    setForm((prev) => ({
+      ...prev,
+      items: [...prev.items, { itemId: item.id, itemName: item.name, quantity: 1, unitPrice: item.unitPrice }],
+    }));
+  };
+
+  const updateFormItem = (itemId: string, field: 'quantity' | 'unitPrice', value: number) => {
+    setForm((prev) => ({
+      ...prev,
+      items: prev.items.map((i) => (i.itemId === itemId ? { ...i, [field]: value } : i)),
+    }));
+  };
+
+  const removeFormItem = (itemId: string) => {
+    setForm((prev) => ({
+      ...prev,
+      items: prev.items.filter((i) => i.itemId !== itemId),
+    }));
+  };
+
+  const formTotal = form.items.reduce((sum, i) => sum + i.quantity * i.unitPrice, 0);
+
+  const handleCreatePO = () => {
+    const supplier = suppliers.find((s) => s.id === form.supplierId);
+    if (!supplier) return;
+    const poItems = form.items.map((i) => ({
+      itemId: i.itemId,
+      itemName: i.itemName,
+      quantity: i.quantity,
+      unitPrice: i.unitPrice,
+      total: i.quantity * i.unitPrice,
+    }));
+    const newPO = {
+      id: `PO-${String(pos.length + 1).padStart(3, '0')}`,
+      poNumber: `PO-2024-${String(pos.length + 1).padStart(3, '0')}`,
+      supplierId: form.supplierId,
+      supplierName: supplier.name,
+      items: poItems,
+      itemsCount: poItems.length,
+      total: formTotal,
+      status: 'Draft' as POStatus,
+      expectedDelivery: form.expectedDelivery,
+      notes: form.notes,
+      createdAt: new Date().toISOString().split('T')[0],
+    };
+    setPos((prev) => [newPO, ...prev]);
+    setModalOpen(false);
+    setForm({ supplierId: '', items: [], expectedDelivery: '', notes: '' });
+    showToast(`Purchase Order ${newPO.poNumber} created!`);
+  };
+
+  const updatePOStatus = (id: string, newStatus: POStatus) => {
+    setPos((prev) =>
+      prev.map((po) => {
+        if (po.id !== id) return po;
+        const updates: Partial<typeof po> = { status: newStatus };
+        if (newStatus === 'Sent') updates.sentDate = new Date().toISOString().split('T')[0];
+        if (newStatus === 'Received') updates.receivedDate = new Date().toISOString().split('T')[0];
+        if (newStatus === 'Cancelled') updates.cancelledDate = new Date().toISOString().split('T')[0];
+        return { ...po, ...updates };
+      })
+    );
+    showToast(`PO status updated to "${newStatus}"`);
+  };
+
+  const handleDeletePO = (id: string) => {
+    const po = pos.find((p) => p.id === id);
+    setPos((prev) => prev.filter((p) => p.id !== id));
+    if (po) showToast(`PO ${po.poNumber} deleted.`, 'error');
+  };
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <Card variant="bordered" padding="lg">
+          <ErrorState title="Failed to load purchase orders" message={error} onRetry={handleRetry} />
+        </Card>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <div className="flex gap-2">
+          {['All', 'Draft', 'Sent', 'Received', 'Cancelled'].map((s) => (
+            <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-white/5" />
+          ))}
+        </div>
+        <Card variant="bordered" padding="sm">
+          <div className="space-y-0">
+            <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-2.5">
+              <div className="h-3 w-24 rounded bg-white/5" />
+              <div className="h-3 w-36 rounded bg-white/5" />
+              <div className="h-3 w-12 rounded bg-white/5" />
+              <div className="h-3 w-16 rounded bg-white/5" />
+              <div className="h-3 w-20 rounded bg-white/5" />
+              <div className="h-3 w-24 rounded bg-white/5" />
+              <div className="h-3 w-16 rounded bg-white/5" />
+            </div>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonRow key={i} />
+            ))}
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Detail view
+  if (detailPO) {
+    const po = pos.find((p) => p.id === detailPO);
+    if (!po) {
+      return (
+        <div className="space-y-6">
+          <Button variant="ghost" onClick={() => setDetailPO(null)}>← Back to Purchase Orders</Button>
+          <Card variant="bordered" padding="lg">
+            <ErrorState title="Purchase order not found" message="This PO may have been deleted." onRetry={() => setDetailPO(null)} />
+          </Card>
+        </div>
+      );
+    }
+
+    const supplier = suppliers.find((s) => s.id === po.supplierId);
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)}>← Back</Button>
+            <h1 className="text-2xl font-bold text-gray-900">{po.poNumber}</h1>
+            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>{po.status}</span>
+          </div>
+          <div className="flex gap-2">
+            {po.status === 'Draft' && (
+              <>
+                <Button size="sm" variant="outline" onClick={() => updatePOStatus(po.id, 'Sent')}>Mark as Sent</Button>
+                <Button size="sm" variant="destructive" onClick={() => updatePOStatus(po.id, 'Cancelled')}>Cancel PO</Button>
+              </>
+            )}
+            {po.status === 'Sent' && (
+              <Button size="sm" onClick={() => updatePOStatus(po.id, 'Received')}>Mark as Received</Button>
+            )}
+          </div>
+        </div>
+
+        {/* Supplier Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card variant="bordered" padding="md">
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">Supplier Information</h3>
+            <div className="space-y-1.5 text-sm">
+              <p className="text-gray-400">{po.supplierName}</p>
+              {supplier && (
+                <>
+                  <p className="text-steel">{supplier.contactPerson}</p>
+                  <p className="text-steel">{supplier.phone}</p>
+                  <p className="text-steel">{supplier.email}</p>
+                  <p className="text-steel text-xs">{supplier.address}</p>
+                </>
+              )}
+            </div>
+          </Card>
+          <Card variant="bordered" padding="md">
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">Order Details</h3>
+            <div className="space-y-1.5 text-sm">
+              <div className="flex justify-between"><span className="text-steel">Created:</span><span className="text-gray-900">{po.createdAt}</span></div>
+              {po.sentDate && <div className="flex justify-between"><span className="text-steel">Sent:</span><span className="text-gray-900">{po.sentDate}</span></div>}
+              {po.receivedDate && <div className="flex justify-between"><span className="text-steel">Received:</span><span className="text-gray-900">{po.receivedDate}</span></div>}
+              <div className="flex justify-between"><span className="text-steel">Expected Delivery:</span><span className="text-gray-900">{po.expectedDelivery}</span></div>
+              <div className="flex justify-between"><span className="text-steel">Items:</span><span className="text-gray-900">{po.itemsCount}</span></div>
+              <div className="flex justify-between border-t border-gray-200 pt-2 mt-2"><span className="text-steel font-semibold">Total:</span><span className="text-gray-900 font-bold">${po.total.toFixed(2)}</span></div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Status Timeline */}
+        <Card variant="bordered" padding="md">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">Status Timeline</h3>
+          <div className="flex items-center gap-0">
+            {[['Draft', po.createdAt], ['Sent', po.sentDate], ['Received', po.receivedDate], ['Cancelled', po.cancelledDate]].map(([status, date], idx, arr) => {
+              const isActive = !!date;
+              const isCurrent = po.status === status;
+              return (
+                <div key={String(status)} className={`flex items-center ${idx < arr.length - 1 ? 'flex-1' : ''}`}>
+                  <div className="flex flex-col items-center">
+                    <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+                      isCurrent ? 'bg-electric text-[#0a0e2a]' : isActive ? 'bg-green-500/20 text-green-600' : 'bg-white/5 text-gray-500'
+                    }`}>
+                      {isActive ? '✓' : idx + 1}
+                    </div>
+                    <span className="mt-1 text-[10px] font-medium text-gray-500">{String(status)}</span>
+                    {date && <span className="text-[9px] text-gray-400/60">{date}</span>}
+                  </div>
+                  {idx < arr.length - 1 && (
+                    <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-white/5'}`} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          {po.notes && (
+            <div className="mt-4 rounded-lg bg-white/[0.02] p-3">
+              <p className="text-xs font-medium text-gray-500 mb-1">Notes:</p>
+              <p className="text-sm text-gray-400">{po.notes}</p>
+            </div>
+          )}
+        </Card>
+
+        {/* Items Table */}
+        <Card variant="bordered" padding="sm" className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Item</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Quantity</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {po.items.map((item) => (
+                <tr key={item.itemId} className="border-b border-gray-200">
+                  <td className="px-4 py-3 text-gray-900 font-medium">{item.itemName}</td>
+                  <td className="px-4 py-3 text-right text-gray-900">{item.quantity}</td>
+                  <td className="px-4 py-3 text-right text-gray-900">${item.unitPrice.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right text-gray-900 font-medium">${item.total.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-gray-400">Total</td>
+                <td className="px-4 py-3 text-right text-sm font-bold text-gray-900">${po.total.toFixed(2)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Toast */}
+      {toast && (
+        <div
+          className={`fixed top-4 right-4 z-[100] rounded-xl px-4 py-3 shadow-lg text-sm font-medium transition-all animate-in slide-in-from-right ${
+            toast.type === 'success'
+              ? 'bg-green-500/20 text-green-600 border border-status-success/30'
+              : 'bg-red-500/20 text-red-600 border border-status-error/30'
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <Button onClick={() => setModalOpen(true)}>+ Create PO</Button>
+      </div>
+
+      {/* Search + Status Filter */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="w-full sm:w-64">
+          <Input
+            placeholder="Search by PO# or supplier..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {['All', 'Draft', 'Sent', 'Received', 'Cancelled'].map((s) => (
+            <button
+              key={s}
+              onClick={() => setStatusFilter(s as POStatus | 'All')}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
+                statusFilter === s
+                  ? 'bg-electric text-[#0a0e2a]'
+                  : 'bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-white/10'
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* PO List */}
+      {filtered.length === 0 ? (
+        <Card variant="bordered" padding="lg">
+          <EmptyState
+            title="No purchase orders found"
+            description={search || statusFilter !== 'All' ? 'Try adjusting your search or filters.' : 'Create your first purchase order to get started.'}
+            action={!search && statusFilter === 'All' ? (
+              <Button size="sm" onClick={() => setModalOpen(true)}>+ Create PO</Button>
+            ) : undefined}
+          />
+        </Card>
+      ) : (
+        <Card variant="bordered" padding="sm" className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">PO#</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Supplier</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Items</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((po) => (
+                <tr
+                  key={po.id}
+                  className="border-b border-gray-200 transition-colors hover:bg-white/[0.02] cursor-pointer"
+                  onClick={() => setDetailPO(po.id)}
+                >
+                  <td className="px-4 py-3 text-gray-900 font-mono text-xs font-medium">{po.poNumber}</td>
+                  <td className="px-4 py-3 text-gray-400">{po.supplierName}</td>
+                  <td className="px-4 py-3 text-right text-gray-900">{po.itemsCount}</td>
+                  <td className="px-4 py-3 text-right text-gray-900 font-medium">${po.total.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-center">
+                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>
+                      {po.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-500 text-xs">{po.createdAt}</td>
+                  <td className="px-4 py-3 text-center">
+                    <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
+                      {po.status === 'Draft' && (
+                        <>
+                          <button
+                            onClick={() => updatePOStatus(po.id, 'Sent')}
+                            className="rounded-lg px-2 py-1 text-[10px] font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+                          >
+                            Send
+                          </button>
+                          <button
+                            onClick={() => handleDeletePO(po.id)}
+                            className="rounded-lg px-2 py-1 text-[10px] font-medium text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                      {po.status === 'Sent' && (
+                        <button
+                          onClick={() => updatePOStatus(po.id, 'Received')}
+                          className="rounded-lg px-2 py-1 text-[10px] font-medium text-green-600 hover:bg-green-50 transition-colors"
+                        >
+                          Receive
+                        </button>
+                      )}
+                      {po.status === 'Received' && (
+                        <span className="text-[10px] text-gray-500">Complete</span>
+                      )}
+                      {po.status === 'Cancelled' && (
+                        <span className="text-[10px] text-red-600">Cancelled</span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      )}
+
+      {/* Create PO Modal */}
+      <Modal
+        open={modalOpen}
+        onClose={() => { setModalOpen(false); setForm({ supplierId: '', items: [], expectedDelivery: '', notes: '' }); }}
+        title="Create Purchase Order"
+        size="lg"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => { setModalOpen(false); setForm({ supplierId: '', items: [], expectedDelivery: '', notes: '' }); }}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreatePO} disabled={!form.supplierId || form.items.length === 0}>
+              Create Purchase Order
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          {/* Supplier Selection */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-400">Supplier</label>
+            <select
+              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              value={form.supplierId}
+              onChange={(e) => {
+                setForm({ ...form, supplierId: e.target.value, items: [] });
+              }}
+            >
+              <option value="">Select a supplier...</option>
+              {suppliers.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Items Selection */}
+          {form.supplierId && (
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-gray-400">Items</label>
+              <select
+                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                value=""
+                onChange={(e) => { addItemToForm(e.target.value); e.target.value = ''; }}
+              >
+                <option value="">Add an item...</option>
+                {supplierInventory.map((item) => (
+                  <option key={item.id} value={item.id} disabled={form.items.some((i) => i.itemId === item.id)}>
+                    {item.name} (${item.unitPrice.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Items Table */}
+          {form.items.length > 0 && (
+            <div className="overflow-x-auto rounded-lg border border-white/10">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white/[0.02]">
+                    <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">Item</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Qty</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Total</th>
+                    <th className="px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {form.items.map((item) => (
+                    <tr key={item.itemId} className="border-b border-gray-200">
+                      <td className="px-3 py-2 text-gray-900 text-xs">{item.itemName}</td>
+                      <td className="px-3 py-2">
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.quantity}
+                          onChange={(e) => updateFormItem(item.itemId, 'quantity', parseInt(e.target.value) || 1)}
+                          className="w-16 rounded border border-white/10 bg-whiteer px-2 py-1 text-right text-xs text-gray-900 outline-none focus:border-electric/50"
+                        />
+                      </td>
+                      <td className="px-3 py-2">
+                        <input
+                          type="number"
+                          min={0}
+                          step="0.01"
+                          value={item.unitPrice}
+                          onChange={(e) => updateFormItem(item.itemId, 'unitPrice', parseFloat(e.target.value) || 0)}
+                          className="w-20 rounded border border-white/10 bg-whiteer px-2 py-1 text-right text-xs text-gray-900 outline-none focus:border-electric/50"
+                        />
+                      </td>
+                      <td className="px-3 py-2 text-right text-gray-900 text-xs font-medium">
+                        ${(item.quantity * item.unitPrice).toFixed(2)}
+                      </td>
+                      <td className="px-3 py-2 text-center">
+                        <button
+                          onClick={() => removeFormItem(item.itemId)}
+                          className="text-red-600 hover:bg-red-50 rounded p-0.5 transition-colors"
+                        >
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={3} className="px-3 py-2 text-right text-xs font-semibold text-gray-400">Total</td>
+                    <td className="px-3 py-2 text-right text-xs font-bold text-gray-900">${formTotal.toFixed(2)}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
+
+          {/* Expected Delivery */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-400">Expected Delivery Date</label>
+            <input
+              type="date"
+              value={form.expectedDelivery}
+              onChange={(e) => setForm({ ...form, expectedDelivery: e.target.value })}
+              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+            />
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-400">Notes</label>
+            <textarea
+              placeholder="Optional notes for this purchase order..."
+              value={form.notes}
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+              rows={2}
+            />
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+}

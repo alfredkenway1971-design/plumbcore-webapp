@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "main": "Hauptnavigation",
+    "ai_tools": "KI-Tools",
+    "finance": "Finanzen",
+    "admin": "Verwaltung",
+    "dashboard": "Dashboard",
+    "jobs_schedule": "Aufträge & Zeitplan",
+    "clients": "Kunden",
+    "schedule": "Zeitplan",
+    "route_map": "Routenkarte",
+    "leads": "Leads",
+    "ai_chat": "KI-Chat",
+    "voice_notes_invoice": "Sprachnotizen → Rechnung",
+    "emergency_triage": "Notfall-Diagnostik",
+    "voice_receptionist": "Sprachrezeptionist",
+    "phone_calls": "Telefonanrufe",
+    "sms_messaging": "SMS-Nachrichten",
+    "pricebook": "Preiskatalog",
+    "price_increases": "Preiserhöhungen",
+    "invoicing": "Rechnungsstellung",
+    "inventory": "Lagerbestand",
+    "suppliers": "Lieferanten",
+    "purchase_orders": "Bestellungen",
+    "inventory_insights": "Lager-Einblicke",
+    "reports": "Berichte",
+    "team": "Team",
+    "notifications": "Benachrichtigungen",
+    "audit_log": "Audit-Log",
+    "settings": "Einstellungen"
+  },
+  "user": {
+    "admin": "PlumbCore Administrator"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "search": "Suchen",
+    "add": "Hinzufügen",
+    "loading": "Lädt..."
+  }
+}

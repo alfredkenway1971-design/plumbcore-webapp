@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlumbCore AI - Industrial Pro Design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#0a0e2a',
+            'steel': '#6b7280',
+            'electric': '#00bfff',
+            'dark-steel': '#4b5563'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-navy text-white font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <nav class="fixed left-0 top-0 h-screen w-64 bg-navy border-r border-steel p-4 overflow-y-auto">
+      <div class="flex items-center gap-2 mb-6">
+        <div class="text-2xl font-bold text-white">PlumbCore AI</div>
+      </div>
+      <div class="space-y-1">
+        <a href="/dashboard" class="flex items-center gap-3 px-3 py-2 text-white hover:bg-electric hover:text-navy rounded-md transition-colors font-medium">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v11a2 2 0 002 2h10a2 2 0 002-2V10"></path></svg>
+          Dashboard
+        </a>
+        <a href="/jobs" class="flex items-center gap-3 px-3 py-2 text-white hover:bg-electric hover:text-navy rounded-md transition-colors font-medium">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 2 0 00-2 2v16m16 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h6m-6 4h6m-6 4h6"></path></svg>
+          Jobs
+        </a>
+        <a href="/schedule" class="flex items-center gap-3 px-3 py-2 text-white hover:bg-electric hover:text-navy rounded-md transition-colors font-medium">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-6 8h6m2 10H6a2 2 0 01-2-2V9a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+          Schedule
+        </a>
+        <a href="/estimate" class="flex items-center gap-3 px-3 py-2 text-white hover:bg-electric hover:text-navy rounded-md transition-colors font-medium">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1.0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 21V12a2 2 0 00-2-2H6a2 2 0 00-2 2v9"></path></svg>
+          Estimates
+        </a>
+        <a href="/crm" class="flex items-center gap-3 px-3 py-2 text-white hover:bg-electric hover:text-navy rounded-md transition-colors font-medium">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 0 4 4 0 010 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v3m0 0v3m0-3h3m-3 0H9"></path></svg>
+          CRM
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 p-8">
+      <div class="max-w-6xl">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-3xl font-bold mb-2 text-white">PlumbCore Dashboard</h1>
+          <p class="text-steel">Smart plumbing solutions powered by AI</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="bg-navy border border-steel rounded-lg p-4">
+            <h2 class="text-lg font-semibold text-steel mb-1">Total Jobs</h2>
+            <p class="text-3xl font-bold text-electric">24</p>
+          </div>
+          <div class="bg-navy border border-steel rounded-lg p-4">
+            <h2 class="text-lg font-semibold text-steel mb-1">Estimates</h2>
+            <p class="text-3xl font-bold text-electric">8</p>
+          </div>
+          <div class="bg-navy border border-steel rounded-lg p-4">
+            <h2 class="text-lg font-semibold text-steel mb-1">Customers</h2>
+            <p class="text-3xl font-bold text-electric">156</p>
+          </div>
+          <div class="bg-navy border border-steel rounded-lg p-4">
+            <h2 class="text-lg font-semibold text-steel mb-1">Revenue</h2>
+            <p class="text-3xl font-bold text-electric">$2.4K</p>
+          </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="bg-navy border border-steel rounded-lg p-6 mb-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-white mb-2">Smart Plumbing Estimates</h2>
+              <p class="text-steel">Upload a photo of your plumbing issue for an AI-powered estimate in seconds.</p>
+            </div>
+            <button class="bg-electric text-navy px-6 py-3 rounded-lg font-bold hover:bg-white transition-colors">
+              Get Estimate
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent Jobs -->
+        <div class="bg-navy border border-steel rounded-lg p-6">
+          <h2 class="text-xl font-semibold mb-4 text-white">Recent Jobs</h2>
+          <p class="text-steel">No jobs scheduled yet</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

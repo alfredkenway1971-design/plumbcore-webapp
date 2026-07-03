@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "main": "Main",
+    "ai_tools": "AI Tools",
+    "finance": "Finance",
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "jobs_schedule": "Jobs & Schedule",
+    "clients": "Clients",
+    "schedule": "Schedule",
+    "route_map": "Route Map",
+    "leads": "Leads",
+    "ai_chat": "AI Chat",
+    "voice_notes_invoice": "Voice Notes → Invoice",
+    "emergency_triage": "Emergency Triage",
+    "voice_receptionist": "Voice Receptionist",
+    "phone_calls": "Phone Calls",
+    "sms_messaging": "SMS Messaging",
+    "pricebook": "Pricebook",
+    "price_increases": "Price Increases",
+    "invoicing": "Invoicing",
+    "inventory": "Inventory",
+    "suppliers": "Suppliers",
+    "purchase_orders": "Purchase Orders",
+    "inventory_insights": "Inventory Insights",
+    "reports": "Reports",
+    "team": "Team",
+    "notifications": "Notifications",
+    "audit_log": "Audit Log",
+    "settings": "Settings"
+  },
+  "user": {
+    "admin": "PlumbCore Admin"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "add": "Add",
+    "loading": "Loading..."
+  }
+}
