@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input } from '@/pkg/ui-components';
+import { useAuthStore } from '@/lib/store';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -33,8 +34,7 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      // Simulate API call — mock auth, navigate to dashboard
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await useAuthStore.getState().login(email, password);
       router.push('/dashboard');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Sign in failed. Please try again.';

@@ -5,15 +5,10 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/en/dashboard",
+        destination: "/dashboard",
         permanent: true,
       },
     ];
-  },
-  i18n: {
-    locales: ["en", "fr", "es", "de"],
-    defaultLocale: "en",
-    localeDetection: false,
   },
 };
 

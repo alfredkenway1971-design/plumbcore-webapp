@@ -1,10 +1,13 @@
+'use client';
+
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+/* ── Database Types ── */
 export type Database = {
   public: {
     Tables: {
@@ -20,11 +23,11 @@ export type Database = {
   };
 };
 
-// Type definitions matching the Supabase schema
 export interface Company {
   id: string; slug: string; name: string; email: string; phone: string;
   address: string; city: string; state: string; zip: string; website?: string;
-  logo_url?: string; timezone: string; business_hours: Record<string, {open:string;close:string}>;
+  logo_url?: string; timezone: string;
+  business_hours: Record<string, {open:string;close:string}>;
   hourly_rate: number; service_fee_percent: number; tax_rate: number;
   stripe_account_id?: string; stripe_onboarding_complete: boolean;
   trial_end: string; subscription_tier: 'starter' | 'pro' | 'unlimited';
@@ -43,7 +46,8 @@ export interface ClientDb {
 }
 export interface JobDb {
   id: string; company_id: string; client_id: string; assigned_tech_id?: string;
-  title: string; description: string; status: 'scheduled'|'in-progress'|'completed'|'cancelled'|'urgent';
+  title: string; description: string;
+  status: 'scheduled'|'in-progress'|'completed'|'cancelled'|'urgent';
   priority: 'low'|'medium'|'high'|'critical';
   scheduled_date: string; scheduled_start?: string; scheduled_end?: string;
   completed_at?: string; estimated_cost: number; actual_cost?: number;

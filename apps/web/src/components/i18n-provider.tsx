@@ -47,11 +47,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const t = (key: string): string => {
     const keys = key.split('.');
-    let value = translations;
+    let value: unknown = translations;
     for (const k of keys) {
-      value = value?.[k];
+      value = (value as Record<string, unknown>)?.[k];
     }
-    return value || key;
+    return typeof value === 'string' ? value : key;
   };
 
   const changeLocale = (newLocale: Locale) => {

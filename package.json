@@ -2,10 +2,16 @@
   "name": "plumbcore-ai",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "npm run dev --workspace=@plumbcore/web",
     "build": "npm run build --workspace=@plumbcore/web",
     "start": "npm run start --workspace=@plumbcore/web"
+  },
+  "dependencies": {
+    "pg": "^8.22.0"
   }
 }
