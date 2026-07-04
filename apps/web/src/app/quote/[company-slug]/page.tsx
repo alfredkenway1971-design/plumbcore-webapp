@@ -1,27 +1,86 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
-/* ─────────────── Icons as inline SVGs ─────────────── */
-function CameraIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-8 h-8 md:w-12 md:h-12 text-blue-400"><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg>; }
+/* ─── Phone formatting for US/CA ─── */
+function formatPhone(val: string): string {
+  const digits = val.replace(/\D/g, '').slice(0, 10);
+  if (digits.length === 0) return '';
+  if (digits.length <= 3) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+function validatePhone(display: string): boolean {
+  return display.replace(/\D/g, '').length === 10;
+}
+
+function cleanPhone(display: string): string {
+  return display.replace(/\D/g, '');
+}
+
+/* ─── Camera icon ─── */
+function CameraIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-8 h-8 md:w-12 md:h-12 text-blue-400">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+    </svg>
+  );
+}
 
 export default function QuotePage() {
   const [step, setStep] = useState<1|2|3|4>(1);
   const [photos, setPhotos] = useState<File[]>([]);
   const [form, setForm] = useState({ name: '', phone: '', email: '', address: '', desc: '', urgency: 'flexible' });
+  const [phoneDisplay, setPhoneDisplay] = useState('');
   const [result, setResult] = useState<any>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<any>(null);
+
+  /* ─── Google Maps Autocomplete ─── */
+  useEffect(() => {
+    if (!addressRef.current || typeof (window as any).google === 'undefined') return;
+    try {
+      const google = (window as any).google;
+      autocompleteRef.current = new google.maps.places.Autocomplete(addressRef.current, {
+        types: ['address'],
+        componentRestrictions: { country: ['us', 'ca'] },
+      });
+      autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (place?.formatted_address) {
+          setForm(p => ({ ...p, address: place.formatted_address }));
+        }
+      });
+    } catch {}
+  }, []);
 
   /* ─── Handlers ─── */
-  const addPhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const addPhotos = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setPhotos(prev => [...prev, ...files].slice(0, 4));
-  };
-  const removePhoto = (i: number) => setPhotos(prev => prev.filter((_, idx) => idx !== i));
+    e.target.value = '';
+  }, []);
 
-  const handleEstimate = async () => {
+  const removePhoto = useCallback((i: number) => {
+    setPhotos(prev => prev.filter((_, idx) => idx !== i));
+  }, []);
+
+  const handlePhone = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    // Allow only digits, parentheses, spaces, hyphens, backspace
+    const cleaned = raw.replace(/[^\d()\-\s]/g, '');
+    const digits = cleaned.replace(/\D/g, '');
+    if (digits.length > 10) return;
+    const formatted = formatPhone(cleaned);
+    setPhoneDisplay(formatted);
+    setForm(p => ({ ...p, phone: cleanPhone(formatted) }));
+  }, []);
+
+  const handleEstimate = useCallback(async () => {
     setStep(3);
     setResult(null);
-    
     try {
       const res = await fetch('/api/ai/analyze-photo', {
         method: 'POST',
@@ -33,7 +92,6 @@ export default function QuotePage() {
         })
       });
       const data = await res.json();
-      
       if (data.success && data.result) {
         setResult(data.result);
       } else {
@@ -54,30 +112,37 @@ export default function QuotePage() {
       });
       setStep(4);
     }
-  };
+  }, [form, photos]);
 
-  const severityBadge = (s: string) => {
-    const colors: Record<string, string> = { emergency: 'bg-red-100 text-red-700', high: 'bg-orange-100 text-orange-700', moderate: 'bg-yellow-100 text-yellow-700', low: 'bg-green-100 text-green-700' };
+  const severityBadge = useCallback((s: string) => {
+    const colors: Record<string, string> = {
+      emergency: 'bg-red-100 text-red-700',
+      high: 'bg-orange-100 text-orange-700',
+      moderate: 'bg-yellow-100 text-yellow-700',
+      low: 'bg-green-100 text-green-700'
+    };
     return colors[s?.toLowerCase()] || colors.low;
-  };
+  }, []);
+
+  const phoneValid = validatePhone(phoneDisplay);
+  const canSubmit = form.phone.length >= 10;
+
+  const inputClass = "w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-gray-400";
 
   /* ═══════════ Step 1 — Upload Photos ═══════════ */
   const StepUpload = () => (
     <div className="space-y-5">
-      {/* Hero */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-gray-900 leading-tight">Get a Free<br/>Plumbing Estimate</h1>
         <p className="text-sm text-gray-500">Snap a photo. Get an instant price. Book in 2 minutes.</p>
       </div>
 
-      {/* Trust row */}
       <div className="flex justify-center gap-3 text-xs text-gray-400">
         <span>✓ No signup</span>
         <span>✓ Upfront pricing</span>
         <span>✓ Licensed</span>
       </div>
 
-      {/* Upload zone */}
       <label className="relative block border-2 border-dashed border-blue-200 rounded-2xl bg-blue-50/50 cursor-pointer hover:border-blue-400 transition-colors overflow-hidden">
         <input type="file" accept="image/*" multiple onChange={addPhotos} className="absolute inset-0 opacity-0 cursor-pointer" />
         {photos.length === 0 ? (
@@ -116,20 +181,79 @@ export default function QuotePage() {
       </div>
 
       <div className="space-y-3.5">
-        <input type="text" placeholder="Your name" value={form.name} onChange={e => setForm(p => ({...p, name: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
-        
+        {/* Name */}
+        <input
+          type="text"
+          placeholder="Your name"
+          value={form.name}
+          onChange={e => setForm(p => ({...p, name: e.target.value}))}
+          className={inputClass}
+          autoComplete="name"
+        />
+
+        {/* Phone */}
         <div>
-          <input type="tel" inputMode="numeric" placeholder="Phone number *" required value={form.phone} onChange={e => setForm(p => ({...p, phone: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
-          {form.phone.length > 0 && form.phone.length < 10 && <p className="text-xs text-red-500 mt-1 ml-1">Please enter a valid phone number</p>}
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-medium">+1</span>
+            <input
+              type="tel"
+              inputMode="numeric"
+              placeholder="(555) 555-5555"
+              required
+              value={phoneDisplay}
+              onChange={handlePhone}
+              className={`${inputClass} pl-10`}
+              autoComplete="tel-national"
+            />
+          </div>
+          {phoneDisplay.length > 0 && !phoneValid && (
+            <p className="text-xs text-red-500 mt-1.5 ml-1">Enter a valid 10-digit US/Canada number</p>
+          )}
+          {phoneValid && (
+            <p className="text-xs text-green-600 mt-1.5 ml-1 flex items-center gap-1">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+              Valid number
+            </p>
+          )}
         </div>
 
-        <input type="email" inputMode="email" placeholder="Email (optional)" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+        {/* Email */}
+        <input
+          type="email"
+          inputMode="email"
+          placeholder="Email (optional)"
+          value={form.email}
+          onChange={e => setForm(p => ({...p, email: e.target.value}))}
+          className={inputClass}
+          autoComplete="email"
+        />
 
-        <input type="text" placeholder="Service address" value={form.address} onChange={e => setForm(p => ({...p, address: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+        {/* Address with Google Autocomplete */}
+        <input
+          ref={addressRef}
+          type="text"
+          placeholder="Service address"
+          value={form.address}
+          onChange={e => setForm(p => ({...p, address: e.target.value}))}
+          className={inputClass}
+          autoComplete="street-address"
+        />
 
-        <textarea placeholder="Describe the problem (e.g. &quot;Kitchen sink leaking under cabinet&quot;)" rows={3} value={form.desc} onChange={e => setForm(p => ({...p, desc: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none" />
+        {/* Description */}
+        <textarea
+          placeholder='Describe the problem (e.g. "Kitchen sink leaking under cabinet")'
+          rows={3}
+          value={form.desc}
+          onChange={e => setForm(p => ({...p, desc: e.target.value}))}
+          className={`${inputClass} resize-none`}
+        />
 
-        <select value={form.urgency} onChange={e => setForm(p => ({...p, urgency: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%239ca3af%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.168l3.71-3.938a.75.75%200%20111.08%201.04l-4.25%204.5a.75.75%200%2001-1.08%200l-4.25-4.5a.75.75%200%2001.02-1.06z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')] bg-[length:20px] bg-[right_12px_center] bg-no-repeat pr-10">
+        {/* Urgency */}
+        <select
+          value={form.urgency}
+          onChange={e => setForm(p => ({...p, urgency: e.target.value}))}
+          className={`${inputClass} appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%239ca3af%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M5.23%207.21a.75.75%200%20011.06.02L10%2011.168l3.71-3.938a.75.75%200%20111.08%201.04l-4.25%204.5a.75.75%200%2001-1.08%200l-4.25-4.5a.75.75%200%2001.02-1.06z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')] bg-[length:20px] bg-[right_12px_center] bg-no-repeat pr-10`}
+        >
           <option value="flexible">How urgent is it?</option>
           <option value="emergency">Emergency — Can&apos;t wait</option>
           <option value="today">Today</option>
@@ -140,8 +264,12 @@ export default function QuotePage() {
 
       <div className="flex gap-3 pt-1">
         <button onClick={() => setStep(1)} className="flex-1 rounded-xl border border-gray-200 text-gray-600 font-medium py-3 text-sm active:scale-[0.98] transition-transform">Back</button>
-        <button onClick={handleEstimate} disabled={form.phone.length < 10} className="flex-[2] bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-3 rounded-xl disabled:cursor-not-allowed active:scale-[0.98] transition-transform text-[15px]">
-          Get My Estimate
+        <button
+          onClick={handleEstimate}
+          disabled={!canSubmit}
+          className="flex-[2] bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-3 rounded-xl disabled:cursor-not-allowed active:scale-[0.98] transition-transform text-[15px]"
+        >
+          {!canSubmit ? 'Enter phone number' : 'Get My Estimate'}
         </button>
       </div>
     </div>
@@ -151,8 +279,8 @@ export default function QuotePage() {
   const StepLoading = () => (
     <div className="flex flex-col items-center justify-center py-20 space-y-5">
       <div className="relative w-16 h-16">
-        <div className="absolute inset-0 rounded-full border-4 border-blue-100"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-blue-100" />
+        <div className="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
       </div>
       <div className="text-center space-y-1">
         <p className="text-base font-semibold text-gray-900">AI is analyzing your photos...</p>
@@ -166,9 +294,7 @@ export default function QuotePage() {
     const parts = r.parts || [];
     return (
       <div className="space-y-4">
-        {/* Estimate card */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          {/* Header */}
           <div className="flex items-start justify-between p-4 border-b border-gray-50">
             <div>
               <h2 className="text-lg font-bold text-gray-900">Your Estimate</h2>
@@ -179,14 +305,12 @@ export default function QuotePage() {
             </span>
           </div>
 
-          {/* Diagnosis */}
           <div className="bg-blue-50 px-4 py-3.5 mx-4 mt-4 rounded-xl">
             <p className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider">AI Diagnosis</p>
             <p className="text-sm font-medium text-gray-900 mt-0.5">{r.diagnosis}</p>
             {r.confidence && <p className="text-[11px] text-blue-500 mt-1">{r.confidence}% confidence</p>}
           </div>
 
-          {/* Cost cards */}
           <div className="grid grid-cols-2 gap-3 px-4 mt-4">
             <div className="bg-gray-50 rounded-xl p-3 text-center">
               <p className="text-[11px] text-gray-500">Labor</p>
@@ -200,7 +324,6 @@ export default function QuotePage() {
             </div>
           </div>
 
-          {/* Parts breakdown */}
           {parts.length > 0 && (
             <div className="px-4 mt-4">
               <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Parts Needed</p>
@@ -218,7 +341,6 @@ export default function QuotePage() {
             </div>
           )}
 
-          {/* Total */}
           <div className="flex items-center justify-between border-t border-gray-100 mx-4 mt-4 pt-3 pb-4">
             <span className="text-sm font-medium text-gray-500">Estimated total</span>
             <div className="text-right">
@@ -228,7 +350,6 @@ export default function QuotePage() {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-5 text-white space-y-3">
           <div>
             <p className="text-base font-bold">Ready to fix it?</p>
@@ -239,15 +360,6 @@ export default function QuotePage() {
           </button>
           <p className="text-xs text-blue-300 text-center">Deposit deducted from final bill. Cancel anytime.</p>
         </div>
-
-        {/* FAQ */}
-        <details className="bg-white rounded-2xl border border-gray-100 [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer text-sm font-medium text-gray-700">
-            Is the estimate really free?
-            <svg className="w-4 h-4 text-gray-400 transition-transform ui-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-          </summary>
-          <p className="px-4 pb-4 text-sm text-gray-500">Yes, completely free. No credit card needed.</p>
-        </details>
       </div>
     );
   };
@@ -255,11 +367,8 @@ export default function QuotePage() {
   /* ═══════════ Render ═══════════ */
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white">
-      {/* Spacer for status bar */}
       <div className="h-2" />
-      
       <div className="max-w-lg mx-auto px-4 py-6">
-        {/* Progress dots */}
         <div className="flex items-center justify-center gap-1.5 mb-6">
           {[1,2,3,4].map(s => (
             <div key={s} className={`w-2 h-2 rounded-full transition-all duration-300 ${step === s ? 'w-6 bg-blue-600' : step > s ? 'bg-blue-400' : 'bg-gray-200'}`} />
