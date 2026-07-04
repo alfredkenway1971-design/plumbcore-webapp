@@ -66,11 +66,7 @@ export default function Sidebar({ mobileOpen }: { mobileOpen: boolean }) {
         {/* Logo */}
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 px-4">
           <div className="flex items-center space-x-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50">
-              <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+            <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="w-8 h-8 object-contain rounded" />
             {!collapsed && <span className="text-sm font-bold tracking-tight text-gray-900">PlumbCore</span>}
           </div>
           <button
