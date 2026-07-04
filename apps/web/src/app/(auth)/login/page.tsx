@@ -27,11 +27,17 @@ export default function LoginPage() {
     setError('');
     try {
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-      if (authError) throw authError;
-      await useAuthStore.getState().restoreSession();
+      if (authError) {
+        const msg = typeof authError.message === 'string' ? authError.message : JSON.stringify(authError.message);
+        throw new Error(msg || authError.status?.toString() || 'Sign in failed');
+      }
+      // Navigate immediately — don't block on profile fetch (RLS policy issue)
       router.push('/dashboard');
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Sign in failed. Please try again.';
+      let msg = 'Sign in failed. Please try again.';
+      if (err instanceof Error) msg = err.message;
+      else if (typeof err === 'string') msg = err;
+      else if (err && typeof err === 'object' && 'message' in err) msg = String(err.message);
       setError(msg);
     } finally {
       setLoading(false);
