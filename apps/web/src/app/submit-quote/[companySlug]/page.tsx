@@ -1,159 +1,102 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function SubmitQuotePage({ params }: any) {
   const { companySlug } = params;
-  const router = useRouter(); // FIX: Add router import
+  const router = useRouter();
 
-  const [currentStep, setStep] = useState(1);
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
+  const [form, setForm] = useState({ name: '', phone: '', email: '', address: '', desc: '', urgency: 'flexible' });
 
-  // FIX: Inline Button component with proper typing
-  const Button = ({ children, onClick, disabled, variant = 'primary' }: any) => {
-    const base = "font-medium rounded-lg transition-colors disabled:opacity-50";
-    const variants: Record<string, string> = { 
-      primary: "bg-blue-600 text-white hover:bg-blue-700", 
-      secondary: "bg-gray-200 text-gray-700 hover:bg-gray-300" 
-    };
-    const variantClass = variants[variant] || variants.primary;
-    
-    return (
-      <button 
-        onClick={onClick} 
-        disabled={disabled} 
-        className={`${base} ${variantClass} px-4 py-2`}
-      >
-        {children}
-      </button>
-    );
-  };
-
-  // FIX: Properly typed state updater
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-    
-    const newFiles = Array.from(files);
-    setPhotos(prev => {
-      // FIX: Proper type assertion
-      const combined = [...prev, ...newFiles as File[]];
-      return combined.slice(0, 3);
-    });
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setPhotos(prev => [...prev, ...files].slice(0, 4));
+    e.target.value = '';
   };
 
   const handleSubmit = () => {
     setLoading(true);
-    router.push('/loading');
+    setTimeout(() => {
+      router.push(`/q/estimate-${Date.now()}`);
+    }, 1500);
   };
 
+  const inputClass = "w-full rounded-lg border border-gray-200 px-4 py-3 text-base outline-none focus:border-blue-400 transition-all";
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-6 px-4">
+      <div className="max-w-lg mx-auto space-y-5">
+        <div className="flex items-center justify-center gap-1.5 mb-4">
+          {[1,2].map(s => (
+            <div key={s} className={`w-2 h-2 rounded-full transition-all ${step === s ? 'w-6 bg-blue-600' : 'bg-gray-200'}`} />
+          ))}
+        </div>
+
         {/* Step 1: Photo Upload */}
-        {currentStep === 1 && (
-          <div className="bg-white shadow-sm rounded-xl p-6 mb-4">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-semibold mb-2">Upload Photos</h2>
-              <p className="text-gray-600">Take a photo of your plumbing problem</p>
+        {step === 1 && (
+          <div className="space-y-5">
+            <div className="text-center">
+              <h2 className="text-xl font-bold text-gray-900">Upload Photos</h2>
+              <p className="text-sm text-gray-500 mt-1">Show us what&apos;s broken</p>
             </div>
 
-            <input 
-              type="file" 
-              accept="image/*" 
-              multiple 
-              onChange={handlePhotoSelect} 
-              className="hidden" 
-              id="photo-upload" 
-            />
-            
-            <label 
-              htmlFor="photo-upload" 
-              className="cursor-pointer"
-            >
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-blue-500 transition-colors">
-                <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p className="mt-4 text-sm text-gray-600">Click to upload or drag and drop</p>
-                <p className="text-xs text-gray-500">Max 3 photos</p>
-              </div>
+            <label className="border-2 border-dashed border-blue-200 rounded-2xl bg-blue-50/50 p-8 flex flex-col items-center cursor-pointer hover:border-blue-400 transition-colors block text-center">
+              <input type="file" accept="image/*" multiple onChange={handlePhoto} className="hidden" />
+              <svg className="w-12 h-12 text-blue-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+              </svg>
+              <p className="mt-3 text-sm text-gray-600">Tap to upload photos</p>
+              <p className="text-xs text-gray-400 mt-1">Max 4 photos</p>
             </label>
 
             {photos.length > 0 && (
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                {photos.map((photo, i) => (
-                  <div key={i} className="relative">
-                    <img 
-                      src={URL.createObjectURL(photo)} 
-                      alt="preview" 
-                      className="rounded-lg shadow-sm w-full h-32 object-cover" 
-                    />
-                    <button 
-                      onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))} 
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                    >
-                      ×
-                    </button>
+              <div className="grid grid-cols-4 gap-2">
+                {photos.map((p, i) => (
+                  <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                    <img src={URL.createObjectURL(p)} className="w-full h-full object-cover" alt="" />
+                    <button onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))} className="absolute top-0.5 right-0.5 w-5 h-5 bg-gray-900/60 text-white rounded-full flex items-center justify-center text-xs">✕</button>
                   </div>
                 ))}
               </div>
             )}
 
-            <div className="flex justify-end pt-4">
-              <Button 
-                disabled={photos.length === 0} 
-                onClick={() => setStep(2)}
-                className="px-4 py-2"
-              >
-                Continue
-              </Button>
-            </div>
+            <button onClick={() => setStep(2)} disabled={photos.length === 0} className="w-full bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-3.5 rounded-xl disabled:cursor-not-allowed text-[15px]">
+              Continue →</button>
           </div>
         )}
 
         {/* Step 2: Customer Info */}
-        {currentStep === 2 && (
-          <div className="bg-white shadow-sm rounded-xl p-6 mb-4">
-            <h2 className="text-2xl font-semibold mb-6">Where can we send your estimate?</h2>
+        {step === 2 && (
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Your Details</h2>
+              <p className="text-sm text-gray-500 mt-0.5">Where should we send your estimate?</p>
+            </div>
 
-            <div className="space-y-4">
-              <input 
-                type="text" 
-                placeholder="Name" 
-                className="w-full rounded-lg border px-4 py-2" 
-              />
-              <input 
-                type="tel" 
-                placeholder="Phone" 
-                className="w-full rounded-lg border px-4 py-2" 
-              />
-              <input 
-                type="email" 
-                placeholder="Email" 
-                className="w-full rounded-lg border px-4 py-2" 
-              />
-              <input 
-                type="text" 
-                placeholder="Address" 
-                className="w-full rounded-lg border px-4 py-2" 
-              />
-              <select className="w-full rounded-lg border px-4 py-2">
-                <option value="flexible">Flexible</option>
-                <option value="week">This Week</option>
-                <option value="today">Today</option>
+            <div className="space-y-3.5">
+              <input type="text" placeholder="Name" value={form.name} onChange={e => setForm(p => ({...p, name: e.target.value}))} className={inputClass} />
+              <input type="tel" inputMode="numeric" placeholder="Phone *" value={form.phone} onChange={e => setForm(p => ({...p, phone: e.target.value}))} className={inputClass} />
+              <input type="email" inputMode="email" placeholder="Email (optional)" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} className={inputClass} />
+              <input type="text" placeholder="Address *" value={form.address} onChange={e => setForm(p => ({...p, address: e.target.value}))} className={inputClass} />
+              <textarea placeholder="Describe the problem..." rows={3} value={form.desc} onChange={e => setForm(p => ({...p, desc: e.target.value}))} className={`${inputClass} resize-none`} />
+              <select value={form.urgency} onChange={e => setForm(p => ({...p, urgency: e.target.value}))} className={inputClass}>
+                <option value="flexible">How urgent?</option>
                 <option value="emergency">Emergency</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="flexible">Flexible</option>
               </select>
-              
-              <div className="flex gap-4 pt-4">
-                <Button onClick={() => setStep(1)} variant="secondary">Back</Button>
-                <Button disabled={loading} onClick={handleSubmit}>
-                  {loading ? 'Submitting...' : 'Get My Estimate'}
-                </Button>
-              </div>
+            </div>
+
+            <div className="flex gap-3 pt-1">
+              <button onClick={() => setStep(1)} className="flex-1 rounded-xl border border-gray-200 text-gray-600 font-medium py-3 text-sm">Back</button>
+              <button onClick={handleSubmit} disabled={loading || !form.phone} className="flex-[2] bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-3 rounded-xl disabled:cursor-not-allowed text-[15px]">
+                {loading ? 'Submitting...' : 'Get My Estimate'}</button>
             </div>
           </div>
         )}

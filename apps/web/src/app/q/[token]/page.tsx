@@ -167,7 +167,7 @@ export default function QuoteStatusPage() {
         {quoteData?.photos && quoteData.photos.length > 0 && (
           <div className="mb-6">
             <h3 className="font-semibold mb-3">Your Photos</h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {quoteData.photos.map((photo: string, i: number) => (
                 <img 
                   key={i} 

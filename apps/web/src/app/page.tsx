@@ -18,7 +18,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="py-20 px-4 md:py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Run Your Plumbing Business<br />
             <span className="text-blue-600">On Autopilot</span>
           </h1>
