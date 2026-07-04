@@ -23,7 +23,7 @@ export default function QuotePage({ params }: any) {
   const chatInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       setPhotos(prev => [...prev, ...Array.from(e.target.files)].slice(0, 3));
     }
   };
