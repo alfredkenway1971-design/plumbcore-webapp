@@ -105,8 +105,8 @@ export default function SignupPage() {
 
       if (data.user) {
         setSuccess(true);
-        await useAuthStore.getState().restoreSession();
-        setTimeout(() => router.push('/onboarding'), 2000);
+        // Navigate to dashboard after success — don't block on profile fetch
+        setTimeout(() => router.push('/dashboard'), 1500);
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Sign up failed. Please try again.';

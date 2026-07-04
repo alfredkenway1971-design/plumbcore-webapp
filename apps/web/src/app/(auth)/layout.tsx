@@ -7,9 +7,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div>
           <div className="flex items-center gap-3 mb-8">
             <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <img src="/plumbcore-logo.png" alt="PlumbCore" className="w-7 h-7 rounded-lg" />
             </div>
             <span className="text-lg font-bold tracking-tight">plumbcore</span>
           </div>
