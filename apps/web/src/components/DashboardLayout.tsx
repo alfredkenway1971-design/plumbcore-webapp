@@ -1,16 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import { loadDataFromSupabase } from '@/lib/mock-data';
+import { useAuthStore } from '@/lib/store';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const companyId = useAuthStore((s) => s.company?.id);
+
+  useEffect(() => {
+    loadDataFromSupabase(companyId || 'comp-001');
+  }, [companyId]);
 
   return (
     <div className="flex min-h-screen w-full bg-gray-50">
       <Sidebar mobileOpen={mobileOpen} />
       <main className="flex-1 overflow-y-auto flex flex-col min-w-0">
-        {/* Top Bar */}
         <header className="flex h-14 sm:h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4 sm:px-8">
           <div className="flex items-center space-x-3 min-w-0">
             <button
@@ -31,7 +37,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
         </header>
-        {/* Page Content */}
         <div className="flex-1 p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
