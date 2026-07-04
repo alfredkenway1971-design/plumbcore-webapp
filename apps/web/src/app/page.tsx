@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 /* ─── Design Tokens ───
@@ -70,6 +71,14 @@ function PricingCard({ tier, price, features, popular = false }: { tier: string;
 
 export default function LandingPage() {
   const r = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navLinks = [
+    { label: 'Features', href: '#features' },
+    { label: 'Pricing', href: '#pricing' },
+    { label: 'Sign In', href: '/login' },
+    { label: 'Start Free Trial', href: '/signup', primary: true },
+  ];
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-gray-900">
@@ -101,13 +110,40 @@ export default function LandingPage() {
               </button>
             </div>
             {/* Mobile hamburger */}
-            <button className="md:hidden p-2 text-white" onClick={() => {}}>
+            <button className="md:hidden p-2 text-white" onClick={() => setMenuOpen(!menuOpen)}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {menuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {menuOpen && (
+          <div className="md:hidden bg-blue-800 border-t border-blue-500/30 px-4 py-4 space-y-3">
+            {navLinks.map((link, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setMenuOpen(false);
+                  if (link.href.startsWith('/')) r.push(link.href);
+                  else document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg text-sm ${
+                  link.primary
+                    ? 'bg-white text-blue-700 font-semibold'
+                    : 'text-blue-100 hover:bg-blue-700/50'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Hero content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
