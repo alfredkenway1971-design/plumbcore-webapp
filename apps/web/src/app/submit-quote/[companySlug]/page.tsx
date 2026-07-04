@@ -43,7 +43,7 @@ export default function SubmitQuotePage({ params }: any) {
     <div className="min-h-screen bg-[#f5f5f0]">
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gray-900 flex items-center justify-center"><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><span className="text-sm font-bold">plumbcore</span></div>
+          <div className="flex items-center gap-2"><img src="/plumbcore-logo.png" alt="PlumbCore AI" className="w-7 h-7 object-contain rounded" /><span className="text-sm font-bold">plumbcore</span></div>
         </div>
       </div>
       <div className="max-w-lg sm:max-w-xl mx-auto px-4 py-10 sm:py-14 space-y-6">

@@ -131,7 +131,7 @@ export default function QuotePage() {
       {/* Minimal header */}
       <div className="bg-white border-b border-gray-100">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between lg:px-8">
-          <div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gray-900 flex items-center justify-center"><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><span className="text-sm font-bold">plumbcore</span></div>
+          <div className="flex items-center gap-2"><img src="/plumbcore-logo.png" alt="PlumbCore AI" className="w-7 h-7 object-contain rounded" /><span className="text-sm font-bold">plumbcore</span></div>
           <p className="text-xs text-gray-400">Estimate in 2 min</p>
         </div>
       </div>

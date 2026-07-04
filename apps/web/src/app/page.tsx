@@ -12,7 +12,7 @@ export default function LandingPage() {
       {/* ═══ NAV ═══ */}
       <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/50">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-          <a href="/" className="flex items-center gap-3 text-gray-900 font-bold">plumbcore</a>
+          <a href="/" className="flex items-center gap-3 text-gray-900 font-bold"><img src="/plumbcore-logo.png" alt="PlumbCore AI" className="w-8 h-8 object-contain" />plumbcore</a>
           <nav className="hidden lg:flex items-center gap-8 text-sm text-gray-500">
             <a href="#features" className="hover:text-gray-900 transition-colors">Features</a>
             <a href="#pricing" className="hover:text-gray-900 transition-colors">Pricing</a>
