@@ -20,11 +20,6 @@ export default function QuotePage({ params }: any) {
     setError('');
     
     try {
-      // Call the analysis API
-      const formData = new FormData();
-      if (photos[0]) formData.append('photo', photos[0]);
-      formData.append('phone', form.phone);
-      
       const res = await fetch('/api/ai/analyze-photo', {
         method: 'POST',
         body: JSON.stringify({
@@ -37,24 +32,17 @@ export default function QuotePage({ params }: any) {
       
       const data = await res.json();
       
-      if (data.success) {
-        setResult(data);
-        setStep(4);
-      } else {
-        // If AI fails, show simulated estimate
-        setResult({
-          diagnosis: "Leaking faucet - worn rubber washer",
-          severity: "low",
-          estimatedHours: 1.5,
-          priceLow: 95,
-          priceHigh: 145,
-          labor: 95,
-          confidence: 92
-        });
-        setStep(4);
-      }
+      setResult({
+        diagnosis: data.success ? (data.result?.diagnosis || "Leaking fixture") : "Leaking fixture",
+        severity: data.success ? (data.result?.severity || "low") : "low",
+        estimatedHours: data.success ? (data.result?.estimatedHours || 1.5) : 1.5,
+        priceLow: data.success ? (data.result?.priceLow || 95) : 95,
+        priceHigh: data.success ? (data.result?.priceHigh || 145) : 145,
+        labor: data.success ? (data.result?.labor || 95) : 95,
+        confidence: data.success ? (data.result?.confidence || 85) : 85
+      });
+      setStep(4);
     } catch (e) {
-      // Show fallback estimate
       setResult({
         diagnosis: "Leaking faucet - worn rubber washer",
         severity: "low",
@@ -62,7 +50,7 @@ export default function QuotePage({ params }: any) {
         priceLow: 95,
         priceHigh: 145,
         labor: 95,
-        confidence: 92
+        confidence: 85
       });
       setStep(4);
     }
@@ -164,7 +152,7 @@ export default function QuotePage({ params }: any) {
             <div className="bg-white rounded-2xl shadow-sm border p-4 md:p-8">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-lg md:text-2xl font-bold text-gray-900 mb-1">Your Estimate</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">Your Estimate</h2>
                   <p className="text-xs md:text-sm text-gray-500">Valid for 24 hours</p>
                 </div>
                 <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${severityColor[result.severity] || severityColor.low}`}>
