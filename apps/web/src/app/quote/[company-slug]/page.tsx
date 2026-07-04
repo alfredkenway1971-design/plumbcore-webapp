@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function QuotePage({ params }: any) {
-  const router = useRouter();
   const { 'company-slug': companySlug } = params;
 
   const [step, setStep] = useState(1);
@@ -18,22 +16,20 @@ export default function QuotePage({ params }: any) {
     description: '',
     urgency: 'flexible'
   });
-  const chatOpen, setChatOpen] = useState(false);
-  const chatMessages, setChatMessages] = useState([
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
     { role: 'ai', text: "Hi! I can help get a free estimate. What's the problem?" }
   ]);
   const chatInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setPhotos((prev) => [...prev, ...Array.from(e.target.files)].slice(0, 3));
+      setPhotos(prev => [...prev, ...Array.from(e.target.files)].slice(0, 3));
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setLoading(true);
-    // In production: submit to backend API
-    router.push('/loading');
   };
 
   return (
@@ -58,9 +54,7 @@ export default function QuotePage({ params }: any) {
             <div className="h-40 overflow-y-auto mb-3 text-sm space-y-2">
               {chatMessages.map((msg, i) => (
                 <div key={i} className={msg.role === 'user' ? 'text-right' : ''}>
-                  <span className={`inline-block px-2 py-1 rounded-lg ${
-                    msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100'
-                  }`}>
+                  <span className={`inline-block px-2 py-1 rounded-lg ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}>
                     {msg.text}
                   </span>
                 </div>
@@ -116,22 +110,13 @@ export default function QuotePage({ params }: any) {
                 {photos.map((photo, i) => (
                   <div key={i} className="relative">
                     <img src={URL.createObjectURL(photo)} className="rounded-lg" alt="preview" />
-                    <button
-                      onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                    >
-                      ×
-                    </button>
+                    <button onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">×</button>
                   </div>
                 ))}
               </div>
             )}
 
-            <button
-              disabled={photos.length === 0}
-              onClick={() => setStep(2)}
-              className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg disabled:opacity-50"
-            >
+            <button disabled={photos.length === 0} onClick={() => setStep(2)} className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg disabled:opacity-50">
               Continue
             </button>
           </div>
@@ -143,69 +128,21 @@ export default function QuotePage({ params }: any) {
             <h2 className="text-2xl font-semibold mb-6">Your Details</h2>
 
             <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full rounded-lg border px-4 py-2"
-                value={customerData.name}
-                onChange={(e) => setCustomerData({ ...customerData, name: e.target.value })}
-              />
-
-              <input
-                type="tel"
-                placeholder="Phone"
-                className="w-full rounded-lg border px-4 py-2"
-                value={customerData.phone}
-                onChange={(e) => setCustomerData({ ...customerData, phone: e.target.value })}
-              />
-
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full rounded-lg border px-4 py-2"
-                value={customerData.email}
-                onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
-              />
-
-              <input
-                type="text"
-                placeholder="Address"
-                className="w-full rounded-lg border px-4 py-2"
-                value={customerData.address}
-                onChange={(e) => setCustomerData({ ...customerData, address: e.target.value })}
-              />
-
-              <select
-                className="w-full rounded-lg border px-4 py-2"
-                value={customerData.urgency}
-                onChange={(e) => setCustomerData({ ...customerData, urgency: e.target.value })}
-              >
+              <input type="text" placeholder="Name" className="w-full rounded-lg border px-4 py-2" value={customerData.name} onChange={(e) => setCustomerData({...customerData, name: e.target.value})} />
+              <input type="tel" placeholder="Phone" className="w-full rounded-lg border px-4 py-2" value={customerData.phone} onChange={(e) => setCustomerData({...customerData, phone: e.target.value})} />
+              <input type="email" placeholder="Email" className="w-full rounded-lg border px-4 py-2" value={customerData.email} onChange={(e) => setCustomerData({...customerData, email: e.target.value})} />
+              <input type="text" placeholder="Address" className="w-full rounded-lg border px-4 py-2" value={customerData.address} onChange={(e) => setCustomerData({...customerData, address: e.target.value})} />
+              <select className="w-full rounded-lg border px-4 py-2" value={customerData.urgency} onChange={(e) => setCustomerData({...customerData, urgency: e.target.value})}>
                 <option value="flexible">Flexible</option>
                 <option value="week">This Week</option>
                 <option value="today">Today</option>
                 <option value="emergency">Emergency</option>
               </select>
-
-              <textarea
-                placeholder="Describe your plumbing issue..."
-                className="w-full rounded-lg border px-4 py-2"
-                rows={4}
-                value={customerData.description}
-                onChange={(e) => setCustomerData({ ...customerData, description: e.target.value })}
-              />
+              <textarea placeholder="Describe your plumbing issue..." className="w-full rounded-lg border px-4 py-2" rows={4} value={customerData.description} onChange={(e) => setCustomerData({...customerData, description: e.target.value})} />
 
               <div className="flex gap-4 pt-4">
-                <button
-                  onClick={() => setStep(1)}
-                  className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={loading || !customerData.phone}
-                  className="flex-1 bg-blue-600 text-white py-3 rounded-lg disabled:opacity-50"
-                >
+                <button onClick={() => setStep(1)} className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg">Back</button>
+                <button disabled={loading || !customerData.phone} onClick={handleSubmit} className="flex-1 bg-blue-600 text-white py-3 rounded-lg disabled:opacity-50">
                   {loading ? 'Analyzing...' : 'Get Estimate'}
                 </button>
               </div>
