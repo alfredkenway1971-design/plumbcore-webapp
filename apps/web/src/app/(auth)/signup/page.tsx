@@ -86,30 +86,27 @@ export default function SignupPage() {
     setError('');
 
     try {
-      // Real Supabase signup
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
-        options: {
-          data: {
-            full_name: form.fullName,
-            company_name: form.companyName,
-            phone: form.phone,
-          }
-        }
+        options: { data: { full_name: form.fullName, company_name: form.companyName, phone: form.phone } }
       });
 
       if (signUpError) {
-        throw new Error(signUpError.message);
+        // AuthError can have message as object — extract properly
+        const msg = typeof signUpError.message === 'string' ? signUpError.message : JSON.stringify(signUpError.message);
+        throw new Error(msg || signUpError.status?.toString() || 'Signup failed');
       }
 
       if (data.user) {
         setSuccess(true);
-        // Navigate to dashboard after success — don't block on profile fetch
         setTimeout(() => router.push('/dashboard'), 1500);
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Sign up failed. Please try again.';
+      let message = 'Sign up failed. Please try again.';
+      if (err instanceof Error) message = err.message;
+      else if (typeof err === 'string') message = err;
+      else if (err && typeof err === 'object' && 'message' in err) message = String(err.message);
       setError(message);
     } finally {
       setLoading(false);

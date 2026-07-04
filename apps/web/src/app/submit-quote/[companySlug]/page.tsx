@@ -46,7 +46,7 @@ export default function SubmitQuotePage({ params }: any) {
           <div className="flex items-center gap-2"><img src="/plumbcore-logo.png" alt="PlumbCore AI" className="w-7 h-7 object-contain rounded" /><span className="text-sm font-bold">plumbcore</span></div>
         </div>
       </div>
-      <div className="max-w-lg sm:max-w-xl mx-auto px-4 py-10 sm:py-14 space-y-6">
+      <div className="max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-6">
         <div className="flex items-center justify-center gap-1.5">
           {[1,2].map(s => <div key={s} className={`h-1 rounded-full transition-all duration-500 ${step === s ? 'w-8 bg-gray-900' : 'w-3 bg-gray-200'}`} />)}
         </div>
