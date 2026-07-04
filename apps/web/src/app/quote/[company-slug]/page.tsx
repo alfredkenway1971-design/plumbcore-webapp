@@ -130,12 +130,12 @@ export default function QuotePage() {
     <div className="min-h-screen bg-[#f5f5f0]">
       {/* Minimal header */}
       <div className="bg-white border-b border-gray-100">
-        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between lg:px-8">
           <div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gray-900 flex items-center justify-center"><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><span className="text-sm font-bold">plumbcore</span></div>
           <p className="text-xs text-gray-400">Estimate in 2 min</p>
         </div>
       </div>
-      <div className="max-w-lg mx-auto px-4 py-8 sm:py-10">
+      <div className="max-w-2xl mx-auto px-4 py-8 sm:py-10 lg:py-16 lg:px-8">
         <div className="flex items-center justify-center gap-1.5 mb-10">
           {[1,2,3,4].map(s => <div key={s} className={`h-1 rounded-full transition-all duration-500 ${step === s ? 'w-8 bg-gray-900' : step > s ? 'w-3 bg-gray-500' : 'w-3 bg-gray-200'}`} />)}
         </div>
