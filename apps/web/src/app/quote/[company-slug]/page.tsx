@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Card, Input } from '@/pkg/ui-components';
 
@@ -105,7 +105,7 @@ export default function QuotePage({ params }: any) {
                 className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-600"
                 onKeyDown={(e) => e.key === 'Enter' && handleChatSubmit()}
               />
-              <Button onClick={handleChatSubmit} size="sm">Send</Button>
+                <Button ref={btnRef} onClick={handleChatSubmit} size="sm">Send</Button>
             </div>
           </Card>
         )}

@@ -2,6 +2,16 @@
 
 import { Button } from '@/pkg/ui-components';
 
+function Card({ icon, title, desc }: any) {
+  return (
+    <div className="p-6 rounded-xl bg-white shadow-sm border border-gray-100">
+      <div className="text-4xl mb-4">{icon}</div>
+      <h3 className="font-semibold mb-2">{title}</h3>
+      <p className="text-sm text-gray-700">{desc}</p>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
