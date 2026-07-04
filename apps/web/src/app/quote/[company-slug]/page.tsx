@@ -79,7 +79,7 @@ export default function QuotePage() {
 
       {/* Upload zone */}
       <label className="relative block border-2 border-dashed border-blue-200 rounded-2xl bg-blue-50/50 cursor-pointer hover:border-blue-400 transition-colors overflow-hidden">
-        <input type="file" accept="image/*" multiple capture="environment" onChange={addPhotos} className="absolute inset-0 opacity-0 cursor-pointer" />
+        <input type="file" accept="image/*" multiple onChange={addPhotos} className="absolute inset-0 opacity-0 cursor-pointer" />
         {photos.length === 0 ? (
           <div className="flex flex-col items-center py-12 px-6">
             <CameraIcon />
