@@ -4,10 +4,20 @@ import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { loadDataFromSupabase } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
+import { useI18n } from '@/components/i18n-provider';
+
+const locales = [
+  { code: 'en', label: 'EN', flag: '🇬🇧' },
+  { code: 'fr', label: 'FR', flag: '🇫🇷' },
+  { code: 'es', label: 'ES', flag: '🇪🇸' },
+  { code: 'de', label: 'DE', flag: '🇩🇪' },
+] as const;
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const companyId = useAuthStore((s) => s.company?.id);
+  const { locale, changeLocale, t } = useI18n();
 
   useEffect(() => {
     loadDataFromSupabase(companyId || 'comp-001');
@@ -32,9 +42,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </svg>
             </button>
             <div className="min-w-0">
-              <h1 className="text-base sm:text-lg font-semibold text-gray-900 truncate">PlumbCore</h1>
-              <p className="text-[11px] sm:text-xs text-gray-500 hidden xs:block">Plumbing operations platform</p>
+              <h1 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{t('app.name')}</h1>
+              <p className="text-[11px] sm:text-xs text-gray-500 hidden xs:block">{t('app.tagline')}</p>
             </div>
+          </div>
+
+          {/* Language Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-colors"
+            >
+              {locales.find(l => l.code === locale)?.flag} {locale.toUpperCase()}
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {langOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setLangOpen(false)} />
+                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 py-1 min-w-[120px]">
+                  {locales.map((l) => (
+                    <button
+                      key={l.code}
+                      onClick={() => { changeLocale(l.code); setLangOpen(false); }}
+                      className={`flex items-center gap-2 w-full px-3 py-2 text-sm text-left hover:bg-gray-50 ${l.code === locale ? 'font-semibold text-blue-600' : 'text-gray-700'}`}
+                    >
+                      {l.flag} {l.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </header>
         <div className="flex-1 p-4 sm:p-6 lg:p-8">{children}</div>
