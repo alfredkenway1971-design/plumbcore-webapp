@@ -56,9 +56,9 @@ export default function QuoteStatusPage() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <div className="max-w-2xl sm:max-w-xl lg:max-w-2xl mx-auto px-4 py-8 sm:py-12 lg:py-16">
         <div className={`rounded-2xl border ${config.color} p-5 mb-6`}>
-          <h2 className="text-lg font-bold mb-1">{config.title}</h2>
+          <h2 className="text-lg sm:text-xl font-bold mb-1">{config.title}</h2>
           <p className="text-sm opacity-80">{config.desc}</p>
         </div>
 

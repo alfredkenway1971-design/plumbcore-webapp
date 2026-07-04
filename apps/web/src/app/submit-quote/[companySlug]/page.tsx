@@ -46,14 +46,14 @@ export default function SubmitQuotePage({ params }: any) {
           <div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gray-900 flex items-center justify-center"><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><span className="text-sm font-bold">plumbcore</span></div>
         </div>
       </div>
-      <div className="max-w-lg mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-lg sm:max-w-xl mx-auto px-4 py-10 sm:py-14 space-y-6">
         <div className="flex items-center justify-center gap-1.5">
           {[1,2].map(s => <div key={s} className={`h-1 rounded-full transition-all duration-500 ${step === s ? 'w-8 bg-gray-900' : 'w-3 bg-gray-200'}`} />)}
         </div>
 
         {step === 1 && (
           <div className="space-y-5">
-            <div className="text-center"><p className="text-xs font-semibold text-gray-900 uppercase tracking-[0.2em]">Step 1 of 2</p><h2 className="text-2xl font-bold mt-2">Upload photos</h2><p className="text-sm text-gray-500 mt-1">Show us what needs fixing</p></div>
+            <div className="text-center"><p className="text-xs font-semibold text-gray-900 uppercase tracking-[0.2em]">Step 1 of 2</p><h2 className="text-2xl sm:text-3xl font-bold mt-2">Upload photos</h2><p className="text-sm sm:text-base text-gray-500 mt-1">Show us what needs fixing</p></div>
             <label className="relative block border-2 border-dashed border-gray-200 rounded-2xl bg-white cursor-pointer hover:border-gray-400 transition-colors overflow-hidden">
               <input type="file" accept="image/*" multiple onChange={(e) => { setPhotos(p => [...p, ...Array.from(e.target.files || [])].slice(0, 4)); e.target.value = ''; }} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
               {photos.length === 0 ? (
