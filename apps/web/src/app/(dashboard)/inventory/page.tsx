@@ -701,7 +701,7 @@ export default function InventoryPage() {
           {/* Supplier Fields */}
           <div className="border-t border-gray-200 pt-4">
             <p className="text-sm font-semibold text-gray-900 mb-3">Supplier Information</p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input
                 label="Supplier Name"
                 placeholder="e.g. SupplyHouse.com"
