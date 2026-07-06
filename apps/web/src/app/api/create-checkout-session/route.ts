@@ -1,9 +1,20 @@
 import { NextResponse } from 'next/server';
+import { checkRateLimit, getClientIP, RATE_LIMITS } from '@/lib/rate-limit';
 
 const stripeKey = process.env.STRIPE_SECRET_KEY || '';
 
 export async function POST(req: Request) {
   try {
+    // Rate limiting
+    const ip = getClientIP(req);
+    const rateCheck = checkRateLimit(ip, RATE_LIMITS.checkout);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': String(rateCheck.retryAfter) } }
+      );
+    }
+
     const { priceId, planName } = await req.json();
 
     if (!priceId) {

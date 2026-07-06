@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashPw, createSessionToken, generateId, slugify, addUser, findUserByEmail, buildSession } from '@/lib/custom-auth';
+import { checkRateLimit, getClientIP, RATE_LIMITS } from '@/lib/rate-limit';
+import { sendEmail, welcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password, fullName, companyName, phone, sessionId } = await request.json();
+
+    const ip = getClientIP(request);
+    const rateCheck = checkRateLimit(ip, RATE_LIMITS.signup);
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: 'Too many signup attempts. Please try again later.' }, { status: 429 });
+    }
 
     if (!email || !password || !fullName || !companyName) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -79,6 +87,8 @@ export async function POST(request: NextRequest) {
     };
 
     await addUser(user);
+    const welcome = welcomeEmail(user.fullName, user.companyName);
+    await sendEmail({ to: user.email, subject: welcome.subject, html: welcome.html });
     const session = buildSession(user);
     const token = createSessionToken(session);
 

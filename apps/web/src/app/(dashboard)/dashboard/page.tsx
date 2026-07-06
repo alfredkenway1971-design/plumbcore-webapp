@@ -483,14 +483,94 @@ function MobileBottomNav() {
    ═══════════════════════════════════════════ */
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
+  const [company, setCompany] = useState<any>(null);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    import('@/lib/store').then(mod => {
+      const state = mod.useAuthStore.getState();
+      setCompany(state.company);
+    });
+    // Check localStorage for 24h dismiss
+    const stored = localStorage.getItem('dismiss_subscription_banner');
+    if (stored) {
+      const ts = parseInt(stored, 10);
+      if (Date.now() - ts < 24 * 60 * 60 * 1000) {
+        setDismissed(true);
+      }
+    }
+  }, []);
+
+  const handleDismiss = () => {
+    localStorage.setItem('dismiss_subscription_banner', String(Date.now()));
+    setDismissed(true);
+  };
+
+  const status = company?.subscription_status || '';
+
   return (
     <div className="max-w-[1440px] mx-auto">
+      {/* ── Subscription Warning Banner ── */}
+      {status === 'past_due' && !dismissed && (
+        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+              <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-amber-800">Payment failed</p>
+              <p className="text-sm text-amber-700">Update your billing info to keep your subscription active.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <a href="/billing" className="h-8 px-4 rounded-xl bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition-colors flex items-center active:scale-[0.97]">
+              Update Billing
+            </a>
+            <button onClick={handleDismiss} className="text-amber-400 hover:text-amber-600 transition-colors" aria-label="Dismiss">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+      {(status === 'cancelled' || status === 'none') && !dismissed && company && (
+        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
+              <svg className="w-4 h-4 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-red-800">Subscription {status === 'cancelled' ? 'Cancelled' : 'Inactive'}</p>
+              <p className="text-sm text-red-700">
+                {status === 'cancelled'
+                  ? 'Your subscription has been cancelled. Choose a plan to regain access.'
+                  : 'No active subscription found. Sign up for a plan to unlock all features.'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <a href="/billing" className="h-8 px-4 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors flex items-center active:scale-[0.97]">
+              {status === 'cancelled' ? 'Reactivate' : 'View Plans'}
+            </a>
+            <button onClick={handleDismiss} className="text-red-400 hover:text-red-600 transition-colors" aria-label="Dismiss">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── Stats Row ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
