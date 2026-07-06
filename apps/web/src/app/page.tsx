@@ -34,10 +34,10 @@ function Navbar({ locale, onLocaleChange }: { locale: string; onLocaleChange: (l
 
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
-          <button onClick={() => r.push('/login')} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</button>
-          <button onClick={() => r.push('/signup')} className="h-10 px-5 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold shadow-sm transition-all active:scale-[0.97]">
+          <a href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</a>
+          <a href="/signup" className="h-10 px-5 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold shadow-sm transition-all active:scale-[0.97] inline-flex items-center">
             Request Demo
-          </button>
+          </a>
         </div>
 
         <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label="Menu">
@@ -48,8 +48,9 @@ function Navbar({ locale, onLocaleChange }: { locale: string; onLocaleChange: (l
         <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-1">
           {links.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors text-center">{l.label}</a>)}
           <hr className="my-3 border-slate-100" />
-          <button onClick={() => { setOpen(false); r.push('/login'); }} className="w-full text-center px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">Sign in</button>
-          <button onClick={() => { setOpen(false); r.push('/signup'); }} className="w-full mt-1 h-10 rounded-xl bg-blue-500 text-white text-sm font-bold">Get Started</button>
+          <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
+          <a href="/login" onClick={() => setOpen(false)} className="block w-full text-center px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">Sign in</a>
+          <a href="/signup" onClick={() => setOpen(false)} className="block w-full mt-1 h-10 leading-10 rounded-xl bg-blue-500 text-white text-sm font-bold text-center">Get Started</a>
         </div>
       )}
     </header>
@@ -76,12 +77,12 @@ function Hero() {
               Flat-rate pricing. No per-tech fees. No setup costs.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start w-full">
-              <button onClick={() => r.push('/#pricing')} className="h-12 w-full sm:w-auto px-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/25 transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+              <a href="/#pricing" className="h-12 w-full sm:w-auto px-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/25 transition-all active:scale-[0.97] flex items-center justify-center gap-2">
                 Start Free Trial <ArrowRight className="w-4 h-4" />
-              </button>
-              <button onClick={() => r.push('/quote/plumbcore')} className="h-12 w-full sm:w-auto px-8 rounded-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50 text-sm font-semibold transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+              </a>
+              <a href="/quote/plumbcore" className="h-12 w-full sm:w-auto px-8 rounded-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50 text-sm font-semibold transition-all active:scale-[0.97] flex items-center justify-center gap-2">
                 Get a Free Estimate
-              </button>
+              </a>
             </div>
             <div className="flex items-center gap-4 mt-6 sm:mt-8 justify-center lg:justify-start">
               <div className="flex -space-x-2">
@@ -111,10 +112,10 @@ function Hero() {
 /* ═══ STATS ═══ */
 function StatsRow() {
   const stats = [
-    { num: '12,450+', label: 'Projects Done' },
-    { num: '500+', label: 'Happy Customers' },
-    { num: 'Starting at', label: '$149/mo', sub: true },
-    { num: '50K+', label: 'AI Estimates' },
+    { num: process.env.NEXT_PUBLIC_STAT_PROJECTS || '12,450+', label: 'Projects Done' },
+    { num: process.env.NEXT_PUBLIC_STAT_CUSTOMERS || '500+', label: 'Happy Customers' },
+    { num: 'Starting at', label: process.env.NEXT_PUBLIC_STAT_PRICE || '$149/mo', sub: true },
+    { num: process.env.NEXT_PUBLIC_STAT_ESTIMATES || '50K+', label: 'AI Estimates' },
   ];
   return (
     <section className="py-12 bg-slate-50 border-y border-slate-100">
@@ -165,9 +166,9 @@ function AboutSection() {
               ))}
             </ul>
             <div className="flex justify-center lg:justify-start">
-              <button className="h-11 px-6 rounded-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50 text-sm font-bold transition-all active:scale-[0.97] flex items-center gap-2 justify-center">
+              <a href="#features" className="h-11 px-6 rounded-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50 text-sm font-bold transition-all active:scale-[0.97] flex items-center gap-2 justify-center">
                 Learn More <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -506,9 +507,9 @@ function CtaSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">Ready to Transform Your Plumbing Business?</h2>
         <p className="text-base sm:text-lg text-blue-100 max-w-xl mx-auto mb-8">Join 500+ plumbing companies already using <strong>PlumbCore AI</strong></p>
-        <button onClick={() => r.push('/signup')} className="h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-bold shadow-lg shadow-blue-900/25 transition-all active:scale-[0.97] flex items-center justify-center gap-2 mx-auto">
+        <a href="/signup" className="h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-bold shadow-lg shadow-blue-900/25 transition-all active:scale-[0.97] flex items-center justify-center gap-2 mx-auto">
           Start Free Trial <ArrowRight className="w-5 h-5" />
-        </button>
+        </a>
         <p className="text-sm text-blue-200 mt-4">14-day free trial • No credit card • Cancel anytime</p>
       </div>
     </section>
