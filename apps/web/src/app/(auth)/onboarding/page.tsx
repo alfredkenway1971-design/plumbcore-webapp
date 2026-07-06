@@ -212,13 +212,23 @@ export default function OnboardingPage() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      // Simulate API call to create company
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simulate success
-          resolve(true);
-        }, 2000);
+      // Save onboarding data via API
+      const res = await fetch('/api/onboarding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: data.company,
+          hours: data.hours,
+          pricing: data.pricing,
+          plan: data.plan,
+        }),
       });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Failed to save');
+      }
+
       // Clear onboarding data
       localStorage.removeItem(STORAGE_KEY);
       localStorage.setItem('plumbcore_onboarded', 'true');

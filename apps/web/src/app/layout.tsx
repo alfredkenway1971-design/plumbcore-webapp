@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/providers/QueryProvider";
-import { I18nProvider } from "@/components/i18n-provider";
+import I18nWrapper from "@/components/I18nWrapper";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "PlumbCore AI — Smart Plumbing Operations",
+  title: "PlumbCore AI — The AI-Powered Plumber OS",
   description:
-    "AI-powered business operating system for plumbing companies. Estimates, diagnostics, scheduling, and CRM.",
+    "Run your entire plumbing business from one app. AI estimates, smart scheduling, automated invoicing, and inventory management — flat-rate pricing, no per-tech fees.",
   keywords: [
     "plumbing",
     "field service",
@@ -25,6 +20,7 @@ export const metadata: Metadata = {
     "estimates",
     "invoicing",
     "AI",
+    "plumber software",
   ],
   authors: [{ name: "PlumbCore AI" }],
 };
@@ -33,32 +29,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      style={{ transition: 'background-color 0.3s ease, color 0.3s ease' }}
-      suppressHydrationWarning
-    >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('plumbcore-theme') || 'dark';
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className="min-h-full flex transition-colors duration-300">
-        <QueryProvider>
-          <I18nProvider>{children}</I18nProvider>
-        </QueryProvider>
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="min-h-screen font-sans antialiased">
+        <I18nWrapper>{children}</I18nWrapper>
       </body>
     </html>
   );

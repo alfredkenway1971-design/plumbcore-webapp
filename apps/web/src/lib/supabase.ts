@@ -13,6 +13,7 @@ export type Database = {
     Tables: {
       companies: { Row: Company; Insert: Omit<Company, 'id' | 'created_at'>; Update: Partial<Omit<Company, 'id'>> };
       profiles: { Row: Profile; Insert: Omit<Profile, 'id' | 'created_at'>; Update: Partial<Omit<Profile, 'id'>> };
+      auth_users: { Row: AuthUserDb; Insert: Omit<AuthUserDb, 'id' | 'created_at'>; Update: Partial<Omit<AuthUserDb, 'id'>> };
       clients: { Row: ClientDb; Insert: Omit<ClientDb, 'id' | 'created_at'>; Update: Partial<Omit<ClientDb, 'id'>> };
       jobs: { Row: JobDb; Insert: Omit<JobDb, 'id' | 'created_at'>; Update: Partial<Omit<JobDb, 'id'>> };
       invoices: { Row: InvoiceDb; Insert: Omit<InvoiceDb, 'id' | 'created_at'>; Update: Partial<Omit<InvoiceDb, 'id'>> };
@@ -79,4 +80,12 @@ export interface PricebookItemDb {
   id: string; company_id: string; name: string; category: string;
   unit_price: number; unit_type: string; is_repair_type: boolean;
   estimated_hours?: number; description?: string;
+}
+
+export interface AuthUserDb {
+  id: string; email: string; password_hash: string;
+  full_name: string; company_name: string; company_slug: string;
+  company_id: string; phone: string; role: string;
+  stripe_customer_id: string; stripe_subscription_id: string;
+  subscription_tier: string; created_at: string;
 }
