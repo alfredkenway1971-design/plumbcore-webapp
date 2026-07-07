@@ -18,12 +18,34 @@ export default function SubmitQuotePage({ params }: any) {
 
   const inputClass = "w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm text-gray-900 outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-all placeholder:text-gray-400";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      // Upload photos and analyze via AI
+      const formData = new FormData();
+      photos.forEach(p => formData.append('photos', p));
+      formData.append('name', form.name);
+      formData.append('phone', form.phone);
+      formData.append('email', form.email);
+      formData.append('address', form.address);
+      formData.append('description', form.desc);
+      formData.append('urgency', form.urgency);
+
+      const res = await fetch('/api/ai/analyze-photo', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        console.error('[SubmitQuote] AI analysis failed:', err);
+      }
+    } catch (err) {
+      console.error('[SubmitQuote] Network error:', err);
+    } finally {
       setLoading(false);
       setSubmitted(true);
-    }, 1500);
+    }
   };
 
   if (submitted) {

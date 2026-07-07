@@ -94,11 +94,31 @@ const fallbackTeamMembers: TeamMember[] = [
   { id: 'TECH-005', name: 'Sarah Blake', email: 'sblake@plumbcore.ai', phone: '(555) 200-1005', role: 'tech', status: 'online', activeJobs: 2, completedToday: 3, rating: 4.9, specialties: ['Gas Lines', 'Water Heaters'], joinedAt: '2024-02-20' },
 ];
 
+// ── Fallback demo jobs ──
+const fallbackJobs: Job[] = [
+  { id: 'JOB-001', clientId: 'CLT-001', clientName: 'James & Sarah Johnson', title: 'Water Heater Repair', description: 'Replace failed water heater element', status: 'in-progress', priority: 'high', assignedTo: ['TECH-001'], address: '123 Oak St', city: 'Austin', state: 'TX', zip: '73301', scheduledDate: new Date(Date.now() + 2*60*60*1000).toISOString(), estimatedCost: 850, actualCost: 0, materialsCost: 0, notes: '', createdAt: new Date().toISOString() },
+  { id: 'JOB-002', clientId: 'CLT-002', clientName: 'Robert Davis', title: 'Drain Cleaning', description: 'Kitchen sink drain clogged', status: 'scheduled', priority: 'medium', assignedTo: ['TECH-002'], address: '456 Maple Ave', city: 'Austin', state: 'TX', zip: '73302', scheduledDate: new Date(Date.now() + 5*60*60*1000).toISOString(), estimatedCost: 350, actualCost: 0, materialsCost: 0, notes: '', createdAt: new Date().toISOString() },
+  { id: 'JOB-003', clientId: 'CLT-003', clientName: 'Maria Wilson', title: 'Pipe Replacement', description: 'Replace corroded pipe in basement', status: 'completed', priority: 'high', assignedTo: ['TECH-001', 'TECH-002'], address: '789 Pine Rd', city: 'Round Rock', state: 'TX', zip: '78664', scheduledDate: new Date(Date.now() - 24*60*60*1000).toISOString(), completedDate: new Date().toISOString(), estimatedCost: 1800, actualCost: 2100, materialsCost: 600, laborHours: 16, notes: '', createdAt: new Date(Date.now() - 3*24*60*60*1000).toISOString() },
+  { id: 'JOB-004', clientId: 'CLT-005', clientName: 'Emily Thompson', title: 'Faucet Installation', description: 'Install new kitchen faucet', status: 'scheduled', priority: 'low', assignedTo: ['TECH-005'], address: '654 Birch Ln', city: 'Cedar Park', state: 'TX', zip: '78613', scheduledDate: new Date(Date.now() + 8*60*60*1000).toISOString(), estimatedCost: 250, actualCost: 0, materialsCost: 0, notes: '', createdAt: new Date().toISOString() },
+  { id: 'JOB-005', clientId: 'CLT-001', clientName: 'James & Sarah Johnson', title: 'Emergency Leak Repair', description: 'Burst pipe under kitchen sink', status: 'urgent', priority: 'urgent', assignedTo: ['TECH-001'], address: '123 Oak St', city: 'Austin', state: 'TX', zip: '73301', scheduledDate: new Date().toISOString(), estimatedCost: 1200, actualCost: 0, materialsCost: 0, notes: '', createdAt: new Date().toISOString() },
+  { id: 'JOB-006', clientId: 'CLT-011', clientName: 'Oak Springs Apartments', title: 'Sewer Line Inspection', description: 'Annual sewer line inspection for apartment complex', status: 'scheduled', priority: 'medium', assignedTo: ['TECH-002'], address: '4000 Spring Hollow Dr', city: 'Austin', state: 'TX', zip: '73307', scheduledDate: new Date(Date.now() + 3*24*60*60*1000).toISOString(), estimatedCost: 1500, actualCost: 0, materialsCost: 0, notes: '', createdAt: new Date(Date.now() - 7*24*60*60*1000).toISOString() },
+  { id: 'JOB-007', clientId: 'CLT-015', clientName: 'Sunset Retirement Home', title: 'Water Main Repair', description: 'Emergency water main repair', status: 'completed', priority: 'urgent', assignedTo: ['TECH-001', 'TECH-002', 'TECH-005'], address: '500 Sunset Blvd', city: 'Austin', state: 'TX', zip: '73308', scheduledDate: new Date(Date.now() - 5*24*60*60*1000).toISOString(), completedDate: new Date(Date.now() - 4*24*60*60*1000).toISOString(), estimatedCost: 4500, actualCost: 5200, materialsCost: 2800, laborHours: 32, notes: 'Emergency call at 2 AM', createdAt: new Date(Date.now() - 5*24*60*60*1000).toISOString() },
+  { id: 'JOB-008', clientId: 'CLT-002', clientName: 'Robert Davis', title: 'Gas Line Test', description: 'Test gas line for leaks after installation', status: 'completed', priority: 'high', assignedTo: ['TECH-005'], address: '456 Maple Ave', city: 'Austin', state: 'TX', zip: '73302', scheduledDate: new Date(Date.now() - 2*24*60*60*1000).toISOString(), completedDate: new Date(Date.now() - 2*24*60*60*1000).toISOString(), estimatedCost: 300, actualCost: 275, materialsCost: 45, laborHours: 4, notes: '', createdAt: new Date(Date.now() - 14*24*60*60*1000).toISOString() },
+];
+
+// ── Fallback demo invoices ──
+const fallbackInvoices: Invoice[] = [
+  { id: 'INV-001', clientId: 'CLT-003', clientName: 'Maria Wilson', jobId: 'JOB-003', jobTitle: 'Pipe Replacement', status: 'paid', amount: 2100, paidAmount: 2100, dueDate: new Date(Date.now() + 14*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), paidDate: new Date().toISOString(), paymentMethod: 'credit_card', lineItems: [{ description: 'Pipe Replacement - Labor', quantity: 1, unitPrice: 1500, total: 1500 }, { description: 'Materials', quantity: 1, unitPrice: 600, total: 600 }], notes: '' },
+  { id: 'INV-002', clientId: 'CLT-001', clientName: 'James & Sarah Johnson', jobId: 'JOB-001', jobTitle: 'Water Heater Repair', status: 'sent', amount: 850, paidAmount: 0, dueDate: new Date(Date.now() + 30*24*60*60*1000).toISOString(), issueDate: new Date().toISOString(), lineItems: [{ description: 'Water Heater Repair Service', quantity: 1, unitPrice: 850, total: 850 }], notes: '' },
+  { id: 'INV-003', clientId: 'CLT-002', clientName: 'Robert Davis', jobId: 'JOB-008', jobTitle: 'Gas Line Test', status: 'paid', amount: 275, paidAmount: 275, dueDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 2*24*60*60*1000).toISOString(), paidDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), paymentMethod: 'check', lineItems: [{ description: 'Gas Line Test Service', quantity: 1, unitPrice: 275, total: 275 }], notes: '' },
+  { id: 'INV-004', clientId: 'CLT-011', clientName: 'Oak Springs Apartments', jobId: 'JOB-006', jobTitle: 'Sewer Line Inspection', status: 'overdue', amount: 1500, paidAmount: 0, dueDate: new Date(Date.now() - 3*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 30*24*60*60*1000).toISOString(), lineItems: [{ description: 'Annual Sewer Line Inspection', quantity: 1, unitPrice: 1500, total: 1500 }], notes: 'Payment overdue - 2nd notice sent' },
+];
+
 // ── Shared data store ──
 const data = {
   clients: [...fallbackClients],
-  jobs: [] as Job[],
-  invoices: [] as Invoice[],
+  jobs: [...fallbackJobs],
+  invoices: [...fallbackInvoices],
   teamMembers: [...fallbackTeamMembers],
   inventory: [] as InventoryItem[],
   suppliers: [] as Supplier[],
@@ -121,7 +141,11 @@ export const activities = data.activities;
 // ── Load data from Supabase ──
 export async function loadDataFromSupabase(companyId?: string) {
   if (!companyId) return;
-  
+
+  // Skip Supabase queries if user isn't authenticated (anon key can't read RLS tables)
+  const storedAuth = typeof window !== 'undefined' ? localStorage.getItem('plumbcore-auth') : null;
+  if (!storedAuth) return;
+
   try {
     // Load clients
     const { data: dbClients } = await supabase
@@ -184,14 +208,49 @@ export async function loadDataFromSupabase(companyId?: string) {
       });
     }
     
-    console.log(`[PlumbCore] Data loaded: ${data.clients.length} clients, ${data.jobs.length} jobs, ${data.invoices.length} invoices`);
+    // Load team members
+    const { data: dbTeam } = await supabase
+      .from('team_members')
+      .select('*')
+      .eq('company_id', companyId);
+    
+    if (dbTeam && dbTeam.length > 0) {
+      data.teamMembers.length = 0;
+      dbTeam.forEach((t: any) => {
+        const activeJobs = data.jobs.filter(j => j.assignedTo.includes(t.id) && j.status === 'in-progress').length;
+        const completedToday = data.jobs.filter(j =>
+          j.assignedTo.includes(t.id) && j.status === 'completed' &&
+          j.completedDate && new Date(j.completedDate).toDateString() === new Date().toDateString()
+        ).length;
+        data.teamMembers.push({
+          id: t.id, name: t.name, email: t.email || '', phone: t.phone || '',
+          role: t.role, status: t.status,
+          activeJobs, completedToday, rating: t.rating || 4.5,
+          specialties: t.specialties || [], joinedAt: t.joined_at,
+        });
+      });
+    }
+    
+    console.log(`[PlumbCore] Data loaded: ${data.clients.length} clients, ${data.jobs.length} jobs, ${data.invoices.length} invoices, ${data.teamMembers.length} team members`);
   } catch (e) {
     console.warn('[PlumbCore] Using fallback data:', e);
   }
 }
 
+// ── In-memory cache with 5-minute TTL ──
+let cachedStats: { data: { totalRevenue: number; outstandingRevenue: number; activeJobs: number; scheduledJobs: number; completedJobs: number; urgentJobs: number; partsLowStock: number; totalClients: number; totalJobs: number; totalInvoices: number; totalInventoryItems: number } | null; timestamp: number } = { data: null, timestamp: 0 };
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 // ── Helper functions ──
 export function getStats() {
+  const now = Date.now();
+
+  // Return cached data if still fresh
+  if (cachedStats.data && (now - cachedStats.timestamp) < CACHE_TTL_MS) {
+    return cachedStats.data;
+  }
+
+  // Compute fresh stats
   const totalRevenue = data.invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + (i.paidAmount ?? i.amount), 0);
   const outstandingRevenue = data.invoices.filter(i => i.status === 'sent' || i.status === 'overdue').reduce((sum, i) => sum + i.amount, 0);
   const activeJobs = data.jobs.filter(j => j.status === 'in-progress').length;
@@ -199,7 +258,22 @@ export function getStats() {
   const completedJobs = data.jobs.filter(j => j.status === 'completed').length;
   const urgentJobs = data.jobs.filter(j => j.priority === 'urgent' && j.status !== 'completed').length;
   const partsLowStock = data.inventory.filter(i => i.quantity <= i.minQuantity).length;
-  return { totalRevenue, outstandingRevenue, activeJobs, scheduledJobs, completedJobs, urgentJobs, partsLowStock, totalClients: data.clients.length, totalJobs: data.jobs.length, totalInvoices: data.invoices.length, totalInventoryItems: data.inventory.length };
+  const result = { totalRevenue, outstandingRevenue, activeJobs, scheduledJobs, completedJobs, urgentJobs, partsLowStock, totalClients: data.clients.length, totalJobs: data.jobs.length, totalInvoices: data.invoices.length, totalInventoryItems: data.inventory.length };
+
+  // Store in cache
+  cachedStats.data = result;
+  cachedStats.timestamp = now;
+
+  return result;
+}
+
+/**
+ * Invalidate the stats cache so the next call to getStats() recomputes.
+ * Call this after any mutation to jobs, invoices, clients, or inventory.
+ */
+export function invalidateStatsCache() {
+  cachedStats.data = null;
+  cachedStats.timestamp = 0;
 }
 
 export function getItemTransactions(itemId: string): InventoryTransaction[] {

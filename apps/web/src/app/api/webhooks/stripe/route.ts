@@ -23,6 +23,7 @@ export async function POST(req: Request) {
 
     // Import dynamically to avoid circular deps
     const { updateUserSubscription } = await import('@/lib/custom-auth');
+    const { sendEmail, subscriptionPastDueEmail } = await import('@/lib/email');
 
     const priceMap: Record<string, string> = {
       'price_1TqFwHD0AAcByeQ9qNUaikbx': 'solo',
@@ -50,6 +51,18 @@ export async function POST(req: Request) {
     function getTierFromSubscription(sub: any): string {
       const priceId = sub.items?.data?.[0]?.price?.id || '';
       return priceMap[priceId] || 'solo';
+    }
+
+    /**
+     * Get customer name from Stripe
+     */
+    async function getCustomerName(customerId: string): Promise<string> {
+      try {
+        const customer = await stripe.customers.retrieve(customerId);
+        return (customer as any).name || 'Valued Customer';
+      } catch {
+        return 'Valued Customer';
+      }
     }
 
     switch (event.type) {
@@ -108,6 +121,7 @@ export async function POST(req: Request) {
         console.log(`❌ Subscription cancelled: ${subscriptionId}`);
 
         const email = await getCustomerEmail(customerId);
+        const name = await getCustomerName(customerId);
         if (email) {
           await updateUserSubscription(email, {
             stripeSubscriptionId: '',
@@ -115,6 +129,27 @@ export async function POST(req: Request) {
             subscriptionStatus: 'cancelled',
           });
           console.log(`  → Marked ${email} as cancelled`);
+
+          // Send cancellation email
+          const billingUrl = 'https://plumbcore-ai.vercel.app/billing';
+          const cancelledEmail = {
+            subject: 'Your PlumbCore AI subscription has been cancelled',
+            html: `
+              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #64748B, #475569); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
+                  <h1 style="color: white; margin: 0; font-size: 22px;">Subscription Cancelled</h1>
+                </div>
+                <div style="padding: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
+                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi ${name},</p>
+                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">Your PlumbCore AI subscription has been cancelled. You can still access your account until the end of your current billing period.</p>
+                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">If you'd like to reactivate, click below:</p>
+                  <a href="${billingUrl}" style="display: inline-block; padding: 12px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 16px 0;">Reactivate Subscription</a>
+                </div>
+              </div>
+            `,
+          };
+          await sendEmail({ to: email, subject: cancelledEmail.subject, html: cancelledEmail.html });
+          console.log(`  → Sent cancellation notice to ${email}`);
         }
         break;
       }
@@ -131,6 +166,7 @@ export async function POST(req: Request) {
       case 'invoice.payment_failed': {
         const invoice = event.data.object;
         const customerEmail = invoice.customer_email || (await getCustomerEmail(invoice.customer));
+        const customerName = invoice.customer_name || (await getCustomerName(invoice.customer));
         console.log(`⚠️ Payment failed: ${customerEmail || 'unknown'} — attempt ${invoice.attempt_count}`);
 
         if (customerEmail) {
@@ -138,6 +174,12 @@ export async function POST(req: Request) {
             subscriptionStatus: 'past_due',
           });
           console.log(`  → Marked ${customerEmail} as past_due`);
+
+          // Send past due email
+          const billingUrl = 'https://plumbcore-ai.vercel.app/billing';
+          const emailContent = subscriptionPastDueEmail(customerName, billingUrl);
+          await sendEmail({ to: customerEmail, subject: emailContent.subject, html: emailContent.html });
+          console.log(`  → Sent past due notice to ${customerEmail}`);
         }
         break;
       }

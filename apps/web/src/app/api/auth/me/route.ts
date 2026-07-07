@@ -9,12 +9,12 @@ export async function GET(request: NextRequest) {
       : request.cookies.get('auth_token')?.value;
 
     if (!token) {
-      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+      return NextResponse.json({ authenticated: false, session: null });
     }
 
     const session = decodeSessionToken(token);
     if (!session) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
+      return NextResponse.json({ authenticated: false, session: null });
     }
 
     // Strip internal fields before returning

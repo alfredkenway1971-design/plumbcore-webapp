@@ -45,3 +45,4 @@ next-env.d.ts
 # next.js build output in apps
 apps/web/.next/
 **/.next/
+test-playwright.js

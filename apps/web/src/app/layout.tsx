@@ -21,8 +21,30 @@ export const metadata: Metadata = {
     "invoicing",
     "AI",
     "plumber software",
+    "plumbing business management",
+    "HVAC software",
   ],
   authors: [{ name: "PlumbCore AI" }],
+  openGraph: {
+    title: "PlumbCore AI — The AI-Powered Plumber OS",
+    description:
+      "AI-powered plumbing business management. Photo estimates, smart scheduling, voice-to-invoice, inventory tracking. Start your free trial today.",
+    url: "https://plumbcore-ai.vercel.app",
+    siteName: "PlumbCore AI",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PlumbCore AI — The AI-Powered Plumber OS",
+    description:
+      "Run your entire plumbing business from one app. AI estimates, smart scheduling, automated invoicing.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  metadataBase: new URL("https://plumbcore-ai.vercel.app"),
 };
 
 export default function RootLayout({

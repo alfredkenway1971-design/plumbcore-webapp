@@ -106,6 +106,10 @@ export const useAuthStore = create<AuthState>()(
 
           if (res.ok) {
             const data = await res.json();
+            if (data.authenticated === false) {
+              set({ isLoading: false });
+              return;
+            }
             set({
               user: data.session.user,
               profile: data.session.profile,

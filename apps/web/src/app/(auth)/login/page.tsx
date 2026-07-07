@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -93,7 +94,18 @@ export default function LoginPage() {
                 <a href="/reset-password" className="text-sm text-blue-600 hover:text-blue-700 transition-colors">Forgot password?</a>
               </div>
               <button type="submit" disabled={loading || !isValid} className="w-full h-11 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed text-sm shadow-sm">{loading ? 'Signing in…' : 'Sign In'}</button>
-              
+
+              <div className="relative my-3">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-white px-3 text-xs text-slate-400">or continue with</span>
+                </div>
+              </div>
+
+              <GoogleSignInButton mode="login" />
+
             </form>
           </div>
           <p className="mt-6 text-center text-sm text-slate-500">Don&apos;t have an account?{' '}<a href="/signup" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">Sign up</a></p>

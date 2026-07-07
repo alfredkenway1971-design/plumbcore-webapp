@@ -530,11 +530,11 @@ function Footer() {
             <p className="text-sm leading-relaxed">The AI-powered platform for modern plumbing businesses.</p>
             <div className="flex gap-3 mt-6 justify-center sm:justify-start">
               {[
-                { label: '𝕏' },
-                { label: 'in' },
-                { label: 'f' },
-                { label: '📘' },
-              ].map((s,i) => <span key={i} className="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-sm hover:bg-slate-700 cursor-pointer transition-colors font-bold text-white">{s.label}</span>)}
+                { label: '𝕏', href: 'https://x.com/plumbcoreai' },
+                { label: 'in', href: 'https://linkedin.com/company/plumbcoreai' },
+                { label: 'f', href: 'https://facebook.com/plumbcoreai' },
+                { label: '📘', href: 'https://facebook.com/plumbcoreai' },
+              ].map((s,i) => <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-sm hover:bg-slate-700 cursor-pointer transition-colors font-bold text-white">{s.label}</a>)}
             </div>
           </div>
           <div>
