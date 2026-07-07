@@ -105,7 +105,7 @@ function SignupForm() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_30%_50%,white_0%,transparent_60%)]" />
         <div className="relative z-10">
-          <PlumbCoreLogo size="md" showText={true} />
+          <PlumbCoreLogo size="xl" showText={true} />
           <h2 className="text-3xl font-bold mb-4 leading-tight">{t('auth.signup.brandTitle')}</h2>
           <p className="text-slate-400 text-sm max-w-md leading-relaxed">{t('auth.signup.brandSubtitle')}</p>
           <div className="mt-8 space-y-4">
