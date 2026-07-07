@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Card,
@@ -11,9 +11,10 @@ import {
   Modal,
 } from '@/pkg/ui-components';
 import { teamMembers, getStats } from '@/lib/mock-data';
+import { useAuthStore } from '@/lib/store';
 
 /* ── Types ── */
-type Tab = 'company' | 'team' | 'notifications' | 'billing';
+type Tab = 'profile' | 'company' | 'team' | 'notifications' | 'billing';
 
 interface CompanyData {
   name: string;
@@ -57,6 +58,7 @@ interface InvoiceRecord {
 }
 
 const TABS: { id: Tab; label: string }[] = [
+  { id: 'profile', label: 'Profile' },
   { id: 'company', label: 'Company' },
   { id: 'team', label: 'Team' },
   { id: 'notifications', label: 'Notifications' },
@@ -230,6 +232,116 @@ function SkeletonSettingsForm() {
         <div key={i} className="h-10 w-full rounded-lg bg-white/5" />
       ))}
       <div className="h-10 w-32 rounded-lg bg-white/5" />
+    </div>
+  );
+}
+
+/* ── Profile Tab Component ── */
+function ProfileTab() {
+  const { profile, updateProfile } = useAuthStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fullName, setFullName] = useState(profile?.full_name || '');
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(profile?.avatar_url);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setAvatarUrl(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await updateProfile({ full_name: fullName, avatar_url: avatarUrl || '' });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch {
+      // swallow
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const initials = profile?.full_name
+    ? profile.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+    : profile?.email?.slice(0, 2).toUpperCase() || '?';
+
+  return (
+    <div className="space-y-6 max-w-2xl">
+      <Card variant="default" padding="lg">
+        <h2 className="mb-5 text-base font-semibold text-gray-900">Profile Picture</h2>
+        <div className="flex items-center gap-5">
+          <div className="relative">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt="Profile"
+                className="h-20 w-20 rounded-full object-cover border-2 border-gray-200"
+              />
+            ) : (
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-electric/10 text-lg font-bold text-electric border-2 border-gray-200">
+                {initials}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <Button size="sm" onClick={() => fileInputRef.current?.click()}>
+              {avatarUrl ? 'Change Photo' : 'Upload Photo'}
+            </Button>
+            {avatarUrl && avatarUrl !== profile?.avatar_url && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setAvatarUrl(profile?.avatar_url)}
+              >
+                <span className="text-red-600">Remove</span>
+              </Button>
+            )}
+          </div>
+        </div>
+      </Card>
+
+      <Card variant="default" padding="lg">
+        <h2 className="mb-5 text-base font-semibold text-gray-900">Personal Information</h2>
+        <div className="space-y-4">
+          <Input
+            label="Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={profile?.email || ''}
+            disabled
+          />
+        </div>
+      </Card>
+
+      <div className="flex items-center justify-end gap-3 pt-2">
+        {saved && (
+          <span className="text-sm text-green-600 animate-pulse">Profile saved!</span>
+        )}
+        <Button onClick={handleSave} loading={saving}>
+          {saving ? 'Saving…' : 'Save Changes'}
+        </Button>
+      </div>
     </div>
   );
 }
@@ -450,6 +562,9 @@ export default function SettingsPage() {
           </button>
         ))}
       </div>
+
+      {/* ── Profile Tab ── */}
+      {activeTab === 'profile' && <ProfileTab />}
 
       {/* ── Company Tab ── */}
       {activeTab === 'company' && (
