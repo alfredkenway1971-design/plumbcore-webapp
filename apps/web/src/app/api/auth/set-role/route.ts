@@ -33,14 +33,35 @@ export async function POST(request: NextRequest) {
       .from('auth_users')
       .update({ role })
       .eq('email', email.toLowerCase())
-      .select()
-      .single();
+      .select();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Also update profiles table if it exists
+    if (!data || data.length === 0) {
+      // User not found in auth_users. Try profiles table directly.
+      const { data: profileData, error: profileError } = await sb
+        .from('profiles')
+        .update({ role })
+        .eq('email', email.toLowerCase())
+        .select();
+
+      if (profileError || !profileData || profileData.length === 0) {
+        return NextResponse.json({
+          success: false,
+          message: `No user found with email ${email} in auth_users or profiles. They need to sign up first.`,
+        });
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `User ${email} role set to ${role} (profiles table)`,
+        user: profileData[0],
+      });
+    }
+
+    // Also update profiles table
     await sb
       .from('profiles')
       .update({ role })
