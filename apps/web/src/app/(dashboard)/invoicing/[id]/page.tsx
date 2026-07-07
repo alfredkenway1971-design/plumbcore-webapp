@@ -14,6 +14,7 @@ import {
 import { invoices, clients } from '@/lib/mock-data';
 import type { Invoice } from '@/lib/mock-data';
 import { formatCurrency } from '@/lib/invoice-engine';
+import { jsPDF } from 'jspdf';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -156,7 +157,158 @@ export default function InvoiceDetailPage() {
 
   /* ── Download PDF ── */
   const handleDownloadPdf = () => {
-    router.push(`/invoicing/${invoiceId}/print`);
+    if (!invoice) return;
+    
+    try {
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 20;
+      let y = margin;
+
+      // Header
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.text('INVOICE', pageWidth - margin, y, { align: 'right' });
+      y += 8;
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(100);
+      doc.text(invoice.id, pageWidth - margin, y, { align: 'right' });
+
+      // Company info
+      y += 15;
+      doc.setFontSize(16);
+      doc.setTextColor(0);
+      doc.setFont('helvetica', 'bold');
+      doc.text('PlumbCore AI', margin, y);
+      y += 6;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(80);
+      doc.text('Professional Plumbing Services', margin, y);
+      y += 4;
+      doc.text('Austin, TX', margin, y);
+      y += 4;
+      doc.text('contact@plumbcore.ai', margin, y);
+
+      // Invoice details (right side)
+      const detailsX = pageWidth - margin - 60;
+      let detailsY = margin + 12;
+      doc.setFontSize(9);
+      doc.setTextColor(80);
+      const details = [
+        ['Invoice Date:', formatDateShort(invoice.issueDate)],
+        ['Due Date:', formatDateShort(invoice.dueDate)],
+        ['Status:', invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)],
+      ];
+      details.forEach(([label, value]) => {
+        doc.setFont('helvetica', 'normal');
+        doc.text(label, detailsX, detailsY);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0);
+        doc.text(value, detailsX + 35, detailsY);
+        detailsY += 5;
+        doc.setTextColor(80);
+      });
+
+      // Bill To
+      y += 15;
+      doc.setDrawColor(200);
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0);
+      doc.text('Bill To', margin, y);
+      y += 6;
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(50);
+      doc.text(invoice.clientName, margin, y);
+      y += 5;
+      if (client) {
+        doc.text(client.address, margin, y);
+        y += 4;
+        doc.text(`${client.city}, ${client.state} ${client.zip}`, margin, y);
+        y += 4;
+        doc.text(client.email, margin, y);
+      }
+
+      // Items header
+      y += 12;
+      doc.setDrawColor(0);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 6;
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(100);
+      doc.text('DESCRIPTION', margin, y);
+      doc.text('QTY', pageWidth - margin - 50, y, { align: 'right' });
+      doc.text('UNIT PRICE', pageWidth - margin - 30, y, { align: 'right' });
+      doc.text('TOTAL', pageWidth - margin, y, { align: 'right' });
+
+      // Items
+      y += 3;
+      doc.setDrawColor(220);
+      doc.setLineWidth(0.2);
+      doc.line(margin, y, pageWidth - margin, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(0);
+
+      invoice.lineItems.forEach((item) => {
+        y += 8;
+        if (y > 270) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(item.description, margin, y);
+        doc.text(String(item.quantity), pageWidth - margin - 50, y, { align: 'right' });
+        doc.text(formatCurrency(item.unitPrice), pageWidth - margin - 30, y, { align: 'right' });
+        doc.setFont('helvetica', 'bold');
+        doc.text(formatCurrency(item.total), pageWidth - margin, y, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+      });
+
+      // Total
+      y += 10;
+      doc.setDrawColor(0);
+      doc.setLineWidth(0.5);
+      doc.line(pageWidth - margin - 60, y, pageWidth - margin, y);
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('Total Due:', pageWidth - margin - 50, y, { align: 'right' });
+      doc.text(formatCurrency(invoice.amount), pageWidth - margin, y, { align: 'right' });
+
+      // Payment terms
+      y += 20;
+      doc.setDrawColor(200);
+      doc.setLineWidth(0.2);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 6;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0);
+      doc.text('Payment Terms', margin, y);
+      y += 4;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(100);
+      doc.text('Payment is due within 30 days. Late payments subject to 1.5% monthly charge.', margin, y);
+
+      // Thank you
+      y += 15;
+      doc.setFontSize(9);
+      doc.setTextColor(150);
+      doc.text('Thank you for your business!', pageWidth / 2, y, { align: 'center' });
+
+      // Save
+      doc.save(`invoice-${invoice.id}.pdf`);
+    } catch (e) {
+      console.error('PDF generation error:', e);
+      // Fallback to browser print
+      router.push(`/invoicing/${invoiceId}/print`);
+    }
   };
 
   // Error state
