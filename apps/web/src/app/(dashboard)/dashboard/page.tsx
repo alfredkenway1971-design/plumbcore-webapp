@@ -509,12 +509,14 @@ const priceMap: Record<string, number> = {solo:149, team:249, pro:349, business:
 const UpgradeCard = memo(function UpgradeCard() {
   const router = useRouter();
   const [company, setCompany] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [billingLoading, setBillingLoading] = useState(false);
 
   useEffect(() => {
     import('@/lib/store').then(mod => {
       const state = mod.useAuthStore.getState();
       setCompany(state.company);
+      setProfile(state.profile);
     });
   }, []);
 
@@ -744,6 +746,7 @@ const MobileBottomNav = memo(function MobileBottomNav() {
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [dismissed, setDismissed] = useState(false);
   const stats = getStats();
 
@@ -756,6 +759,7 @@ export default function DashboardPage() {
     import('@/lib/store').then(mod => {
       const state = mod.useAuthStore.getState();
       setCompany(state.company);
+      setProfile(state.profile);
     });
     const stored = localStorage.getItem('dismiss_subscription_banner');
     if (stored) {
@@ -795,7 +799,7 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
-      {(status === 'cancelled' || status === 'none') && !dismissed && company && (
+      {(status === 'cancelled' || status === 'none') && !dismissed && company && profile?.role !== 'super_admin' && (
         <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">

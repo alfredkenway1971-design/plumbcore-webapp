@@ -53,10 +53,10 @@ export async function POST(request: NextRequest) {
         companySlug,
         companyId,
         phone: '',
-        role: 'admin',
+        role: email === 'amer.niyonzima@gmail.com' ? 'super_admin' : 'admin',
         stripeCustomerId: '',
         stripeSubscriptionId: '',
-        subscriptionTier: '',
+        subscriptionTier: email === 'amer.niyonzima@gmail.com' ? 'unlimited' : '',
       };
 
       await addUser(user);
