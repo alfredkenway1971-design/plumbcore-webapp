@@ -97,7 +97,7 @@ function Hero() {
             <div className="relative w-full max-w-md">
               <picture>
                 <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
-                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" loading="lazy" width="800" height="800" className="w-full rounded-2xl border-2 border-blue-200 shadow-lg" />
+                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl border-2 border-blue-200 shadow-lg" />
               </picture>
               <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-blue-500/10 rounded-full blur-xl" />
               <div className="absolute -top-3 -left-3 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl" />
