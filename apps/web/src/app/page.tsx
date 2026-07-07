@@ -515,8 +515,8 @@ function Footer({ t }: { t: (key: string) => string }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           <div>
             <div className="flex items-center gap-2.5 mb-4 justify-center sm:justify-start">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"><span className="text-white text-sm font-bold">P</span></div>
-              <span className="font-bold text-base text-white">PlumbCore <span className="text-blue-400">AI</span></span>
+              <img src="/plumbcore-emblem.jpg" alt="" className="w-10 h-10 rounded-lg object-contain" />
+              <img src="/plumbcore-wordmark.png" alt="PLUMBCORE AI" className="h-8 w-auto" />
             </div>
             <p className="text-sm leading-relaxed">{t('home.footerDesc')}</p>
             <div className="flex gap-3 mt-6 justify-center sm:justify-start">

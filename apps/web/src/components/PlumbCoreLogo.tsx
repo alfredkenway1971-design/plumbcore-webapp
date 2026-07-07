@@ -2,20 +2,22 @@
 
 export default function PlumbCoreLogo({ size = 'sm', showText = true }: { size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'; showText?: boolean }) {
   const dims = size === 'sm' ? 'w-10 h-10' : size === 'md' ? 'w-12 h-12' : size === 'lg' ? 'w-14 h-14' : size === 'xl' ? 'w-16 h-16' : 'w-20 h-20';
-  const textSize = size === 'sm' ? 'text-base' : size === 'md' ? 'text-lg' : size === 'lg' ? 'text-xl' : 'text-2xl';
+  const wordmarkH = size === 'sm' ? 'h-8' : size === 'md' ? 'h-9' : size === 'lg' ? 'h-10' : size === 'xl' ? 'h-12' : 'h-14';
   const rounded = size === 'sm' || size === 'md' ? 'rounded-lg' : 'rounded-xl';
 
   return (
-    <a href="/dashboard" className="flex items-center gap-2.5">
+    <a href="/dashboard" className="flex items-center gap-3">
       <img
-        src="/plumbcore-logo.jpg"
+        src="/plumbcore-emblem.jpg"
         alt="PlumbCore AI"
-        className={`${dims} ${rounded} object-cover shrink-0 shadow-sm`}
+        className={`${dims} ${rounded} object-contain shrink-0 shadow-sm`}
       />
       {showText && (
-        <span className={`font-bold ${textSize} text-slate-900 tracking-tight`}>
-          PlumbCore <span className="text-blue-500">AI</span>
-        </span>
+        <img
+          src="/plumbcore-wordmark.png"
+          alt="PLUMBCORE AI"
+          className={`${wordmarkH} w-auto object-contain`}
+        />
       )}
     </a>
   );
