@@ -12,7 +12,7 @@ export interface AuthState {
     email: string;
     full_name: string;
     phone: string;
-    role: 'admin' | 'dispatcher' | 'tech' | 'lead-tech' | 'accountant';
+    role: 'super_admin' | 'admin' | 'dispatcher' | 'tech' | 'lead-tech' | 'accountant';
     avatar_url?: string;
     is_active: boolean;
   } | null;

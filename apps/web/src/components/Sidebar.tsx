@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
+import { useAuthStore } from '@/lib/store';
 
 /* ── Icons ── */
 const Icons = {
@@ -78,6 +79,18 @@ const navConfig = [
       { labelKey: 'settings', icon: 'Cog', href: '/settings', badge: null },
     ],
   },
+  // Admin panel — gated by role (super_admin or admin)
+  {
+    sectionKey: 'adminPanel',
+    roles: ['super_admin', 'admin'],
+    items: [
+      { labelKey: 'platformOverview', icon: 'Grid', href: '/admin', badge: null },
+      { labelKey: 'customers', icon: 'Users', href: '/admin/customers', badge: null },
+      { labelKey: 'revenue', icon: 'TrendingUp', href: '/admin/revenue', badge: null },
+      { labelKey: 'usage', icon: 'Chart', href: '/admin/usage', badge: null },
+      { labelKey: 'support', icon: 'Headphones', href: '/admin/support', badge: null },
+    ],
+  },
 ];
 
 interface SidebarProps {
@@ -89,8 +102,16 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const { t } = useI18n();
+  const profile = useAuthStore((s) => s.profile);
+  const userRole = profile?.role;
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
+  // Filter nav sections by role — sections with a roles array require it
+  const visibleNav = navConfig.filter((section) => {
+    if (!('roles' in section)) return true;
+    return section.roles?.includes(userRole as any);
+  });
 
   return (
     <>
@@ -127,7 +148,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
         {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
-          {navConfig.map((section) => (
+          {visibleNav.map((section) => (
             <div key={section.sectionKey}>
               {!collapsed && (
                 <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">

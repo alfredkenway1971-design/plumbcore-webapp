@@ -27,6 +27,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const searchRef = useRef<HTMLInputElement>(null);
 
+  // Derived: is the current path an admin route?
+  const isAdminRoute = pathname.startsWith('/admin');
+
   // Route guard: redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {

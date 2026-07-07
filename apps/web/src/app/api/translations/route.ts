@@ -15,7 +15,13 @@ const translations = {
       suppliers: "Suppliers", purchaseOrders: "Purchase Orders",
       insights: "Inventory Insights", reports: "Reports",
       team: "Team", notifications: "Notifications",
-      auditLog: "Audit Log", settings: "Settings"
+      auditLog: "Audit Log", settings: "Settings",
+      adminPanel: "Admin Panel",
+      platformOverview: "Platform Overview",
+      customers: "Customers",
+      revenue: "Revenue",
+      usage: "Usage Analytics",
+      support: "Support"
     },
     dashboard: {
       title: "Dashboard", subtitle: "Dispatcher control room — live overview",
@@ -394,7 +400,13 @@ const translations = {
       purchaseOrders: "Bons de commande", insights: "Analyse du stock",
       reports: "Rapports", team: "Équipe",
       notifications: "Notifications", auditLog: "Journal",
-      settings: "Paramètres"
+      settings: "Paramètres",
+      adminPanel: "Panneau d'administration",
+      platformOverview: "Vue d'ensemble",
+      customers: "Clients",
+      revenue: "Revenus",
+      usage: "Analytique d'utilisation",
+      support: "Assistance"
     },
     dashboard: {
       title: "Tableau de bord", subtitle: "Poste de contrôle en temps réel",
@@ -758,7 +770,13 @@ const translations = {
       purchaseOrders: "Órdenes de compra", insights: "Análisis",
       reports: "Informes", team: "Equipo",
       notifications: "Notificaciones", auditLog: "Auditoría",
-      settings: "Ajustes"
+      settings: "Ajustes",
+      adminPanel: "Panel de administración",
+      platformOverview: "Descripción general",
+      customers: "Clientes",
+      revenue: "Ingresos",
+      usage: "Estadísticas de uso",
+      support: "Soporte"
     },
     dashboard: {
       title: "Panel de control", subtitle: "Sala de control en tiempo real",
@@ -1122,7 +1140,13 @@ const translations = {
       purchaseOrders: "Bestellungen", insights: "Lageranalyse",
       reports: "Berichte", team: "Team",
       notifications: "Benachrichtigungen", auditLog: "Protokoll",
-      settings: "Einstellungen"
+      settings: "Einstellungen",
+      adminPanel: "Admin-Bereich",
+      platformOverview: "Übersicht",
+      customers: "Kunden",
+      revenue: "Einnahmen",
+      usage: "Nutzungsstatistiken",
+      support: "Support"
     },
     dashboard: {
       title: "Dashboard", subtitle: "Echtzeit-Übersicht",
