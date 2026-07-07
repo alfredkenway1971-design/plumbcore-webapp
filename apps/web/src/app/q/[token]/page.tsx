@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { Check, Clock, Shield, Star, Phone, ChevronRight, X, AlertTriangle, MessageCircle, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -78,7 +79,7 @@ export default function QuoteStatusPage() {
       <header className="border-b border-slate-100 bg-white">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm"><span className="text-white text-sm font-bold">P</span></div>
+            <PlumbCoreLogo size="sm" showText={false} />
             <div><p className="text-sm font-bold text-slate-900">Your Estimate</p><p className="text-[11px] text-slate-400">PlumbCore AI &bull; Premium Plumbing</p></div>
           </a>
           <div className="flex items-center gap-2">

@@ -13,6 +13,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useI18n } from '@/components/i18n-provider';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { Camera, Check, Clock, Shield, RefreshCcw, Wrench, AlertTriangle, Phone, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 
 /* ── Helpers ── */
 const formatName = (v: string) => v.replace(/^\\s+|\\s+$/g, '').slice(0, 50).replace(/[a-zA-Z\\s'-]+/g, m => /^[a-z\\s'-]+$/i.test(m) ? m.replace(/\\b[a-z]/g, c => c.toUpperCase()).replace(/['-][a-z]/g, c => c.toUpperCase()) : m);
@@ -236,7 +237,7 @@ export default function QuotePage() {
       <header className="border-b border-slate-100 bg-white">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm"><span className="text-white text-sm font-bold">P</span></div>
+            <PlumbCoreLogo size="sm" showText={false} />
             <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">Premium Plumbing Services</p></div>
           </a>
           <div className="flex items-center gap-2">
