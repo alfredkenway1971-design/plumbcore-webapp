@@ -41,8 +41,8 @@ function compressImage(file: File, maxW: number = 512): Promise<File> {
 }
 
 /* ── Step Indicator ── */
-function StepIndicator({ current, total }: { current: number; total: number }) {
-  const labels = ['Upload', 'Info', 'Analyze', 'Estimate'];
+function StepIndicator({ current, total, t }: { current: number; total: number; t: (key: string) => string }) {
+  const labels = [t('quote.stepUpload'), t('quote.stepInfo'), t('quote.stepAnalyze'), t('quote.stepEstimate')];
   return (
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
@@ -58,19 +58,19 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
 }
 
 /* ── Step 1 — Upload ── */
-const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext }: any) {
+const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext, t }: any) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">What needs fixing?</h1>
-        <p className="text-sm text-slate-500">Snap a photo — we&apos;ll price it instantly</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">{t('quote.uploadTitle')}</h1>
+        <p className="text-sm text-slate-500">{t('quote.uploadSubtitle')}</p>
       </div>
       <label className="relative block w-full aspect-[4/3] rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all overflow-hidden group">
         <input type="file" accept="image/*" multiple onChange={onAdd} className="absolute inset-0 opacity-0 cursor-pointer z-10" aria-label="Upload photos" />
         {photos.length === 0 ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 transition-transform group-hover:scale-105">
             <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center"><Camera className="w-7 h-7 text-slate-400" /></div>
-            <div className="text-center"><p className="text-sm font-semibold text-slate-900">Tap to add photos</p><p className="text-xs text-slate-400 mt-0.5">Leak, clog, crack — show us the issue</p></div>
+            <div className="text-center"><p className="text-sm font-semibold text-slate-900">{t('quote.addPhotos')}</p><p className="text-xs text-slate-400 mt-0.5">{t('quote.addPhotosHint')}</p></div>
           </div>
         ) : (
           <div className="p-3 h-full flex flex-col">
@@ -82,41 +82,41 @@ const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext }:
                 </div>
               ))}
             </div>
-            {photos.length < 4 && <label className="mt-2 py-2 text-xs text-center text-blue-600 font-medium cursor-pointer hover:text-blue-700 active:scale-95 transition-all">+ Add more photos</label>}
+            {photos.length < 4 && <label className="mt-2 py-2 text-xs text-center text-blue-600 font-medium cursor-pointer hover:text-blue-700 active:scale-95 transition-all">{t('quote.addMorePhotos')}</label>}
           </div>
         )}
       </label>
       <div className="flex items-center justify-center gap-4 text-xs text-slate-400 mb-2">
-        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> No signup</span>
-        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> Upfront price</span>
-        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> Licensed plumbers</span>
+        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustNoSignup')}</span>
+        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustUpfrontPrice')}</span>
+        <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustLicensed')}</span>
       </div>
       <button onClick={onNext} disabled={photos.length === 0} className="w-full h-12 rounded-xl bg-amber-400 hover:bg-amber-500 disabled:bg-slate-200 disabled:text-slate-400 text-slate-900 font-bold transition-all active:scale-[0.97] text-sm shadow-sm flex items-center justify-center gap-2">
-        {photos.length > 0 ? 'Continue' : 'Select photos'} <ChevronRight className="w-4 h-4" />
+        {photos.length > 0 ? t('quote.continueBtn') : t('quote.selectPhotos')} <ChevronRight className="w-4 h-4" />
       </button>
     </div>
   );
 });
 
 /* ── Step 2 — Info ── */
-const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneChange, phoneValid, canSubmit, onBack, onEstimate }: any) {
+const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneChange, phoneValid, canSubmit, onBack, onEstimate, t }: any) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Where to send your price?</h2>
-        <p className="text-sm text-slate-500">We&apos;ll text you the breakdown</p>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">{t('quote.infoTitle')}</h2>
+        <p className="text-sm text-slate-500">{t('quote.infoSubtitle')}</p>
       </div>
       <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <Input type="text" placeholder="Your full name" value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-slate-200 focus:border-blue-400 h-12" autoComplete="name" maxLength={50} />
+        <Input type="text" placeholder={t('quote.namePlaceholder')} value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-slate-200 focus:border-blue-400 h-12" autoComplete="name" maxLength={50} />
         <div className="relative">
           <Input type="tel" inputMode="numeric" placeholder="+1 (555) 555-5555" value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
-          {phoneDisplay.length > 0 && !phoneValid && <p className="text-xs text-red-500 mt-1.5 ml-1">Enter a valid US or Canada phone</p>}
+          {phoneDisplay.length > 0 && !phoneValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.validPhone')}</p>}
         </div>
-        <Input type="email" inputMode="email" placeholder="Email address (optional)" value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-12" autoComplete="email" />
-        <AddressAutocomplete value={form.address} onChange={(val: string) => setForm((p: any) => ({ ...p, address: val }))} placeholder="Service address" />
-        <Textarea placeholder="Briefly describe the problem..." rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 resize-none" />
+        <Input type="email" inputMode="email" placeholder={t('quote.emailOptional')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-12" autoComplete="email" />
+        <AddressAutocomplete value={form.address} onChange={(val: string) => setForm((p: any) => ({ ...p, address: val }))} placeholder={t('quote.address')} />
+        <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 resize-none" />
         <div className="flex gap-2">
-          {['Routine','Urgent','Emergency'].map((label) => {
+          {[t('quote.routine'), t('quote.urgent'), t('quote.emergency')].map((label) => {
             const val = label.toLowerCase();
             const sel = form.urgency === val;
             return (
@@ -128,9 +128,9 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <button onClick={onBack} className="h-12 rounded-xl border border-slate-200 text-slate-700 font-medium active:scale-[0.97] transition-all flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> Back</button>
+        <button onClick={onBack} className="h-12 rounded-xl border border-slate-200 text-slate-700 font-medium active:scale-[0.97] transition-all flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> {t('quote.back')}</button>
         <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-amber-400 hover:bg-amber-500 disabled:bg-slate-200 disabled:text-slate-400 text-slate-900 font-bold transition-all active:scale-[0.97] shadow-sm flex items-center justify-center gap-2">
-          {canSubmit ? 'Get my price' : 'Enter phone number'} <ChevronRight className="w-4 h-4" />
+          {canSubmit ? t('quote.getMyPrice') : t('quote.enterPhone')} <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -138,15 +138,15 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
 });
 
 /* ── Step 3 — Loading ── */
-function StepLoading() {
-  const messages = ['Analyzing your photo with AI...','Identifying the plumbing issue...','Checking parts and pricing...','Calculating your estimate...'];
+function StepLoading({ t }: { t: (key: string) => string }) {
+  const messages = [t('quote.analyzingMsg1'), t('quote.analyzingMsg2'), t('quote.analyzingMsg3'), t('quote.analyzingMsg4')];
   const [idx, setIdx] = useState(0);
   useEffect(() => { if (idx >= messages.length - 1) return; const t = setTimeout(() => setIdx(i => i + 1), 2000); return () => clearTimeout(t); }, [idx]);
   return (
     <div className="space-y-6 text-center">
       <div className="w-16 h-16 mx-auto mb-4 relative"><div className="absolute inset-0 rounded-full border-4 border-slate-100" /><div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" /></div>
       <h3 className="text-lg font-bold text-slate-900 mb-1">{messages[idx]}</h3>
-      <p className="text-sm text-slate-400">This takes about 30 seconds</p>
+      <p className="text-sm text-slate-400">{t('quote.analyzingDuration')}</p>
       <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 text-left">
         <Skeleton className="h-4 w-24 bg-slate-200" /><Skeleton className="h-8 w-40 bg-slate-200" /><Separator className="bg-slate-100" />
         <div className="flex items-center justify-between"><Skeleton className="h-3 w-16 bg-slate-200" /><Skeleton className="h-3 w-20 bg-slate-200" /></div>
@@ -159,40 +159,40 @@ function StepLoading() {
 }
 
 /* ── Step 4 — Result ── */
-function StepResult({ result, onReset }: any) {
+function StepResult({ result, onReset, t }: any) {
   if (!result) return null;
   const sevColors: Record<string,string> = { low:'bg-emerald-50 text-emerald-700 border-emerald-200', moderate:'bg-amber-50 text-amber-700 border-amber-200', high:'bg-orange-50 text-orange-700 border-orange-200', emergency:'bg-red-50 text-red-700 border-red-200' };
   const f = (n: number) => `$${n.toFixed(2)}`;
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">Your Estimate</h2>
-        <p className="text-sm text-slate-400">Valid for 24 hours</p>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
+        <p className="text-sm text-slate-400">{t('quote.resultValid')}</p>
       </div>
       <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white text-center shadow-lg">
-        <p className="text-xs font-semibold text-blue-100 uppercase tracking-wider mb-1">Total Estimated Price</p>
+        <p className="text-xs font-semibold text-blue-100 uppercase tracking-wider mb-1">{t('quote.resultTotalLabel')}</p>
         <p className="text-4xl sm:text-5xl font-extrabold">{f(result.totalPrice)}</p>
-        <p className="text-xs text-blue-200 mt-2">Includes labor, parts, and tax</p>
+        <p className="text-xs text-blue-200 mt-2">{t('quote.resultIncludes')}</p>
       </div>
       <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <div className="flex items-start justify-between pb-4 border-b border-slate-100">
-          <div><p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">DIAGNOSIS</p><p className="text-sm font-medium text-slate-900">{result.diagnosis}</p></div>
+          <div><p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p><p className="text-sm font-medium text-slate-900">{result.diagnosis}</p></div>
           <Badge className={`ml-3 text-xs font-medium px-3 py-1 ${result.confidence >= 90 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : result.confidence >= 70 ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-red-50 text-red-700 border-red-200'}`}>{result.confidence}%</Badge>
         </div>
-        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">SEVERITY</span><Badge className={`text-xs font-medium px-3 py-1 ${sevColors[result.severity] || sevColors.low}`}>{result.severity.charAt(0).toUpperCase() + result.severity.slice(1)}</Badge></div>
-        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">LABOR <span className="font-normal text-slate-400 ml-1">{result.estimatedHours}h @ ${result.laborRate}/hr</span></span><span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span></div>
-        {result.parts?.length > 0 && <div className="py-4 border-b border-slate-100"><p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">PARTS</p>{result.parts.map((p: any, i: number) => <div key={i} className="grid grid-cols-[2.5rem_1fr_5rem_5rem] gap-x-2 text-sm text-slate-700 px-1 py-1"><span className="text-slate-400">{p.qty}x</span><span>{p.name}</span><span className="text-right text-slate-500">{f(p.unitPrice)}</span><span className="text-right font-medium text-slate-900">{f(p.total)}</span></div>)}</div>}
-        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">TAX <span className="font-normal text-slate-400 ml-1">{(result.taxRate||0.085)*100}%</span></span><span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span></div>
-        <div className="flex items-center justify-between pt-4"><span className="text-base font-bold text-slate-900">TOTAL</span><span className="text-2xl font-extrabold text-blue-600">{f(result.totalPrice)}</span></div>
+        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.severity')}</span><Badge className={`text-xs font-medium px-3 py-1 ${sevColors[result.severity] || sevColors.low}`}>{result.severity.charAt(0).toUpperCase() + result.severity.slice(1)}</Badge></div>
+        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.labor')} <span className="font-normal text-slate-400 ml-1">{result.estimatedHours}h @ ${result.laborRate}/hr</span></span><span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span></div>
+        {result.parts?.length > 0 && <div className="py-4 border-b border-slate-100"><p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('quote.parts')}</p>{result.parts.map((p: any, i: number) => <div key={i} className="grid grid-cols-[2.5rem_1fr_5rem_5rem] gap-x-2 text-sm text-slate-700 px-1 py-1"><span className="text-slate-400">{p.qty}x</span><span>{p.name}</span><span className="text-right text-slate-500">{f(p.unitPrice)}</span><span className="text-right font-medium text-slate-900">{f(p.total)}</span></div>)}</div>}
+        <div className="flex items-center justify-between py-4 border-b border-slate-100"><span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.tax')} <span className="font-normal text-slate-400 ml-1">{(result.taxRate||0.085)*100}%</span></span><span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span></div>
+        <div className="flex items-center justify-between pt-4"><span className="text-base font-bold text-slate-900">{t('quote.total')}</span><span className="text-2xl font-extrabold text-blue-600">{f(result.totalPrice)}</span></div>
       </div>
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white text-center space-y-4 shadow-lg">
-        <h3 className="text-lg font-bold">Book This Appointment</h3>
-        <p className="text-sm text-slate-400">Pay a $49 deposit to secure your booking</p>
-        <button className="w-full h-12 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold shadow-sm transition-all active:scale-[0.97]">Pay $49 Deposit — {f(result.totalPrice)}</button>
-        <p className="text-xs text-slate-500">Deposit deducted from final bill. Fully refundable.</p>
+        <h3 className="text-lg font-bold">{t('quote.bookTitle')}</h3>
+        <p className="text-sm text-slate-400">{t('quote.bookDesc')}</p>
+        <button className="w-full h-12 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold shadow-sm transition-all active:scale-[0.97]">{t('quote.bookButton')} — {f(result.totalPrice)}</button>
+        <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400"><span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Secure payment</span><span className="flex items-center gap-1.5"><RefreshCcw className="w-3.5 h-3.5 text-emerald-500" /> Fully refundable</span><span className="flex items-center gap-1.5"><Wrench className="w-3.5 h-3.5 text-emerald-500" /> Licensed & insured</span></div>
-      <div className="text-center"><button onClick={onReset} className="h-10 px-5 rounded-xl border border-slate-200 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">Start over</button></div>
+      <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400"><span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.securePayment')}</span><span className="flex items-center gap-1.5"><RefreshCcw className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.fullyRefundable')}</span><span className="flex items-center gap-1.5"><Wrench className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.licensedInsured')}</span></div>
+      <div className="text-center"><button onClick={onReset} className="h-10 px-5 rounded-xl border border-slate-200 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">{t('quote.startOver')}</button></div>
     </div>
   );
 }
@@ -201,7 +201,7 @@ function StepResult({ result, onReset }: any) {
 export default function QuotePage() {
   const params = useParams();
   const companySlug = params?.['company-slug'] as string || 'plumbcore';
-  const { locale, changeLocale } = useI18n();
+  const { locale, changeLocale, t } = useI18n();
   const [step, setStep] = useState<1|2|3|4>(1);
   const [photos, setPhotos] = useState<File[]>([]);
   const [form, setForm] = useState({ name:'', phone:'', email:'', address:'', desc:'', urgency:'routine' });
@@ -247,19 +247,19 @@ export default function QuotePage() {
       </header>
       <section className="bg-gradient-to-b from-slate-50 to-white py-10 sm:py-14">
         <div className="max-w-5xl mx-auto px-4 text-center">
-          <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-600 mb-4"><Clock className="w-3 h-3" /> Takes 2 minutes</span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-3">Get a Free Estimate in 2 Minutes</h1>
-          <p className="text-sm sm:text-base text-slate-500 max-w-lg mx-auto">Upload a photo, describe the issue, and get an AI-powered price instantly — no signup required.</p>
+          <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-600 mb-4"><Clock className="w-3 h-3" /> {t('quote.badge')}</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-3">{t('quote.heroTitle')}</h1>
+          <p className="text-sm sm:text-base text-slate-500 max-w-lg mx-auto">{t('quote.heroSubtitle')}</p>
         </div>
       </section>
       <section className="py-6 sm:py-10 pb-20">
         <div className="max-w-lg mx-auto px-4">
           {error && <div className="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center gap-2 text-sm text-red-700"><AlertTriangle className="w-4 h-4 shrink-0" />{error}</div>}
-          <StepIndicator current={step} total={4} />
-          <div style={{ display: step === 1 ? 'block' : 'none' }}><StepUpload photos={photos} onAdd={addPhotos} onRemove={removePhoto} onNext={() => setStep(2)} /></div>
-          <div style={{ display: step === 2 ? 'block' : 'none' }}><StepInfo form={form} setForm={setForm} phoneDisplay={phoneDisplay} onPhoneChange={handlePhone} phoneValid={validatePhone(phoneDisplay)} canSubmit={form.phone.length >= 10} onBack={() => setStep(1)} onEstimate={handleEstimate} /></div>
-          <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading /></div>
-          <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} /></div>
+          <StepIndicator current={step} total={4} t={t} />
+          <div style={{ display: step === 1 ? 'block' : 'none' }}><StepUpload photos={photos} onAdd={addPhotos} onRemove={removePhoto} onNext={() => setStep(2)} t={t} /></div>
+          <div style={{ display: step === 2 ? 'block' : 'none' }}><StepInfo form={form} setForm={setForm} phoneDisplay={phoneDisplay} onPhoneChange={handlePhone} phoneValid={validatePhone(phoneDisplay)} canSubmit={form.phone.length >= 10} onBack={() => setStep(1)} onEstimate={handleEstimate} t={t} /></div>
+          <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading t={t} /></div>
+          <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} t={t} /></div>
         </div>
       </section>
     </div>
