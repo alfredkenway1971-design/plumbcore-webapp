@@ -17,7 +17,6 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
   const [scriptReady, setScriptReady] = useState(false);
 
   useEffect(() => {
-    // Fetch Google Client ID from server
     fetch('/api/auth/google/config')
       .then(r => r.json())
       .then(data => {
@@ -30,7 +29,6 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
       })
       .catch(() => setConfigured(false));
 
-    // Load Google Identity Services script with ready detection
     if (typeof window !== 'undefined' && !document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
@@ -40,7 +38,6 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
       script.onerror = () => setConfigured(false);
       document.body.appendChild(script);
     } else {
-      // Script tag already exists — check if already loaded
       const check = () => {
         if ((window as any)?.google?.accounts) {
           setScriptReady(true);
@@ -58,7 +55,6 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
 
     const { google } = window as any;
     if (!google?.accounts) {
-      // Script not ready yet — wait briefly then retry
       setTimeout(() => {
         const { google: g } = window as any;
         if (g?.accounts) {
@@ -72,51 +68,58 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
       return;
     }
 
-    google.accounts.id.initialize({
-      client_id: clientId,
-      callback: async (response: any) => {
-        if (!response?.credential) {
-          setError('Google sign-in cancelled');
-          setLoading(false);
-          return;
-        }
-
-        try {
-          const res = await fetch('/api/auth/google', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ credential: response.credential }),
-          });
-
-          const data = await res.json();
-
-          if (!res.ok) {
-            throw new Error(data.error || 'Google sign-in failed');
+    // Use OAuth2 token flow — works reliably on mobile (opens a popup window)
+    try {
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: 'openid email profile',
+        callback: async (tokenResponse: any) => {
+          if (tokenResponse?.error) {
+            setError('Google sign-in cancelled or failed.');
+            setLoading(false);
+            return;
           }
 
-          useAuthStore.setState({
-            user: data.session.user,
-            profile: data.session.profile,
-            company: data.session.company,
-            isAuthenticated: true,
-            isLoading: false,
-            token: data.token,
-          });
+          try {
+            const res = await fetch('/api/auth/google', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ credential: tokenResponse.access_token }),
+            });
 
-          router.push('/dashboard');
-        } catch (err: any) {
-          setError(err.message || 'Google sign-in failed');
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
+            const data = await res.json();
 
-    google.accounts.id.prompt(); // Show One Tap popup
+            if (!res.ok) {
+              throw new Error(data.error || 'Google sign-in failed');
+            }
+
+            useAuthStore.setState({
+              user: data.session.user,
+              profile: data.session.profile,
+              company: data.session.company,
+              isAuthenticated: true,
+              isLoading: false,
+              token: data.token,
+            });
+
+            router.push('/dashboard');
+          } catch (err: any) {
+            setError(err.message || 'Google sign-in failed');
+          } finally {
+            setLoading(false);
+          }
+        },
+      });
+
+      client.requestAccessToken();
+    } catch (err) {
+      setError('Google sign-in failed to initialize.');
+      setLoading(false);
+    }
   };
 
-  if (configured === false) return null; // Don't show button if not configured
-  if (configured === null || !clientId) return null; // Still loading
+  if (configured === false) return null;
+  if (configured === null || !clientId) return null;
 
   return (
     <div>

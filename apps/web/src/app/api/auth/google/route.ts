@@ -18,21 +18,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Google sign-in not configured' }, { status: 500 });
     }
 
-    // Verify the Google ID token
-    const client = new OAuth2Client(googleClientId);
-    const ticket = await client.verifyIdToken({
-      idToken: credential,
-      audience: googleClientId,
-    });
+    let email = '';
+    let name = '';
+    let avatarUrl = '';
 
-    const payload = ticket.getPayload();
-    if (!payload || !payload.email) {
-      return NextResponse.json({ error: 'Invalid Google token' }, { status: 401 });
+    // Try as ID token (JWT) first, fall back to access_token (OAuth2)
+    try {
+      const client = new OAuth2Client(googleClientId);
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: googleClientId,
+      });
+      const payload = ticket.getPayload();
+      if (payload) {
+        email = (payload.email || '').toLowerCase().trim();
+        name = payload.name || '';
+        avatarUrl = payload.picture || '';
+      }
+    } catch {
+      // Not a valid ID token — try as access_token via UserInfo API
+      try {
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${credential}` },
+        });
+        if (userInfoRes.ok) {
+          const info = await userInfoRes.json();
+          email = (info.email || '').toLowerCase().trim();
+          name = info.name || '';
+          avatarUrl = info.picture || '';
+        }
+      } catch {
+        return NextResponse.json({ error: 'Invalid Google credential' }, { status: 401 });
+      }
     }
 
-    const email = payload.email.toLowerCase().trim();
-    const name = payload.name || email.split('@')[0];
-    const avatarUrl = payload.picture || '';
+    if (!email) {
+      return NextResponse.json({ error: 'Could not retrieve email from Google' }, { status: 401 });
+    }
+
+    // Fallback name if not provided
+    if (!name) name = email.split('@')[0];
 
     // Check if user exists
     let user = await findUserByEmail(email);
