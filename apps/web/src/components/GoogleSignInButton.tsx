@@ -14,6 +14,7 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
   const [error, setError] = useState('');
   const [configured, setConfigured] = useState<boolean | null>(null);
   const [clientId, setClientId] = useState('');
+  const [scriptReady, setScriptReady] = useState(false);
 
   useEffect(() => {
     // Fetch Google Client ID from server
@@ -29,13 +30,25 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
       })
       .catch(() => setConfigured(false));
 
-    // Load Google Identity Services script
+    // Load Google Identity Services script with ready detection
     if (typeof window !== 'undefined' && !document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
       script.async = true;
       script.defer = true;
+      script.onload = () => setScriptReady(true);
+      script.onerror = () => setConfigured(false);
       document.body.appendChild(script);
+    } else {
+      // Script tag already exists — check if already loaded
+      const check = () => {
+        if ((window as any)?.google?.accounts) {
+          setScriptReady(true);
+        } else {
+          setTimeout(check, 200);
+        }
+      };
+      check();
     }
   }, []);
 
@@ -45,8 +58,17 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
 
     const { google } = window as any;
     if (!google?.accounts) {
-      setError('Google sign-in is loading. Please try again.');
-      setLoading(false);
+      // Script not ready yet — wait briefly then retry
+      setTimeout(() => {
+        const { google: g } = window as any;
+        if (g?.accounts) {
+          setLoading(false);
+          handleGoogleSignIn();
+          return;
+        }
+        setError('Google sign-in is taking longer than usual. Tap again or try refreshing the page.');
+        setLoading(false);
+      }, 2000);
       return;
     }
 
@@ -101,7 +123,7 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
       <button
         type="button"
         onClick={handleGoogleSignIn}
-        disabled={loading}
+        disabled={loading || !scriptReady}
         className="w-full h-11 rounded-xl border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
       >
         <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
