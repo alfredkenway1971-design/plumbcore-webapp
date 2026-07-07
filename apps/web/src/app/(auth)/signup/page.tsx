@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/lib/store';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { useI18n } from '@/components/i18n-provider';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 
 function capitalizeName(val: string): string {
   return val.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
@@ -104,10 +105,7 @@ function SignupForm() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_30%_50%,white_0%,transparent_60%)]" />
         <div className="relative z-10">
-          <a href="/" className="flex items-center gap-2.5 mb-10">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm"><span className="text-white text-sm font-bold">P</span></div>
-            <span className="text-lg font-bold tracking-tight">PlumbCore <span className="text-blue-400">AI</span></span>
-          </a>
+          <PlumbCoreLogo size="md" showText={true} />
           <h2 className="text-3xl font-bold mb-4 leading-tight">{t('auth.signup.brandTitle')}</h2>
           <p className="text-slate-400 text-sm max-w-md leading-relaxed">{t('auth.signup.brandSubtitle')}</p>
           <div className="mt-8 space-y-4">
@@ -126,7 +124,7 @@ function SignupForm() {
       {/* Form Panel */}
       <div className="flex-1 flex items-center justify-center bg-white p-6 sm:p-10 min-h-screen lg:min-h-0">
         <div className="w-full max-w-sm">
-          <a href="/" className="flex lg:hidden items-center gap-2 mb-8"><div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"><span className="text-white text-sm font-bold">P</span></div><span className="font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></span></a>
+          <div className="flex lg:hidden mb-8"><PlumbCoreLogo size="sm" showText={true} /></div>
           <div className="mb-6 text-center">
             <h1 className="text-2xl font-bold text-slate-900">{t('auth.signup.title')}</h1>
             <p className="mt-1 text-sm text-slate-500">{t('auth.signup.subtitle')}</p>

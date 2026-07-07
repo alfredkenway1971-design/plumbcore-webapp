@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { Camera, Mic, MapPin, Package, Calendar, MessageCircle, ChevronRight, Menu, Star, Check, ArrowRight, Phone, Clock, Shield, Wrench, X, Minus } from 'lucide-react';
 
 /* ═══ NAVBAR ═══ */
@@ -21,12 +22,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-100">
       <div className="max-w-7xl mx-auto flex items-center justify-between h-14 sm:h-16 px-4 sm:px-6 lg:px-8">
-        <a href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
-            <span className="text-white text-sm font-bold">P</span>
-          </div>
-          <span className="font-bold text-base text-slate-900 tracking-tight">PlumbCore <span className="text-blue-500">AI</span></span>
-        </a>
+        <PlumbCoreLogo size="sm" showText={true} />
 
         <nav className="hidden md:flex items-center gap-8">
           {links.map(l => <a key={l.href} href={l.href} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">{l.label}</a>)}

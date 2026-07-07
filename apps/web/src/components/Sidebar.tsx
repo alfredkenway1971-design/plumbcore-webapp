@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { useAuthStore } from '@/lib/store';
 
 /* ── Icons ── */
@@ -130,16 +131,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
       >
         {/* ── Logo + Collapse ── */}
         <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-100">
-          <a href="/dashboard" className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shrink-0 shadow-sm">
-              <span className="text-white text-sm font-bold">P</span>
-            </div>
-            {!collapsed && (
-              <div className="min-w-0">
-                <p className="text-sm font-bold text-slate-900 tracking-tight">PlumbCore <span className="text-blue-500">AI</span></p>
-              </div>
-            )}
-          </a>
+          <PlumbCoreLogo size="sm" showText={!collapsed} />
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="hidden md:flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all shrink-0"
