@@ -40,24 +40,34 @@ export async function POST(request: NextRequest) {
     }
 
     if (!data || data.length === 0) {
-      // User not found in auth_users. Try profiles table directly.
-      const { data: profileData, error: profileError } = await sb
-        .from('profiles')
-        .update({ role })
-        .eq('email', email.toLowerCase())
-        .select();
+      // User not found in auth_users — create the account
+      const newUser = {
+        id: `admin-${Date.now()}`,
+        email: email.toLowerCase(),
+        password_hash: '', // No password set — user must reset or sign up
+        full_name: 'Niyonzima Amer Moreau',
+        company_name: 'PlumbCore AI',
+        company_slug: 'plumbcore-ai',
+        company_id: 'admin-company',
+        phone: '(514) 269-5558',
+        role,
+        stripe_customer_id: '',
+        stripe_subscription_id: '',
+        subscription_tier: 'unlimited',
+      };
 
-      if (profileError || !profileData || profileData.length === 0) {
-        return NextResponse.json({
-          success: false,
-          message: `No user found with email ${email} in auth_users or profiles. They need to sign up first.`,
-        });
+      const { error: insertError } = await sb
+        .from('auth_users')
+        .insert(newUser);
+
+      if (insertError) {
+        return NextResponse.json({ error: insertError.message }, { status: 500 });
       }
 
       return NextResponse.json({
         success: true,
-        message: `User ${email} role set to ${role} (profiles table)`,
-        user: profileData[0],
+        message: `Super admin account created for ${email}. They need to sign up via the web app to set their password.`,
+        user: newUser,
       });
     }
 
