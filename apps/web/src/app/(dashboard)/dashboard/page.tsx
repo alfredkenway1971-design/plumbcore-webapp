@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store';
 import { jobs, invoices, teamMembers, activities, getStats } from '@/lib/mock-data';
 import type { Job } from '@/lib/mock-data';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -516,7 +517,6 @@ const UpgradeCard = memo(function UpgradeCard() {
     import('@/lib/store').then(mod => {
       const state = mod.useAuthStore.getState();
       setCompany(state.company);
-      setProfile(state.profile);
     });
   }, []);
 
@@ -746,8 +746,8 @@ const MobileBottomNav = memo(function MobileBottomNav() {
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
   const [dismissed, setDismissed] = useState(false);
+  const profile = useAuthStore((s) => s.profile);
   const stats = getStats();
 
   useEffect(() => {
@@ -759,7 +759,6 @@ export default function DashboardPage() {
     import('@/lib/store').then(mod => {
       const state = mod.useAuthStore.getState();
       setCompany(state.company);
-      setProfile(state.profile);
     });
     const stored = localStorage.getItem('dismiss_subscription_banner');
     if (stored) {
