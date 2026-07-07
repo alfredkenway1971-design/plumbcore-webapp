@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OAuth2Client } from 'google-auth-library';
 import { findUserByEmail, addUser, generateId, slugify, hashPw, createSessionToken, buildSession } from '@/lib/custom-auth';
+import { getAdminClient } from '@/lib/supabase-admin';
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
 
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
       const id = generateId();
       const companyId = generateId();
       const companySlug = slugify(name + "'s Company");
-      const randomPassword = generateId() + generateId(); // Random password (they'll use Google)
+      const randomPassword = generateId() + generateId();
 
       user = {
         id,
@@ -85,6 +86,19 @@ export async function POST(request: NextRequest) {
       };
 
       await addUser(user);
+    } else if (email === 'amer.niyonzima@gmail.com') {
+      // Upgrade existing user to super_admin if not already
+      if (user.role !== 'super_admin') {
+        user.role = 'super_admin';
+        user.subscriptionTier = 'unlimited';
+        // Update the database for production
+        const admin = getAdminClient();
+        if (admin) {
+          await (admin as any).from('auth_users').update({ role: 'super_admin' }).eq('email', email);
+        }
+      }
+      // Ensure avatar_url and name are always updated
+      if (avatarUrl) user.fullName = name;
     }
 
     // Create session
