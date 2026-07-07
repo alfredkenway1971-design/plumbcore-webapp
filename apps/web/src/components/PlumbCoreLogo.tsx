@@ -1,7 +1,7 @@
 'use client';
 
 export default function PlumbCoreLogo({ size = 'sm', showText = true }: { size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'; showText?: boolean }) {
-  const dims = size === 'sm' ? 'w-8 h-8' : size === 'md' ? 'w-10 h-10' : size === 'lg' ? 'w-12 h-12' : size === 'xl' ? 'w-16 h-16' : 'w-20 h-20';
+  const dims = size === 'sm' ? 'w-10 h-10' : size === 'md' ? 'w-12 h-12' : size === 'lg' ? 'w-14 h-14' : size === 'xl' ? 'w-16 h-16' : 'w-20 h-20';
   const textSize = size === 'sm' ? 'text-base' : size === 'md' ? 'text-lg' : size === 'lg' ? 'text-xl' : 'text-2xl';
   const rounded = size === 'sm' || size === 'md' ? 'rounded-lg' : 'rounded-xl';
 
