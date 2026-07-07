@@ -104,14 +104,16 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const { t } = useI18n();
   const profile = useAuthStore((s) => s.profile);
   const userRole = profile?.role;
-
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  const avatarUrl = profile?.avatar_url;
 
   // Filter nav sections by role — sections with a roles array require it
   const visibleNav = navConfig.filter((section) => {
     if (!('roles' in section)) return true;
     return section.roles?.includes(userRole as any);
   });
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  const initials = profile?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AM';
 
   return (
     <>
@@ -193,9 +195,13 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         {/* ── User Profile ── */}
         <div className="shrink-0 border-t border-slate-100 p-3">
           <div className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-50 transition-colors cursor-pointer group">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
-              AM
-            </div>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
+                {initials}
+              </div>
+            )}
             {!collapsed && (
               <>
                 <div className="flex-1 min-w-0">

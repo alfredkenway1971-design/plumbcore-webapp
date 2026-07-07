@@ -146,9 +146,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </a>
 
             {/* Avatar */}
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
-              AM
-            </div>
+            {(() => {
+              const p = useAuthStore.getState().profile;
+              const url = p?.avatar_url;
+              const nm = p?.full_name || '';
+              const inits = nm.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AM';
+              return url ? (
+                <img src={url} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm" />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
+                  {inits}
+                </div>
+              );
+            })()}
           </div>
         </header>
 

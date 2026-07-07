@@ -510,8 +510,8 @@ const priceMap: Record<string, number> = {solo:149, team:249, pro:349, business:
 const UpgradeCard = memo(function UpgradeCard() {
   const router = useRouter();
   const [company, setCompany] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
   const [billingLoading, setBillingLoading] = useState(false);
+  const profile = useAuthStore((s) => s.profile);
 
   useEffect(() => {
     import('@/lib/store').then(mod => {
@@ -542,6 +542,8 @@ const UpgradeCard = memo(function UpgradeCard() {
   const status = company?.subscription_status || 'none';
   const label = planLabels[tier] || 'Free';
   const gradient = planColors[tier] || 'from-slate-400 to-slate-500';
+
+  if (profile?.role === 'super_admin') return null;
 
   if (!tier || status === 'none') {
     return (
