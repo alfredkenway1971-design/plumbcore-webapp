@@ -99,12 +99,13 @@ export function decodeSessionToken(token: string): (AuthSession & { iat: number;
 // ── In-Memory Fallback Store (local dev only) ──
 const inMemoryUsers = new Map<string, StoredUser>();
 
-// Seed a demo user so login always has at least one working account
-(function seedDemoUser() {
-  const id = 'demo-user-001';
+// Seed demo users so login always has working accounts
+(function seedDemoUsers() {
   const companyId = 'demo-company-001';
+  
+  // Demo admin account
   const demoUser: StoredUser = {
-    id,
+    id: 'demo-user-001',
     email: 'demo@plumbcore.com',
     passwordHash: hashPassword('Demo123!'),
     fullName: 'Demo User',
@@ -112,12 +113,29 @@ const inMemoryUsers = new Map<string, StoredUser>();
     companySlug: 'plumbcore-demo',
     companyId,
     phone: '(555) 123-4567',
-    role: 'admin',
+    role: 'super_admin',
     stripeCustomerId: '',
     stripeSubscriptionId: '',
     subscriptionTier: '',
   };
-  inMemoryUsers.set(id, demoUser);
+  inMemoryUsers.set(demoUser.id, demoUser);
+
+  // Amer's super admin account
+  const amerUser: StoredUser = {
+    id: 'amer-super-admin',
+    email: 'amer.niyonzima@gmail.com',
+    passwordHash: hashPassword('Admin123!'),
+    fullName: 'Niyonzima Amer Moreau',
+    companyName: 'PlumbCore AI',
+    companySlug: 'plumbcore-ai',
+    companyId,
+    phone: '(514) 269-5558',
+    role: 'super_admin',
+    stripeCustomerId: '',
+    stripeSubscriptionId: '',
+    subscriptionTier: 'unlimited',
+  };
+  inMemoryUsers.set(amerUser.id, amerUser);
 })();
 
 // ── Persistence Layer ──
