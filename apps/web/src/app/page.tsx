@@ -95,6 +95,7 @@ function Hero() {
           </div>
           <div className="flex justify-center">
             <div className="relative w-full max-w-md">
+              <link rel="preload" as="image" href="/generated/hero-plumber.webp" />
               <picture>
                 <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
                 <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl border-2 border-blue-200 shadow-lg" />
