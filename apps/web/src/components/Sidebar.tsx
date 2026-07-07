@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { useI18n } from '@/components/i18n-provider';
 
 /* ── Icons ── */
 const Icons = {
@@ -32,49 +33,49 @@ const Icons = {
   Logout: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>,
 };
 
-/* ── Nav Items ── */
-const navSections = [
+/* ── Nav Section Keys ── */
+const navConfig = [
   {
-    label: 'Main',
+    sectionKey: 'main',
     items: [
-      { label: 'Dashboard', icon: Icons.Grid, href: '/dashboard', badge: null },
-      { label: 'Jobs & Schedule', icon: Icons.Wrench, href: '/jobs', badge: null },
-      { label: 'Clients', icon: Icons.Users, href: '/clients', badge: null },
-      { label: 'Schedule', icon: Icons.Calendar, href: '/schedule', badge: null },
-      { label: 'Route Map', icon: Icons.MapPin, href: '/route-map', badge: null },
-      { label: 'Leads', icon: Icons.Star, href: '/leads', badge: { count: 12, color: 'bg-blue-500' } },
+      { labelKey: 'dashboard', icon: 'Grid', href: '/dashboard', badge: null },
+      { labelKey: 'jobs', icon: 'Wrench', href: '/jobs', badge: null },
+      { labelKey: 'clients', icon: 'Users', href: '/clients', badge: null },
+      { labelKey: 'schedule', icon: 'Calendar', href: '/schedule', badge: null },
+      { labelKey: 'routeMap', icon: 'MapPin', href: '/route-map', badge: null },
+      { labelKey: 'leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-500' } },
     ],
   },
   {
-    label: 'AI Tools',
+    sectionKey: 'aiTools',
     items: [
-      { label: 'AI Chat', icon: Icons.Chat, href: '/ai-chat', badge: null },
-      { label: 'Voice Notes → Invoice', icon: Icons.Mic, href: '/ai-voice-notes', badge: null },
-      { label: 'Emergency Triage', icon: Icons.Phone, href: '/emergency-triage', badge: { count: '!', color: 'bg-red-500' } },
-      { label: 'Voice Receptionist', icon: Icons.Headphones, href: '/voice-receptionist', badge: null },
-      { label: 'Phone Calls', icon: Icons.PhoneCall, href: '/phone-calls', badge: null },
-      { label: 'SMS Messaging', icon: Icons.ChatBubble, href: '/sms', badge: null },
+      { labelKey: 'aiChat', icon: 'Chat', href: '/ai-chat', badge: null },
+      { labelKey: 'voiceNotes', icon: 'Mic', href: '/ai-voice-notes', badge: null },
+      { labelKey: 'emergency', icon: 'Phone', href: '/emergency-triage', badge: { count: '!', color: 'bg-red-500' } },
+      { labelKey: 'receptionist', icon: 'Headphones', href: '/voice-receptionist', badge: null },
+      { labelKey: 'phoneCalls', icon: 'PhoneCall', href: '/phone-calls', badge: null },
+      { labelKey: 'sms', icon: 'ChatBubble', href: '/sms', badge: null },
     ],
   },
   {
-    label: 'Finance',
+    sectionKey: 'finance',
     items: [
-      { label: 'Pricebook', icon: Icons.PriceTag, href: '/pricebook', badge: null },
-      { label: 'Price Increases', icon: Icons.TrendingUp, href: '/price-increases', badge: null },
-      { label: 'Invoicing', icon: Icons.FileText, href: '/invoicing', badge: null },
-      { label: 'Inventory', icon: Icons.Box, href: '/inventory', badge: null },
-      { label: 'Suppliers', icon: Icons.Truck, href: '/inventory/suppliers', badge: null },
-      { label: 'Purchase Orders', icon: Icons.Clipboard, href: '/purchase-orders', badge: null },
-      { label: 'Inventory Insights', icon: Icons.Chart, href: '/inventory/insights', badge: null },
+      { labelKey: 'pricebook', icon: 'PriceTag', href: '/pricebook', badge: null },
+      { labelKey: 'priceIncreases', icon: 'TrendingUp', href: '/price-increases', badge: null },
+      { labelKey: 'invoicing', icon: 'FileText', href: '/invoicing', badge: null },
+      { labelKey: 'inventory', icon: 'Box', href: '/inventory', badge: null },
+      { labelKey: 'suppliers', icon: 'Truck', href: '/inventory/suppliers', badge: null },
+      { labelKey: 'purchaseOrders', icon: 'Clipboard', href: '/purchase-orders', badge: null },
+      { labelKey: 'insights', icon: 'Chart', href: '/inventory/insights', badge: null },
     ],
   },
   {
-    label: 'Admin',
+    sectionKey: 'admin',
     items: [
-      { label: 'Team', icon: Icons.Team, href: '/team', badge: null },
-      { label: 'Notifications', icon: Icons.Bell, href: '/notifications', badge: null },
-      { label: 'Audit Log', icon: Icons.Shield, href: '/audit-log', badge: null },
-      { label: 'Settings', icon: Icons.Cog, href: '/settings', badge: null },
+      { labelKey: 'team', icon: 'Team', href: '/team', badge: null },
+      { labelKey: 'notifications', icon: 'Bell', href: '/notifications', badge: null },
+      { labelKey: 'auditLog', icon: 'Shield', href: '/audit-log', badge: null },
+      { labelKey: 'settings', icon: 'Cog', href: '/settings', badge: null },
     ],
   },
 ];
@@ -87,6 +88,7 @@ interface SidebarProps {
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const { t } = useI18n();
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
@@ -125,19 +127,20 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
         {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
-          {navSections.map((section) => (
-            <div key={section.label}>
+          {navConfig.map((section) => (
+            <div key={section.sectionKey}>
               {!collapsed && (
                 <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
-                  {section.label}
+                  {t(`nav.${section.sectionKey}`)}
                 </p>
               )}
               <div className="space-y-0.5">
                 {section.items.map((item) => {
                   const active = isActive(item.href);
+                  const IconComponent = Icons[item.icon as keyof typeof Icons];
                   return (
                     <a
-                      key={item.label}
+                      key={item.labelKey}
                       href={item.href}
                       className={`
                         flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150
@@ -147,11 +150,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                         }
                         ${collapsed ? 'justify-center px-0' : ''}
                       `}
-                      title={collapsed ? item.label : undefined}
+                      title={collapsed ? t(`nav.${item.labelKey}`) : undefined}
                     >
-                      <item.icon className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-500' : 'text-slate-400'}`} />
+                      {IconComponent && <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-500' : 'text-slate-400'}`} />}
                       {!collapsed && (
-                        <span className="flex-1 truncate">{item.label}</span>
+                        <span className="flex-1 truncate">{t(`nav.${item.labelKey}`)}</span>
                       )}
                       {!collapsed && item.badge && (
                         <span className={`shrink-0 min-w-[20px] h-5 rounded-full ${item.badge.color} text-white text-[10px] font-bold flex items-center justify-center px-1.5`}>

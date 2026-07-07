@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const companyId = useAuthStore((s) => s.company?.id);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isLoading = useAuthStore((s) => s.isLoading);
-  const { locale, changeLocale } = useI18n();
+  const { locale, changeLocale, t } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="Search anything..."
+                placeholder={t('common.search')}
                 className="w-full h-9 pl-10 pr-12 bg-slate-100 rounded-full text-sm text-slate-600 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white transition-all"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-medium text-slate-400">
