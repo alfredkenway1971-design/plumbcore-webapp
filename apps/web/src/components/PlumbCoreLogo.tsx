@@ -2,7 +2,7 @@
 
 export default function PlumbCoreLogo({ size = 'sm', showText = true }: { size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'; showText?: boolean }) {
   const dims = size === 'sm' ? 'w-10 h-10' : size === 'md' ? 'w-12 h-12' : size === 'lg' ? 'w-14 h-14' : size === 'xl' ? 'w-16 h-16' : 'w-20 h-20';
-  const wordmarkH = size === 'sm' ? 'h-8' : size === 'md' ? 'h-9' : size === 'lg' ? 'h-10' : size === 'xl' ? 'h-12' : 'h-14';
+  const wordmarkH = size === 'sm' ? 'h-10' : size === 'md' ? 'h-12' : size === 'lg' ? 'h-14' : size === 'xl' ? 'h-16' : 'h-20';
   const rounded = size === 'sm' || size === 'md' ? 'rounded-lg' : 'rounded-xl';
 
   return (
