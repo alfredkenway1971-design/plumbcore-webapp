@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Button,
@@ -139,6 +139,72 @@ export default function JobsPage() {
   const [newTime, setNewTime] = useState('');
   const [newTechId, setNewTechId] = useState('');
   const [newEstimatedCost, setNewEstimatedCost] = useState('');
+
+  /* ── Voice Input ── */
+  const [voiceState, setVoiceState] = useState<'idle' | 'listening' | 'processing'>('idle');
+  const [voiceError, setVoiceError] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+
+  const handleVoiceInput = useCallback(() => {
+    setVoiceError(null);
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setVoiceError('Speech recognition not supported in this browser. Use Chrome on desktop/Android.');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = async (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setVoiceState('processing');
+      setNewDescription(transcript + '...'); // show raw text while processing
+
+      try {
+        const res = await fetch('/api/ai/voice-to-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: transcript }),
+        });
+        const data = await res.json();
+        if (data.title) setNewTitle(data.title);
+        if (data.description) setNewDescription(data.description);
+        if (data.suggestedClient) {
+          const match = clients.find(c =>
+            c.name.toLowerCase().includes(data.suggestedClient.toLowerCase()) ||
+            data.suggestedClient.toLowerCase().includes(c.name.toLowerCase())
+          );
+          if (match) setNewClientId(match.id);
+        }
+        if (data.suggestedAddress) {
+          setNewAddress(data.suggestedAddress);
+        }
+      } catch {
+        setVoiceError('AI processing failed. Text captured, but couldn\'t auto-fill fields.');
+      }
+      setVoiceState('idle');
+    };
+
+    recognition.onerror = (event: any) => {
+      setVoiceState('idle');
+      if (event.error === 'not-allowed') setVoiceError('Microphone access denied. Allow microphone in your browser settings.');
+      else if (event.error === 'no-speech') setVoiceError('No speech detected. Try again.');
+      else setVoiceError(`Error: ${event.error}. Try typing instead.`);
+    };
+
+    recognition.onend = () => {
+      if (voiceState === 'listening') {
+        // only reset if we haven't already transitioned to processing
+        setVoiceState(prev => prev === 'listening' ? 'idle' : prev);
+      }
+    };
+
+    recognitionRef.current = recognition;
+    setVoiceState('listening');
+    recognition.start();
+  }, [clients, voiceState]);
 
   /* ── Edit Job Modal ── */
   const [showEditModal, setShowEditModal] = useState(false);
@@ -789,12 +855,56 @@ export default function JobsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
-                  <textarea
-                    rows={3} placeholder="Describe the job details..."
-                    value={newDescription}
-                    onChange={(e) => setNewDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
-                  />
+                  <div className="relative">
+                    <textarea
+                      rows={3} placeholder="Tap the mic and describe the job..."
+                      value={newDescription}
+                      onChange={(e) => setNewDescription(e.target.value)}
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleVoiceInput}
+                      disabled={voiceState === 'listening' || voiceState === 'processing'}
+                      className={`absolute right-2 bottom-2 w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                        voiceState === 'listening'
+                          ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-200'
+                          : voiceState === 'processing'
+                          ? 'bg-blue-400 text-white'
+                          : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600'
+                      }`}
+                      title="Voice input"
+                    >
+                      {voiceState === 'listening' ? (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="2" width="6" height="11" rx="3"/>
+                          <path d="M5 10a7 7 0 0014 0"/>
+                          <line x1="12" y1="19" x2="12" y2="23"/>
+                          <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                      ) : voiceState === 'processing' ? (
+                        <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="2" width="6" height="11" rx="3"/>
+                          <path d="M5 10a7 7 0 0014 0"/>
+                          <line x1="12" y1="19" x2="12" y2="23"/>
+                          <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  {voiceState === 'listening' && (
+                    <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      Listening... speak now
+                    </p>
+                  )}
+                  {voiceError && (
+                    <p className="text-xs text-red-500 mt-1">{voiceError}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
