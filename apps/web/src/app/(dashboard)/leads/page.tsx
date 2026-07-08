@@ -12,6 +12,7 @@ interface Lead {
   customerName: string;
   phone: string;
   email: string;
+  address?: string;
   issueDescription: string;
   aiDetectedProblem: string;
   suggestedParts: string[];
@@ -27,6 +28,7 @@ interface NewLeadForm {
   customerName: string;
   phone: string;
   email: string;
+  address: string;
   issueDescription: string;
   leadSource: string;
 }
@@ -38,6 +40,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'Sarah Mitchell',
     phone: '(512) 555-0142',
     email: 'sarah.mitchell@email.com',
+    address: '123 Oak St, Austin, TX 78701',
     issueDescription: 'Water is pooling under my kitchen sink. I noticed it this morning when I reached for a cleaning spray. The cabinet floor is wet and I think water is dripping from the pipe joint.',
     aiDetectedProblem: 'Leaking pipe joint under kitchen sink — likely a loose slip nut or failed compression ring on the P-trap connection.',
     suggestedParts: ['PVC P-trap kit (1.5")', 'Compression ring assortment', 'Plumber\'s tape', 'Silicone sealant'],
@@ -53,6 +56,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'Mike Rodriguez',
     phone: '(512) 555-0187',
     email: 'mike.r@email.com',
+    address: '456 Elm St, Austin, TX 78702',
     issueDescription: 'My toilet keeps running after flushing. I have to jiggle the handle to make it stop. It has been getting worse over the past week and is wasting a lot of water.',
     aiDetectedProblem: 'Worn flapper valve / misaligned fill tube — common toilet tank issue causing continuous water flow into overflow tube.',
     suggestedParts: ['Universal flapper (2" or 3")', 'Fluidmaster fill valve kit', 'Handle & rod assembly'],
@@ -68,6 +72,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'Emily Chen',
     phone: '(512) 555-0219',
     email: 'emily.chen@email.com',
+    address: '789 Maple Ave, Austin, TX 78703',
     issueDescription: 'The water pressure in my shower has dropped significantly. It used to be great but now it barely trickles out. The other faucets in the house seem fine. I think the showerhead might be clogged.',
     aiDetectedProblem: 'Mineral buildup in showerhead / possible clogged shower valve cartridge — reduced flow isolated to single fixture suggests localized blockage.',
     suggestedParts: ['High-pressure showerhead', 'Shower valve cartridge (brand-specific)', 'CLR / descaling solution', 'Thread seal tape'],
@@ -83,6 +88,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'James Wilson',
     phone: '(512) 555-0334',
     email: 'jwilson@email.com',
+    address: '321 Pine St, Austin, TX 78704',
     issueDescription: 'My basement floor drain is backing up when I run the washing machine. There is standing water and it smells bad. I think the main sewer line might be clogged.',
     aiDetectedProblem: 'Main sewer line blockage — washing machine discharge causing backup at floor drain indicates obstruction past the branch connection.',
     suggestedParts: ['Sewer cable (3/4" x 100ft)', 'Hydro jetting service', 'Camera inspection', 'Cleanout cap'],
@@ -98,6 +104,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'Patricia Moore',
     phone: '(512) 555-0467',
     email: 'pmoore@email.com',
+    address: '654 Cedar Ln, Austin, TX 78705',
     issueDescription: 'There is a water stain on my living room ceiling directly under the upstairs bathroom. It grows when someone takes a shower. I am worried the ceiling might collapse.',
     aiDetectedProblem: 'Active slab leak or drain pipe leak in ceiling cavity — moisture staining indicates prolonged leak from bathroom drain or supply line above.',
     suggestedParts: ['Pipe repair coupling', 'Drywall repair kit', 'Leak detection dye', 'Moisture meter'],
@@ -113,6 +120,7 @@ const MOCK_LEADS: Lead[] = [
     customerName: 'David Kim',
     phone: '(512) 555-0591',
     email: 'dkim@email.com',
+    address: '987 Birch Dr, Austin, TX 78706',
     issueDescription: 'My gas water heater is making loud popping noises and the water is not getting as hot as it used to. It is about 8 years old.',
     aiDetectedProblem: 'Sediment buildup in water heater tank — popping sounds indicate trapped moisture under sediment layer; reduced heating efficiency.',
     suggestedParts: ['Water heater flush kit', 'Anode rod (replace if depleted)', 'Sediment screen'],
@@ -153,6 +161,7 @@ function LeadRowSkeleton() {
           <div className="h-4 w-28 rounded bg-gray-50" />
           <div className="h-4 w-24 rounded bg-gray-50 hidden sm:block" />
           <div className="h-4 w-32 rounded bg-gray-50 hidden md:block" />
+          <div className="h-4 w-28 rounded bg-gray-50 hidden md:block" />
           <div className="h-4 w-40 rounded bg-gray-50 hidden lg:block" />
           <div className="h-4 w-20 rounded bg-gray-50" />
           <div className="h-4 w-12 rounded bg-gray-50" />
@@ -201,13 +210,13 @@ function LeadDetailPanel({
           {/* Contact Info — prominent */}
           <div className="rounded-xl bg-white border border-slate-200 p-4">
             <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">Contact Information</p>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex items-center gap-3">
                 <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">{lead.phone}</p>
+                  <a href={`tel:${lead.phone}`} className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">{lead.phone}</a>
                   <p className="text-[10px] text-slate-400">Phone</p>
                 </div>
               </div>
@@ -216,10 +225,29 @@ function LeadDetailPanel({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">{lead.email}</p>
+                  <a href={`mailto:${lead.email}`} className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">{lead.email}</a>
                   <p className="text-[10px] text-slate-400">Email</p>
                 </div>
               </div>
+              {lead.address && (
+                <div className="flex items-center gap-3">
+                  <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                  <div>
+                    <a
+                      href={`https://maps.google.com/?q=${encodeURIComponent(lead.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors"
+                    >
+                      {lead.address}
+                    </a>
+                    <p className="text-[10px] text-slate-400">Address</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -326,13 +354,14 @@ export default function LeadsPage() {
     customerName: '',
     phone: '',
     email: '',
+    address: '',
     issueDescription: '',
     leadSource: '',
   });
   const [addingLead, setAddingLead] = useState(false);
 
   const resetNewLeadForm = () => {
-    setNewLead({ customerName: '', phone: '', email: '', issueDescription: '', leadSource: '' });
+    setNewLead({ customerName: '', phone: '', email: '', address: '', issueDescription: '', leadSource: '' });
   };
 
   const handleAddLead = () => {
@@ -345,6 +374,7 @@ export default function LeadsPage() {
         customerName: newLead.customerName.trim(),
         phone: newLead.phone.trim() || '(512) 555-0000',
         email: newLead.email.trim() || 'new@lead.com',
+        address: newLead.address.trim() || undefined,
         issueDescription: newLead.issueDescription.trim(),
         aiDetectedProblem: 'Awaiting AI analysis...',
         suggestedParts: [],
@@ -394,6 +424,7 @@ export default function LeadsPage() {
           l.email.toLowerCase().includes(q) ||
           l.phone.toLowerCase().includes(q) ||
           l.id.toLowerCase().includes(q) ||
+          (l.address && l.address.toLowerCase().includes(q)) ||
           l.issueDescription.toLowerCase().includes(q)
       );
     }
@@ -531,12 +562,13 @@ export default function LeadsPage() {
           ) : (
             <Card variant="default" padding="none" className="overflow-hidden">
               {/* Table Header */}
-              <div className="hidden sm:grid grid-cols-8 gap-2 px-4 sm:px-6 py-3 border-b border-slate-100 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+              <div className="hidden sm:grid grid-cols-9 gap-2 px-4 sm:px-6 py-3 border-b border-slate-100 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                 <span>Lead ID</span>
                 <span className="col-span-1">Customer</span>
                 <span className="col-span-1 hidden sm:block">Phone</span>
                 <span className="col-span-1 hidden md:block">Email</span>
-                <span className="col-span-2 hidden lg:block">Issue</span>
+                <span className="col-span-1 hidden md:block">Address</span>
+                <span className="col-span-1 hidden lg:block">Issue</span>
                 <span className="col-span-1">Estimate</span>
                 <span className="col-span-1">Status</span>
                 <span className="col-span-1">Created</span>
@@ -552,7 +584,7 @@ export default function LeadsPage() {
                       {/* Row */}
                       <button
                         onClick={() => toggleExpand(lead.id)}
-                        className="w-full text-left grid grid-cols-1 sm:grid-cols-8 gap-2 px-4 sm:px-6 py-3 hover:bg-slate-50 transition-colors items-center"
+                        className="w-full text-left grid grid-cols-1 sm:grid-cols-9 gap-2 px-4 sm:px-6 py-3 hover:bg-slate-50 transition-colors items-center"
                       >
                         {/* Lead ID */}
                         <span className="text-xs font-mono font-semibold text-blue-600">{lead.id}</span>
@@ -565,6 +597,9 @@ export default function LeadsPage() {
 
                         {/* Email */}
                         <span className="text-xs text-slate-400 hidden md:block truncate">{lead.email}</span>
+
+                        {/* Address */}
+                        <span className="text-xs text-slate-400 truncate hidden md:block">{lead.address || '-'}</span>
 
                         {/* Issue */}
                         <span className="text-xs text-slate-400 truncate hidden lg:block">{lead.issueDescription.slice(0, 50)}...</span>
@@ -640,6 +675,15 @@ export default function LeadsPage() {
                       className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                     />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                  <input
+                    type="text" placeholder="e.g. 123 Oak St, Austin, TX 78701"
+                    value={newLead.address}
+                    onChange={(e) => setNewLead({ ...newLead, address: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Issue Description *</label>

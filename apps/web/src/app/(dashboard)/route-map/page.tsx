@@ -128,7 +128,7 @@ function SkeletonMap() {
         <div className="h-9 w-36 rounded-lg bg-gray-50" />
         <div className="h-9 w-40 rounded-lg bg-gray-50" />
       </div>
-      <div className="h-[400px] rounded-xl bg-whiteer" />
+      <div className="h-[400px] rounded-xl bg-gray-100" />
       <div className="space-y-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="h-14 rounded-lg bg-gray-50" />
@@ -272,7 +272,7 @@ export default function RouteMapPage() {
 
       {/* ── Map ── */}
       <Card variant="default" padding="none">
-        <div className="relative w-full h-[420px] overflow-hidden rounded-xl bg-gradient-to-br from-surface-lighter via-surface-card to-surface-lighter">
+        <div className="relative w-full h-[300px] sm:h-[420px] overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 via-slate-50 to-blue-100/50">
           {/* Street grid overlay */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
             {/* Horizontal streets */}
@@ -283,7 +283,7 @@ export default function RouteMapPage() {
                 y1={i * 11.11}
                 x2="100"
                 y2={i * 11.11}
-                stroke="rgba(255,255,255,0.04)"
+                stroke="rgba(148,163,184,0.15)"
                 strokeWidth="0.3"
               />
             ))}
@@ -295,28 +295,28 @@ export default function RouteMapPage() {
                 y1="0"
                 x2={i * 11.11}
                 y2="100"
-                stroke="rgba(255,255,255,0.04)"
+                stroke="rgba(148,163,184,0.15)"
                 strokeWidth="0.3"
               />
             ))}
             {/* Major roads */}
-            <line x1="0" y1="40" x2="100" y2="40" stroke="rgba(255,255,255,0.07)" strokeWidth="0.6" />
-            <line x1="0" y1="65" x2="100" y2="65" stroke="rgba(255,255,255,0.07)" strokeWidth="0.6" />
-            <line x1="30" y1="0" x2="30" y2="100" stroke="rgba(255,255,255,0.07)" strokeWidth="0.6" />
-            <line x1="60" y1="0" x2="60" y2="100" stroke="rgba(255,255,255,0.07)" strokeWidth="0.6" />
+            <line x1="0" y1="40" x2="100" y2="40" stroke="rgba(148,163,184,0.25)" strokeWidth="0.6" />
+            <line x1="0" y1="65" x2="100" y2="65" stroke="rgba(148,163,184,0.25)" strokeWidth="0.6" />
+            <line x1="30" y1="0" x2="30" y2="100" stroke="rgba(148,163,184,0.25)" strokeWidth="0.6" />
+            <line x1="60" y1="0" x2="60" y2="100" stroke="rgba(148,163,184,0.25)" strokeWidth="0.6" />
             {/* Highway */}
-            <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-            <line x1="0" y1="85" x2="100" y2="85" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-            <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
+            <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(100,116,139,0.3)" strokeWidth="0.8" />
+            <line x1="0" y1="85" x2="100" y2="85" stroke="rgba(100,116,139,0.3)" strokeWidth="0.8" />
+            <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(100,116,139,0.3)" strokeWidth="0.8" />
             {/* Highway shield marker */}
-            <text x="52" y="13" fill="rgba(255,255,255,0.12)" fontSize="2" fontWeight="bold" fontFamily="monospace">Mopac Expy</text>
-            <text x="38" y="87" fill="rgba(255,255,255,0.12)" fontSize="2" fontWeight="bold" fontFamily="monospace">IH-35</text>
-            <text x="83" y="13" fill="rgba(255,255,255,0.12)" fontSize="2" fontWeight="bold" fontFamily="monospace">US-183</text>
+            <text x="52" y="13" fill="rgba(100,116,139,0.4)" fontSize="2" fontWeight="bold" fontFamily="monospace">Mopac Expy</text>
+            <text x="38" y="87" fill="rgba(100,116,139,0.4)" fontSize="2" fontWeight="bold" fontFamily="monospace">IH-35</text>
+            <text x="83" y="13" fill="rgba(100,116,139,0.4)" fontSize="2" fontWeight="bold" fontFamily="monospace">US-183</text>
           </svg>
 
           {/* Grid pattern dots */}
           <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px)',
             backgroundSize: '20px 20px',
           }} />
 
@@ -355,7 +355,7 @@ export default function RouteMapPage() {
                     {pin.initials}
                     {/* Status dot */}
                     <span
-                      className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-surface-card ${
+                      className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white ${
                         TECH_STATUS_COLORS[pin.tech.status] || 'bg-steel-dark'
                       }`}
                     />
@@ -399,7 +399,7 @@ export default function RouteMapPage() {
           })}
 
           {/* Center compass */}
-          <div className="absolute top-3 left-3 pointer-events-none">
+          <div className="absolute top-3 left-3 pointer-events-none z-10">
             <div className="flex items-center gap-1 rounded-lg bg-white/80 backdrop-blur-sm px-2 py-1.5 border border-gray-200/30">
               <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3 7-3 3-3-3 3-7zM12 22l-3-7 3-3 3 3-3 7z" />
@@ -408,22 +408,22 @@ export default function RouteMapPage() {
             </div>
           </div>
 
-          {/* Zoom controls */}
-          <div className="absolute bottom-3 right-3 flex flex-col gap-1">
-            <button className="rounded-lg bg-white/80 backdrop-blur-sm p-1.5 border border-gray-200/30 text-gray-400 hover:text-gray-900 transition-colors">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          {/* Zoom controls — mobile-friendly 40px+ touch targets */}
+          <div className="absolute bottom-3 right-3 flex flex-col gap-1 z-10">
+            <button className="flex items-center justify-center w-10 h-10 sm:w-9 sm:h-9 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200/30 text-gray-400 hover:text-gray-900 hover:bg-white/90 transition-colors">
+              <svg className="h-5 w-5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
             </button>
-            <button className="rounded-lg bg-white/80 backdrop-blur-sm p-1.5 border border-gray-200/30 text-gray-400 hover:text-gray-900 transition-colors">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+            <button className="flex items-center justify-center w-10 h-10 sm:w-9 sm:h-9 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200/30 text-gray-400 hover:text-gray-900 hover:bg-white/90 transition-colors">
+              <svg className="h-5 w-5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
               </svg>
             </button>
           </div>
 
-          {/* Legend overlay */}
-          <div className="absolute top-3 right-3 pointer-events-none">
+          {/* Legend overlay — hide on very small screens, show on sm+ */}
+          <div className="hidden sm:block absolute top-3 right-3 pointer-events-none z-10">
             <div className="rounded-lg bg-white/80 backdrop-blur-sm px-3 py-2 border border-gray-200/30 max-w-[180px]">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Technicians</p>
               <div className="space-y-1">
@@ -448,9 +448,10 @@ export default function RouteMapPage() {
         </div>
       </Card>
 
-      {/* ── Tech List Table ── */}
-      <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-        <table className="w-full min-w-[600px]">
+      {/* ── Tech List: Desktop table, mobile cards ── */}
+      {/* Desktop table — hidden on mobile */}
+      <div className="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Technician</th>
@@ -460,7 +461,7 @@ export default function RouteMapPage() {
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Last Updated</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white-border">
+          <tbody className="divide-y divide-gray-200">
             {teamMembers.map((tm, idx) => {
               const currentJob = getTechCurrentJob[tm.id];
               const pos = techPositions.find((tp) => tp.techId === tm.id);
@@ -505,7 +506,7 @@ export default function RouteMapPage() {
                         {currentJob.title}
                       </button>
                     ) : (
-                      <span className="text-sm text-gray-500-dark">—</span>
+                      <span className="text-sm text-gray-400">—</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -521,10 +522,85 @@ export default function RouteMapPage() {
         </table>
       </div>
 
+      {/* Mobile tech cards — shown only below sm */}
+      <div className="sm:hidden space-y-2">
+        {teamMembers.map((tm, idx) => {
+          const currentJob = getTechCurrentJob[tm.id];
+          const pos = techPositions.find((tp) => tp.techId === tm.id);
+          const isHighlighted = highlightedTech === tm.id;
+
+          return (
+            <div
+              key={tm.id}
+              onClick={() => setHighlightedTech(highlightedTech === tm.id ? null : tm.id)}
+              className={`rounded-xl border bg-white p-3 cursor-pointer transition-all ${
+                isHighlighted
+                  ? 'border-electric/40 ring-1 ring-electric/30 bg-electric/5'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              {/* Top row: avatar + name + status badge */}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2.5">
+                  <div className={`flex items-center justify-center w-9 h-9 rounded-full text-xs font-bold text-gray-900 ${getTechColor(idx)}`}>
+                    {getTechInitials(tm.name)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{tm.name}</p>
+                    <p className="text-[11px] text-gray-500 capitalize">{tm.role.replace('-', ' ')}</p>
+                  </div>
+                </div>
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+                  tm.status === 'online'
+                    ? 'bg-green-50 text-green-700'
+                    : tm.status === 'busy'
+                    ? 'bg-amber-50 text-amber-700'
+                    : tm.status === 'away'
+                    ? 'bg-amber-50/60 text-amber-600'
+                    : 'bg-gray-100 text-gray-500'
+                }`}>
+                  <span className={`inline-block w-1.5 h-1.5 rounded-full ${TECH_PIN_COLORS[tm.status]}`} />
+                  {getTechStatusLabel(tm.status)}
+                </span>
+              </div>
+              {/* Bottom row: job, location, updated */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
+                {currentJob ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/jobs/${currentJob.id}`);
+                    }}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {currentJob.title}
+                  </button>
+                ) : (
+                  <span>No current job</span>
+                )}
+                <span className="flex items-center gap-1">
+                  <svg className="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {pos?.area || 'Unknown'}
+                </span>
+                <span className="flex items-center gap-1">
+                  <svg className="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {formatDateTime(tm.joinedAt)}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
       {/* Status summary bar */}
-      <div className="flex items-center justify-between rounded-lg bg-whiteer px-4 py-2.5">
-        <div className="flex items-center gap-4 flex-wrap">
-          <span className="text-xs text-gray-500">Team Status:</span>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 rounded-lg bg-white px-4 py-3 border border-gray-200">
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-xs font-medium text-gray-500">Team Status:</span>
           <span className="flex items-center gap-1 text-xs text-gray-400">
             <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
             {teamMembers.filter((m) => m.status === 'online').length} Available
@@ -534,11 +610,11 @@ export default function RouteMapPage() {
             {teamMembers.filter((m) => m.status === 'busy').length} On Job
           </span>
           <span className="flex items-center gap-1 text-xs text-gray-400">
-            <span className="inline-block w-2 h-2 rounded-full bg-steel-dark" />
+            <span className="inline-block w-2 h-2 rounded-full bg-gray-400" />
             {teamMembers.filter((m) => m.status === 'offline' || m.status === 'away').length} Away/Offline
           </span>
         </div>
-        <span className="text-[11px] text-gray-500">{teamMembers.length} technicians</span>
+        <span className="text-[11px] text-gray-500 whitespace-nowrap">{teamMembers.length} technicians</span>
       </div>
     </div>
   );

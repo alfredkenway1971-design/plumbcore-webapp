@@ -179,6 +179,7 @@ export default function ClientsPage() {
   const [showDelete, setShowDelete] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [shakeKey, setShakeKey] = useState(0);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   /* ── Form ── */
   const [fName, setFName] = useState('');
@@ -308,7 +309,63 @@ export default function ClientsPage() {
           <div className="py-16"><EmptyState title={search ? 'No clients match your search' : 'No clients yet'} description={search ? 'Try a different search.' : 'Add your first client to get started.'} /></div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Mobile card layout */}
+            <div className="sm:hidden divide-y divide-slate-100">
+              {paged.map(c => {
+                const type = getClientType(c.name, c.company);
+                const tags = clientTags[c.id] ?? [];
+                const isExpanded = expandedId === c.id;
+                return (
+                  <div key={c.id} className="px-4 py-3">
+                    <div className="flex items-start justify-between cursor-pointer" onClick={() => setExpandedId(isExpanded ? null : c.id)}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <a href={`/clients/${c.id}`} onClick={e => e.stopPropagation()} className="text-sm font-semibold text-slate-900 hover:text-blue-600 truncate">{c.name}</a>
+                          <span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-medium capitalize ${typeColors[type]}`}>{type}</span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5 truncate">{c.email}</p>
+                      </div>
+                      <div className="text-right shrink-0 ml-2">
+                        <p className="text-sm font-semibold text-slate-900">{fc(c.totalRevenue)}</p>
+                        <p className="text-[10px] text-slate-400">{c.totalJobs} jobs</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400">
+                      <span>{c.phone}</span>
+                      {c.city && <span>{c.city}, {c.state}</span>}
+                    </div>
+                    {tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {tags.slice(0, 3).map((t, i) => <span key={i} className={`rounded-full border px-2 py-0.5 text-[9px] font-medium ${TAG_COLORS[i % TAG_COLORS.length]}`}>{t}</span>)}
+                        {tags.length > 3 && <span className="text-[9px] text-slate-400">+{tags.length - 3}</span>}
+                      </div>
+                    )}
+                    {/* Expanded detail on mobile */}
+                    {isExpanded && (
+                      <div className="mt-3 pt-3 border-t border-slate-100 space-y-2">
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div>
+                            <p className="font-medium text-slate-700">Address</p>
+                            <p className="text-slate-500">{c.address}, {c.city}, {c.state} {c.zip}</p>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-700">Company</p>
+                            <p className="text-slate-500">{c.company || '—'}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-lg bg-blue-500 text-white text-xs font-semibold flex items-center justify-center hover:bg-blue-600 transition-colors">Call</a>
+                          <a href={`mailto:${c.email}`} className="flex-1 h-9 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold flex items-center justify-center hover:bg-slate-50 transition-colors">Email</a>
+                          <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="flex-1 h-9 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">Edit</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {/* Desktop table */}
+            <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -328,9 +385,16 @@ export default function ClientsPage() {
                     const type = getClientType(c.name, c.company);
                     const tags = clientTags[c.id] ?? [];
                     return (
-                      <tr key={c.id} className="border-b border-slate-50 transition-colors hover:bg-slate-50">
+                      <>
+                      <tr className="border-b border-slate-50 transition-colors hover:bg-slate-50 cursor-pointer" onClick={() => setExpandedId(expandedId === c.id ? null : c.id)}>
                         <td className="py-3.5 px-4">
-                          <a href={`/clients/${c.id}`} className="text-sm font-medium text-slate-900 hover:text-blue-600 transition-colors">{c.name}</a>
+                          <a
+                            href={`/clients/${c.id}`}
+                            onClick={e => e.stopPropagation()}
+                            className="text-sm font-medium text-slate-900 hover:text-blue-600 transition-colors"
+                          >
+                            {c.name}
+                          </a>
                           <div className="mt-0.5"><span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${typeColors[type]}`}>{type}</span></div>
                         </td>
                         <td className="py-3.5 px-4 text-sm text-slate-500">{c.phone}</td>
@@ -347,11 +411,55 @@ export default function ClientsPage() {
                         <td className="py-3.5 px-4 text-right text-sm text-slate-500 hidden lg:table-cell whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                         <td className="py-3.5 px-4 text-center">
                           <div className="flex items-center justify-center gap-1">
-                            <button onClick={() => openEdit(c)} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"><EditIcon className="w-4 h-4" /></button>
-                            <button onClick={() => setShowDelete(c.id)} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"><TrashIcon className="w-4 h-4" /></button>
+                            <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"><EditIcon className="w-4 h-4" /></button>
+                            <button onClick={e => { e.stopPropagation(); setShowDelete(c.id); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"><TrashIcon className="w-4 h-4" /></button>
                           </div>
                         </td>
                       </tr>
+                      {/* Expanded detail panel */}
+                      {expandedId === c.id && (
+                        <tr key={`${c.id}-detail`}>
+                          <td colSpan={9} className="px-4 py-4 bg-slate-50/70 border-b border-slate-100">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Contact</p>
+                                <p className="text-sm text-slate-700">
+                                  <a href={`tel:${c.phone}`} className="hover:text-blue-600 transition-colors">{c.phone}</a>
+                                </p>
+                                <p className="text-sm text-slate-700">
+                                  <a href={`mailto:${c.email}`} className="hover:text-blue-600 transition-colors">{c.email}</a>
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Address</p>
+                                <p className="text-sm text-slate-700">{c.address}</p>
+                                <p className="text-sm text-slate-700">{c.city}, {c.state} {c.zip}</p>
+                                {c.company && <p className="text-sm text-slate-500 mt-1.5">{c.company}</p>}
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Activity</p>
+                                <p className="text-sm text-slate-700">{c.totalJobs} jobs · {fc(c.totalRevenue)} revenue</p>
+                                <p className="text-sm text-slate-500">Since {new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</p>
+                              </div>
+                            </div>
+                            {tags.length > 0 && (
+                              <div className="mt-3 pt-3 border-t border-slate-200">
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Tags</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {tags.map((t, i) => <span key={i} className={`inline-block rounded-full border px-2 py-0.5 text-[10px] font-medium ${TAG_COLORS[i % TAG_COLORS.length]}`}>{t}</span>)}
+                                </div>
+                              </div>
+                            )}
+                            {c.notes && (
+                              <div className="mt-3 pt-3 border-t border-slate-200">
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Notes</p>
+                                <p className="text-sm text-slate-600">{c.notes}</p>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      )}
+                      </>
                     );
                   })}
                 </tbody>
