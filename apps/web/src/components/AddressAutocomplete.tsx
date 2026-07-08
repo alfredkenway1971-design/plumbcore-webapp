@@ -1,35 +1,45 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
 import { MapPin } from 'lucide-react';
 
 interface Suggestion {
   display_name: string;
   lat: string;
   lon: string;
+  address?: {
+    road?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    state?: string;
+    postcode?: string;
+  };
 }
 
 interface AddressAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
+  onSelect?: (addr: string, city: string, state: string, zip: string) => void;
   placeholder?: string;
   className?: string;
   id?: string;
+  error?: string;
 }
 
 export default function AddressAutocomplete({
   value,
   onChange,
+  onSelect,
   placeholder = 'Service address',
   className = '',
   id,
+  error,
 }: AddressAutocompleteProps) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -47,11 +57,10 @@ export default function AddressAutocomplete({
 
   // Search Nominatim with debounce
   const searchAddress = useCallback((query: string) => {
-    // Cancel previous request
     if (abortRef.current) abortRef.current.abort();
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    if (query.length < 3) {
+    if (query.length < 5) {
       setSuggestions([]);
       setOpen(false);
       setLoading(false);
@@ -66,11 +75,10 @@ export default function AddressAutocomplete({
       try {
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=us,ca&limit=5&addressdetails=1`,
-          { signal: controller.signal }
+          { signal: controller.signal, headers: { 'User-Agent': 'PlumbCoreAI/1.0' } }
         );
         if (!res.ok) throw new Error('Search failed');
         const data: Suggestion[] = await res.json();
-        // Only update if we haven't been superseded
         if (!controller.signal.aborted) {
           setSuggestions(data);
           setOpen(data.length > 0);
@@ -83,7 +91,7 @@ export default function AddressAutocomplete({
           setLoading(false);
         }
       }
-    }, 300); // 300ms debounce
+    }, 350);
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +102,12 @@ export default function AddressAutocomplete({
   };
 
   const handleSelect = (suggestion: Suggestion) => {
+    const addr = suggestion.address?.road || suggestion.display_name.split(',')[0];
+    const city = suggestion.address?.city || suggestion.address?.town || suggestion.address?.village || '';
+    const state = suggestion.address?.state || '';
+    const zip = suggestion.address?.postcode || '';
     onChange(suggestion.display_name);
+    onSelect?.(addr, city, state, zip);
     setSuggestions([]);
     setOpen(false);
     setSelected(true);
@@ -110,8 +123,7 @@ export default function AddressAutocomplete({
     <div ref={containerRef} className="relative">
       <div className="relative">
         <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-        <Input
-          ref={inputRef}
+        <input
           id={id}
           type="text"
           placeholder={placeholder}
@@ -119,7 +131,11 @@ export default function AddressAutocomplete({
           onChange={handleInputChange}
           onFocus={handleFocus}
           autoComplete="off"
-          className={`rounded-xl border-slate-200 focus:border-slate-400 h-12 pl-10 ${className}`}
+          className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-all ${
+            error
+              ? 'border-red-300 focus:ring-2 focus:ring-red-100'
+              : 'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+          } ${className}`}
         />
         {loading && (
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2">
@@ -127,6 +143,7 @@ export default function AddressAutocomplete({
           </div>
         )}
       </div>
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
 
       {/* Dropdown suggestions */}
       {open && suggestions.length > 0 && (
@@ -139,14 +156,21 @@ export default function AddressAutocomplete({
               className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-50 last:border-b-0 flex items-start gap-2.5"
             >
               <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-slate-400" />
-              <span className="leading-snug">{s.display_name}</span>
+              <div>
+                <p className="font-medium">{s.display_name}</p>
+                {s.address?.city && (
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {s.address.city}, {s.address.state} {s.address.postcode}
+                  </p>
+                )}
+              </div>
             </button>
           ))}
         </div>
       )}
 
       {/* No results state */}
-      {open && suggestions.length === 0 && !loading && value.length >= 3 && (
+      {open && suggestions.length === 0 && !loading && value.length >= 5 && (
         <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg p-4 text-sm text-slate-400 text-center">
           No addresses found. Try a different search.
         </div>

@@ -14,6 +14,7 @@ import {
 } from '@/pkg/ui-components';
 import { jobs, clients, teamMembers } from '@/lib/mock-data';
 import type { Job, JobStatus } from '@/lib/mock-data';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
 
 /* ── Helpers ── */
 function formatCurrency(n: number) {
@@ -700,144 +701,149 @@ export default function JobsPage() {
       )}
 
       {/* ── Create Job Modal ── */}
-      <Modal
-        open={showCreateModal}
-        onClose={() => { setShowCreateModal(false); resetCreateForm(); }}
-        title="Create New Job"
-        description="Fill in the details to create a new service job."
-        size="lg"
-        footer={
-          <>
-            <Button variant="ghost" size="sm" onClick={() => { setShowCreateModal(false); resetCreateForm(); }}>
-              Cancel
-            </Button>
-            <Button variant="primary" size="sm" loading={creating} disabled={!createFormValid} onClick={handleCreateJob}>
-              Create Job
-            </Button>
-          </>
-        }
-      >
-        <div className="space-y-4">
-          <Input
-            label="Title *"
-            placeholder="Kitchen sink repair"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <TextArea
-            label="Description *"
-            placeholder="Describe the job details..."
-            rows={3}
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-          />
+      {showCreateModal && (
+        <>
+          <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setShowCreateModal(false); resetCreateForm(); }}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
+                <h2 className="text-lg font-bold text-slate-900">Create New Job</h2>
+                <p className="text-sm text-slate-500 mt-0.5">Fill in the details to create a new service job.</p>
+              </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Client *</label>
-              <select
-                value={newClientId}
-                onChange={(e) => {
-                  const c = clients.find((cl) => cl.id === e.target.value);
-                  setNewClientId(e.target.value);
-                  if (c) {
-                    if (!newAddress) setNewAddress(c.address);
-                    if (!newCity) setNewCity(c.city);
-                    if (!newState) setNewState(c.state);
-                    if (!newZip) setNewZip(c.zip);
-                  }
-                }}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
-              >
-                <option value="">Select a client</option>
-                {clients.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Priority</label>
-              <select
-                value={newPriority}
-                onChange={(e) => setNewPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Critical</option>
-              </select>
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Title *</label>
+                  <input
+                    type="text" placeholder="Kitchen sink repair"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
+                  <textarea
+                    rows={3} placeholder="Describe the job details..."
+                    value={newDescription}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Client *</label>
+                    <select
+                      value={newClientId}
+                      onChange={(e) => {
+                        const c = clients.find((cl) => cl.id === e.target.value);
+                        setNewClientId(e.target.value);
+                        if (c) {
+                          if (!newAddress) setNewAddress(c.address);
+                          if (!newCity) setNewCity(c.city);
+                          if (!newState) setNewState(c.state);
+                          if (!newZip) setNewZip(c.zip);
+                        }
+                      }}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                    >
+                      <option value="">Select a client</option>
+                      {clients.map((c) => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+                    <select
+                      value={newPriority}
+                      onChange={(e) => setNewPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Critical</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Address */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                  <AddressAutocomplete
+                    value={newAddress}
+                    onChange={(v) => setNewAddress(v)}
+                    onSelect={(addr, city, state, zip) => {
+                      setNewAddress(addr);
+                      setNewCity(city);
+                      setNewState(state);
+                      setNewZip(zip);
+                    }}
+                    placeholder="Service address"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
+                    <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">State</label>
+                    <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP</label>
+                    <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Scheduled Date</label>
+                    <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Scheduled Time</label>
+                    <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Tech</label>
+                    <select
+                      value={newTechId}
+                      onChange={(e) => setNewTechId(e.target.value)}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                    >
+                      <option value="">Unassigned</option>
+                      {teamMembers.map((tm) => (
+                        <option key={tm.id} value={tm.id}>{tm.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Estimated Cost ($)</label>
+                    <input type="number" placeholder="0" value={newEstimatedCost} onChange={(e) => setNewEstimatedCost(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
+                <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                  {creating ? 'Creating...' : 'Create Job'}
+                </button>
+              </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Input
-              label="Address"
-              placeholder="123 Main St"
-              value={newAddress}
-              onChange={(e) => setNewAddress(e.target.value)}
-            />
-            <Input
-              label="City"
-              placeholder="Austin"
-              value={newCity}
-              onChange={(e) => setNewCity(e.target.value)}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              <Input
-                label="State"
-                placeholder="TX"
-                value={newState}
-                onChange={(e) => setNewState(e.target.value)}
-              />
-              <Input
-                label="ZIP"
-                placeholder="73301"
-                value={newZip}
-                onChange={(e) => setNewZip(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
-              label="Scheduled Date"
-              type="date"
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-            />
-            <Input
-              label="Scheduled Time"
-              type="time"
-              value={newTime}
-              onChange={(e) => setNewTime(e.target.value)}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Assigned Tech</label>
-              <select
-                value={newTechId}
-                onChange={(e) => setNewTechId(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
-              >
-                <option value="">Unassigned</option>
-                {teamMembers.map((tm) => (
-                  <option key={tm.id} value={tm.id}>{tm.name}</option>
-                ))}
-              </select>
-            </div>
-            <Input
-              label="Estimated Cost ($)"
-              type="number"
-              placeholder="0"
-              value={newEstimatedCost}
-              onChange={(e) => setNewEstimatedCost(e.target.value)}
-            />
-          </div>
-        </div>
-      </Modal>
+        </>
+      )}
 
       {/* ── Edit Job Modal ── */}
       <Modal

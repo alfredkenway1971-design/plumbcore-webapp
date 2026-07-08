@@ -143,7 +143,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
 
             {/* Export */}
-            <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+            <button
+              onClick={() => {
+                const now = new Date().toISOString().split('T')[0];
+                const csv = `PlumbCore AI Dashboard Export,${now}\n`;
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `plumbcore-dashboard-${now}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm"
+            >
               <DownloadIcon className="w-4 h-4" />
               <span className="hidden sm:inline text-xs">Export</span>
             </button>

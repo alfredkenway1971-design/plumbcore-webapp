@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { useAuthStore } from '@/lib/store';
@@ -101,11 +101,31 @@ interface SidebarProps {
 
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
   const { t } = useI18n();
   const profile = useAuthStore((s) => s.profile);
   const userRole = profile?.role;
   const avatarUrl = profile?.avatar_url;
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const handleLogout = async () => {
+    setProfileOpen(false);
+    await useAuthStore.getState().logout();
+    router.push('/login');
+  };
 
   // Filter nav sections by role — sections with a roles array require it
   const visibleNav = navConfig.filter((section) => {
@@ -185,8 +205,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* ── User Profile ── */}
-        <div className="shrink-0 border-t border-slate-100 p-3">
-          <div className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-50 transition-colors cursor-pointer group">
+        <div className="shrink-0 border-t border-slate-100 p-3" ref={profileRef}>
+          <div
+            className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-50 transition-colors cursor-pointer group relative"
+            onClick={() => setProfileOpen(!profileOpen)}
+          >
             {avatarUrl ? (
               <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm" />
             ) : (
@@ -197,15 +220,39 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             {!collapsed && (
               <>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">Amer Moreau</p>
-                  <p className="text-xs text-slate-400 truncate">PlumbCore Admin</p>
+                  <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
+                  <p className="text-xs text-slate-400 truncate">{userRole === 'super_admin' ? 'Super Admin' : userRole || 'PlumbCore'}</p>
                 </div>
-                <button className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500">
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleLogout(); }}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
+                  title="Logout"
+                >
                   <Icons.Logout className="w-4 h-4" />
                 </button>
               </>
             )}
           </div>
+
+          {/* Dropdown menu */}
+          {profileOpen && (
+            <div className="mt-1 mx-1 rounded-xl border border-slate-100 bg-white shadow-lg overflow-hidden">
+              <button
+                onClick={() => { setProfileOpen(false); router.push('/settings'); }}
+                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+              >
+                <Icons.Cog className="w-4 h-4 text-slate-400" />
+                Settings
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-slate-50"
+              >
+                <Icons.Logout className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>

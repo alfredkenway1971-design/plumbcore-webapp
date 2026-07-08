@@ -15,6 +15,7 @@ import { invoices, jobs, clients } from '@/lib/mock-data';
 import type { Invoice, Job } from '@/lib/mock-data';
 import { generateInvoice, formatCurrency, generateInvoiceNumber, calculateDueDate } from '@/lib/invoice-engine';
 import { pricebook, partsList, repairTypesList } from '@/lib/pricebook-data';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -211,7 +212,38 @@ export default function InvoicingPage() {
   /* ── Export dropdown ── */
   const handleExport = (type: 'pdf' | 'csv') => {
     setExportOpen(false);
-    alert(`Export as ${type.toUpperCase()} — coming soon`);
+    if (type === 'csv') {
+      const headers = 'Invoice #,Client,Amount,Status,Issue Date,Due Date\n';
+      const rows = invoices.map(inv =>
+        `${inv.id},${inv.clientName},${inv.amount},${inv.status},${inv.issueDate},${inv.dueDate}`
+      ).join('\n');
+      const blob = new Blob([headers + rows], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `plumbcore-invoices-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      const { jsPDF } = window as any;
+      if (!jsPDF) { alert('Install jspdf for PDF export'); return; }
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      doc.setFontSize(18);
+      doc.text('PlumbCore AI — Invoices Report', 20, 30);
+      doc.setFontSize(10);
+      let y = 45;
+      doc.text('Invoice #', 20, y); doc.text('Client', 60, y); doc.text('Amount', 120, y); doc.text('Status', 160, y);
+      y += 8;
+      invoices.forEach(inv => {
+        if (y > 270) { doc.addPage(); y = 30; }
+        doc.text(inv.id, 20, y);
+        doc.text(inv.clientName.substring(0, 20), 60, y);
+        doc.text(`$${(inv.amount / 100).toFixed(0)}`, 120, y);
+        doc.text(inv.status, 160, y);
+        y += 6;
+      });
+      doc.save(`plumbcore-invoices-${new Date().toISOString().split('T')[0]}.pdf`);
+    }
   };
 
   /* ── Send reminder ── */
@@ -403,7 +435,20 @@ export default function InvoicingPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          alert(`Download PDF for ${inv.id} — coming soon`);
+                          const { jsPDF } = window as any;
+                          if (!jsPDF) { alert('Downloading invoice — install jspdf for full PDF support'); return; }
+                          const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+                          doc.setFontSize(18);
+                          doc.text('PlumbCore AI', 20, 30);
+                          doc.setFontSize(14);
+                          doc.text(`Invoice: ${inv.id}`, 20, 45);
+                          doc.setFontSize(11);
+                          doc.text(`Client: ${inv.clientName}`, 20, 58);
+                          doc.text(`Amount: $${(inv.amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 20, 68);
+                          doc.text(`Status: ${inv.status.toUpperCase()}`, 20, 78);
+                          doc.text(`Issue Date: ${formatDate(inv.issueDate)}`, 20, 88);
+                          doc.text(`Due Date: ${formatDate(inv.dueDate)}`, 20, 98);
+                          doc.save(`${inv.id}.pdf`);
                         }}
                       >
                         PDF
