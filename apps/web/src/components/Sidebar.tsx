@@ -83,7 +83,7 @@ const navConfig = [
   // Admin panel — gated by role (super_admin or admin)
   {
     sectionKey: 'adminPanel',
-    roles: ['super_admin', 'admin'],
+    roles: ['super_admin'],
     items: [
       { labelKey: 'platformOverview', icon: 'Grid', href: '/admin', badge: null },
       { labelKey: 'customers', icon: 'Users', href: '/admin/customers', badge: null },
