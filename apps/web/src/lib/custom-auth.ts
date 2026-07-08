@@ -200,7 +200,7 @@ async function dbAddUser(user: StoredUser): Promise<void> {
       email: user.email,
       full_name: user.fullName,
       phone: user.phone || '',
-      role: user.role || 'admin',
+      role: user.role || 'tech',
       is_active: true,
     });
 
@@ -216,7 +216,7 @@ async function dbAddUser(user: StoredUser): Promise<void> {
       company_slug: user.companySlug,
       company_id: user.companyId,
       phone: user.phone || '',
-      role: user.role || 'admin',
+      role: user.role || 'tech',
       stripe_customer_id: user.stripeCustomerId || '',
       stripe_subscription_id: user.stripeSubscriptionId || '',
       subscription_tier: user.subscriptionTier || '',
