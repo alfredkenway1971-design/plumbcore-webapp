@@ -831,7 +831,45 @@ export default function SettingsPage() {
               />
             </Card>
           ) : (
-            <Card variant="bordered" padding="sm" className="overflow-x-auto">
+            <div className="space-y-4">
+              {/* Mobile card layout */}
+              <div className="sm:hidden space-y-3">
+                {members.map((member) => (
+                  <div key={member.id} className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar name={member.name} size="sm" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{member.name}</p>
+                        <p className="text-xs text-gray-500 truncate">{member.email}</p>
+                      </div>
+                      <RoleBadge role={member.role} />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-gray-400">
+                        <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-steel'}`} />
+                        {statusLabel[member.status] || member.status}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEditMember(member.id)}
+                          className="h-8 px-3 text-xs font-medium text-gray-600 bg-gray-50 border border-slate-200 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleRemoveMember(member.id)}
+                          className="h-8 px-3 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop table */}
+              <Card variant="bordered" padding="sm" className="hidden sm:block overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200">
@@ -887,6 +925,7 @@ export default function SettingsPage() {
                 </tbody>
               </table>
             </Card>
+            </div>
           )}
 
           {/* Invite Modal */}
