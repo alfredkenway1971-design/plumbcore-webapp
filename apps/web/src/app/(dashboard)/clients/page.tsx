@@ -497,7 +497,7 @@ export default function ClientsPage() {
               </div>
 
               {/* Body */}
-              <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+              <div className="px-6 py-5 space-y-4 max-h-[55vh] sm:max-h-[65vh] overflow-y-auto overscroll-contain">
                 {/* Name row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

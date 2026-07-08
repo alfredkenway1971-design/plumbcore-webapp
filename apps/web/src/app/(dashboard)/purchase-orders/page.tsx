@@ -29,22 +29,22 @@ interface CreatePOForm {
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 animate-pulse">
-      <div className="h-4 w-24 rounded bg-white/5" />
-      <div className="h-4 w-36 rounded bg-white/5" />
-      <div className="h-4 w-12 rounded bg-white/5" />
-      <div className="h-4 w-16 rounded bg-white/5" />
-      <div className="h-4 w-20 rounded bg-white/5" />
-      <div className="h-4 w-24 rounded bg-white/5" />
-      <div className="h-5 w-16 rounded bg-white/5" />
+      <div className="h-4 w-24 rounded bg-slate-100" />
+      <div className="h-4 w-36 rounded bg-slate-100" />
+      <div className="h-4 w-12 rounded bg-slate-100" />
+      <div className="h-4 w-16 rounded bg-slate-100" />
+      <div className="h-4 w-20 rounded bg-slate-100" />
+      <div className="h-4 w-24 rounded bg-slate-100" />
+      <div className="h-5 w-16 rounded bg-slate-100" />
     </div>
   );
 }
 
 const STATUS_COLORS: Record<POStatus, string> = {
-  Draft: 'bg-white/10 text-gray-400 border border-white/10',
-  Sent: 'bg-blue-50 text-blue-600 border border-electric/20',
-  Received: 'bg-green-50 text-green-600 border border-status-success/20',
-  Cancelled: 'bg-red-50 text-red-600 border border-status-error/20',
+  Draft: 'bg-slate-100 text-slate-500 border border-slate-200',
+  Sent: 'bg-blue-50 text-blue-600 border border-blue-200',
+  Received: 'bg-green-50 text-green-600 border border-green-200',
+  Cancelled: 'bg-red-50 text-red-600 border border-red-200',
 };
 
 export default function PurchaseOrdersPage() {
@@ -199,19 +199,19 @@ export default function PurchaseOrdersPage() {
         <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
         <div className="flex gap-2">
           {['All', 'Draft', 'Sent', 'Received', 'Cancelled'].map((s) => (
-            <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-white/5" />
+            <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-slate-100" />
           ))}
         </div>
         <Card variant="bordered" padding="sm">
           <div className="space-y-0">
             <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-2.5">
-              <div className="h-3 w-24 rounded bg-white/5" />
-              <div className="h-3 w-36 rounded bg-white/5" />
-              <div className="h-3 w-12 rounded bg-white/5" />
-              <div className="h-3 w-16 rounded bg-white/5" />
-              <div className="h-3 w-20 rounded bg-white/5" />
-              <div className="h-3 w-24 rounded bg-white/5" />
-              <div className="h-3 w-16 rounded bg-white/5" />
+              <div className="h-3 w-24 rounded bg-slate-100" />
+              <div className="h-3 w-36 rounded bg-slate-100" />
+              <div className="h-3 w-12 rounded bg-slate-100" />
+              <div className="h-3 w-16 rounded bg-slate-100" />
+              <div className="h-3 w-20 rounded bg-slate-100" />
+              <div className="h-3 w-24 rounded bg-slate-100" />
+              <div className="h-3 w-16 rounded bg-slate-100" />
             </div>
             {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonRow key={i} />
@@ -267,10 +267,10 @@ export default function PurchaseOrdersPage() {
               <p className="text-gray-400">{po.supplierName}</p>
               {supplier && (
                 <>
-                  <p className="text-steel">{supplier.contactPerson}</p>
-                  <p className="text-steel">{supplier.phone}</p>
-                  <p className="text-steel">{supplier.email}</p>
-                  <p className="text-steel text-xs">{supplier.address}</p>
+                  <p className="text-slate-500">{supplier.contactPerson}</p>
+                  <p className="text-slate-500">{supplier.phone}</p>
+                  <p className="text-slate-500">{supplier.email}</p>
+                  <p className="text-slate-500 text-xs">{supplier.address}</p>
                 </>
               )}
             </div>
@@ -278,12 +278,12 @@ export default function PurchaseOrdersPage() {
           <Card variant="bordered" padding="md">
             <h3 className="text-sm font-semibold text-gray-900 mb-2">Order Details</h3>
             <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between"><span className="text-steel">Created:</span><span className="text-gray-900">{po.createdAt}</span></div>
-              {po.sentDate && <div className="flex justify-between"><span className="text-steel">Sent:</span><span className="text-gray-900">{po.sentDate}</span></div>}
-              {po.receivedDate && <div className="flex justify-between"><span className="text-steel">Received:</span><span className="text-gray-900">{po.receivedDate}</span></div>}
-              <div className="flex justify-between"><span className="text-steel">Expected Delivery:</span><span className="text-gray-900">{po.expectedDelivery}</span></div>
-              <div className="flex justify-between"><span className="text-steel">Items:</span><span className="text-gray-900">{po.itemsCount}</span></div>
-              <div className="flex justify-between border-t border-gray-200 pt-2 mt-2"><span className="text-steel font-semibold">Total:</span><span className="text-gray-900 font-bold">${po.total.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Created:</span><span className="text-gray-900">{po.createdAt}</span></div>
+              {po.sentDate && <div className="flex justify-between"><span className="text-slate-500">Sent:</span><span className="text-gray-900">{po.sentDate}</span></div>}
+              {po.receivedDate && <div className="flex justify-between"><span className="text-slate-500">Received:</span><span className="text-gray-900">{po.receivedDate}</span></div>}
+              <div className="flex justify-between"><span className="text-slate-500">Expected Delivery:</span><span className="text-gray-900">{po.expectedDelivery}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Items:</span><span className="text-gray-900">{po.itemsCount}</span></div>
+              <div className="flex justify-between border-t border-gray-200 pt-2 mt-2"><span className="text-slate-500 font-semibold">Total:</span><span className="text-gray-900 font-bold">${po.total.toFixed(2)}</span></div>
             </div>
           </Card>
         </div>
@@ -299,7 +299,7 @@ export default function PurchaseOrdersPage() {
                 <div key={String(status)} className={`flex items-center ${idx < arr.length - 1 ? 'flex-1' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                      isCurrent ? 'bg-electric text-[#0a0e2a]' : isActive ? 'bg-green-500/20 text-green-600' : 'bg-white/5 text-gray-500'
+                      isCurrent ? 'bg-blue-500 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'
                     }`}>
                       {isActive ? '✓' : idx + 1}
                     </div>
@@ -307,16 +307,16 @@ export default function PurchaseOrdersPage() {
                     {date && <span className="text-[9px] text-gray-400/60">{date}</span>}
                   </div>
                   {idx < arr.length - 1 && (
-                    <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-white/5'}`} />
+                    <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-slate-100'}`} />
                   )}
                 </div>
               );
             })}
           </div>
           {po.notes && (
-            <div className="mt-4 rounded-lg bg-white/[0.02] p-3">
-              <p className="text-xs font-medium text-gray-500 mb-1">Notes:</p>
-              <p className="text-sm text-gray-400">{po.notes}</p>
+            <div className="mt-4 rounded-lg bg-slate-50 p-3">
+              <p className="text-xs font-medium text-slate-500 mb-1">Notes:</p>
+              <p className="text-sm text-slate-600">{po.notes}</p>
             </div>
           )}
         </Card>
@@ -361,8 +361,8 @@ export default function PurchaseOrdersPage() {
         <div
           className={`fixed top-4 right-4 z-[100] rounded-xl px-4 py-3 shadow-lg text-sm font-medium transition-all animate-in slide-in-from-right ${
             toast.type === 'success'
-              ? 'bg-green-500/20 text-green-600 border border-status-success/30'
-              : 'bg-red-500/20 text-red-600 border border-status-error/30'
+              ? 'bg-green-50 text-green-700 border border-green-200'
+              : 'bg-red-50 text-red-700 border border-red-200'
           }`}
         >
           {toast.message}
@@ -391,8 +391,8 @@ export default function PurchaseOrdersPage() {
               onClick={() => setStatusFilter(s as POStatus | 'All')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 statusFilter === s
-                  ? 'bg-electric text-[#0a0e2a]'
-                  : 'bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-white/10'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-slate-200'
               }`}
             >
               {s}
@@ -430,7 +430,7 @@ export default function PurchaseOrdersPage() {
               {filtered.map((po) => (
                 <tr
                   key={po.id}
-                  className="border-b border-gray-200 transition-colors hover:bg-white/[0.02] cursor-pointer"
+                  className="border-b border-gray-200 transition-colors hover:bg-slate-50 cursor-pointer"
                   onClick={() => setDetailPO(po.id)}
                 >
                   <td className="px-4 py-3 text-gray-900 font-mono text-xs font-medium">{po.poNumber}</td>
@@ -504,9 +504,9 @@ export default function PurchaseOrdersPage() {
         <div className="space-y-4">
           {/* Supplier Selection */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Supplier</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Supplier</label>
             <select
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
               value={form.supplierId}
               onChange={(e) => {
                 setForm({ ...form, supplierId: e.target.value, items: [] });
@@ -522,9 +522,9 @@ export default function PurchaseOrdersPage() {
           {/* Items Selection */}
           {form.supplierId && (
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Items</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Items</label>
               <select
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
                 value=""
                 onChange={(e) => { addItemToForm(e.target.value); e.target.value = ''; }}
               >
@@ -540,10 +540,10 @@ export default function PurchaseOrdersPage() {
 
           {/* Items Table */}
           {form.items.length > 0 && (
-            <div className="overflow-x-auto rounded-lg border border-white/10">
+            <div className="overflow-x-auto rounded-xl border border-slate-200">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-white/[0.02]">
+                  <tr className="border-b border-gray-200 bg-slate-50">
                     <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">Item</th>
                     <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Qty</th>
                     <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
@@ -561,7 +561,7 @@ export default function PurchaseOrdersPage() {
                           min={1}
                           value={item.quantity}
                           onChange={(e) => updateFormItem(item.itemId, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-16 rounded border border-white/10 bg-whiteer px-2 py-1 text-right text-xs text-gray-900 outline-none focus:border-electric/50"
+                          className="w-16 h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2">
@@ -571,7 +571,7 @@ export default function PurchaseOrdersPage() {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateFormItem(item.itemId, 'unitPrice', parseFloat(e.target.value) || 0)}
-                          className="w-20 rounded border border-white/10 bg-whiteer px-2 py-1 text-right text-xs text-gray-900 outline-none focus:border-electric/50"
+                          className="w-20 h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2 text-right text-gray-900 text-xs font-medium">
@@ -603,23 +603,23 @@ export default function PurchaseOrdersPage() {
 
           {/* Expected Delivery */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Expected Delivery Date</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Expected Delivery Date</label>
             <input
               type="date"
               value={form.expectedDelivery}
               onChange={(e) => setForm({ ...form, expectedDelivery: e.target.value })}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
             />
           </div>
 
           {/* Notes */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Notes</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
             <textarea
               placeholder="Optional notes for this purchase order..."
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
               rows={2}
             />
           </div>

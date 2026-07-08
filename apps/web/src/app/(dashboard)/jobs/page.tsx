@@ -944,11 +944,11 @@ export default function JobsPage() {
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Priority</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -979,11 +979,11 @@ export default function JobsPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Assigned Tech</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Tech</label>
             <select
               value={editTechId}
               onChange={(e) => setEditTechId(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
             >
               <option value="">Unassigned</option>
               {teamMembers.map((tm) => (

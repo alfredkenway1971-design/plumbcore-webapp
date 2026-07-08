@@ -12,6 +12,7 @@ import {
 } from '@/pkg/ui-components';
 import { teamMembers, getStats } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
+import { supabase } from '@/lib/supabase';
 
 /* ── Types ── */
 type Tab = 'profile' | 'company' | 'team' | 'notifications' | 'billing';
@@ -353,14 +354,30 @@ export default function SettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('company');
 
-  // Company form state
-  const [company, setCompany] = useState<CompanyData>({ ...COMPANY_DATA });
+  // Company form state — initialize from Zustand store to preserve persisted data (logo, etc.)
+  const [company, setCompany] = useState<CompanyData>(() => {
+    const state = useAuthStore.getState();
+    if (state.company?.name) {
+      return {
+        name: state.company.name || COMPANY_DATA.name,
+        email: state.company.email || COMPANY_DATA.email,
+        phone: state.company.phone || COMPANY_DATA.phone,
+        website: COMPANY_DATA.website,
+        street: state.company.address || COMPANY_DATA.street,
+        city: state.company.city || COMPANY_DATA.city,
+        state: state.company.state || COMPANY_DATA.state,
+        zip: state.company.zip || COMPANY_DATA.zip,
+        logo_url: state.company.logo_url || undefined,
+      };
+    }
+    return { ...COMPANY_DATA };
+  });
   const [hours, setHours] = useState<BusinessHours>(JSON.parse(JSON.stringify(DEFAULT_HOURS)));
   const [pricing, setPricing] = useState<PricingSettings>({ ...PRICING_DEFAULTS });
   const [savingCompany, setSavingCompany] = useState(false);
   const [companySaved, setCompanySaved] = useState(false);
 
-  // Load company data from Zustand store (persisted) on mount
+  // Load company data from Zustand store (persisted) on mount — fallback if lazy hydration hasn't completed
   useEffect(() => {
     const state = useAuthStore.getState();
     if (state.company?.name) {
@@ -369,6 +386,10 @@ export default function SettingsPage() {
         name: state.company?.name || prev.name,
         email: state.company?.email || prev.email,
         phone: state.company?.phone || prev.phone,
+        street: state.company?.address || prev.street,
+        city: state.company?.city || prev.city,
+        state: state.company?.state || prev.state,
+        zip: state.company?.zip || prev.zip,
         logo_url: state.company?.logo_url || prev.logo_url,
       }));
     }
@@ -496,6 +517,18 @@ export default function SettingsPage() {
     setMembers((prev) => [...prev, newMember]);
     setInviteOpen(false);
     setInviteForm({ name: '', email: '', role: 'tech' });
+
+    // Open mailto link with invitation email
+    const subject = encodeURIComponent(`You've been invited to join ${company.name || 'PlumbCore AI'}`);
+    const body = encodeURIComponent(
+      `Hi ${inviteForm.name},\n\n` +
+      `You've been invited to join ${company.name || 'PlumbCore AI'} as a ${inviteForm.role.replace('-', ' ')}.\n\n` +
+      `Click the link below to accept your invitation and set up your account:\n\n` +
+      `https://app.plumbcore.ai/accept-invite?email=${encodeURIComponent(inviteForm.email)}\n\n` +
+      `Welcome aboard!\n` +
+      `— The PlumbCore AI Team`
+    );
+    window.open(`mailto:${inviteForm.email}?subject=${subject}&body=${body}`, '_blank');
   };
 
   /* ── Edit team member ── */
@@ -616,9 +649,30 @@ export default function SettingsPage() {
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
+                        // Try Supabase Storage upload first
+                        try {
+                          const fileExt = file.name.split('.').pop();
+                          const fileName = `logo-${Date.now()}.${fileExt}`;
+                          const { data: uploadData, error: uploadError } = await supabase.storage
+                            .from('company-logos')
+                            .upload(fileName, file, { upsert: true });
+                          if (!uploadError && uploadData) {
+                            const { data: urlData } = supabase.storage
+                              .from('company-logos')
+                              .getPublicUrl(fileName);
+                            if (urlData?.publicUrl) {
+                              setCompany({ ...company, logo_url: urlData.publicUrl });
+                              useAuthStore.getState().updateCompany({ logo_url: urlData.publicUrl });
+                              return;
+                            }
+                          }
+                        } catch {
+                          // Supabase storage not configured — fall through to base64
+                        }
+                        // Fallback: store as base64 data URL in Zustand
                         const reader = new FileReader();
                         reader.onload = (ev) => {
                           const dataUrl = ev.target?.result as string;
