@@ -26,6 +26,11 @@ export interface AuthState {
     stripe_customer_id: string;
     stripe_subscription_id: string;
     onboarding_complete: boolean;
+    logo_url?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
   } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -35,6 +40,7 @@ export interface AuthState {
   logout: () => Promise<void>;
   restoreSession: () => Promise<void>;
   updateProfile: (data: Partial<NonNullable<AuthState['profile']>>) => Promise<void>;
+  updateCompany: (data: Partial<NonNullable<AuthState['company']>>) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -130,11 +136,18 @@ export const useAuthStore = create<AuthState>()(
           profile: state.profile ? { ...state.profile, ...data } : null,
         }));
       },
+
+      updateCompany: (data) => {
+        set((state) => ({
+          company: state.company ? { ...state.company, ...data } : null,
+        }));
+      },
     }),
     {
       name: 'plumbcore-auth',
       partialize: (state) => ({
         user: state.user,
+        company: state.company,
         isAuthenticated: state.isAuthenticated,
         token: state.token,
       }),

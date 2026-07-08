@@ -15,6 +15,7 @@ import { invoices, clients } from '@/lib/mock-data';
 import type { Invoice } from '@/lib/mock-data';
 import { formatCurrency } from '@/lib/invoice-engine';
 import { jsPDF } from 'jspdf';
+import { useAuthStore } from '@/lib/store';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -82,6 +83,15 @@ export default function InvoiceDetailPage() {
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
   const [recordingPayment, setRecordingPayment] = useState(false);
 
+  // Edit Invoice state
+  const [editing, setEditing] = useState(false);
+  const [editLineItems, setEditLineItems] = useState<{ description: string; quantity: number; unitPrice: number; total: number }[]>([]);
+  const [editTaxRate, setEditTaxRate] = useState(8);
+  const [editSaving, setEditSaving] = useState(false);
+
+  // Company logo for PDF
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
+
   // Notes
   const [invoiceNotes, setInvoiceNotes] = useState('');
 
@@ -94,7 +104,11 @@ export default function InvoiceDetailPage() {
       else {
         setInvoiceNotes(found.notes || '');
         setPaymentAmount(found.amount);
+        setEditLineItems(found.lineItems.map(li => ({ ...li })));
       }
+      // Load company logo from Zustand
+      const state = useAuthStore.getState();
+      if (state.company?.logo_url) setCompanyLogo(state.company.logo_url);
       setLoading(false);
     }, 300);
     return () => clearTimeout(t);
@@ -165,6 +179,16 @@ export default function InvoiceDetailPage() {
       const margin = 20;
       let y = margin;
 
+      // Company Logo (if uploaded)
+      if (companyLogo) {
+        try {
+          doc.addImage(companyLogo, 'JPEG', margin, y, 35, 15);
+        } catch {
+          // Fallback if image can't be added (e.g. unsupported format)
+          doc.addImage(companyLogo, 'PNG', margin, y, 35, 15);
+        }
+      }
+
       // Header
       doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
@@ -176,20 +200,22 @@ export default function InvoiceDetailPage() {
       doc.text(invoice.id, pageWidth - margin, y, { align: 'right' });
 
       // Company info
-      y += 15;
+      y += 10;
       doc.setFontSize(16);
       doc.setTextColor(0);
       doc.setFont('helvetica', 'bold');
-      doc.text('PlumbCore AI', margin, y);
+      // If logo was used, shift company name to the right
+      const nameX = companyLogo ? margin + 42 : margin;
+      doc.text('PlumbCore AI', nameX, y - 5);
       y += 6;
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(80);
-      doc.text('Professional Plumbing Services', margin, y);
+      doc.text('Professional Plumbing Services', nameX, y);
       y += 4;
-      doc.text('Austin, TX', margin, y);
+      doc.text('Austin, TX', nameX, y);
       y += 4;
-      doc.text('contact@plumbcore.ai', margin, y);
+      doc.text('contact@plumbcore.ai', nameX, y);
 
       // Invoice details (right side)
       const detailsX = pageWidth - margin - 60;
@@ -468,7 +494,17 @@ export default function InvoiceDetailPage() {
 
       {/* Line Items Table */}
       <Card variant="default" padding="md">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Line Items</h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900">Line Items</h3>
+          {editing && (
+            <button
+              onClick={() => setEditLineItems([...editLineItems, { description: '', quantity: 1, unitPrice: 0, total: 0 }])}
+              className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              + Add Line Item
+            </button>
+          )}
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[400px]">
             <thead>
@@ -480,31 +516,128 @@ export default function InvoiceDetailPage() {
               </tr>
             </thead>
             <tbody>
-              {invoice.lineItems.map((item, idx) => (
+              {(editing ? editLineItems : invoice.lineItems).map((item, idx) => (
                 <tr key={idx} className="border-b border-gray-200/50 last:border-b-0">
-                  <td className="py-3 pr-4 text-sm text-gray-900">{item.description}</td>
-                  <td className="py-3 px-4 text-sm text-gray-400 text-right">{item.quantity}</td>
-                  <td className="py-3 px-4 text-sm text-gray-400 text-right">{formatCurrency(item.unitPrice)}</td>
-                  <td className="py-3 pl-4 text-sm font-medium text-gray-900 text-right">{formatCurrency(item.total)}</td>
+                  {editing ? (
+                    <>
+                      <td className="py-2 pr-4">
+                        <input
+                          value={item.description}
+                          onChange={(e) => {
+                            const next = [...editLineItems];
+                            next[idx] = { ...next[idx], description: e.target.value };
+                            setEditLineItems(next);
+                          }}
+                          placeholder="Description"
+                          className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                        />
+                      </td>
+                      <td className="py-2 px-4">
+                        <input
+                          type="number" min="0" step="0.5"
+                          value={item.quantity}
+                          onChange={(e) => {
+                            const q = parseFloat(e.target.value) || 0;
+                            const next = [...editLineItems];
+                            next[idx] = { ...next[idx], quantity: q, total: q * next[idx].unitPrice };
+                            setEditLineItems(next);
+                          }}
+                          className="w-16 h-9 px-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                        />
+                      </td>
+                      <td className="py-2 px-4">
+                        <input
+                          type="number" min="0" step="0.01"
+                          value={item.unitPrice}
+                          onChange={(e) => {
+                            const p = parseFloat(e.target.value) || 0;
+                            const next = [...editLineItems];
+                            next[idx] = { ...next[idx], unitPrice: p, total: next[idx].quantity * p };
+                            setEditLineItems(next);
+                          }}
+                          className="w-20 h-9 px-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                        />
+                      </td>
+                      <td className="py-2 pl-4 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <span className="text-sm font-medium text-gray-900">{formatCurrency(item.total)}</span>
+                          <button
+                            onClick={() => {
+                              if (editLineItems.length <= 1) return;
+                              setEditLineItems(editLineItems.filter((_, i) => i !== idx));
+                            }}
+                            className="p-1 rounded text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                            title="Remove"
+                          >
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="py-3 pr-4 text-sm text-gray-900">{item.description}</td>
+                      <td className="py-3 px-4 text-sm text-gray-400 text-right">{item.quantity}</td>
+                      <td className="py-3 px-4 text-sm text-gray-400 text-right">{formatCurrency(item.unitPrice)}</td>
+                      <td className="py-3 pl-4 text-sm font-medium text-gray-900 text-right">{formatCurrency(item.total)}</td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
+        {/* Edit mode: Tax Rate + Save */}
+        {editing && (
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-gray-500">Tax Rate (%)</label>
+              <input
+                type="number" min="0" max="100" step="0.5"
+                value={editTaxRate}
+                onChange={(e) => setEditTaxRate(parseFloat(e.target.value) || 0)}
+                className="w-20 h-9 px-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 text-center outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <Button size="sm" loading={editSaving} onClick={() => {
+                setEditSaving(true);
+                setTimeout(() => {
+                  setEditSaving(false);
+                  setEditing(false);
+                  showToast('Invoice updated successfully');
+                }, 500);
+              }}>
+                Save Changes
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => {
+                setEditing(false);
+                if (invoice) setEditLineItems(invoice.lineItems.map(li => ({ ...li })));
+              }}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Totals */}
         <div className="mt-4 border-t border-gray-200 pt-3 space-y-1.5">
           <div className="flex justify-between text-sm">
             <span className="text-gray-400">Subtotal</span>
-            <span className="text-gray-900">{formatCurrency(subtotal)}</span>
+            <span className="text-gray-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0))}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Tax (8%)</span>
-            <span className="text-gray-900">{formatCurrency(tax)}</span>
+            <span className="text-gray-400">Tax ({editing ? editTaxRate : 8}%)</span>
+            <span className="text-gray-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
           </div>
           <div className="flex justify-between text-base font-bold border-t border-gray-200 pt-2">
             <span className="text-gray-900">Total</span>
-            <span className="text-blue-600">{formatCurrency(grandTotal)}</span>
+            <span className="text-blue-600">{formatCurrency(
+              (editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0) * (1 + (editing ? editTaxRate : 8) / 100)
+            )}</span>
           </div>
         </div>
       </Card>
@@ -576,8 +709,8 @@ export default function InvoiceDetailPage() {
           </svg>
           Download PDF
         </Button>
-        <Button variant="outline" size="sm">
-          Edit Invoice
+        <Button variant="outline" size="sm" onClick={() => setEditing(!editing)}>
+          {editing ? 'Cancel Editing' : 'Edit Invoice'}
         </Button>
       </div>
 

@@ -25,6 +25,7 @@ interface CompanyData {
   city: string;
   state: string;
   zip: string;
+  logo_url?: string;
 }
 
 interface DayHours {
@@ -573,6 +574,53 @@ export default function SettingsPage() {
           <Card variant="default" padding="lg">
             <h2 className="mb-5 text-base font-semibold text-gray-900">Company Information</h2>
             <div className="space-y-4">
+              {/* Logo Upload */}
+              <div className="flex items-center gap-5 pb-4 border-b border-gray-100">
+                <div className="relative shrink-0">
+                  {company.logo_url ? (
+                    <img src={company.logo_url} alt="Company logo" className="w-20 h-20 rounded-xl object-cover border-2 border-gray-200" />
+                  ) : (
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-xl font-bold text-white border-2 border-gray-200">
+                      {company.name.charAt(0) || 'P'}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                          const dataUrl = ev.target?.result as string;
+                          setCompany({ ...company, logo_url: dataUrl });
+                          useAuthStore.getState().updateCompany({ logo_url: dataUrl });
+                        };
+                        reader.readAsDataURL(file);
+                      }}
+                    />
+                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors shadow-sm cursor-pointer">
+                      {company.logo_url ? 'Change Logo' : 'Upload Logo'}
+                    </span>
+                  </label>
+                  {company.logo_url && (
+                    <button
+                      onClick={() => {
+                        setCompany({ ...company, logo_url: '' });
+                        useAuthStore.getState().updateCompany({ logo_url: '' });
+                      }}
+                      className="text-xs text-red-500 hover:text-red-600 transition-colors text-left"
+                    >
+                      Remove Logo
+                    </button>
+                  )}
+                  <p className="text-[10px] text-gray-400">Your logo appears on invoices and reports</p>
+                </div>
+              </div>
               <Input
                 label="Company Name"
                 value={company.name}
