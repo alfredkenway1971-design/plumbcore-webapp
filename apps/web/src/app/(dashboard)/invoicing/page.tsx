@@ -16,6 +16,7 @@ import type { Invoice, Job } from '@/lib/mock-data';
 import { generateInvoice, formatCurrency, generateInvoiceNumber, calculateDueDate } from '@/lib/invoice-engine';
 import { pricebook, partsList, repairTypesList } from '@/lib/pricebook-data';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
+import { jsPDF } from 'jspdf';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -225,8 +226,6 @@ export default function InvoicingPage() {
       a.click();
       URL.revokeObjectURL(url);
     } else {
-      const { jsPDF } = window as any;
-      if (!jsPDF) { alert('Install jspdf for PDF export'); return; }
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
       doc.setFontSize(18);
       doc.text('PlumbCore AI — Invoices Report', 20, 30);
@@ -435,8 +434,6 @@ export default function InvoicingPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          const { jsPDF } = window as any;
-                          if (!jsPDF) { alert('Downloading invoice — install jspdf for full PDF support'); return; }
                           const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                           doc.setFontSize(18);
                           doc.text('PlumbCore AI', 20, 30);
