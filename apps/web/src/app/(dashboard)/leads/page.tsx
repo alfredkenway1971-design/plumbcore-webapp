@@ -23,6 +23,14 @@ interface Lead {
   createdAt: string;
 }
 
+interface NewLeadForm {
+  customerName: string;
+  phone: string;
+  email: string;
+  issueDescription: string;
+  leadSource: string;
+}
+
 /* ── Mock Leads ── */
 const MOCK_LEADS: Lead[] = [
   {
@@ -119,10 +127,10 @@ const MOCK_LEADS: Lead[] = [
 
 /* ── Status Badge Map ── */
 const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string }> = {
-  new: { label: 'New', color: 'bg-status-info/15 text-blue-600 border-status-info/20' },
-  contacted: { label: 'Contacted', color: 'bg-accent-amber/15 text-amber-600 border-accent-amber/20' },
-  converted: { label: 'Converted', color: 'bg-green-500/15 text-green-600 border-status-success/20' },
-  archived: { label: 'Archived', color: 'bg-steel/15 text-gray-400 border-steel/20' },
+  new: { label: 'New', color: 'bg-blue-50 text-blue-600 border-blue-200' },
+  contacted: { label: 'Contacted', color: 'bg-amber-50 text-amber-600 border-amber-200' },
+  converted: { label: 'Converted', color: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
+  archived: { label: 'Archived', color: 'bg-slate-50 text-slate-400 border-slate-200' },
 };
 
 /* ── Helpers ── */
@@ -186,21 +194,46 @@ function LeadDetailPanel({
   };
 
   return (
-    <div className="border-t border-gray-200 bg-whiteer/50 px-4 sm:px-6 py-5">
+    <div className="border-t border-slate-100 bg-slate-50/50 px-4 sm:px-6 py-5">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Left: Customer Info & Analysis */}
         <div className="space-y-4">
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Issue Description</p>
-            <p className="text-sm text-gray-900">{lead.issueDescription}</p>
+          {/* Contact Info — prominent */}
+          <div className="rounded-xl bg-white border border-slate-200 p-4">
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">Contact Information</p>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{lead.phone}</p>
+                  <p className="text-[10px] text-slate-400">Phone</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{lead.email}</p>
+                  <p className="text-[10px] text-slate-400">Email</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="rounded-xl bg-electric/5 border border-electric/20 p-3">
-            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">AI Analysis</p>
-            <p className="text-sm text-blue-600 font-medium">{lead.aiDetectedProblem}</p>
+
+          <div>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Issue Description</p>
+            <p className="text-sm text-slate-900">{lead.issueDescription}</p>
+          </div>
+          <div className="rounded-xl bg-blue-50 border border-blue-100 p-3">
+            <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">AI Analysis</p>
+            <p className="text-sm text-blue-700 font-medium">{lead.aiDetectedProblem}</p>
             {lead.suggestedParts.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {lead.suggestedParts.map((part, i) => (
-                  <span key={i} className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full bg-whiteer text-gray-400 border border-gray-200">
+                  <span key={i} className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full bg-white text-slate-500 border border-slate-200">
                     {part}
                   </span>
                 ))}
@@ -226,27 +259,27 @@ function LeadDetailPanel({
 
         {/* Right: Adjust Estimate & Actions */}
         <div className="space-y-4">
-          <div className="rounded-xl bg-white border border-gray-200 p-4">
-            <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">Adjust Estimate</p>
+          <div className="rounded-xl bg-white border border-slate-200 p-4">
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">Adjust Estimate</p>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Labor $</label>
+                <label className="block text-xs text-slate-500 mb-1">Labor $</label>
                 <input
                   value={adjLabor}
                   onChange={(e) => setAdjLabor(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-whiteer px-3 py-2 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                  className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Parts $</label>
+                <label className="block text-xs text-slate-500 mb-1">Parts $</label>
                 <input
                   value={adjParts}
                   onChange={(e) => setAdjParts(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-whiteer px-3 py-2 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                  className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                 />
               </div>
-              <div className="flex justify-between items-center py-2 border-t border-gray-200">
-                <span className="text-sm font-semibold text-gray-900">Total</span>
+              <div className="flex justify-between items-center py-2 border-t border-slate-200">
+                <span className="text-sm font-semibold text-slate-900">Total</span>
                 <span className="text-base font-bold text-blue-600">{totalEstimate}</span>
               </div>
             </div>
@@ -254,19 +287,19 @@ function LeadDetailPanel({
 
           <div className="flex flex-wrap gap-2">
             {lead.status === 'new' && (
-              <Button variant="secondary" size="sm" onClick={onMarkContacted}>
+              <button onClick={onMarkContacted} className="h-9 px-4 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
                 Mark Contacted
-              </Button>
+              </button>
             )}
             {(lead.status === 'new' || lead.status === 'contacted') && (
-              <Button variant="primary" size="sm" loading={converting} onClick={handleConvert}>
-                Convert to Job
-              </Button>
+              <button onClick={handleConvert} disabled={converting} className="h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                {converting ? 'Converting...' : 'Convert to Job'}
+              </button>
             )}
             {lead.status !== 'archived' && (
-              <Button variant="ghost" size="sm" onClick={onArchive}>
+              <button onClick={onArchive} className="h-9 px-4 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
                 Archive
-              </Button>
+              </button>
             )}
           </div>
         </div>
@@ -286,6 +319,48 @@ export default function LeadsPage() {
   const [filterTab, setFilterTab] = useState<LeadStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  /* ── Add Lead Modal ── */
+  const [showAddLead, setShowAddLead] = useState(false);
+  const [newLead, setNewLead] = useState<NewLeadForm>({
+    customerName: '',
+    phone: '',
+    email: '',
+    issueDescription: '',
+    leadSource: '',
+  });
+  const [addingLead, setAddingLead] = useState(false);
+
+  const resetNewLeadForm = () => {
+    setNewLead({ customerName: '', phone: '', email: '', issueDescription: '', leadSource: '' });
+  };
+
+  const handleAddLead = () => {
+    if (!newLead.customerName.trim() || !newLead.issueDescription.trim()) return;
+    setAddingLead(true);
+    setTimeout(() => {
+      const newId = `LEAD-${String(leads.length + 1).padStart(3, '0')}`;
+      const lead: Lead = {
+        id: newId,
+        customerName: newLead.customerName.trim(),
+        phone: newLead.phone.trim() || '(512) 555-0000',
+        email: newLead.email.trim() || 'new@lead.com',
+        issueDescription: newLead.issueDescription.trim(),
+        aiDetectedProblem: 'Awaiting AI analysis...',
+        suggestedParts: [],
+        laborEstimate: 'TBD',
+        partsEstimate: 'TBD',
+        totalEstimate: 'TBD',
+        status: 'new',
+        photos: [],
+        createdAt: new Date().toISOString(),
+      };
+      setLeads((prev) => [lead, ...prev]);
+      setAddingLead(false);
+      setShowAddLead(false);
+      resetNewLeadForm();
+    }, 500);
+  };
 
   /* ── Load ── */
   useEffect(() => {
@@ -380,19 +455,25 @@ export default function LeadsPage() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Lead Management</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          {leadCounts.all} lead{leadCounts.all !== 1 ? 's' : ''} captured
-          {filterTab !== 'all' && ` · ${leadCounts[filterTab]} ${filterTab}`}
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Lead Management</h1>
+          <p className="text-sm text-slate-500 mt-0.5">
+            {leadCounts.all} lead{leadCounts.all !== 1 ? 's' : ''} captured
+            {filterTab !== 'all' && ` · ${leadCounts[filterTab]} ${filterTab}`}
+          </p>
+        </div>
+        <button onClick={() => { resetNewLeadForm(); setShowAddLead(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors shadow-sm">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          Add New Lead
+        </button>
       </div>
 
       {/* Loading State */}
       {loading && (
         <Card variant="default" padding="none" className="overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-200">
-            <div className="h-5 w-32 rounded bg-gray-50" />
+          <div className="px-4 py-3 border-b border-slate-100">
+            <div className="h-5 w-32 rounded bg-slate-100 animate-pulse" />
           </div>
           <LeadRowSkeleton />
         </Card>
@@ -410,8 +491,8 @@ export default function LeadsPage() {
                   onClick={() => { setFilterTab(tab); setExpandedId(null); }}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${
                     filterTab === tab
-                      ? 'bg-electric/15 text-blue-600'
-                      : 'text-gray-400 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50'
                   }`}
                 >
                   {tab}
@@ -422,14 +503,14 @@ export default function LeadsPage() {
 
             {/* Search */}
             <div className="relative sm:ml-auto w-full sm:w-64">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search leads..."
-                className="w-full rounded-lg border border-white/10 bg-whiteer pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-steel/50 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full h-10 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-600 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
               />
             </div>
           </div>
@@ -450,7 +531,7 @@ export default function LeadsPage() {
           ) : (
             <Card variant="default" padding="none" className="overflow-hidden">
               {/* Table Header */}
-              <div className="hidden sm:grid grid-cols-8 gap-2 px-4 sm:px-6 py-3 border-b border-gray-200 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+              <div className="hidden sm:grid grid-cols-8 gap-2 px-4 sm:px-6 py-3 border-b border-slate-100 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                 <span>Lead ID</span>
                 <span className="col-span-1">Customer</span>
                 <span className="col-span-1 hidden sm:block">Phone</span>
@@ -462,7 +543,7 @@ export default function LeadsPage() {
               </div>
 
               {/* Table Body */}
-              <div className="divide-y divide-white-border">
+              <div className="divide-y divide-slate-100">
                 {filteredLeads.map((lead) => {
                   const isExpanded = expandedId === lead.id;
                   const statusCfg = STATUS_CONFIG[lead.status];
@@ -471,25 +552,25 @@ export default function LeadsPage() {
                       {/* Row */}
                       <button
                         onClick={() => toggleExpand(lead.id)}
-                        className="w-full text-left grid grid-cols-1 sm:grid-cols-8 gap-2 px-4 sm:px-6 py-3 hover:bg-gray-50 transition-colors items-center"
+                        className="w-full text-left grid grid-cols-1 sm:grid-cols-8 gap-2 px-4 sm:px-6 py-3 hover:bg-slate-50 transition-colors items-center"
                       >
                         {/* Lead ID */}
                         <span className="text-xs font-mono font-semibold text-blue-600">{lead.id}</span>
 
                         {/* Customer Name */}
-                        <span className="text-sm font-medium text-gray-900 truncate">{lead.customerName}</span>
+                        <span className="text-sm font-medium text-slate-900 truncate">{lead.customerName}</span>
 
                         {/* Phone */}
-                        <span className="text-xs text-gray-400 hidden sm:block">{lead.phone}</span>
+                        <span className="text-xs text-slate-400 hidden sm:block">{lead.phone}</span>
 
                         {/* Email */}
-                        <span className="text-xs text-gray-500 hidden md:block truncate">{lead.email}</span>
+                        <span className="text-xs text-slate-400 hidden md:block truncate">{lead.email}</span>
 
                         {/* Issue */}
-                        <span className="text-xs text-gray-400 truncate hidden lg:block">{lead.issueDescription.slice(0, 50)}...</span>
+                        <span className="text-xs text-slate-400 truncate hidden lg:block">{lead.issueDescription.slice(0, 50)}...</span>
 
                         {/* Estimate */}
-                        <span className="text-xs font-semibold text-gray-900">{lead.totalEstimate}</span>
+                        <span className="text-xs font-semibold text-slate-900">{lead.totalEstimate}</span>
 
                         {/* Status Badge */}
                         <span className={`inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-semibold rounded-full border ${statusCfg.color}`}>
@@ -497,7 +578,7 @@ export default function LeadsPage() {
                         </span>
 
                         {/* Created */}
-                        <span className="text-xs text-gray-500">{formatDateTime(lead.createdAt)}</span>
+                        <span className="text-xs text-slate-400">{formatDateTime(lead.createdAt)}</span>
                       </button>
 
                       {/* Expanded Detail */}
@@ -515,6 +596,88 @@ export default function LeadsPage() {
               </div>
             </Card>
           )}
+        </>
+      )}
+
+      {/* ── Add New Lead Modal ── */}
+      {showAddLead && (
+        <>
+          <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setShowAddLead(false); resetNewLeadForm(); }}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
+                <h2 className="text-lg font-bold text-slate-900">Add New Lead</h2>
+                <p className="text-sm text-slate-500 mt-0.5">Enter the lead details captured from a customer inquiry.</p>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Customer Name *</label>
+                  <input
+                    type="text" placeholder="e.g. Sarah Mitchell"
+                    value={newLead.customerName}
+                    onChange={(e) => setNewLead({ ...newLead, customerName: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                    <input
+                      type="tel" placeholder="e.g. (512) 555-0142"
+                      value={newLead.phone}
+                      onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <input
+                      type="email" placeholder="e.g. sarah@email.com"
+                      value={newLead.email}
+                      onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Issue Description *</label>
+                  <textarea
+                    rows={3} placeholder="Describe the plumbing issue..."
+                    value={newLead.issueDescription}
+                    onChange={(e) => setNewLead({ ...newLead, issueDescription: e.target.value })}
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Lead Source</label>
+                  <select
+                    value={newLead.leadSource}
+                    onChange={(e) => setNewLead({ ...newLead, leadSource: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                  >
+                    <option value="">Select source...</option>
+                    <option value="phone">Phone Call</option>
+                    <option value="email">Email</option>
+                    <option value="website">Website Form</option>
+                    <option value="chat">AI Chat Widget</option>
+                    <option value="referral">Referral</option>
+                    <option value="walk-in">Walk-in</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
+                <button onClick={() => { setShowAddLead(false); resetNewLeadForm(); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+                <button onClick={handleAddLead} disabled={addingLead || !newLead.customerName.trim() || !newLead.issueDescription.trim()} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                  {addingLead ? 'Adding...' : 'Add Lead'}
+                </button>
+              </div>
+            </div>
+          </div>
         </>
       )}
     </div>

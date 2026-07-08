@@ -475,158 +475,157 @@ export default function InvoicingPage() {
       )}
 
       {/* ── Create Invoice Modal ── */}
-      <Modal
-        open={createModalOpen}
-        onClose={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }}
-        title="Create Invoice"
-        description="Select a job and configure line items to generate a new invoice."
-        size="lg"
-        footer={
-          <>
-            <Button variant="outline" size="sm" onClick={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }}>
-              Cancel
-            </Button>
-            <Button size="sm" loading={generating} onClick={handleGenerateInvoice} disabled={!invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0}>
-              Generate Invoice
-            </Button>
-          </>
-        }
-      >
-        <div className="space-y-4">
-          {/* Job Select */}
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Select Job *</label>
-            <select
-              value={invoiceForm.selectedJobId}
-              onChange={(e) => handleJobSelect(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
-            >
-              <option value="">Choose a job...</option>
-              {jobs
-                .filter((j) => j.status !== 'cancelled')
-                .map((job) => (
-                  <option key={job.id} value={job.id}>
-                    {job.id} — {job.title} ({job.clientName})
-                  </option>
-                ))}
-            </select>
-          </div>
+      {createModalOpen && (
+        <>
+          <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
+                <h2 className="text-lg font-bold text-slate-900">Create Invoice</h2>
+                <p className="text-sm text-slate-500 mt-0.5">Select a job and configure line items to generate a new invoice.</p>
+              </div>
 
-          {/* Selected Job Info */}
-          {selectedJob && (
-            <div className="rounded-lg bg-gray-50 p-3 space-y-1">
-              <p className="text-sm font-medium text-gray-900">{selectedJob.title}</p>
-              <p className="text-xs text-gray-500">{selectedJob.clientName} — {selectedJob.description.substring(0, 100)}</p>
-              <p className="text-xs text-gray-400">Est. Cost: {formatCurrency(selectedJob.estimatedCost)}</p>
-            </div>
-          )}
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+                {/* Job Select */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Select Job *</label>
+                  <select
+                    value={invoiceForm.selectedJobId}
+                    onChange={(e) => handleJobSelect(e.target.value)}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                  >
+                    <option value="">Choose a job...</option>
+                    {jobs
+                      .filter((j) => j.status !== 'cancelled')
+                      .map((job) => (
+                        <option key={job.id} value={job.id}>
+                          {job.id} — {job.title} ({job.clientName})
+                        </option>
+                      ))}
+                  </select>
+                </div>
 
-          {/* Line Items */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-400">Line Items</label>
-              <Button variant="ghost" size="sm" onClick={addLineItem}>
-                + Add Item
-              </Button>
-            </div>
-            {invoiceForm.lineItems.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">No line items yet. Add items or select a job to auto-populate.</p>
-            ) : (
-              <div className="space-y-2">
-                {invoiceForm.lineItems.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-2 rounded-lg border border-gray-200 p-2">
-                    <div className="flex-1 min-w-0">
-                      <input
-                        placeholder="Description"
-                        value={item.description}
-                        onChange={(e) => updateLineItem(idx, 'description', e.target.value)}
-                        className="w-full rounded border border-white/10 bg-whiteer px-2 py-1.5 text-xs text-gray-900 placeholder-steel/50 outline-none focus:border-electric/50"
-                      />
-                    </div>
-                    <div className="w-16 shrink-0">
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        placeholder="Qty"
-                        value={item.quantity}
-                        onChange={(e) => updateLineItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                        className="w-full rounded border border-white/10 bg-whiteer px-2 py-1.5 text-xs text-gray-900 text-right placeholder-steel/50 outline-none focus:border-electric/50"
-                      />
-                    </div>
-                    <div className="w-20 shrink-0">
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        placeholder="Price"
-                        value={item.unitPrice}
-                        onChange={(e) => updateLineItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
-                        className="w-full rounded border border-white/10 bg-whiteer px-2 py-1.5 text-xs text-gray-900 text-right placeholder-steel/50 outline-none focus:border-electric/50"
-                      />
-                    </div>
-                    <div className="w-20 shrink-0 text-right pt-1.5">
-                      <span className="text-xs font-medium text-gray-900">{formatCurrency(item.total)}</span>
-                    </div>
-                    <button
-                      onClick={() => removeLineItem(idx)}
-                      className="shrink-0 p-1.5 rounded text-gray-500-dark hover:text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+                {/* Selected Job Info */}
+                {selectedJob && (
+                  <div className="rounded-xl bg-slate-50 p-4 space-y-1 border border-slate-100">
+                    <p className="text-sm font-semibold text-slate-900">{selectedJob.title}</p>
+                    <p className="text-xs text-slate-500">{selectedJob.clientName} — {selectedJob.description.substring(0, 100)}</p>
+                    <p className="text-xs text-slate-400">Est. Cost: {formatCurrency(selectedJob.estimatedCost)}</p>
+                  </div>
+                )}
+
+                {/* Line Items */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium text-slate-700">Line Items</label>
+                    <button onClick={addLineItem} className="h-8 px-3 rounded-lg text-xs font-semibold text-blue-600 hover:bg-blue-50 transition-colors">
+                      + Add Item
                     </button>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                  {invoiceForm.lineItems.length === 0 ? (
+                    <p className="text-sm text-slate-400 text-center py-4">No line items yet. Add items or select a job to auto-populate.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {invoiceForm.lineItems.map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-2 rounded-xl border border-slate-200 p-3">
+                          <div className="flex-1 min-w-0">
+                            <input
+                              placeholder="Description"
+                              value={item.description}
+                              onChange={(e) => updateLineItem(idx, 'description', e.target.value)}
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                            />
+                          </div>
+                          <div className="w-16 shrink-0">
+                            <input
+                              type="number" min="0" step="0.5" placeholder="Qty"
+                              value={item.quantity}
+                              onChange={(e) => updateLineItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                            />
+                          </div>
+                          <div className="w-20 shrink-0">
+                            <input
+                              type="number" min="0" step="0.01" placeholder="Price"
+                              value={item.unitPrice}
+                              onChange={(e) => updateLineItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                            />
+                          </div>
+                          <div className="w-20 shrink-0 text-right pt-2">
+                            <span className="text-xs font-semibold text-slate-900">{formatCurrency(item.total)}</span>
+                          </div>
+                          <button
+                            onClick={() => removeLineItem(idx)}
+                            className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-          {/* Tax & Fee */}
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Tax Rate (%)"
-              type="number"
-              min="0"
-              max="100"
-              step="0.5"
-              value={invoiceForm.taxRate}
-              onChange={(e) => setInvoiceForm((prev) => ({ ...prev, taxRate: parseFloat(e.target.value) || 0 }))}
-            />
-            <Input
-              label="Service Fee (%)"
-              type="number"
-              min="0"
-              max="100"
-              step="0.5"
-              value={invoiceForm.serviceFeePercent}
-              onChange={(e) => setInvoiceForm((prev) => ({ ...prev, serviceFeePercent: parseFloat(e.target.value) || 0 }))}
-            />
-          </div>
+                {/* Tax & Fee */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Tax Rate (%)</label>
+                    <input
+                      type="number" min="0" max="100" step="0.5"
+                      value={invoiceForm.taxRate}
+                      onChange={(e) => setInvoiceForm((prev) => ({ ...prev, taxRate: parseFloat(e.target.value) || 0 }))}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Service Fee (%)</label>
+                    <input
+                      type="number" min="0" max="100" step="0.5"
+                      value={invoiceForm.serviceFeePercent}
+                      onChange={(e) => setInvoiceForm((prev) => ({ ...prev, serviceFeePercent: parseFloat(e.target.value) || 0 }))}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                </div>
 
-          {/* Computed Totals */}
-          <div className="rounded-lg border border-gray-200 bg-whiteer p-3 space-y-1">
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>Subtotal</span>
-              <span>{formatCurrency(computedTotals.subtotal)}</span>
-            </div>
-            {computedTotals.serviceFee > 0 && (
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>Service Fee ({invoiceForm.serviceFeePercent}%)</span>
-                <span>{formatCurrency(computedTotals.serviceFee)}</span>
+                {/* Computed Totals */}
+                <div className="rounded-xl bg-slate-50 border border-slate-100 p-4 space-y-1.5">
+                  <div className="flex justify-between text-xs text-slate-500">
+                    <span>Subtotal</span>
+                    <span>{formatCurrency(computedTotals.subtotal)}</span>
+                  </div>
+                  {computedTotals.serviceFee > 0 && (
+                    <div className="flex justify-between text-xs text-slate-500">
+                      <span>Service Fee ({invoiceForm.serviceFeePercent}%)</span>
+                      <span>{formatCurrency(computedTotals.serviceFee)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-xs text-slate-500">
+                    <span>Tax ({invoiceForm.taxRate}%)</span>
+                    <span>{formatCurrency(computedTotals.tax)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm font-bold text-slate-900 border-t border-slate-200 pt-2 mt-2">
+                    <span>Total</span>
+                    <span className="text-blue-600">{formatCurrency(computedTotals.total)}</span>
+                  </div>
+                </div>
               </div>
-            )}
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>Tax ({invoiceForm.taxRate}%)</span>
-              <span>{formatCurrency(computedTotals.tax)}</span>
-            </div>
-            <div className="flex justify-between text-sm font-bold text-gray-900 border-t border-gray-200 pt-1.5 mt-1.5">
-              <span>Total</span>
-              <span className="text-blue-600">{formatCurrency(computedTotals.total)}</span>
+
+              {/* Footer */}
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
+                <button onClick={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+                <button onClick={handleGenerateInvoice} disabled={generating || !invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                  {generating ? 'Generating...' : 'Generate Invoice'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </Modal>
+        </>
+      )}
     </div>
   );
 }

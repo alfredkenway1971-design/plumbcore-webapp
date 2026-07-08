@@ -10,6 +10,7 @@ import {
   Modal,
 } from '@/pkg/ui-components';
 import { suppliers as mockSuppliers } from '@/lib/mock-data';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
 
 interface SupplierForm {
   name: string;
@@ -265,75 +266,95 @@ export default function SuppliersPage() {
       )}
 
       {/* Add Supplier Modal */}
-      <Modal
-        open={modalOpen}
-        onClose={() => { setModalOpen(false); setForm(initialForm); }}
-        title="Add New Supplier"
-        size="md"
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => { setModalOpen(false); setForm(initialForm); }}>
-              Cancel
-            </Button>
-            <Button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson}>
-              Add Supplier
-            </Button>
-          </>
-        }
-      >
-        <div className="space-y-4">
-          <Input
-            label="Company Name"
-            placeholder="e.g. Plumbing Supply Co"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          <Input
-            label="Contact Person"
-            placeholder="e.g. John Smith"
-            value={form.contactPerson}
-            onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              label="Phone"
-              placeholder="e.g. (800) 555-0100"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            />
-            <Input
-              label="Email"
-              placeholder="e.g. contact@supplier.com"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-          </div>
-          <Input
-            label="Address"
-            placeholder="e.g. 200 Commerce Way, Chicago, IL"
-            value={form.address}
-            onChange={(e) => setForm({ ...form, address: e.target.value })}
-          />
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Categories Supplied</label>
-            <div className="flex flex-wrap gap-2">
-              {ALL_CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => toggleCategory(cat)}
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
-                    form.categories.includes(cat)
-                      ? 'bg-electric text-[#0a0e2a]'
-                      : 'bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-white/10'
-                  }`}
-                >
-                  {cat}
+      {modalOpen && (
+        <>
+          <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setModalOpen(false); setForm(initialForm); }}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
+                <h2 className="text-lg font-bold text-slate-900">Add New Supplier</h2>
+                <p className="text-sm text-slate-500 mt-0.5">Fill in the details to add a new supplier.</p>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Company Name *</label>
+                  <input
+                    type="text" placeholder="e.g. Plumbing Supply Co"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Contact Person *</label>
+                  <input
+                    type="text" placeholder="e.g. John Smith"
+                    value={form.contactPerson}
+                    onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                    <input
+                      type="tel" placeholder="e.g. (800) 555-0100"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <input
+                      type="email" placeholder="e.g. contact@supplier.com"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                  <AddressAutocomplete
+                    value={form.address}
+                    onChange={(v) => setForm({ ...form, address: v })}
+                    placeholder="e.g. 200 Commerce Way, Chicago, IL"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Categories Supplied</label>
+                  <div className="flex flex-wrap gap-2">
+                    {ALL_CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => toggleCategory(cat)}
+                        className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
+                          form.categories.includes(cat)
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
+                <button onClick={() => { setModalOpen(false); setForm(initialForm); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                  Add Supplier
                 </button>
-              ))}
+              </div>
             </div>
           </div>
-        </div>
-      </Modal>
+        </>
+      )}
     </div>
   );
 }
