@@ -615,123 +615,176 @@ export default function InventoryPage() {
         </>
       )}
 
-      {/* Add Part Modal */}
-      <Modal
-        open={modalOpen}
-        onClose={() => { setModalOpen(false); setForm(initialForm); }}
-        title="Add New Part"
-        size="md"
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => { setModalOpen(false); setForm(initialForm); }}>
-              Cancel
-            </Button>
-            <Button onClick={() => {
-              const newItem: InventoryItem = {
-                id: `INV-ITM-${String(inventory.length + 1).padStart(3, '0')}`,
-                name: form.name,
-                sku: form.sku || `SKU-${Date.now()}`,
-                category: form.category as any,
-                quantity: form.quantity,
-                minQuantity: form.minQuantity,
-                unitPrice: form.unitPrice,
-                supplier: form.supplierName || 'Unknown',
-                location: form.location || 'Unassigned',
-                description: form.description || form.name,
-              };
-              setInventory((prev) => [...prev, newItem]);
-              setModalOpen(false);
-              setForm(initialForm);
-              showToast(`Part "${form.name}" added to inventory!`);
-            }}>
-              Add Part
-            </Button>
-          </>
-        }
-      >
-        <div className="space-y-4">
-          <Input
-            label="Part Name"
-            placeholder="e.g. 1/2 in Brass Fitting"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+      {/* Add Part Modal — Inline */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => { setModalOpen(false); setForm(initialForm); }}
           />
-          <Input
-            label="SKU"
-            placeholder="e.g. BRZ-12-FIT"
-            value={form.sku}
-            onChange={(e) => setForm({ ...form, sku: e.target.value })}
-          />
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Category</label>
-            <select
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-            >
-              {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
-                <option key={cat} value={cat.toLowerCase()}>{cat}</option>
-              ))}
-            </select>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Input
-              label="Quantity"
-              type="number"
-              min={0}
-              value={form.quantity || ''}
-              onChange={(e) => setForm({ ...form, quantity: parseInt(e.target.value) || 0 })}
-            />
-            <Input
-              label="Min Stock"
-              type="number"
-              min={0}
-              value={form.minQuantity || ''}
-              onChange={(e) => setForm({ ...form, minQuantity: parseInt(e.target.value) || 0 })}
-            />
-            <Input
-              label="Unit Price ($)"
-              type="number"
-              min={0}
-              step="0.01"
-              value={form.unitPrice || ''}
-              onChange={(e) => setForm({ ...form, unitPrice: parseFloat(e.target.value) || 0 })}
-            />
-          </div>
-          {/* Supplier Fields */}
-          <div className="border-t border-gray-200 pt-4">
-            <p className="text-sm font-semibold text-gray-900 mb-3">Supplier Information</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Input
-                label="Supplier Name"
-                placeholder="e.g. SupplyHouse.com"
-                value={form.supplierName}
-                onChange={(e) => setForm({ ...form, supplierName: e.target.value })}
-              />
-              <Input
-                label="Supplier Contact"
-                placeholder="e.g. (800) 555-0100"
-                value={form.supplierContact}
-                onChange={(e) => setForm({ ...form, supplierContact: e.target.value })}
-              />
+
+          {/* Modal panel */}
+          <div className="relative w-full max-w-xl bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+              <h2 className="text-lg font-semibold text-gray-900">Add New Part</h2>
+              <button
+                onClick={() => { setModalOpen(false); setForm(initialForm); }}
+                className="rounded-lg p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Scrollable body */}
+            <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1.5">Part Name</label>
+                <input
+                  placeholder="e.g. 1/2 in Brass Fitting"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1.5">SKU</label>
+                <input
+                  placeholder="e.g. BRZ-12-FIT"
+                  value={form.sku}
+                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                  className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="block text-sm font-medium text-gray-400">Category</label>
+                <select
+                  value={form.category}
+                  onChange={(e) => setForm({ ...form, category: e.target.value })}
+                  className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900"
+                >
+                  {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
+                    <option key={cat} value={cat.toLowerCase()}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Quantity</label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.quantity || ''}
+                    onChange={(e) => setForm({ ...form, quantity: parseInt(e.target.value) || 0 })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Min Stock</label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.minQuantity || ''}
+                    onChange={(e) => setForm({ ...form, minQuantity: parseInt(e.target.value) || 0 })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Unit Price ($)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    value={form.unitPrice || ''}
+                    onChange={(e) => setForm({ ...form, unitPrice: parseFloat(e.target.value) || 0 })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900"
+                  />
+                </div>
+              </div>
+              {/* Supplier Fields */}
+              <div className="border-t border-slate-200 pt-4">
+                <p className="text-sm font-semibold text-gray-900 mb-3">Supplier Information</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1.5">Supplier Name</label>
+                    <input
+                      placeholder="e.g. SupplyHouse.com"
+                      value={form.supplierName}
+                      onChange={(e) => setForm({ ...form, supplierName: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1.5">Supplier Contact</label>
+                    <input
+                      placeholder="e.g. (800) 555-0100"
+                      value={form.supplierContact}
+                      onChange={(e) => setForm({ ...form, supplierContact: e.target.value })}
+                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Location / Bay</label>
+                  <input
+                    placeholder="e.g. Bay A-1"
+                    value={form.location}
+                    onChange={(e) => setForm({ ...form, location: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1.5">Description</label>
+                  <input
+                    placeholder="Brief description"
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-gray-900 placeholder-gray-400"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sticky footer */}
+            <div className="sticky bottom-0 border-t border-slate-200 bg-white px-6 py-4 flex items-center justify-end gap-3">
+              <button
+                onClick={() => { setModalOpen(false); setForm(initialForm); }}
+                className="h-10 px-5 text-sm font-medium text-gray-600 bg-white border border-slate-200 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const newItem: InventoryItem = {
+                    id: `INV-ITM-${String(inventory.length + 1).padStart(3, '0')}`,
+                    name: form.name,
+                    sku: form.sku || `SKU-${Date.now()}`,
+                    category: form.category as any,
+                    quantity: form.quantity,
+                    minQuantity: form.minQuantity,
+                    unitPrice: form.unitPrice,
+                    supplier: form.supplierName || 'Unknown',
+                    location: form.location || 'Unassigned',
+                    description: form.description || form.name,
+                  };
+                  setInventory((prev) => [...prev, newItem]);
+                  setModalOpen(false);
+                  setForm(initialForm);
+                  showToast(`Part "${form.name}" added to inventory!`);
+                }}
+                className="h-10 px-5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                Add Part
+              </button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              label="Location / Bay"
-              placeholder="e.g. Bay A-1"
-              value={form.location}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
-            />
-            <Input
-              label="Description"
-              placeholder="Brief description"
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-            />
-          </div>
         </div>
-      </Modal>
+      )}
 
       {/* Bulk Update Modal */}
       <Modal

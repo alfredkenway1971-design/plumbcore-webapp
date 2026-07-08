@@ -360,6 +360,20 @@ export default function SettingsPage() {
   const [savingCompany, setSavingCompany] = useState(false);
   const [companySaved, setCompanySaved] = useState(false);
 
+  // Load company data from Zustand store (persisted) on mount
+  useEffect(() => {
+    const state = useAuthStore.getState();
+    if (state.company?.name) {
+      setCompany(prev => ({
+        ...prev,
+        name: state.company?.name || prev.name,
+        email: state.company?.email || prev.email,
+        phone: state.company?.phone || prev.phone,
+        logo_url: state.company?.logo_url || prev.logo_url,
+      }));
+    }
+  }, []);
+
   // Notification state
   const [notifications, setNotifications] = useState<NotificationPreference[]>(
     NOTIFICATION_TYPES.map((n) => ({ ...n, enabled: { ...n.enabled } }))
@@ -414,6 +428,17 @@ export default function SettingsPage() {
     setCompanySaved(false);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1200));
+      // Persist company data to Zustand store
+      useAuthStore.getState().updateCompany({
+        name: company.name,
+        email: company.email,
+        phone: company.phone,
+        logo_url: company.logo_url || '',
+        address: company.street,
+        city: company.city,
+        state: company.state,
+        zip: company.zip,
+      });
       setCompanySaved(true);
       setTimeout(() => setCompanySaved(false), 3000);
     } catch {
@@ -659,12 +684,12 @@ export default function SettingsPage() {
                     onChange={(e) => setCompany({ ...company, city: e.target.value })}
                   />
                   <Input
-                    label="State"
+                    label="State/Province"
                     value={company.state}
                     onChange={(e) => setCompany({ ...company, state: e.target.value })}
                   />
                   <Input
-                    label="ZIP"
+                    label="ZIP/Postal Code"
                     value={company.zip}
                     onChange={(e) => setCompany({ ...company, zip: e.target.value })}
                   />

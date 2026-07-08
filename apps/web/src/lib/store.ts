@@ -20,6 +20,8 @@ export interface AuthState {
     id: string;
     slug: string;
     name: string;
+    email?: string;
+    phone?: string;
     timezone: string;
     subscription_tier: string;
     subscription_status: string;

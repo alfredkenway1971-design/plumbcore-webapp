@@ -525,7 +525,71 @@ export default function JobsPage() {
               />
             </Card>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+            <div className="space-y-3">
+              {/* Mobile card layout */}
+              <div className="sm:hidden space-y-3">
+                {filteredJobs.map((job) => {
+                  const techNames = job.assignedTo
+                    .map((t) => teamMembers.find((m) => m.id === t)?.name || t)
+                    .join(', ');
+                  return (
+                    <div
+                      key={job.id}
+                      onClick={() => router.push(`/jobs/${job.id}`)}
+                      className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 cursor-pointer hover:shadow-sm transition-shadow"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <span className="text-sm font-medium text-blue-600">{job.id}</span>
+                          <h3 className="text-sm font-semibold text-gray-900 mt-0.5">{job.clientName}</h3>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-gray-400'}`}
+                          >
+                            {job.priority}
+                          </span>
+                          <StatusBadge status={job.status} size="sm" />
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500 line-clamp-2">{job.title}</p>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="space-y-1">
+                          <p className="text-gray-400">{formatDate(job.scheduledDate)}</p>
+                          <p className="text-gray-400 truncate max-w-[140px]">{techNames}</p>
+                        </div>
+                        <span className="text-sm font-semibold text-gray-900">{formatCurrency(job.estimatedCost)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); router.push(`/jobs/${job.id}`); }}
+                          className="flex-1 h-8 text-xs font-medium text-gray-600 bg-gray-50 border border-slate-200 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); openEditJob(job, e); }}
+                          className="flex-1 h-8 text-xs font-medium text-gray-600 bg-gray-50 border border-slate-200 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setShowDeleteConfirm(job.id); }}
+                          className="flex-1 h-8 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="px-1 text-xs text-gray-500">
+                  Showing {filteredJobs.length} of {jobList.length} jobs
+                </div>
+              </div>
+
+              {/* Desktop table */}
+              <div className="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 bg-white">
               <table className="w-full min-w-[950px]">
                 <thead>
                   <tr className="border-b border-gray-200">
@@ -607,6 +671,7 @@ export default function JobsPage() {
               <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200">
                 Showing {filteredJobs.length} of {jobList.length} jobs
               </div>
+            </div>
             </div>
           )}
         </>
@@ -792,11 +857,11 @@ export default function JobsPage() {
                     <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">State</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">State/Province</label>
                     <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP/Postal Code</label>
                     <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                 </div>

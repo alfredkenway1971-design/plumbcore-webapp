@@ -566,12 +566,12 @@ export default function ClientsPage() {
                     {errors.fCity && <p className="text-xs text-red-500 mt-1">{errors.fCity}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">State *</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">State/Province *</label>
                     <input type="text" placeholder="TX" value={fState} onChange={e => { setFState(e.target.value.toUpperCase().slice(0, 2)); setTouched(t => ({...t, fState: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-all ${errors.fState ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
                     {errors.fState && <p className="text-xs text-red-500 mt-1">{errors.fState}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP *</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP/Postal Code *</label>
                     <input type="text" inputMode="numeric" placeholder="73301" value={fZip} onChange={e => { setFZip(e.target.value.replace(/\D/g, '').slice(0, 5)); setTouched(t => ({...t, fZip: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-all ${errors.fZip ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
                     {errors.fZip && <p className="text-xs text-red-500 mt-1">{errors.fZip}</p>}
                   </div>

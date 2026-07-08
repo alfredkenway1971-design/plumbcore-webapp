@@ -497,13 +497,13 @@ export default function ClientDetailPage() {
               onChange={(e) => setEditCity(e.target.value)}
             />
             <Input
-              label="State *"
+              label="State/Province *"
               placeholder="TX"
               value={editState}
               onChange={(e) => setEditState(e.target.value)}
             />
             <Input
-              label="ZIP *"
+              label="ZIP/Postal Code *"
               placeholder="73301"
               value={editZip}
               onChange={(e) => setEditZip(e.target.value)}
