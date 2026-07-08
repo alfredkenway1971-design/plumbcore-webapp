@@ -30,6 +30,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // Derived: is the current path an admin route?
   const isAdminRoute = pathname.startsWith('/admin');
 
+  // Restore session on mount (resolves isLoading)
+  useEffect(() => {
+    useAuthStore.getState().restoreSession();
+  }, []);
+
   // Route guard: redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -67,8 +72,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     };
   }, []);
 
-  // Show nothing while checking auth
-  if (isLoading) return null;
+  // Show loading spinner while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen w-full bg-slate-50 items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
+          <p className="text-sm text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full bg-slate-50">
