@@ -13,6 +13,14 @@ export const metadata: Metadata = {
   title: "PlumbCore AI — The AI-Powered Plumber OS",
   description:
     "Run your entire plumbing business from one app. AI estimates, smart scheduling, automated invoicing, and inventory management — flat-rate pricing, no per-tech fees.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16', type: 'image/x-icon' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+  },
   keywords: [
     "plumbing",
     "field service",
