@@ -176,7 +176,7 @@ const translations = {
 
       // Hero
       heroBadge: "AI-POWERED PLUMBING SOFTWARE",
-      heroTitle: "The <span class=\"bg-gradient-to-r from-slate-900 to-cyan-500 bg-clip-text text-transparent\">AI-Powered</span> <br /> <span class=\"bg-gradient-to-r from-slate-900 to-cyan-500 bg-clip-text text-transparent\">Plumber OS</span>",
+      heroTitle: "The <span class=\"bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent\">AI-Powered</span> <br /> <span class=\"bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent\">Plumber OS</span>",
       heroSubtitle: "Flat-rate pricing. No per-tech fees. No setup costs.",
       heroCTA1: "Start Free Trial",
       heroCTA2: "Get a Free Estimate",

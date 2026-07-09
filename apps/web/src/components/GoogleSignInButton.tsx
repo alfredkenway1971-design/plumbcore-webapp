@@ -12,41 +12,42 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [configured, setConfigured] = useState<boolean | null>(null);
+  const [ready, setReady] = useState<boolean | null>(null);
   const [clientId, setClientId] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+    
     fetch('/api/auth/google/config')
       .then(r => r.json())
       .then(data => {
+        if (cancelled) return;
         if (data.clientId) {
           setClientId(data.clientId);
-          setConfigured(true);
+          setReady(true);
         } else {
-          setConfigured(false);
+          setReady(false);
         }
       })
-      .catch(() => setConfigured(false));
+      .catch(() => { if (!cancelled) setReady(false); });
 
-    if (typeof window !== 'undefined' && !document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => setScriptReady(true);
-      script.onerror = () => setConfigured(false);
-      document.body.appendChild(script);
-    } else {
-      const check = () => {
-        if ((window as any)?.google?.accounts) {
-          setScriptReady(true);
-        } else {
-          setTimeout(check, 200);
-        }
-      };
-      check();
+    // Load Google Identity Services script
+    if (typeof window !== 'undefined') {
+      if (document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
+        setScriptLoaded(true);
+      } else {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => { if (!cancelled) setScriptLoaded(true); };
+        script.onerror = () => { if (!cancelled) setReady(false); };
+        document.body.appendChild(script);
+      }
     }
+
+    return () => { cancelled = true; };
   }, []);
 
   const handleGoogleSignIn = () => {
@@ -54,25 +55,26 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
     setError('');
 
     const { google } = window as any;
-    if (!google?.accounts) {
+    if (!google?.accounts?.oauth2) {
+      // Script might not be loaded yet; retry once after a delay
       setTimeout(() => {
         const { google: g } = window as any;
-        if (g?.accounts) {
+        if (g?.accounts?.oauth2) {
           setLoading(false);
           handleGoogleSignIn();
           return;
         }
-        setError('Google sign-in is taking longer than usual. Tap again or try refreshing the page.');
+        setError('Google sign-in is still loading. Please tap again.');
         setLoading(false);
       }, 2000);
       return;
     }
 
-    // Use OAuth2 token flow — works reliably on mobile (opens a popup window)
     try {
       const client = google.accounts.oauth2.initTokenClient({
         client_id: clientId,
         scope: 'openid email profile',
+        redirect_uri: window.location.origin,
         callback: async (tokenResponse: any) => {
           if (tokenResponse?.error) {
             setError('Google sign-in cancelled or failed.');
@@ -118,16 +120,15 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
     }
   };
 
-  if (configured === false) return null;
-  if (configured === null || !clientId) return null;
+  if (ready === false) return null;
 
   return (
     <div>
       <button
         type="button"
         onClick={handleGoogleSignIn}
-        disabled={loading || !scriptReady}
-        className="w-full h-11 rounded-xl border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
+        disabled={loading || !clientId || !scriptLoaded}
+        className="w-full h-11 rounded-full ring-1 ring-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
       >
         <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
