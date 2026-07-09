@@ -78,12 +78,20 @@ async function callOpenRouter(model: string, userMessage: string, openrouterKey:
 }
 
 function buildResult(parsed: any) {
-  const parts = (parsed.parts || []).map((p: any) => ({
-    name: p.name || 'Parts',
+  let parts = (parsed.parts || []).map((p: any) => ({
+    name: p.name || 'Part',
     qty: p.qty || 1,
     unitPrice: p.unitPrice || 0,
     total: Math.round((p.qty * p.unitPrice) * 100) / 100
-  }))
+  }));
+  
+  // If AI returned no parts, add a diagnostic fee as default
+  if (parts.length === 0 || parts.every((p: any) => p.unitPrice === 0)) {
+    parts = [
+      { name: 'Diagnostic assessment & inspection', qty: 1, unitPrice: 49, total: 49 },
+      { name: 'Service call fee', qty: 1, unitPrice: 29, total: 29 },
+    ];
+  }
   const partsTotal = Math.round(parts.reduce((s: number, p: any) => s + p.total, 0) * 100) / 100
   const estimatedHours = parsed.estimatedHours || 1.0
   const laborCost = Math.round(estimatedHours * LABOR_RATE * 100) / 100

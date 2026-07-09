@@ -233,19 +233,17 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span>
         </div>
         {/* Parts — detailed breakdown */}
-        {result.parts?.length > 0 && (
-          <div className="py-3 border-b border-slate-100">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('quote.parts')}</p>
-            {result.parts.map((p: any, i: number) => (
-              <div key={i} className="grid grid-cols-[2rem_1fr_4rem_4rem] gap-x-2 text-sm py-1.5 px-1 rounded-lg hover:bg-slate-50">
-                <span className="text-slate-400 text-center">{p.qty}x</span>
-                <span className="text-slate-700">{p.name}</span>
-                <span className="text-right text-slate-500">{f(p.unitPrice)}</span>
-                <span className="text-right font-medium text-slate-900">{f(p.total)}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="py-3 border-b border-slate-100">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('quote.parts')}</p>
+          {(result.parts?.length > 0 ? result.parts : [{name:'Diagnostic assessment', qty:1, unitPrice:49, total:49}]).map((p: any, i: number) => (
+            <div key={i} className="grid grid-cols-[2rem_1fr_4rem_4rem] gap-x-2 text-sm py-1.5 px-1 rounded-lg hover:bg-slate-50">
+              <span className="text-slate-400 text-center">{p.qty}x</span>
+              <span className="text-slate-700">{p.name}</span>
+              <span className="text-right text-slate-500">{f(p.unitPrice)}</span>
+              <span className="text-right font-medium text-slate-900">{f(p.total)}</span>
+            </div>
+          ))}
+        </div>
         {/* Tax */}
         <div className="flex items-center justify-between py-3 border-b border-slate-100">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.tax')} <span className="font-normal text-slate-400 ml-1">{(result.taxRate||0.085)*100}%</span></span>
