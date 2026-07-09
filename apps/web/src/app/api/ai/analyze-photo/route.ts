@@ -1,5 +1,5 @@
 // AI Photo Analysis API Route — Smart Tiered Analysis
-// 1. Try Qwen3 VL 8B (cheap, fast)
+// 1. Try Qwen3 VL 8B (cheap, fast) — sends actual photo for vision analysis
 // 2. If confidence < 70% → fallback to GPT-4o Mini (more capable)
 // 3. Caches results to avoid redundant AI calls
 
@@ -10,34 +10,51 @@ const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
 const LABOR_RATE = 120
 const TAX_RATE = 0.085
-const CONFIDENCE_THRESHOLD = 70 // fallback if confidence below this
+const CONFIDENCE_THRESHOLD = 70
 
-const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the customer's plumbing issue description and provide a detailed professional estimate. Return ONLY valid JSON, no other text.
+const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the photo of the plumbing issue and the customer's description, then provide a detailed professional estimate. Return ONLY valid JSON, no other text.
 
-Based on the customer's description, identify the most likely specific plumbing problem and return:
+Look carefully at the photo. Identify:
+- What type of plumbing fixture/problem is shown (faucet, pipe, toilet, drain, water heater, etc.)
+- The specific issue (leak, clog, corrosion, break, wear, etc.)
+- Visible damage, wear patterns, or signs of the problem
+- The likely brand/model if identifiable
+
+Return:
 {
-  "diagnosis": "A specific, professional diagnosis describing the exact issue (e.g. 'Worn-out Moen 1225 cartridge causing persistent drip from bathroom faucet, with mineral buildup on valve seat')",
+  "diagnosis": "A specific, detailed diagnosis based on what you SEE in the photo (e.g. 'The photo shows a Moen bathroom faucet with water pooling around the base, indicating a failed O-ring seal. Mineral deposits visible on the handle suggest a slow leak that has been ongoing for weeks.')",
   "severity": "low|moderate|high|emergency",
-  "estimatedHours": number (realistic labor hours, typically 0.5-4),
+  "estimatedHours": number (realistic labor, 0.5-4),
   "parts": [
-    {"name": "Specific part name with brand/model if relevant", "qty": number, "unitPrice": number}
+    {"name": "Specific part with brand/model", "qty": number, "unitPrice": number}
   ],
-  "confidence": number (0-100, how confident you are in this diagnosis)
+  "confidence": number (0-100 based on how clearly the issue is visible in the photo)
 }
 
-Be realistic and specific. Common plumbing issues and their typical parts:
-- Faucet leak: cartridge ($25-45), O-rings ($3-8), valve seat ($8-15), handle kit ($15-30)
-- Clogged drain: drain snake rental ($35-65), enzyme treatment ($12-20), P-trap ($12-25)
-- Running toilet: flapper ($5-12), fill valve ($15-25), flush valve seal ($8-15), wax ring ($6-10)
-- Water heater issue: heating element ($25-45), thermostat ($30-55), pressure relief valve ($15-25), anode rod ($20-35)
-- Pipe leak: pipe section ($8-20/ft), coupling ($3-8), shut-off valve ($15-30), pipe sealant ($5-10)
-- Garbage disposal: disposal unit ($80-200), mounting ring ($10-15), power cord ($8-15)
-- Low water pressure: pressure regulator ($40-75), aerator ($3-8), cartridge ($20-40), sediment filter ($15-30)
-- Sump pump: pump unit ($150-350), check valve ($15-25), discharge pipe ($12-20), backup battery ($80-150)
+Parts pricing reference:
+- Faucet: cartridge $25-45, O-rings $3-8, valve seat $8-15
+- Toilet: flapper $5-12, fill valve $15-25, wax ring $6-10
+- Pipe: section $8-20/ft, coupling $3-8, shut-off valve $15-30
+- Water heater: element $25-45, thermostat $30-55, anode rod $20-35
+- Drain: P-trap $12-25, snake rental $35-65
+- Garbage disposal: unit $80-200, mounting ring $10-15
 
-Labor rate is $120/hr. Include all needed parts with realistic quantities and prices. Return ONLY the JSON.`
+Labor rate is $120/hr. Return ONLY the JSON object.`
 
-async function callOpenRouter(model: string, userMessage: string, openrouterKey: string) {
+async function callOpenRouter(model: string, userMessage: string, photoBase64: string | null, openrouterKey: string) {
+  // Build message content — with or without image
+  const userContent: any[] = [
+    { type: 'text', text: `${AI_SYSTEM_PROMPT}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
+  ];
+
+  // If photo provided, include it as a vision input
+  if (photoBase64 && photoBase64.length > 100) {
+    userContent.push({
+      type: 'image_url',
+      image_url: { url: `data:image/jpeg;base64,${photoBase64}` }
+    });
+  }
+
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -48,7 +65,7 @@ async function callOpenRouter(model: string, userMessage: string, openrouterKey:
     body: JSON.stringify({
       model,
       messages: [
-        { role: 'user', content: `${AI_SYSTEM_PROMPT}\n\nCustomer says: "${userMessage || 'Customer reported a plumbing issue'}"` }
+        { role: 'user', content: userContent }
       ],
       temperature: 0.3,
       max_tokens: 1024,
@@ -57,7 +74,7 @@ async function callOpenRouter(model: string, userMessage: string, openrouterKey:
 
   if (!response.ok) {
     const text = await response.text()
-    console.error(`${model} returned ${response.status}: ${text}`)
+    console.error(`${model} returned ${response.status}: ${text.slice(0, 300)}`)
     return null
   }
 
@@ -85,7 +102,6 @@ function buildResult(parsed: any) {
     total: Math.round((p.qty * p.unitPrice) * 100) / 100
   }));
   
-  // If AI returned no parts, add a diagnostic fee as default
   if (parts.length === 0 || parts.every((p: any) => p.unitPrice === 0)) {
     parts = [
       { name: 'Diagnostic assessment & inspection', qty: 1, unitPrice: 49, total: 49 },
@@ -116,10 +132,9 @@ function buildResult(parsed: any) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { customerDescription, customerPhone } = await request.json()
-    const cacheKey = createHash('md5').update(customerDescription || 'default').digest('hex')
+    const { photoBase64, customerDescription, customerPhone } = await request.json()
+    const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')
 
-    // Check cache
     const cached = responseCache.get(cacheKey)
     if (cached && cached.expiry > Date.now()) {
       return NextResponse.json({ success: true, result: cached.data, cached: true })
@@ -127,26 +142,26 @@ export async function POST(request: NextRequest) {
 
     const openrouterKey = process.env.OPENROUTER_API_KEY || ''
     if (!openrouterKey) {
+      console.error('OPENROUTER_API_KEY not configured')
       return NextResponse.json({ success: false, error: 'AI not configured' }, { status: 500 })
     }
 
-    // ── TIER 1: Try Qwen3 VL 8B (cheap, fast) ──
-    const tier1Result = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', openrouterKey)
+    // ── TIER 1: Qwen3 VL 8B (vision model) with actual photo ──
+    const tier1Result = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey)
     
     let finalParsed = tier1Result
     let usedFallback = false
     let modelUsed = 'qwen/qwen3-vl-8b-instruct'
 
-    // ── TIER 2: Fallback to GPT-4o Mini if confidence too low ──
+    // ── TIER 2: GPT-4o Mini fallback ──
     if (!tier1Result || (tier1Result.confidence ?? 0) < CONFIDENCE_THRESHOLD) {
-      console.log(`Qwen confidence ${tier1Result?.confidence ?? 'N/A'} < ${CONFIDENCE_THRESHOLD} — trying GPT-4o Mini fallback`)
-      const tier2Result = await callOpenRouter('gpt-4o-mini', customerDescription || '', openrouterKey)
+      console.log(`Qwen confidence ${tier1Result?.confidence ?? 'N/A'} < ${CONFIDENCE_THRESHOLD} — trying GPT-4o Mini`)
+      const tier2Result = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey)
       if (tier2Result) {
         finalParsed = tier2Result
         usedFallback = true
-        modelUsed = 'gpt-4o-mini'
+        modelUsed = 'openai/gpt-4o-mini'
       }
-      // If GPT-4o Mini also fails, keep Qwen's result (something is better than nothing)
     }
 
     if (!finalParsed) {
@@ -154,8 +169,6 @@ export async function POST(request: NextRequest) {
     }
 
     const result = buildResult(finalParsed)
-
-    // Cache the result
     responseCache.set(cacheKey, { data: result, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
@@ -167,10 +180,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('AI Analysis Error:', error)
-    return NextResponse.json({
-      success: false,
-      error: 'Analysis failed',
-      message: 'Please try again or call us directly.'
-    })
+    return NextResponse.json({ success: false, error: 'Analysis failed' }, { status: 500 })
   }
 }

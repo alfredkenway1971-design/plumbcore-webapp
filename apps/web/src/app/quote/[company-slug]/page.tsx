@@ -330,7 +330,16 @@ export default function QuotePage() {
   const handleEstimate = useCallback(async () => {
     setStep(3); setError(null);
     try {
-      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc}) });
+      // Convert first photo to base64 for vision AI
+      let photoBase64 = '';
+      if (photos.length > 0) {
+        photoBase64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve((reader.result as string).split(',')[1]);
+          reader.readAsDataURL(photos[0]);
+        });
+      }
+      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc}) });
       const data = await res.json();
       if (data.success && data.result) setResult(data.result);
       else setResult({ diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:65 });
