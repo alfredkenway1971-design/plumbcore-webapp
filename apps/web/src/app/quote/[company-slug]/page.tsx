@@ -16,7 +16,7 @@ import { Camera, Check, Clock, Shield, RefreshCcw, Wrench, AlertTriangle, Phone,
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 
 /* ── Helpers ── */
-const formatName = (v: string) => v.replace(/^\s+|\s+$/g, '').slice(0, 50).replace(/[a-zA-Z\s'-]+/g, m => /^[a-z\s'-]+$/i.test(m) ? m.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/['-][a-z]/g, c => c.toUpperCase()) : m);
+const formatName = (v: string) => v.replace(/^\s+/, '').slice(0, 50).replace(/[a-zA-Z\s'-]+/g, m => /^[a-z\s'-]+$/i.test(m) ? m.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/['-][a-z]/g, c => c.toUpperCase()) : m);
 const validateNameChar = (v: string) => /^[a-zA-Z\s'-]*$/.test(v);
 const formatPhone = (v: string) => { let d = v.replace(/\D/g, ''); if (d.startsWith('1') && d.length > 1) d = d.slice(1); d = d.slice(0, 10); if (!d) return ''; if (d.length <= 3) return `+1 (${d}`; if (d.length <= 6) return `+1 (${d.slice(0, 3)}) ${d.slice(3)}`; return `+1 (${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; };
 const validatePhone = (v: string) => { const d = v.replace(/\D/g, '').replace(/^1/, ''); return d.length === 10 && parseInt(d.slice(0, 3)) >= 200; };
