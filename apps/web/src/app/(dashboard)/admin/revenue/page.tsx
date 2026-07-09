@@ -75,7 +75,7 @@ function RevenueError({ error }: { error: string }) {
         <p className="text-sm text-slate-500 mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
         >
           Retry
         </button>
@@ -500,7 +500,7 @@ export default function AdminRevenuePage() {
             ${(platformKPIs.totalMRR / 1000).toFixed(1)}K MRR · ${((platformKPIs.totalMRR * 12) / 1000).toFixed(0)}K ARR · {platformKPIs.activePlumbers} active accounts
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
           <Download className="w-4 h-4" />
           <span className="hidden sm:inline text-xs">Export</span>
         </button>

@@ -97,7 +97,7 @@ function CustomersLoading() {
                 <tr key={i} className="border-b border-slate-50">
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <Skeleton className="w-8 h-8 rounded-lg" />
+                      <Skeleton className="w-8 h-8 rounded-xl" />
                       <div>
                         <Skeleton className="h-4 w-36 mb-1" />
                         <Skeleton className="h-3 w-24" />
@@ -132,7 +132,7 @@ function CustomersError({ error }: { error: string }) {
         <p className="text-sm text-slate-500 mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
         >
           Retry
         </button>
@@ -219,7 +219,7 @@ function CustomersTable({
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div
-                        className={`w-8 h-8 rounded-lg bg-gradient-to-br ${initialColors[i % initialColors.length]} flex items-center justify-center text-[9px] font-bold text-white shrink-0`}
+                        className={`w-8 h-8 rounded-xl bg-gradient-to-br ${initialColors[i % initialColors.length]} flex items-center justify-center text-[9px] font-bold text-white shrink-0`}
                       >
                         {cust.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2)}
                       </div>
@@ -373,7 +373,7 @@ export default function AdminCustomersPage() {
             {companies.length} total companies · ${companies.reduce((s, c) => s + c.mrr, 0).toLocaleString()} total MRR
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
           <Download className="w-4 h-4" />
           <span className="hidden sm:inline text-xs">Export</span>
         </button>
@@ -391,7 +391,7 @@ export default function AdminCustomersPage() {
                 placeholder="Search by name, city, or owner..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+                className="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
               />
               {search && (
                 <button
@@ -414,7 +414,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={planFilter || ''}
                   onChange={(e) => setPlanFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-slate-200 text-xs font-medium text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Plans</option>
                   {plans.map((p) => (
@@ -430,7 +430,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={statusFilter || ''}
                   onChange={(e) => setStatusFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-slate-200 text-xs font-medium text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Statuses</option>
                   {statuses.map((s) => (
@@ -449,7 +449,7 @@ export default function AdminCustomersPage() {
                     setStatusFilter(null);
                     setSearch('');
                   }}
-                  className="h-9 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors"
+                  className="h-9 px-3 rounded-xl border border-slate-200 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors"
                 >
                   Clear
                 </button>

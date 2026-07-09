@@ -340,7 +340,7 @@ function TrialPipelineTable() {
                 <tr key={trial.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
+                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
                         {trial.companyName.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
                       </div>
                       <div>
@@ -487,7 +487,7 @@ function TopCustomersTable() {
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${initialColor[i % initialColor.length]} flex items-center justify-center text-[9px] font-bold text-white shrink-0`}>
+                      <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${initialColor[i % initialColor.length]} flex items-center justify-center text-[9px] font-bold text-white shrink-0`}>
                         {cust.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2)}
                       </div>
                       <div>
@@ -541,7 +541,7 @@ function ActivityFeed() {
           return (
             <div key={item.id} className="px-5 py-3 hover:bg-slate-50 transition-colors">
               <div className="flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-lg ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 mt-0.5`}>
+                <div className={`w-8 h-8 rounded-xl ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 mt-0.5`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -849,12 +849,12 @@ export default function AdminPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
             <span className="text-xs">📅</span>
             <span className="text-xs font-medium">This Month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </div>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>
