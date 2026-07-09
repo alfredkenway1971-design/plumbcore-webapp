@@ -172,9 +172,9 @@ export default function InventoryInsightsPage() {
   const StatCard = ({ label, value, color, sub }: { label: string; value: string | number; color: string; sub?: string }) => (
     <Card variant="bordered" padding="md">
       <div className="space-y-1">
-        <p className="text-xs font-medium uppercase tracking-wider text-gray-500">{label}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">{label}</p>
         <p className={`text-2xl font-bold ${color}`}>{typeof value === 'number' ? value.toLocaleString() : value}</p>
-        {sub && <p className="text-xs text-gray-500">{sub}</p>}
+        {sub && <p className="text-xs text-slate-500">{sub}</p>}
       </div>
     </Card>
   );
@@ -182,7 +182,7 @@ export default function InventoryInsightsPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Inventory Insights</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Inventory Insights</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load insights" message={error} onRetry={handleRetry} />
         </Card>
@@ -193,7 +193,7 @@ export default function InventoryInsightsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Inventory Insights</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Inventory Insights</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-24 animate-pulse rounded-xl bg-white/5" />
@@ -209,12 +209,12 @@ export default function InventoryInsightsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Inventory Insights</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Inventory Insights</h1>
       </div>
 
       {/* Top Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total Items" value={totalItems} color="text-gray-900" sub="Unique SKUs in stock" />
+        <StatCard label="Total Items" value={totalItems} color="text-slate-900" sub="Unique SKUs in stock" />
         <StatCard label="Total Value" value={`$${totalValue.toLocaleString()}`} color="text-blue-600" sub="At current unit prices" />
         <StatCard
           label="Low Stock Items"
@@ -235,7 +235,7 @@ export default function InventoryInsightsPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="flex h-3 w-3 rounded-full bg-red-500" />
-            <h2 className="text-lg font-semibold text-gray-900">Low Stock Alerts</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Low Stock Alerts</h2>
           </div>
           <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-600">
             {lowStockItems.length} items
@@ -247,27 +247,27 @@ export default function InventoryInsightsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Item</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Current Qty</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Min Stock</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Suggested Order</th>
-                  <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
+                <tr className="border-b border-slate-200">
+                  <th className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Item</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Current Qty</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Min Stock</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Suggested Order</th>
+                  <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {lowStockItems.map((item) => {
                   const suggestedOrder = Math.max(item.minQuantity * 2 - item.quantity, item.minQuantity);
                   return (
-                    <tr key={item.id} className="border-b border-gray-200 transition-colors hover:bg-white/[0.02]">
-                      <td className="px-3 py-3 text-gray-900 font-medium">{item.name}</td>
+                    <tr key={item.id} className="border-b border-slate-200 transition-colors hover:bg-white/[0.02]">
+                      <td className="px-3 py-3 text-slate-900 font-medium">{item.name}</td>
                       <td className="px-3 py-3 text-right font-semibold text-red-600">{item.quantity}</td>
-                      <td className="px-3 py-3 text-right text-gray-500">{item.minQuantity}</td>
-                      <td className="px-3 py-3 text-right text-gray-900 font-medium">{suggestedOrder}</td>
+                      <td className="px-3 py-3 text-right text-slate-500">{item.minQuantity}</td>
+                      <td className="px-3 py-3 text-right text-slate-900 font-medium">{suggestedOrder}</td>
                       <td className="px-3 py-3 text-center">
                         <a
                           href="/purchase-orders"
-                          className="inline-flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100 transition-colors"
+                          className="inline-flex items-center gap-1 rounded-xl bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100 transition-colors"
                         >
                           Create PO
                         </a>
@@ -285,7 +285,7 @@ export default function InventoryInsightsPage() {
       <Card variant="bordered" padding="md">
         <div className="flex items-center gap-2 mb-4">
           <span className="flex h-3 w-3 rounded-full bg-amber-400" />
-          <h2 className="text-lg font-semibold text-gray-900">Overstock Items</h2>
+          <h2 className="text-lg font-semibold text-slate-900">Overstock Items</h2>
         </div>
         {overstockItems.length === 0 ? (
           <EmptyState title="No overstock items" description="All inventory levels are within healthy ranges." />
@@ -293,29 +293,29 @@ export default function InventoryInsightsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Item</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Current Qty</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Min Stock</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Excess</th>
-                  <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Suggested Action</th>
+                <tr className="border-b border-slate-200">
+                  <th className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Item</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Current Qty</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Min Stock</th>
+                  <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Excess</th>
+                  <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Suggested Action</th>
                 </tr>
               </thead>
               <tbody>
                 {overstockItems.map((item) => {
                   const excess = item.quantity - item.minQuantity * 2;
                   return (
-                    <tr key={item.id} className="border-b border-gray-200 transition-colors hover:bg-white/[0.02]">
-                      <td className="px-3 py-3 text-gray-900 font-medium">{item.name}</td>
-                      <td className="px-3 py-3 text-right text-gray-900 font-medium">{item.quantity}</td>
-                      <td className="px-3 py-3 text-right text-gray-500">{item.minQuantity}</td>
+                    <tr key={item.id} className="border-b border-slate-200 transition-colors hover:bg-white/[0.02]">
+                      <td className="px-3 py-3 text-slate-900 font-medium">{item.name}</td>
+                      <td className="px-3 py-3 text-right text-slate-900 font-medium">{item.quantity}</td>
+                      <td className="px-3 py-3 text-right text-slate-500">{item.minQuantity}</td>
                       <td className="px-3 py-3 text-right text-amber-400 font-semibold">+{excess}</td>
                       <td className="px-3 py-3 text-center">
                         <div className="flex items-center justify-center gap-2">
-                          <button className="rounded-lg bg-white/5 px-2.5 py-1 text-[10px] font-medium text-gray-400 hover:bg-white/10 hover:text-gray-900 transition-colors">
+                          <button className="rounded-xl bg-white/5 px-2.5 py-1 text-[10px] font-medium text-slate-400 hover:bg-white/10 hover:text-slate-900 transition-colors">
                             Reduce Price
                           </button>
-                          <button className="rounded-lg bg-white/5 px-2.5 py-1 text-[10px] font-medium text-gray-400 hover:bg-white/10 hover:text-gray-900 transition-colors">
+                          <button className="rounded-xl bg-white/5 px-2.5 py-1 text-[10px] font-medium text-slate-400 hover:bg-white/10 hover:text-slate-900 transition-colors">
                             Return to Supplier
                           </button>
                         </div>
@@ -336,7 +336,7 @@ export default function InventoryInsightsPage() {
             <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
             </svg>
-            <h2 className="text-lg font-semibold text-gray-900">AI Inventory Analysis</h2>
+            <h2 className="text-lg font-semibold text-slate-900">AI Inventory Analysis</h2>
           </div>
           <Button
             size="sm"
@@ -350,16 +350,16 @@ export default function InventoryInsightsPage() {
 
         {!insightsLoaded && !aiRunning ? (
           <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-8 text-center">
-            <svg className="mx-auto h-12 w-12 text-gray-500/40 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+            <svg className="mx-auto h-12 w-12 text-slate-500/40 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
             </svg>
-            <p className="text-sm text-gray-400">Click "Run Analysis" to generate AI-powered inventory insights based on your current stock levels and usage patterns.</p>
+            <p className="text-sm text-slate-400">Click "Run Analysis" to generate AI-powered inventory insights based on your current stock levels and usage patterns.</p>
           </div>
         ) : aiRunning ? (
           <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="flex items-start gap-3 rounded-xl bg-white/[0.02] p-4 animate-pulse">
-                <div className="h-10 w-10 rounded-lg bg-white/5 shrink-0" />
+                <div className="h-10 w-10 rounded-xl bg-white/5 shrink-0" />
                 <div className="flex-1 space-y-2">
                   <div className="h-4 w-48 rounded bg-white/5" />
                   <div className="h-3 w-full rounded bg-white/5" />
@@ -381,7 +381,7 @@ export default function InventoryInsightsPage() {
                     : 'bg-electric/[0.04] border-electric/10'
                 }`}
               >
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg ${
                   insight.severity === 'critical'
                     ? 'bg-red-50'
                     : insight.severity === 'warning'
@@ -391,8 +391,8 @@ export default function InventoryInsightsPage() {
                   {insight.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">{insight.title}</p>
-                  <p className="mt-1 text-xs text-gray-400 leading-relaxed">{insight.description}</p>
+                  <p className="text-sm font-semibold text-slate-900">{insight.title}</p>
+                  <p className="mt-1 text-xs text-slate-400 leading-relaxed">{insight.description}</p>
                 </div>
               </div>
             ))}

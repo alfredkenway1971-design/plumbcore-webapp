@@ -26,8 +26,12 @@ export async function POST(req: Request) {
     const { sendEmail, subscriptionPastDueEmail } = await import('@/lib/email');
 
     const priceMap: Record<string, string> = {
+      'price_1TrEh8D0AAcByeQ9hCRJDqHs': 'solo',   // Solo $349/mo
+      'price_1TrEhCD0AAcByeQ9ERNDiEHS': 'pro',      // Pro $799/mo
+      'price_1TrEhED0AAcByeQ9yyeuUONo': 'business', // Business $1,499/mo
+      // Legacy prices (keep for existing subscribers)
       'price_1TqFwHD0AAcByeQ9qNUaikbx': 'solo',
-      'price_1TqFwOD0AAcByeQ94DnPlHr1': 'team',
+      'price_1TqFwOD0AAcByeQ94DnPlHr1': 'pro',
       'price_1TqFwPD0AAcByeQ9SjTdf8VF': 'pro',
       'price_1TqFwVD0AAcByeQ90c6KWdEJ': 'business',
       'price_1TqFwXD0AAcByeQ9vJ2OGA8G': 'enterprise',

@@ -37,13 +37,13 @@ const filterTabs = ['All', 'Draft', 'Sent', 'Paid', 'Overdue'] as const;
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
-      <div className="h-4 w-24 rounded bg-gray-50" />
-      <div className="h-4 w-32 rounded bg-gray-50" />
-      <div className="h-4 w-16 rounded bg-gray-50" />
-      <div className="h-5 w-20 rounded-full bg-gray-50" />
-      <div className="h-4 w-24 rounded bg-gray-50" />
-      <div className="h-4 w-24 rounded bg-gray-50" />
-      <div className="h-4 w-20 rounded bg-gray-50" />
+      <div className="h-4 w-24 rounded bg-slate-50" />
+      <div className="h-4 w-32 rounded bg-slate-50" />
+      <div className="h-4 w-16 rounded bg-slate-50" />
+      <div className="h-5 w-20 rounded-full bg-slate-50" />
+      <div className="h-4 w-24 rounded bg-slate-50" />
+      <div className="h-4 w-24 rounded bg-slate-50" />
+      <div className="h-4 w-20 rounded bg-slate-50" />
     </div>
   );
 }
@@ -263,11 +263,11 @@ export default function InvoicingPage() {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 space-y-5">
-        <div className="h-8 w-48 rounded bg-gray-50 animate-pulse" />
-        <div className="h-10 w-full max-w-md rounded bg-gray-50 animate-pulse" />
+        <div className="h-8 w-48 rounded bg-slate-50 animate-pulse" />
+        <div className="h-10 w-full max-w-md rounded bg-slate-50 animate-pulse" />
         <div className="flex gap-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-8 w-20 rounded-lg bg-gray-50 animate-pulse" />
+            <div key={i} className="h-8 w-20 rounded-xl bg-slate-50 animate-pulse" />
           ))}
         </div>
         <Card variant="default" padding="sm">
@@ -284,8 +284,8 @@ export default function InvoicingPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Invoicing</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Manage invoices, track payments, and billing</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Invoicing</h1>
+          <p className="text-sm text-slate-500 mt-0.5">Manage invoices, track payments, and billing</p>
         </div>
         <div className="flex gap-2">
           {/* Export dropdown */}
@@ -299,16 +299,16 @@ export default function InvoicingPage() {
             {exportOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setExportOpen(false)} />
-                <div className="absolute right-0 top-full mt-1 z-20 w-36 rounded-lg border border-gray-200 bg-white shadow-xl shadow-black/40 overflow-hidden">
+                <div className="absolute right-0 top-full mt-1 z-20 w-36 rounded-xl ring-1 ring-black/5 bg-white shadow-xl shadow-black/40 overflow-hidden">
                   <button
                     onClick={() => handleExport('pdf')}
-                    className="w-full px-4 py-2.5 text-sm text-left text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                    className="w-full px-4 py-2.5 text-sm text-left text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                   >
                     Export as PDF
                   </button>
                   <button
                     onClick={() => handleExport('csv')}
-                    className="w-full px-4 py-2.5 text-sm text-left text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                    className="w-full px-4 py-2.5 text-sm text-left text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                   >
                     Export as CSV
                   </button>
@@ -332,7 +332,7 @@ export default function InvoicingPage() {
       </div>
 
       {/* Filter Tabs with status counts */}
-      <div className="flex items-center gap-1 rounded-lg bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
         {filterTabs.map((tab) => {
           const count = statusCounts[tab] || 0;
           return (
@@ -342,7 +342,7 @@ export default function InvoicingPage() {
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === tab
                   ? 'bg-electric text-[#0a0e2a] shadow-sm'
-                  : 'text-gray-400 hover:text-gray-900'
+                  : 'text-slate-400 hover:text-slate-900'
               }`}
             >
               {tab}
@@ -369,7 +369,7 @@ export default function InvoicingPage() {
             cancelled: '#4b5563',
           };
           return (
-            <div key={status} className="flex items-center gap-1.5 text-xs text-gray-400">
+            <div key={status} className="flex items-center gap-1.5 text-xs text-slate-400">
               <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: colorMap[status] || '#6b7280' }} />
               <span className="capitalize">{status}</span>
               <span className="text-steel-dark">({count})</span>
@@ -392,35 +392,35 @@ export default function InvoicingPage() {
           />
         </Card>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <div className="overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
           <table className="w-full min-w-[800px]">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Invoice #</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Client</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Amount</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 hidden md:table-cell">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 hidden md:table-cell">Due Date</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Invoice #</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Client</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Amount</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 hidden md:table-cell">Date</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 hidden md:table-cell">Due Date</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white-border">
               {filteredInvoices.map((inv) => (
                 <tr
                   key={inv.id}
-                  className="transition-colors hover:bg-gray-50"
+                  className="transition-colors hover:bg-slate-50"
                 >
                   <td className="px-4 py-3 text-sm font-medium text-blue-600 whitespace-nowrap">{inv.id}</td>
-                  <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">{inv.clientName}</td>
-                  <td className="px-4 py-3 text-sm font-semibold text-gray-900 text-right whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm text-slate-900 whitespace-nowrap">{inv.clientName}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-slate-900 text-right whitespace-nowrap">
                     {formatCurrency(inv.amount)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <StatusBadge status={inv.status} size="sm" />
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap hidden md:table-cell">{formatDate(inv.issueDate)}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap hidden md:table-cell">{formatDate(inv.dueDate)}</td>
+                  <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap hidden md:table-cell">{formatDate(inv.issueDate)}</td>
+                  <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap hidden md:table-cell">{formatDate(inv.dueDate)}</td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <div className="inline-flex items-center gap-1">
                       <Button
@@ -465,7 +465,7 @@ export default function InvoicingPage() {
               ))}
             </tbody>
           </table>
-          <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200">
+          <div className="px-4 py-2 text-xs text-slate-500 border-t border-slate-200">
             Showing {filteredInvoices.length} of {invoices.length} invoices
           </div>
         </div>
@@ -516,7 +516,7 @@ export default function InvoicingPage() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-medium text-slate-700">Line Items</label>
-                    <button onClick={addLineItem} className="h-8 px-3 rounded-lg text-xs font-semibold text-blue-600 hover:bg-blue-50 transition-colors">
+                    <button onClick={addLineItem} className="h-8 px-3 rounded-xl text-xs font-semibold text-blue-600 hover:bg-blue-50 transition-colors">
                       + Add Item
                     </button>
                   </div>
@@ -531,7 +531,7 @@ export default function InvoicingPage() {
                               placeholder="Description"
                               value={item.description}
                               onChange={(e) => updateLineItem(idx, 'description', e.target.value)}
-                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                             />
                           </div>
                           <div className="w-16 shrink-0">
@@ -539,7 +539,7 @@ export default function InvoicingPage() {
                               type="number" min="0" step="0.5" placeholder="Qty"
                               value={item.quantity}
                               onChange={(e) => updateLineItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                             />
                           </div>
                           <div className="w-20 shrink-0">
@@ -547,7 +547,7 @@ export default function InvoicingPage() {
                               type="number" min="0" step="0.01" placeholder="Price"
                               value={item.unitPrice}
                               onChange={(e) => updateLineItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
-                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                             />
                           </div>
                           <div className="w-20 shrink-0 text-right pt-2">
@@ -555,7 +555,7 @@ export default function InvoicingPage() {
                           </div>
                           <button
                             onClick={() => removeLineItem(idx)}
-                            className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                            className="shrink-0 p-1.5 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                           >
                             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

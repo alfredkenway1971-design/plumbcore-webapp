@@ -52,7 +52,7 @@ const statusMap: Record<string, JobStatus | 'all'> = {
 };
 
 const priorityStyles: Record<string, string> = {
-  low: 'bg-steel/10 text-gray-400',
+  low: 'bg-steel/10 text-slate-400',
   medium: 'bg-accent-amber/10 text-amber-600',
   high: 'bg-red-50 text-red-600',
   critical: 'bg-red-500/20 text-red-600',
@@ -63,22 +63,22 @@ const calendarColorMap: Record<string, string> = {
   'scheduled': 'border-l-2 border-accent-amber bg-accent-amber/5',
   'completed': 'border-l-2 border-status-success bg-green-500/5',
   'urgent': 'border-l-2 border-status-error bg-red-500/5',
-  'cancelled': 'border-l-2 border-steel-dark bg-gray-50 opacity-60',
+  'cancelled': 'border-l-2 border-steel-dark bg-slate-50 opacity-60',
 };
 
 /* ── Skeleton Row ── */
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
-      <div className="h-4 w-20 rounded bg-gray-50" />
-      <div className="h-4 w-32 rounded bg-gray-50" />
-      <div className="h-4 w-48 rounded bg-gray-50 hidden md:block" />
-      <div className="h-4 w-24 rounded bg-gray-50 hidden lg:block" />
-      <div className="h-5 w-24 rounded-full bg-gray-50" />
-      <div className="h-4 w-24 rounded bg-gray-50 hidden lg:block" />
-      <div className="h-4 w-28 rounded bg-gray-50 hidden lg:block" />
-      <div className="h-4 w-16 rounded bg-gray-50" />
-      <div className="h-4 w-20 rounded bg-gray-50" />
+      <div className="h-4 w-20 rounded bg-slate-50" />
+      <div className="h-4 w-32 rounded bg-slate-50" />
+      <div className="h-4 w-48 rounded bg-slate-50 hidden md:block" />
+      <div className="h-4 w-24 rounded bg-slate-50 hidden lg:block" />
+      <div className="h-5 w-24 rounded-full bg-slate-50" />
+      <div className="h-4 w-24 rounded bg-slate-50 hidden lg:block" />
+      <div className="h-4 w-28 rounded bg-slate-50 hidden lg:block" />
+      <div className="h-4 w-16 rounded bg-slate-50" />
+      <div className="h-4 w-20 rounded bg-slate-50" />
     </div>
   );
 }
@@ -89,9 +89,9 @@ function SkeletonCalendar() {
     <div className="grid grid-cols-7 gap-1 animate-pulse">
       {Array.from({ length: 7 }).map((_, i) => (
         <div key={i} className="space-y-2 p-2">
-          <div className="h-4 w-full rounded bg-gray-50" />
+          <div className="h-4 w-full rounded bg-slate-50" />
           {Array.from({ length: 4 }).map((_, j) => (
-            <div key={j} className="h-12 w-full rounded bg-gray-50" />
+            <div key={j} className="h-12 w-full rounded bg-slate-50" />
           ))}
         </div>
       ))}
@@ -323,14 +323,14 @@ export default function JobsPage() {
   };
 
   function SortIcon({ field }: { field: string }) {
-    if (sortField !== field) return <span className="ml-1 text-gray-500-dark">↕</span>;
+    if (sortField !== field) return <span className="ml-1 text-slate-500-dark">↕</span>;
     return <span className="ml-1 text-blue-600">{sortDir === 'asc' ? '↑' : '↓'}</span>;
   }
 
   function SortableTh({ field, children }: { field: string; children: React.ReactNode }) {
     return (
       <th
-        className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 cursor-pointer select-none hover:text-gray-900 transition-colors"
+        className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 cursor-pointer select-none hover:text-slate-900 transition-colors"
         onClick={() => toggleSort(field)}
       >
         {children}
@@ -484,11 +484,11 @@ export default function JobsPage() {
       <div className="p-4 sm:p-6 space-y-5">
         {/* Tabs skeleton */}
         <div className="flex items-center gap-4">
-          <div className="h-9 w-24 rounded-lg bg-gray-50 animate-pulse" />
-          <div className="h-9 w-28 rounded-lg bg-gray-50 animate-pulse" />
+          <div className="h-9 w-24 rounded-xl bg-slate-50 animate-pulse" />
+          <div className="h-9 w-28 rounded-xl bg-slate-50 animate-pulse" />
         </div>
         {/* Search skeleton */}
-        <div className="h-10 w-full max-w-md rounded-lg bg-gray-50 animate-pulse" />
+        <div className="h-10 w-full max-w-md rounded-xl bg-slate-50 animate-pulse" />
         {/* Table skeleton */}
         <Card variant="default" padding="sm">
           <div className="divide-y divide-white-border">
@@ -506,20 +506,20 @@ export default function JobsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Jobs & Schedule</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Manage and dispatch jobs to your team</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Jobs & Schedule</h1>
+          <p className="text-sm text-slate-500 mt-0.5">Manage and dispatch jobs to your team</p>
         </div>
         <Button size="sm" onClick={() => { resetCreateForm(); setShowCreateModal(true); }}>+ New Job</Button>
       </div>
 
       {/* View Tabs */}
-      <div className="flex items-center gap-1 rounded-lg bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
         <button
           onClick={() => setViewMode('list')}
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'list'
               ? 'bg-electric text-[#0a0e2a] shadow-sm'
-              : 'text-gray-400 hover:text-gray-900'
+              : 'text-slate-400 hover:text-slate-900'
           }`}
         >
           List View
@@ -529,7 +529,7 @@ export default function JobsPage() {
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'calendar'
               ? 'bg-electric text-[#0a0e2a] shadow-sm'
-              : 'text-gray-400 hover:text-gray-900'
+              : 'text-slate-400 hover:text-slate-900'
           }`}
         >
           Schedule View
@@ -548,7 +548,7 @@ export default function JobsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-lg border border-gray-200 bg-whiteer px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {statusFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Statuses' : opt}</option>
@@ -557,7 +557,7 @@ export default function JobsPage() {
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className="rounded-lg border border-gray-200 bg-whiteer px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {priorityFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Priorities' : opt}</option>
@@ -566,7 +566,7 @@ export default function JobsPage() {
         <select
           value={techFilter}
           onChange={(e) => setTechFilter(e.target.value)}
-          className="rounded-lg border border-gray-200 bg-whiteer px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {techOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Techs' : opt}</option>
@@ -607,41 +607,41 @@ export default function JobsPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <span className="text-sm font-medium text-blue-600">{job.id}</span>
-                          <h3 className="text-sm font-semibold text-gray-900 mt-0.5">{job.clientName}</h3>
+                          <h3 className="text-sm font-semibold text-slate-900 mt-0.5">{job.clientName}</h3>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-gray-400'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-slate-400'}`}
                           >
                             {job.priority}
                           </span>
                           <StatusBadge status={job.status} size="sm" />
                         </div>
                       </div>
-                      <p className="text-xs text-gray-500 line-clamp-2">{job.title}</p>
+                      <p className="text-xs text-slate-500 line-clamp-2">{job.title}</p>
                       <div className="flex items-center justify-between text-xs">
                         <div className="space-y-1">
-                          <p className="text-gray-400">{formatDate(job.scheduledDate)}</p>
-                          <p className="text-gray-400 truncate max-w-[140px]">{techNames}</p>
+                          <p className="text-slate-400">{formatDate(job.scheduledDate)}</p>
+                          <p className="text-slate-400 truncate max-w-[140px]">{techNames}</p>
                         </div>
-                        <span className="text-sm font-semibold text-gray-900">{formatCurrency(job.estimatedCost)}</span>
+                        <span className="text-sm font-semibold text-slate-900">{formatCurrency(job.estimatedCost)}</span>
                       </div>
                       <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
                         <button
                           onClick={(e) => { e.stopPropagation(); router.push(`/jobs/${job.id}`); }}
-                          className="flex-1 h-8 text-xs font-medium text-gray-600 bg-gray-50 border border-slate-200 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex-1 h-8 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
                         >
                           View
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); openEditJob(job, e); }}
-                          className="flex-1 h-8 text-xs font-medium text-gray-600 bg-gray-50 border border-slate-200 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex-1 h-8 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
                         >
                           Edit
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); setShowDeleteConfirm(job.id); }}
-                          className="flex-1 h-8 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+                          className="flex-1 h-8 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors"
                         >
                           Delete
                         </button>
@@ -649,16 +649,16 @@ export default function JobsPage() {
                     </div>
                   );
                 })}
-                <div className="px-1 text-xs text-gray-500">
+                <div className="px-1 text-xs text-slate-500">
                   Showing {filteredJobs.length} of {jobList.length} jobs
                 </div>
               </div>
 
               {/* Desktop table */}
-              <div className="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 bg-white">
+              <div className="hidden sm:block overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
               <table className="w-full min-w-[950px]">
                 <thead>
-                  <tr className="border-b border-gray-200">
+                  <tr className="border-b border-slate-200">
                     <SortableTh field="id">Job ID</SortableTh>
                     <SortableTh field="clientName">Customer</SortableTh>
                     <SortableTh field="scheduledDate">Description</SortableTh>
@@ -667,7 +667,7 @@ export default function JobsPage() {
                     <SortableTh field="status">Status</SortableTh>
                     <SortableTh field="assignedTo">Tech</SortableTh>
                     <SortableTh field="estimatedCost">Amount</SortableTh>
-                    <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+                    <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white-border">
@@ -679,15 +679,15 @@ export default function JobsPage() {
                       <tr
                         key={job.id}
                         onClick={() => router.push(`/jobs/${job.id}`)}
-                        className="cursor-pointer transition-colors hover:bg-gray-50"
+                        className="cursor-pointer transition-colors hover:bg-slate-50"
                       >
                         <td className="px-4 py-3 text-sm font-medium text-blue-600 whitespace-nowrap">{job.id}</td>
-                        <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">{job.clientName}</td>
-                        <td className="px-4 py-3 text-sm text-gray-400 max-w-[200px] truncate">{job.title}</td>
-                        <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap">{formatDate(job.scheduledDate)}</td>
+                        <td className="px-4 py-3 text-sm text-slate-900 whitespace-nowrap">{job.clientName}</td>
+                        <td className="px-4 py-3 text-sm text-slate-400 max-w-[200px] truncate">{job.title}</td>
+                        <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap">{formatDate(job.scheduledDate)}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-gray-400'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-slate-400'}`}
                           >
                             {job.priority}
                           </span>
@@ -695,13 +695,13 @@ export default function JobsPage() {
                         <td className="px-4 py-3 whitespace-nowrap">
                           <StatusBadge status={job.status} size="sm" />
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap max-w-[140px] truncate">{techNames}</td>
-                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 whitespace-nowrap">{formatCurrency(job.estimatedCost)}</td>
+                        <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap max-w-[140px] truncate">{techNames}</td>
+                        <td className="px-4 py-3 text-sm font-semibold text-slate-900 whitespace-nowrap">{formatCurrency(job.estimatedCost)}</td>
                         <td className="px-4 py-3 text-center whitespace-nowrap">
                           <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => router.push(`/jobs/${job.id}`)}
-                              className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                              className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                               title="View job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -711,7 +711,7 @@ export default function JobsPage() {
                             </button>
                             <button
                               onClick={(e) => openEditJob(job, e)}
-                              className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                              className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                               title="Edit job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -720,7 +720,7 @@ export default function JobsPage() {
                             </button>
                             <button
                               onClick={() => setShowDeleteConfirm(job.id)}
-                              className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                              className="rounded-xl p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
                               title="Delete job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -734,7 +734,7 @@ export default function JobsPage() {
                   })}
                 </tbody>
               </table>
-              <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200">
+              <div className="px-4 py-2 text-xs text-slate-500 border-t border-slate-200">
                 Showing {filteredJobs.length} of {jobList.length} jobs
               </div>
             </div>
@@ -755,9 +755,9 @@ export default function JobsPage() {
               />
             </Card>
           ) : (
-            <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+            <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
               {/* Day headers */}
-              <div className="grid grid-cols-7 border-b border-gray-200">
+              <div className="grid grid-cols-7 border-b border-slate-200">
                 {weekDays.map((day, i) => {
                   const d = calendarDates[i];
                   const dateObj = new Date(d);
@@ -767,12 +767,12 @@ export default function JobsPage() {
                   return (
                     <div
                       key={day}
-                      className={`px-2 py-3 text-center border-r border-gray-200 last:border-r-0 ${
+                      className={`px-2 py-3 text-center border-r border-slate-200 last:border-r-0 ${
                         isToday ? 'bg-electric/5' : ''
                       }`}
                     >
-                      <p className="text-xs font-semibold uppercase text-gray-500">{day}</p>
-                      <p className={`text-lg font-bold mt-0.5 ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>
+                      <p className="text-xs font-semibold uppercase text-slate-500">{day}</p>
+                      <p className={`text-lg font-bold mt-0.5 ${isToday ? 'text-blue-600' : 'text-slate-900'}`}>
                         {dateObj.getDate()}
                       </p>
                     </div>
@@ -787,7 +787,7 @@ export default function JobsPage() {
                   return (
                     <div key={date} className="min-h-[300px] p-1.5 space-y-1.5">
                       {dayJobs.length === 0 && (
-                        <p className="text-[10px] text-gray-500-dark text-center pt-6">—</p>
+                        <p className="text-[10px] text-slate-500-dark text-center pt-6">—</p>
                       )}
                       {dayJobs.map((job) => {
                         const techNames = job.assignedTo
@@ -797,11 +797,11 @@ export default function JobsPage() {
                           <div
                             key={job.id}
                             onClick={() => router.push(`/jobs/${job.id}`)}
-                            className={`rounded-lg px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-steel bg-gray-50'}`}
+                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-steel bg-slate-50'}`}
                           >
-                            <p className="text-[11px] font-semibold text-gray-900 truncate">{job.title}</p>
-                            <p className="text-[10px] text-gray-400 truncate">{job.clientName}</p>
-                            <p className="text-[10px] text-gray-500 truncate">{techNames}</p>
+                            <p className="text-[11px] font-semibold text-slate-900 truncate">{job.title}</p>
+                            <p className="text-[10px] text-slate-400 truncate">{job.clientName}</p>
+                            <p className="text-[10px] text-slate-500 truncate">{techNames}</p>
                           </div>
                         );
                       })}
@@ -811,18 +811,18 @@ export default function JobsPage() {
               </div>
 
               {/* Legend */}
-              <div className="flex items-center gap-4 px-4 py-2 border-t border-gray-200 bg-whiteer flex-wrap">
-                <span className="text-[11px] text-gray-500">Legend:</span>
-                <span className="flex items-center gap-1 text-[11px] text-gray-400">
+              <div className="flex items-center gap-4 px-4 py-2 border-t border-slate-200 bg-whiteer flex-wrap">
+                <span className="text-[11px] text-slate-500">Legend:</span>
+                <span className="flex items-center gap-1 text-[11px] text-slate-400">
                   <span className="inline-block w-3 h-3 rounded bg-blue-100 border-l-2 border-electric" /> In Progress
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                <span className="flex items-center gap-1 text-[11px] text-slate-400">
                   <span className="inline-block w-3 h-3 rounded bg-accent-amber/20 border-l-2 border-accent-amber" /> Scheduled
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                <span className="flex items-center gap-1 text-[11px] text-slate-400">
                   <span className="inline-block w-3 h-3 rounded bg-green-500/20 border-l-2 border-status-success" /> Completed
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                <span className="flex items-center gap-1 text-[11px] text-slate-400">
                   <span className="inline-block w-3 h-3 rounded bg-red-500/20 border-l-2 border-status-error" /> Urgent
                 </span>
               </div>

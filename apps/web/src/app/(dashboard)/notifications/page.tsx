@@ -102,14 +102,14 @@ const typeConfig: Record<NotificationType, { icon: React.FC<{ className?: string
   job: { icon: WrenchIcon, color: 'text-blue-600' },
   invoice: { icon: FileTextIcon, color: 'text-green-600' },
   inventory: { icon: BoxIcon, color: 'text-amber-600' },
-  system: { icon: BellIcon, color: 'text-gray-400' },
+  system: { icon: BellIcon, color: 'text-slate-400' },
 };
 
 /* ── Skeleton ── */
 function SkeletonNotification() {
   return (
-    <div className="animate-pulse flex gap-3 border-b border-gray-200/50 px-4 py-3.5">
-      <div className="h-9 w-9 rounded-lg bg-white/5 shrink-0" />
+    <div className="animate-pulse flex gap-3 border-b border-slate-200/50 px-4 py-3.5">
+      <div className="h-9 w-9 rounded-xl bg-white/5 shrink-0" />
       <div className="flex-1 space-y-2">
         <div className="h-3.5 w-2/3 rounded bg-white/5" />
         <div className="h-3 w-full rounded bg-white/5" />
@@ -192,7 +192,7 @@ export default function NotificationsPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Notifications</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load notifications" message={error} onRetry={handleRetry} />
         </Card>
@@ -204,8 +204,8 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <h1 className="text-2xl font-bold text-slate-900">Notifications</h1>
+        <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
           {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonNotification key={i} />
           ))}
@@ -219,7 +219,7 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Notifications</h1>
           {unreadCount > 0 && (
             <span className="inline-flex items-center justify-center rounded-full bg-electric/15 px-2.5 py-0.5 text-xs font-bold text-blue-600">
               {unreadCount}
@@ -247,7 +247,7 @@ export default function NotificationsPage() {
 
       {/* Clear All Confirmation */}
       {showClearConfirm && (
-        <div className="rounded-lg bg-amber-50 border border-status-warning/30 px-4 py-3 flex items-center justify-between">
+        <div className="rounded-xl bg-amber-50 border border-status-warning/30 px-4 py-3 flex items-center justify-between">
           <p className="text-sm text-amber-600 font-medium">Clear all notifications? This cannot be undone.</p>
           <div className="flex gap-2">
             <Button variant="ghost" size="sm" onClick={() => setShowClearConfirm(false)}>Cancel</Button>
@@ -257,15 +257,15 @@ export default function NotificationsPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-gray-200 overflow-x-auto">
+      <div className="flex gap-1 border-b border-slate-200 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-[1px] ${
               activeTab === tab.key
-                ? 'border-electric text-gray-900'
-                : 'border-transparent text-gray-400 hover:text-gray-900 hover:border-white/20'
+                ? 'border-electric text-slate-900'
+                : 'border-transparent text-slate-400 hover:text-slate-900 hover:border-white/20'
             }`}
           >
             {tab.label}
@@ -290,7 +290,7 @@ export default function NotificationsPage() {
 
       {/* Notification List */}
       {filteredNotifications.length > 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden divide-y divide-white-border/50">
+        <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden divide-y divide-white-border/50">
           {filteredNotifications.map((notif) => {
             const config = typeConfig[notif.type];
             const Icon = config.icon;
@@ -304,7 +304,7 @@ export default function NotificationsPage() {
                 }`}
               >
                 {/* Icon */}
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
                   !notif.read ? 'bg-blue-50' : 'bg-white/5'
                 }`}>
                   <Icon className={`h-4 w-4 ${config.color}`} />
@@ -314,15 +314,15 @@ export default function NotificationsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <p className={`text-sm truncate ${
-                      !notif.read ? 'font-semibold text-gray-900' : 'font-medium text-gray-400'
+                      !notif.read ? 'font-semibold text-slate-900' : 'font-medium text-slate-400'
                     }`}>
                       {notif.title}
                     </p>
-                    <span className="shrink-0 text-[11px] text-gray-500 whitespace-nowrap">
+                    <span className="shrink-0 text-[11px] text-slate-500 whitespace-nowrap">
                       {timeAgo(notif.timestamp)}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{notif.description}</p>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{notif.description}</p>
                 </div>
 
                 {/* Unread dot */}
@@ -339,7 +339,7 @@ export default function NotificationsPage() {
 
       {/* Footer Count */}
       {notifications.length > 0 && (
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-slate-500 text-center">
           Showing {filteredNotifications.length} of {notifications.length} notifications
         </p>
       )}

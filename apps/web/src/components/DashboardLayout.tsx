@@ -26,6 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLInputElement>(null);
+  const profile = useAuthStore((s) => s.profile);
 
   // Derived: is the current path an admin route?
   const isAdminRoute = pathname.startsWith('/admin');
@@ -35,12 +36,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     useAuthStore.getState().restoreSession();
   }, []);
 
-  // Route guard: redirect to login if not authenticated
+  // Route guard: redirect based on role
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push('/login');
+      return;
     }
-  }, [isLoading, isAuthenticated, router]);
+    if (isLoading || !profile) return;
+    const isAdmin = profile.role === 'super_admin' || profile.role === 'admin';
+    const onAdminPage = pathname.startsWith('/admin');
+    if (!isAdmin && onAdminPage) {
+      router.push('/dashboard');
+    } else if (isAdmin && !onAdminPage && pathname !== '/' && !pathname.startsWith('/settings')) {
+      router.push('/admin');
+    }
+  }, [isLoading, isAuthenticated, profile, pathname, router]);
 
   // Load data when company ID is available
   useEffect(() => {
@@ -91,17 +101,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* ═══ Top Header ═══ */}
-        <header className="h-16 shrink-0 bg-white border-b border-slate-100 flex items-center justify-between px-4 lg:px-6 gap-4">
+        <header className="h-16 shrink-0 bg-white/80 backdrop-blur-xl ring-1 ring-black/5 flex items-center justify-between px-4 lg:px-6 gap-4 sticky top-0 z-30">
           {/* Left: Hamburger + Page Title */}
           <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden w-9 h-9 rounded-lg flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors -ml-1"
+              className="md:hidden w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors -ml-1"
             >
               <HamburgerIcon className="w-5 h-5" />
             </button>
             <div className="hidden sm:flex items-center gap-2 text-sm text-slate-400 min-w-0">
-              <span className="text-slate-900 font-semibold">{pathname.split('/').filter(Boolean)[0] || 'Dashboard'}</span>
+              <span className="text-slate-900 font-semibold tracking-tight">{pathname.split('/').filter(Boolean)[0] || 'Dashboard'}</span>
               {pathname.split('/').filter(Boolean).slice(1).map((segment) => (
                 <span key={segment}>
                   <span className="text-slate-300"> / </span>
@@ -121,7 +131,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 placeholder={t('common.search')}
                 className="w-full h-9 pl-10 pr-12 bg-slate-100 rounded-full text-sm text-slate-600 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white transition-all"
               />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-medium text-slate-400">
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white ring-1 ring-black/5 text-[10px] font-medium text-slate-400">
                 ⌘K
               </div>
             </div>
@@ -130,14 +140,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Right: Actions + Avatar */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Date Range */}
-            <button className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+            <button className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg ring-1 ring-black/5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
               <span className="text-xs">📅</span>
               <span className="text-xs font-medium">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               <ChevronDownIcon className="w-3.5 h-3.5 text-slate-400" />
             </button>
 
             {/* Add Widget */}
-            <button className="hidden lg:flex items-center gap-1.5 h-9 px-3 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+            <button className="hidden lg:flex items-center gap-1.5 h-9 px-3 rounded-lg ring-1 ring-black/5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
               <PlusIcon className="w-4 h-4" />
               <span className="text-xs font-medium">Add widget</span>
             </button>
@@ -155,7 +165,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-medium shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98]"
             >
               <DownloadIcon className="w-4 h-4" />
               <span className="hidden sm:inline text-xs">Export</span>
@@ -169,7 +179,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Notification Bell */}
             <a href="/notifications" className="relative w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
               <BellIcon className="w-5 h-5" />
-              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold ring-2 ring-white px-1">4</span>
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold ring-2 ring-white/50 px-1">4</span>
             </a>
 
             {/* Avatar */}
@@ -179,9 +189,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               const nm = p?.full_name || '';
               const inits = nm.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AM';
               return url ? (
-                <img src={url} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm" />
+                <img src={url} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]" />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">
                   {inits}
                 </div>
               );
@@ -191,7 +201,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* ═══ Offline Banner ═══ */}
         {isOffline && (
-          <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border-b border-amber-200 text-sm text-amber-700">
+          <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 ring-1 ring-amber-200 text-sm text-amber-700">
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>

@@ -52,12 +52,12 @@ const tabs = ['All', 'Parts', 'Repair Types'] as const;
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
-      <div className="h-4 w-36 rounded bg-gray-50" />
-      <div className="h-4 w-20 rounded bg-gray-50" />
-      <div className="h-4 w-16 rounded bg-gray-50" />
-      <div className="h-4 w-16 rounded bg-gray-50" />
-      <div className="h-4 w-20 rounded bg-gray-50" />
-      <div className="h-4 w-24 rounded bg-gray-50" />
+      <div className="h-4 w-36 rounded bg-slate-50" />
+      <div className="h-4 w-20 rounded bg-slate-50" />
+      <div className="h-4 w-16 rounded bg-slate-50" />
+      <div className="h-4 w-16 rounded bg-slate-50" />
+      <div className="h-4 w-20 rounded bg-slate-50" />
+      <div className="h-4 w-24 rounded bg-slate-50" />
     </div>
   );
 }
@@ -227,12 +227,12 @@ export default function PricebookPage() {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 space-y-5">
-        <div className="h-8 w-48 rounded bg-gray-50 animate-pulse" />
-        <div className="h-5 w-64 rounded bg-gray-50 animate-pulse" />
-        <div className="h-10 w-full max-w-md rounded bg-gray-50 animate-pulse" />
+        <div className="h-8 w-48 rounded bg-slate-50 animate-pulse" />
+        <div className="h-5 w-64 rounded bg-slate-50 animate-pulse" />
+        <div className="h-10 w-full max-w-md rounded bg-slate-50 animate-pulse" />
         <div className="flex gap-2">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-8 w-24 rounded-lg bg-gray-50 animate-pulse" />
+            <div key={i} className="h-8 w-24 rounded-xl bg-slate-50 animate-pulse" />
           ))}
         </div>
         <Card variant="default" padding="sm">
@@ -249,8 +249,8 @@ export default function PricebookPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Pricebook</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{items.length} items in pricebook</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Pricebook</h1>
+          <p className="text-sm text-slate-500 mt-0.5">{items.length} items in pricebook</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => setCsvModalOpen(true)}>
@@ -274,7 +274,7 @@ export default function PricebookPage() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           <option value="">All Categories</option>
           {pricebookCategories.map((cat) => (
@@ -284,7 +284,7 @@ export default function PricebookPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 rounded-lg bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
         {tabs.map((tab) => {
           const count =
             tab === 'All'
@@ -299,7 +299,7 @@ export default function PricebookPage() {
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === tab
                   ? 'bg-electric text-[#0a0e2a] shadow-sm'
-                  : 'text-gray-400 hover:text-gray-900'
+                  : 'text-slate-400 hover:text-slate-900'
               }`}
             >
               {tab}
@@ -327,26 +327,26 @@ export default function PricebookPage() {
           />
         </Card>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <div className="overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
           <table className="w-full min-w-[750px]">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Name</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Category</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Unit Type</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Est. Hours</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 hidden lg:table-cell">Brands / Desc</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Name</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Category</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Unit Type</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Est. Hours</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 hidden lg:table-cell">Brands / Desc</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white-border">
               {filteredItems.map((item) => (
                 <tr
                   key={item.id}
-                  className="transition-colors hover:bg-gray-50"
+                  className="transition-colors hover:bg-slate-50"
                 >
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm font-medium text-slate-900 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       {item.name}
                       {item.isRepairType && (
@@ -354,13 +354,13 @@ export default function PricebookPage() {
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap">{item.category}</td>
-                  <td className="px-4 py-3 text-sm font-semibold text-gray-900 text-right whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap">{item.unitType}</td>
-                  <td className="px-4 py-3 text-sm text-gray-400 text-center whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap">{item.category}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-slate-900 text-right whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
+                  <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap">{item.unitType}</td>
+                  <td className="px-4 py-3 text-sm text-slate-400 text-center whitespace-nowrap">
                     {item.isRepairType && item.estimatedHours ? `${item.estimatedHours}h` : '—'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400 whitespace-nowrap hidden lg:table-cell">
+                  <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap hidden lg:table-cell">
                     {item.isRepairType
                       ? (item.description ? item.description.substring(0, 50) + (item.description.length > 50 ? '...' : '') : '—')
                       : (item.commonBrands ? item.commonBrands.join(', ') : '—')
@@ -387,7 +387,7 @@ export default function PricebookPage() {
               ))}
             </tbody>
           </table>
-          <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200">
+          <div className="px-4 py-2 text-xs text-slate-500 border-t border-slate-200">
             Showing {filteredItems.length} of {items.length} items
           </div>
         </div>
@@ -415,11 +415,11 @@ export default function PricebookPage() {
           <Input label="Name *" placeholder="Item name" value={form.name || ''} onChange={(e) => updateForm('name', e.target.value)} />
 
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Category *</label>
+            <label className="block text-sm font-medium text-slate-400">Category *</label>
             <select
               value={form.category || ''}
               onChange={(e) => updateForm('category', e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="">Select a category</option>
               {pricebookCategories.map((cat) => (
@@ -439,11 +439,11 @@ export default function PricebookPage() {
               onChange={(e) => updateForm('unitPrice', parseFloat(e.target.value) || 0)}
             />
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Unit Type *</label>
+              <label className="block text-sm font-medium text-slate-400">Unit Type *</label>
               <select
                 value={form.unitType || 'each'}
                 onChange={(e) => updateForm('unitType', e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor', 'tube'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -467,7 +467,7 @@ export default function PricebookPage() {
               }}
               className="rounded border-white/10 bg-whiteer text-blue-600 focus:ring-electric/30"
             />
-            <span className="text-sm text-gray-900">This is a repair type</span>
+            <span className="text-sm text-slate-900">This is a repair type</span>
           </label>
 
           {form.isRepairType && (
@@ -515,11 +515,11 @@ export default function PricebookPage() {
           <Input label="Name *" placeholder="Item name" value={form.name || ''} onChange={(e) => updateForm('name', e.target.value)} />
 
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-400">Category *</label>
+            <label className="block text-sm font-medium text-slate-400">Category *</label>
             <select
               value={form.category || ''}
               onChange={(e) => updateForm('category', e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="">Select a category</option>
               {pricebookCategories.map((cat) => (
@@ -539,11 +539,11 @@ export default function PricebookPage() {
               onChange={(e) => updateForm('unitPrice', parseFloat(e.target.value) || 0)}
             />
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-400">Unit Type *</label>
+              <label className="block text-sm font-medium text-slate-400">Unit Type *</label>
               <select
                 value={form.unitType || 'each'}
                 onChange={(e) => updateForm('unitType', e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -567,7 +567,7 @@ export default function PricebookPage() {
               }}
               className="rounded border-white/10 bg-whiteer text-blue-600 focus:ring-electric/30"
             />
-            <span className="text-sm text-gray-900">This is a repair type</span>
+            <span className="text-sm text-slate-900">This is a repair type</span>
           </label>
 
           {form.isRepairType && (
@@ -834,7 +834,7 @@ function CsvImportModal({
     >
       <div className="space-y-4 min-h-[300px]">
         {error && (
-          <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+          <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
             {error}
           </div>
         )}
@@ -845,22 +845,22 @@ function CsvImportModal({
             className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
               dragOver
                 ? 'border-blue-400 bg-blue-50'
-                : 'border-gray-300 hover:border-gray-400 bg-gray-50/50'
+                : 'border-gray-300 hover:border-gray-400 bg-slate-50/50'
             }`}
             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
           >
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
-              <svg className="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+              <svg className="h-6 w-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-slate-700">
               Drag & drop your CSV file here, or click to browse
             </p>
-            <p className="text-xs text-gray-400 mt-1">.csv files only</p>
-            <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
+            <p className="text-xs text-slate-400 mt-1">.csv files only</p>
+            <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
               </svg>
@@ -885,16 +885,16 @@ function CsvImportModal({
         {step === 'mapping' && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Map Columns</h3>
-              <p className="text-xs text-gray-500 mb-3">
+              <h3 className="text-sm font-semibold text-slate-700 mb-2">Map Columns</h3>
+              <p className="text-xs text-slate-500 mb-3">
                 Map your CSV columns to pricebook fields. Fields marked with * are required.
               </p>
 
               <div className="space-y-2">
                 {headers.map((header) => (
-                  <div key={header} className="flex items-center gap-3 py-1.5 border-b border-gray-100 last:border-0">
-                    <span className="text-sm font-medium text-gray-700 w-36 truncate">{header}</span>
-                    <svg className="h-4 w-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <div key={header} className="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-0">
+                    <span className="text-sm font-medium text-slate-700 w-36 truncate">{header}</span>
+                    <svg className="h-4 w-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                     <select
@@ -915,7 +915,7 @@ function CsvImportModal({
                           return next;
                         });
                       }}
-                      className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200"
+                      className="flex-1 rounded-xl ring-1 ring-black/5 px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200"
                     >
                       <option value="">— Select mapping —</option>
                       {mappingOptions.map(opt => (
@@ -929,37 +929,37 @@ function CsvImportModal({
 
             {/* Preview Table */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Preview (first 5 rows)</h3>
-              <div className="overflow-x-auto rounded-lg border border-gray-200">
+              <h3 className="text-sm font-semibold text-slate-700 mb-2">Preview (first 5 rows)</h3>
+              <div className="overflow-x-auto rounded-xl ring-1 ring-black/5">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-gray-50 border-b border-gray-200">
-                      <th className="px-3 py-2 text-left font-semibold text-gray-500">Name</th>
-                      <th className="px-3 py-2 text-left font-semibold text-gray-500">Category</th>
-                      <th className="px-3 py-2 text-right font-semibold text-gray-500">Price</th>
-                      <th className="px-3 py-2 text-left font-semibold text-gray-500">Unit</th>
+                    <tr className="bg-slate-50 border-b border-slate-200">
+                      <th className="px-3 py-2 text-left font-semibold text-slate-500">Name</th>
+                      <th className="px-3 py-2 text-left font-semibold text-slate-500">Category</th>
+                      <th className="px-3 py-2 text-right font-semibold text-slate-500">Price</th>
+                      <th className="px-3 py-2 text-left font-semibold text-slate-500">Unit</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {getPreviewRows().map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50">
-                        <td className="px-3 py-2 text-gray-700 truncate max-w-[180px]">
+                      <tr key={i} className="hover:bg-slate-50">
+                        <td className="px-3 py-2 text-slate-700 truncate max-w-[180px]">
                           {getMappedValue(row, 'name') || '—'}
                         </td>
-                        <td className="px-3 py-2 text-gray-500 truncate max-w-[120px]">
+                        <td className="px-3 py-2 text-slate-500 truncate max-w-[120px]">
                           {getMappedValue(row, 'category') || '—'}
                         </td>
-                        <td className="px-3 py-2 text-gray-700 text-right">
+                        <td className="px-3 py-2 text-slate-700 text-right">
                           {getMappedValue(row, 'unitPrice') || '—'}
                         </td>
-                        <td className="px-3 py-2 text-gray-500">
+                        <td className="px-3 py-2 text-slate-500">
                           {getMappedValue(row, 'unitType') || getMappedValue(row, 'unitPrice') ? 'each' : '—'}
                         </td>
                       </tr>
                     ))}
                     {getPreviewRows().length === 0 && (
                       <tr>
-                        <td colSpan={4} className="px-3 py-4 text-center text-gray-400">
+                        <td colSpan={4} className="px-3 py-4 text-center text-slate-400">
                           No data rows to preview
                         </td>
                       </tr>
@@ -971,7 +971,7 @@ function CsvImportModal({
 
             {/* Duplicates Warning */}
             {duplicates.length > 0 && (
-              <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3">
+              <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
                 <p className="text-xs font-medium text-amber-800">
                   {duplicates.length} item(s) already exist in pricebook (will be skipped):
                 </p>
@@ -981,7 +981,7 @@ function CsvImportModal({
               </div>
             )}
 
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-slate-400">
               {rawRows.length} rows found in CSV file
             </p>
 
@@ -1009,8 +1009,8 @@ function CsvImportModal({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             </div>
-            <h3 className="text-base font-semibold text-gray-900">Import Complete</h3>
-            <p className="text-sm text-gray-500 mt-1">
+            <h3 className="text-base font-semibold text-slate-900">Import Complete</h3>
+            <p className="text-sm text-slate-500 mt-1">
               Successfully imported {importCount} item{importCount !== 1 ? 's' : ''} into your pricebook.
             </p>
             {duplicates.length > 0 && (

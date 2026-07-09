@@ -354,9 +354,9 @@ export default function ClientsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-lg bg-blue-500 text-white text-xs font-semibold flex items-center justify-center hover:bg-blue-600 transition-colors">Call</a>
-                          <a href={`mailto:${c.email}`} className="flex-1 h-9 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold flex items-center justify-center hover:bg-slate-50 transition-colors">Email</a>
-                          <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="flex-1 h-9 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">Edit</button>
+                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold flex items-center justify-center hover:bg-blue-600 transition-colors">Call</a>
+                          <a href={`mailto:${c.email}`} className="flex-1 h-9 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold flex items-center justify-center hover:bg-slate-50 transition-colors">Email</a>
+                          <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="flex-1 h-9 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">Edit</button>
                         </div>
                       </div>
                     )}
@@ -411,8 +411,8 @@ export default function ClientsPage() {
                         <td className="py-3.5 px-4 text-right text-sm text-slate-500 hidden lg:table-cell whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                         <td className="py-3.5 px-4 text-center">
                           <div className="flex items-center justify-center gap-1">
-                            <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"><EditIcon className="w-4 h-4" /></button>
-                            <button onClick={e => { e.stopPropagation(); setShowDelete(c.id); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"><TrashIcon className="w-4 h-4" /></button>
+                            <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"><EditIcon className="w-4 h-4" /></button>
+                            <button onClick={e => { e.stopPropagation(); setShowDelete(c.id); }} className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"><TrashIcon className="w-4 h-4" /></button>
                           </div>
                         </td>
                       </tr>
@@ -469,11 +469,11 @@ export default function ClientsPage() {
             <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
               <p className="text-xs text-slate-500">Showing {safePage * pageSize + 1}–{Math.min((safePage + 1) * pageSize, sorted.length)} of {sorted.length}</p>
               <div className="flex items-center gap-1">
-                <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0} className="h-8 px-3 rounded-lg text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">← Prev</button>
+                <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0} className="h-8 px-3 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">← Prev</button>
                 {Array.from({ length: totalPages }).map((_, i) => (
-                  <button key={i} onClick={() => setPage(i)} className={`h-8 min-w-[32px] rounded-lg text-xs font-medium transition-colors ${i === safePage ? 'bg-blue-50 text-blue-600' : 'text-slate-500 hover:bg-slate-100'}`}>{i + 1}</button>
+                  <button key={i} onClick={() => setPage(i)} className={`h-8 min-w-[32px] rounded-xl text-xs font-medium transition-colors ${i === safePage ? 'bg-blue-50 text-blue-600' : 'text-slate-500 hover:bg-slate-100'}`}>{i + 1}</button>
                 ))}
-                <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1} className="h-8 px-3 rounded-lg text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">Next →</button>
+                <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1} className="h-8 px-3 rounded-xl text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">Next →</button>
               </div>
             </div>
           </>

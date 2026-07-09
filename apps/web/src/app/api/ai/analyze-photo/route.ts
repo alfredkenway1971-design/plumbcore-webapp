@@ -12,20 +12,30 @@ const LABOR_RATE = 120
 const TAX_RATE = 0.085
 const CONFIDENCE_THRESHOLD = 70 // fallback if confidence below this
 
-const AI_SYSTEM_PROMPT = `As a master plumber, analyze this plumbing issue and return a detailed estimate as JSON ONLY. No other text.
+const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the customer's plumbing issue description and provide a detailed professional estimate. Return ONLY valid JSON, no other text.
 
-Return valid JSON with exactly this structure:
+Based on the customer's description, identify the most likely specific plumbing problem and return:
 {
-  "diagnosis": "clear diagnosis of the problem",
+  "diagnosis": "A specific, professional diagnosis describing the exact issue (e.g. 'Worn-out Moen 1225 cartridge causing persistent drip from bathroom faucet, with mineral buildup on valve seat')",
   "severity": "low|moderate|high|emergency",
-  "estimatedHours": number,
+  "estimatedHours": number (realistic labor hours, typically 0.5-4),
   "parts": [
-    {"name": "part name", "qty": number, "unitPrice": number}
+    {"name": "Specific part name with brand/model if relevant", "qty": number, "unitPrice": number}
   ],
-  "confidence": number (0-100)
+  "confidence": number (0-100, how confident you are in this diagnosis)
 }
 
-Use realistic pricing: labor_rate=$120/hr. Parts examples: faucet repair kit=$28, washers (pack of 5)=$4.50, teflon tape=$3.00, PVC pipe 3ft=$12, faucet cartridge=$35, wax ring=$8, water supply line=$15, p-trap=$18, shut-off valve=$22, drain snake=$45. Return ONLY the JSON object.`
+Be realistic and specific. Common plumbing issues and their typical parts:
+- Faucet leak: cartridge ($25-45), O-rings ($3-8), valve seat ($8-15), handle kit ($15-30)
+- Clogged drain: drain snake rental ($35-65), enzyme treatment ($12-20), P-trap ($12-25)
+- Running toilet: flapper ($5-12), fill valve ($15-25), flush valve seal ($8-15), wax ring ($6-10)
+- Water heater issue: heating element ($25-45), thermostat ($30-55), pressure relief valve ($15-25), anode rod ($20-35)
+- Pipe leak: pipe section ($8-20/ft), coupling ($3-8), shut-off valve ($15-30), pipe sealant ($5-10)
+- Garbage disposal: disposal unit ($80-200), mounting ring ($10-15), power cord ($8-15)
+- Low water pressure: pressure regulator ($40-75), aerator ($3-8), cartridge ($20-40), sediment filter ($15-30)
+- Sump pump: pump unit ($150-350), check valve ($15-25), discharge pipe ($12-20), backup battery ($80-150)
+
+Labor rate is $120/hr. Include all needed parts with realistic quantities and prices. Return ONLY the JSON.`
 
 async function callOpenRouter(model: string, userMessage: string, openrouterKey: string) {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {

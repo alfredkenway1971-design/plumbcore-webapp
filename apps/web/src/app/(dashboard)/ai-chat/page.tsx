@@ -26,10 +26,10 @@ function ChatSkeleton() {
   return (
     <div className="space-y-3 animate-pulse p-3">
       <div className="flex items-start gap-2">
-        <div className="h-8 w-8 rounded-full bg-gray-50 shrink-0" />
+        <div className="h-8 w-8 rounded-full bg-slate-50 shrink-0" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-3/4 rounded bg-gray-50" />
-          <div className="h-4 w-1/2 rounded bg-gray-50" />
+          <div className="h-4 w-3/4 rounded bg-slate-50" />
+          <div className="h-4 w-1/2 rounded bg-slate-50" />
         </div>
       </div>
       <div className="flex items-start gap-2 justify-end">
@@ -239,17 +239,17 @@ export default function AIChatPage() {
     return (
       <div className="space-y-5">
         <div>
-          <div className="h-8 w-48 rounded bg-gray-50 animate-pulse" />
-          <div className="h-5 w-64 rounded bg-gray-50 mt-2 animate-pulse" />
+          <div className="h-8 w-48 rounded bg-slate-50 animate-pulse" />
+          <div className="h-5 w-64 rounded bg-slate-50 mt-2 animate-pulse" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2">
-            <div className="h-[520px] rounded-2xl border border-gray-200 bg-white animate-pulse" />
+            <div className="h-[520px] rounded-2xl ring-1 ring-black/5 bg-white animate-pulse" />
           </div>
           <div className="space-y-4">
-            <div className="h-6 w-24 rounded bg-gray-50 animate-pulse" />
-            <div className="h-32 rounded-xl bg-gray-50 animate-pulse" />
-            <div className="h-10 rounded-lg bg-gray-50 animate-pulse" />
+            <div className="h-6 w-24 rounded bg-slate-50 animate-pulse" />
+            <div className="h-32 rounded-xl bg-slate-50 animate-pulse" />
+            <div className="h-10 rounded-xl bg-slate-50 animate-pulse" />
           </div>
         </div>
       </div>
@@ -260,8 +260,8 @@ export default function AIChatPage() {
     <div className="space-y-5">
       {/* Header */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">AI Chat Widget</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">AI Chat Widget</h1>
+        <p className="text-sm text-slate-500 mt-1">
           Preview and configure the AI chat widget that captures leads from your website.
         </p>
       </div>
@@ -271,25 +271,25 @@ export default function AIChatPage() {
         {/* ── LEFT: Chat Widget Preview (2/3) ── */}
         <div className="lg:col-span-2">
           <Card variant="default" padding="lg" className="flex flex-col items-center">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-4">Widget Preview</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-4">Widget Preview</p>
             {/* Phone Frame */}
-            <div className="w-full max-w-sm mx-auto rounded-3xl border-2 border-white/10 bg-gray-50 shadow-2xl shadow-black/40 overflow-hidden">
+            <div className="w-full max-w-sm mx-auto rounded-3xl border-2 border-white/10 bg-slate-50 shadow-2xl shadow-black/40 overflow-hidden">
               {/* Phone Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white/80">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white/80">
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold" style={{ color: primaryColor }}>
                     P
                   </div>
-                  <span className="text-xs font-semibold text-gray-900">{widgetName}</span>
+                  <span className="text-xs font-semibold text-slate-900">{widgetName}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                  <span className="text-[10px] text-gray-500">Online</span>
+                  <span className="text-[10px] text-slate-500">Online</span>
                 </div>
               </div>
 
               {/* Messages */}
-              <div className="h-[400px] overflow-y-auto p-3 space-y-3 bg-gray-50">
+              <div className="h-[400px] overflow-y-auto p-3 space-y-3 bg-slate-50">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
@@ -301,7 +301,7 @@ export default function AIChatPage() {
                         AI
                       </div>
                     ) : (
-                      <div className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 text-gray-900" style={{ backgroundColor: primaryColor }}>
+                      <div className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 text-slate-900" style={{ backgroundColor: primaryColor }}>
                         U
                       </div>
                     )}
@@ -310,14 +310,14 @@ export default function AIChatPage() {
                     <div
                       className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm leading-relaxed whitespace-pre-line ${
                         msg.role === 'ai'
-                          ? 'bg-whiteer text-gray-900 rounded-tl-sm'
-                          : 'text-gray-900 rounded-tr-sm'
+                          ? 'bg-whiteer text-slate-900 rounded-tl-sm'
+                          : 'text-slate-900 rounded-tr-sm'
                       }`}
                       style={msg.role === 'user' ? { backgroundColor: primaryColor } : {}}
                     >
                       {msg.text}
                       {msg.image && (
-                        <img src={msg.image} alt="Uploaded" className="mt-2 rounded-lg max-w-full h-28 object-cover" />
+                        <img src={msg.image} alt="Uploaded" className="mt-2 rounded-xl max-w-full h-28 object-cover" />
                       )}
                     </div>
                   </div>
@@ -330,12 +330,12 @@ export default function AIChatPage() {
               </div>
 
               {/* Input */}
-              <div className="border-t border-gray-200 p-3 bg-white/50">
+              <div className="border-t border-slate-200 p-3 bg-white/50">
                 <div className="flex items-center gap-2">
                   {/* Photo Button */}
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="shrink-0 rounded-lg p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                    className="shrink-0 rounded-xl p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                   >
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
@@ -355,14 +355,14 @@ export default function AIChatPage() {
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Describe your plumbing issue..."
-                    className="flex-1 rounded-xl border border-white/10 bg-whiteer px-3 py-2 text-sm text-gray-900 placeholder-steel/50 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                    className="flex-1 rounded-xl border border-white/10 bg-whiteer px-3 py-2 text-sm text-slate-900 placeholder-steel/50 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
                   />
 
                   {/* Send Button */}
                   <button
                     onClick={handleSend}
                     disabled={!inputText.trim() && !uploadedImage}
-                    className="shrink-0 rounded-lg p-2 text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                    className="shrink-0 rounded-xl p-2 text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:opacity-90"
                     style={{ backgroundColor: primaryColor }}
                   >
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -378,7 +378,7 @@ export default function AIChatPage() {
         {/* ── RIGHT: Settings (1/3) ── */}
         <div className="space-y-4">
           <Card variant="default" padding="md">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Widget Settings</h3>
+            <h3 className="text-sm font-semibold text-slate-900 mb-4">Widget Settings</h3>
             <div className="space-y-4">
               {/* Widget Name */}
               <Input
@@ -390,27 +390,27 @@ export default function AIChatPage() {
 
               {/* Greeting Message */}
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1.5">Greeting Message</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1.5">Greeting Message</label>
                 <textarea
                   value={greeting}
                   onChange={(e) => setGreeting(e.target.value)}
                   rows={3}
-                  className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-gray-900 placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+                  className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
                 />
               </div>
 
               {/* Primary Color */}
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1.5">Primary Color</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1.5">Primary Color</label>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
                       value={primaryColor}
                       onChange={(e) => setPrimaryColor(e.target.value)}
-                      className="h-8 w-8 rounded-lg border border-gray-200 bg-transparent cursor-pointer"
+                      className="h-8 w-8 rounded-xl ring-1 ring-black/5 bg-transparent cursor-pointer"
                     />
-                    <span className="text-xs font-mono text-gray-400">{primaryColor}</span>
+                    <span className="text-xs font-mono text-slate-400">{primaryColor}</span>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -446,8 +446,8 @@ export default function AIChatPage() {
 
           {/* Embed Code */}
           <Card variant="default" padding="md">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Embed Code</h3>
-            <div className="rounded-lg bg-whiteer border border-gray-200 p-3 text-[11px] font-mono text-gray-400 break-all leading-relaxed">
+            <h3 className="text-sm font-semibold text-slate-900 mb-3">Embed Code</h3>
+            <div className="rounded-xl bg-whiteer ring-1 ring-black/5 p-3 text-[11px] font-mono text-slate-400 break-all leading-relaxed">
               {`<iframe src="https://app.plumbcore.ai/embed/chat" width="400" height="600" frameborder="0" style="border: none; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.15);"></iframe>`}
             </div>
             <div className="mt-3">

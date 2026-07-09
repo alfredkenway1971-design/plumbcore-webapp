@@ -82,14 +82,14 @@ function generateAuditLog(): AuditEntry[] {
 
 function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="animate-pulse rounded-xl border border-gray-200 bg-white overflow-hidden">
-      <div className="flex gap-4 border-b border-gray-200 px-4 py-3">
+    <div className="animate-pulse rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
+      <div className="flex gap-4 border-b border-slate-200 px-4 py-3">
         {Array.from({ length: 7 }).map((_, i) => (
           <div key={i} className="h-3 w-16 rounded bg-white/5" />
         ))}
       </div>
       {Array.from({ length: rows }).map((_, r) => (
-        <div key={r} className="flex gap-4 border-b border-gray-200/50 px-4 py-3">
+        <div key={r} className="flex gap-4 border-b border-slate-200/50 px-4 py-3">
           {Array.from({ length: 7 }).map((_, c) => (
             <div key={c} className={`h-3 rounded bg-white/5 ${c === 0 ? 'w-20' : c === 1 ? 'w-16' : c === 2 ? 'w-14' : c === 3 ? 'w-16' : c === 4 ? 'w-12' : c === 5 ? 'w-32' : 'w-20'}`} />
           ))}
@@ -171,7 +171,7 @@ export default function AuditLogPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Audit Log</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Audit Log</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load audit log" message={error} onRetry={handleRetry} />
         </Card>
@@ -183,7 +183,7 @@ export default function AuditLogPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Audit Log</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Audit Log</h1>
         <SkeletonTable rows={7} />
       </div>
     );
@@ -193,14 +193,14 @@ export default function AuditLogPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Audit Log</h1>
-        <p className="text-xs text-gray-500">{entries.length} total entries</p>
+        <h1 className="text-2xl font-bold text-slate-900">Audit Log</h1>
+        <p className="text-xs text-slate-500">{entries.length} total entries</p>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         {/* Date Range */}
-        <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+        <div className="flex rounded-xl ring-1 ring-black/5 overflow-hidden">
           {([['7d', 'Last 7 Days'], ['30d', 'Last 30 Days'], ['all', 'All']] as [DateFilter, string][]).map(([key, label]) => (
             <button
               key={key}
@@ -208,7 +208,7 @@ export default function AuditLogPage() {
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dateFilter === key
                   ? 'bg-electric text-[#0a0e2a]'
-                  : 'text-gray-400 hover:text-gray-900 hover:bg-white/5'
+                  : 'text-slate-400 hover:text-slate-900 hover:bg-white/5'
               }`}
             >
               {label}
@@ -217,7 +217,7 @@ export default function AuditLogPage() {
         </div>
 
         {/* Action Type */}
-        <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+        <div className="flex rounded-xl ring-1 ring-black/5 overflow-hidden">
           {([['all', 'All'], ['created', 'Created'], ['updated', 'Updated'], ['deleted', 'Deleted']] as [ActionFilter, string][]).map(([key, label]) => (
             <button
               key={key}
@@ -225,7 +225,7 @@ export default function AuditLogPage() {
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 actionFilter === key
                   ? 'bg-electric text-[#0a0e2a]'
-                  : 'text-gray-400 hover:text-gray-900 hover:bg-white/5'
+                  : 'text-slate-400 hover:text-slate-900 hover:bg-white/5'
               }`}
             >
               {label}
@@ -238,14 +238,14 @@ export default function AuditLogPage() {
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value)}
-            className="appearance-none rounded-lg border border-gray-200 bg-whiteer px-3 py-1.5 pr-8 text-xs text-gray-400 focus:outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 cursor-pointer"
+            className="appearance-none rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-1.5 pr-8 text-xs text-slate-400 focus:outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 cursor-pointer"
           >
             <option value="all">All Users</option>
             {uniqueUsers.map(name => (
               <option key={name} value={name}>{name}</option>
             ))}
           </select>
-          <svg className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <svg className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
@@ -263,17 +263,17 @@ export default function AuditLogPage() {
 
       {/* Table */}
       {filteredEntries.length > 0 && (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <div className="overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Timestamp</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">User</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Resource Type</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Resource ID</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Details</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">IP Address</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Timestamp</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">User</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Action</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Resource Type</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Resource ID</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Details</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">IP Address</th>
               </tr>
             </thead>
             <tbody>
@@ -284,32 +284,32 @@ export default function AuditLogPage() {
                   Deleted: 'bg-red-50 text-red-600',
                 };
                 return (
-                  <tr key={entry.id} className="border-b border-gray-200/50 hover:bg-white/[0.02] transition-colors">
+                  <tr key={entry.id} className="border-b border-slate-200/50 hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex flex-col">
-                        <span className="text-xs text-gray-900">{new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                        <span className="text-[10px] text-gray-500">{new Date(entry.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                        <span className="text-xs text-slate-900">{new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        <span className="text-[10px] text-slate-500">{new Date(entry.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <Avatar name={entry.userName} size="sm" />
-                        <span className="text-sm text-gray-900">{entry.userName}</span>
+                        <span className="text-sm text-slate-900">{entry.userName}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${actionColors[entry.action] || 'bg-white/5 text-gray-400'}`}>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${actionColors[entry.action] || 'bg-white/5 text-slate-400'}`}>
                         {entry.action}
                       </span>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-400">{entry.resourceType}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-400">{entry.resourceType}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className="text-xs font-mono text-blue-600">{entry.resourceId}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-xs text-gray-400 line-clamp-2 max-w-xs">{entry.details}</p>
+                      <p className="text-xs text-slate-400 line-clamp-2 max-w-xs">{entry.details}</p>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500">{entry.ipAddress}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-slate-500">{entry.ipAddress}</td>
                   </tr>
                 );
               })}
@@ -320,7 +320,7 @@ export default function AuditLogPage() {
 
       {/* Result count */}
       {filteredEntries.length > 0 && (
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-slate-500 text-center">
           Showing {filteredEntries.length} of {entries.length} entries
         </p>
       )}

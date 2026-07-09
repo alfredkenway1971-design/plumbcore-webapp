@@ -102,10 +102,11 @@ function SignupForm() {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Brand Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_30%_50%,white_0%,transparent_60%)]" />
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_30%,rgba(59,130,246,0.12),transparent),radial-gradient(ellipse_60%_40%_at_80%_70%,rgba(6,182,212,0.08),transparent),radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(99,102,241,0.06),transparent)]" />
+        <div className="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] bg-repeat" />
         <div className="relative z-10">
-          <PlumbCoreLogo size="xl" showText={true} />
+          <PlumbCoreLogo size="xl" showText={true} variant="light" />
           <h2 className="text-3xl font-bold mb-4 leading-tight">{t('auth.signup.brandTitle')}</h2>
           <p className="text-slate-400 text-sm max-w-md leading-relaxed">{t('auth.signup.brandSubtitle')}</p>
           <div className="mt-8 space-y-4">

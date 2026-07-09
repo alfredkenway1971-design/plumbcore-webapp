@@ -34,7 +34,7 @@ const initialForm: SupplierForm = {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 animate-pulse">
+    <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 animate-pulse">
       <div className="h-4 w-48 rounded bg-white/5" />
       <div className="h-4 w-32 rounded bg-white/5" />
       <div className="h-4 w-28 rounded bg-white/5" />
@@ -123,7 +123,7 @@ export default function SuppliersPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load suppliers" message={error} onRetry={handleRetry} />
         </Card>
@@ -134,13 +134,13 @@ export default function SuppliersPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
         <div className="flex flex-col sm:flex-row gap-3">
-          <div className="h-10 w-64 animate-pulse rounded-lg bg-white/5" />
+          <div className="h-10 w-64 animate-pulse rounded-xl bg-white/5" />
         </div>
         <Card variant="bordered" padding="sm">
           <div className="space-y-0">
-            <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-2.5">
+            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-2.5">
               <div className="h-3 w-48 rounded bg-white/5" />
               <div className="h-3 w-32 rounded bg-white/5" />
               <div className="h-3 w-28 rounded bg-white/5" />
@@ -174,7 +174,7 @@ export default function SuppliersPage() {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
         <Button onClick={() => setModalOpen(true)}>+ Add Supplier</Button>
       </div>
 
@@ -195,7 +195,7 @@ export default function SuppliersPage() {
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 categoryFilter === cat
                   ? 'bg-electric text-[#0a0e2a]'
-                  : 'bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-white/10'
+                  : 'bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-white/10'
               }`}
             >
               {cat}
@@ -219,31 +219,31 @@ export default function SuppliersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Supplier Name</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Contact Person</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Phone</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Categories Supplied</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Supplier Name</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Contact Person</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Phone</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Categories Supplied</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((supplier) => (
                 <tr
                   key={supplier.id}
-                  className="border-b border-gray-200 transition-colors hover:bg-white/[0.02]"
+                  className="border-b border-slate-200 transition-colors hover:bg-white/[0.02]"
                 >
-                  <td className="px-4 py-3 text-gray-900 font-medium">{supplier.name}</td>
-                  <td className="px-4 py-3 text-gray-400">{supplier.contactPerson}</td>
-                  <td className="px-4 py-3 text-gray-500 font-mono text-xs">{supplier.phone}</td>
-                  <td className="px-4 py-3 text-gray-400">{supplier.email}</td>
+                  <td className="px-4 py-3 text-slate-900 font-medium">{supplier.name}</td>
+                  <td className="px-4 py-3 text-slate-400">{supplier.contactPerson}</td>
+                  <td className="px-4 py-3 text-slate-500 font-mono text-xs">{supplier.phone}</td>
+                  <td className="px-4 py-3 text-slate-400">{supplier.email}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
                       {supplier.categories.map((cat) => (
                         <span
                           key={cat}
-                          className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-gray-400"
+                          className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-slate-400"
                         >
                           {cat}
                         </span>
@@ -253,7 +253,7 @@ export default function SuppliersPage() {
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => handleDeleteSupplier(supplier.id)}
-                      className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      className="rounded-xl px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
                     >
                       Delete
                     </button>

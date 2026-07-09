@@ -24,7 +24,7 @@ const STATUS_COLORS: Record<string, string> = {
   scheduled: 'border-l-2 border-accent-amber bg-accent-amber/8',
   completed: 'border-l-2 border-status-success bg-green-500/8',
   urgent: 'border-l-2 border-status-error bg-red-500/8',
-  cancelled: 'border-l-2 border-steel-dark bg-gray-50 opacity-60',
+  cancelled: 'border-l-2 border-steel-dark bg-slate-50 opacity-60',
 };
 
 const TEXT_COLORS: Record<string, string> = {
@@ -109,17 +109,17 @@ function SkeletonCalendar() {
   return (
     <div className="space-y-4 animate-pulse">
       <div className="flex items-center gap-3">
-        <div className="h-9 w-24 rounded-lg bg-gray-50" />
-        <div className="h-9 w-24 rounded-lg bg-gray-50" />
-        <div className="h-9 w-24 rounded-lg bg-gray-50" />
+        <div className="h-9 w-24 rounded-xl bg-slate-50" />
+        <div className="h-9 w-24 rounded-xl bg-slate-50" />
+        <div className="h-9 w-24 rounded-xl bg-slate-50" />
       </div>
-      <div className="h-10 w-full rounded-lg bg-gray-50" />
+      <div className="h-10 w-full rounded-xl bg-slate-50" />
       <Card variant="default" padding="none">
         <div className="grid grid-cols-7 gap-px bg-white-border">
           {Array.from({ length: 35 }).map((_, i) => (
             <div key={i} className="bg-white p-2 min-h-[80px]">
-              <div className="h-4 w-6 rounded bg-gray-50 mb-2" />
-              <div className="h-8 rounded bg-gray-50" />
+              <div className="h-4 w-6 rounded bg-slate-50 mb-2" />
+              <div className="h-8 rounded bg-slate-50" />
             </div>
           ))}
         </div>
@@ -150,7 +150,7 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-sm font-medium text-gray-900">Job created successfully!</p>
+        <p className="text-sm font-medium text-slate-900">Job created successfully!</p>
       </div>
     );
   }
@@ -158,11 +158,11 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Client</label>
+        <label className="mb-1 block text-xs font-medium text-slate-500">Client</label>
         <select
           value={clientId}
           onChange={(e) => setClientId(e.target.value)}
-          className="w-full rounded-lg border border-gray-200 bg-whiteer px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="w-full rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           <option value="">Select a client...</option>
           {clients.map((c) => (
@@ -171,7 +171,7 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
         </select>
       </div>
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Job Title</label>
+        <label className="mb-1 block text-xs font-medium text-slate-500">Job Title</label>
         <Input
           placeholder="e.g. Leak repair"
           value={title}
@@ -179,13 +179,13 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
         />
       </div>
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Description</label>
+        <label className="mb-1 block text-xs font-medium text-slate-500">Description</label>
         <textarea
           placeholder="Brief description of the job..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="w-full rounded-lg border border-gray-200 bg-whiteer px-3 py-2.5 text-sm text-gray-900 placeholder-steel-dark outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+          className="w-full rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 placeholder-steel-dark outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
         />
       </div>
       <div className="flex items-center justify-end gap-3 pt-2">
@@ -317,8 +317,8 @@ export default function SchedulePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Schedule</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Plan and dispatch jobs on the calendar</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Schedule</h1>
+          <p className="text-sm text-slate-500 mt-0.5">Plan and dispatch jobs on the calendar</p>
         </div>
         <Button size="sm" onClick={() => { setSelectedSlotDate(''); setNewJobModalOpen(true); }}>
           + New Job
@@ -328,7 +328,7 @@ export default function SchedulePage() {
       {/* View Toggle + Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         {/* View toggles */}
-        <div className="flex items-center gap-1 rounded-lg bg-whiteer p-1 w-fit">
+        <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
           {(['day', 'week', 'month'] as const).map((v) => (
             <button
               key={v}
@@ -336,7 +336,7 @@ export default function SchedulePage() {
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all capitalize ${
                 view === v
                   ? 'bg-electric text-[#0a0e2a] shadow-sm'
-                  : 'text-gray-400 hover:text-gray-900'
+                  : 'text-slate-400 hover:text-slate-900'
               }`}
             >
               {v}
@@ -348,7 +348,7 @@ export default function SchedulePage() {
         <div className="flex items-center gap-2">
           <button
             onClick={goPrev}
-            className="rounded-lg p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+            className="rounded-xl p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -356,16 +356,16 @@ export default function SchedulePage() {
           </button>
           <button
             onClick={goToday}
-            className="rounded-lg px-3 py-1.5 text-xs font-semibold text-blue-600 border border-electric/30 hover:bg-blue-50 transition-colors"
+            className="rounded-xl px-3 py-1.5 text-xs font-semibold text-blue-600 border border-electric/30 hover:bg-blue-50 transition-colors"
           >
             Today
           </button>
-          <span className="min-w-[180px] text-center text-sm font-semibold text-gray-900">
+          <span className="min-w-[180px] text-center text-sm font-semibold text-slate-900">
             {headerLabel}
           </span>
           <button
             onClick={goNext}
-            className="rounded-lg p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+            className="rounded-xl p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -389,10 +389,10 @@ export default function SchedulePage() {
             <Card variant="default" padding="none" className="overflow-x-auto -mx-4 sm:mx-0">
               <div className="min-w-[560px]">
               {/* Day headers */}
-              <div className="grid grid-cols-7 border-b border-gray-200">
+              <div className="grid grid-cols-7 border-b border-slate-200">
                 {DAY_NAMES_SHORT.map((day) => (
-                  <div key={day} className="px-2 py-2.5 text-center border-r border-gray-200 last:border-r-0">
-                    <p className="text-[11px] font-semibold uppercase text-gray-500">{day}</p>
+                  <div key={day} className="px-2 py-2.5 text-center border-r border-slate-200 last:border-r-0">
+                    <p className="text-[11px] font-semibold uppercase text-slate-500">{day}</p>
                   </div>
                 ))}
               </div>
@@ -413,12 +413,12 @@ export default function SchedulePage() {
                         <div
                           key={dateStr}
                           onClick={() => handleSlotClick(dateStr)}
-                          className={`min-h-[100px] p-1.5 cursor-pointer transition-colors hover:bg-gray-50 ${
+                          className={`min-h-[100px] p-1.5 cursor-pointer transition-colors hover:bg-slate-50 ${
                             today ? 'ring-1 ring-electric/60 ring-inset' : ''
                           }`}
                         >
                           <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold mb-1 ${
-                            today ? 'bg-electric text-[#0a0e2a]' : 'text-gray-400'
+                            today ? 'bg-electric text-[#0a0e2a]' : 'text-slate-400'
                           }`}>
                             {day}
                           </div>
@@ -430,10 +430,10 @@ export default function SchedulePage() {
                                   e.stopPropagation();
                                   router.push(`/jobs/${job.id}`);
                                 }}
-                                className={`rounded px-1.5 py-0.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-gray-50'}`}
+                                className={`rounded px-1.5 py-0.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-slate-50'}`}
                               >
-                                <p className="text-[10px] font-semibold text-gray-900 truncate">{job.title}</p>
-                                <p className="text-[9px] text-gray-400 truncate">{job.clientName}</p>
+                                <p className="text-[10px] font-semibold text-slate-900 truncate">{job.title}</p>
+                                <p className="text-[9px] text-slate-400 truncate">{job.clientName}</p>
                               </div>
                             ))}
                             {dayJobs.length > 3 && (
@@ -451,18 +451,18 @@ export default function SchedulePage() {
           )}
 
           {/* Legend */}
-          <div className="flex items-center gap-4 px-4 py-2 rounded-lg bg-whiteer flex-wrap">
-            <span className="text-[11px] text-gray-500">Legend:</span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+            <span className="text-[11px] text-slate-500">Legend:</span>
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-electric/30" /> In Progress
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-accent-amber/30" /> Scheduled
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-green-500/30" /> Completed
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-red-500/30" /> Urgent
             </span>
           </div>
@@ -481,25 +481,25 @@ export default function SchedulePage() {
               />
             </Card>
           ) : (
-            <div className="rounded-xl border border-gray-200 bg-white overflow-x-auto -mx-4 sm:mx-0">
+            <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-x-auto -mx-4 sm:mx-0">
               <div className="min-w-[560px]">
               {/* Day headers */}
-              <div className="grid grid-cols-7 border-b border-gray-200">
+              <div className="grid grid-cols-7 border-b border-slate-200">
                 {weekDates.map((date, i) => {
                   const dateObj = new Date(date);
                   const isTodayDate = date === todayStr;
                   return (
                     <div
                       key={date}
-                      className={`px-2 py-3 text-center border-r border-gray-200 last:border-r-0 ${
+                      className={`px-2 py-3 text-center border-r border-slate-200 last:border-r-0 ${
                         isTodayDate ? 'bg-electric/8' : ''
                       }`}
                     >
-                      <p className="text-[10px] font-semibold uppercase text-gray-500">{DAY_NAMES_SHORT[i]}</p>
-                      <p className={`text-base font-bold mt-0.5 ${isTodayDate ? 'text-blue-600' : 'text-gray-900'}`}>
+                      <p className="text-[10px] font-semibold uppercase text-slate-500">{DAY_NAMES_SHORT[i]}</p>
+                      <p className={`text-base font-bold mt-0.5 ${isTodayDate ? 'text-blue-600' : 'text-slate-900'}`}>
                         {dateObj.getDate()}
                       </p>
-                      <p className="text-[9px] text-gray-500-dark">{dateObj.toLocaleDateString('en-US', { month: 'short' })}</p>
+                      <p className="text-[9px] text-slate-500-dark">{dateObj.toLocaleDateString('en-US', { month: 'short' })}</p>
                     </div>
                   );
                 })}
@@ -513,10 +513,10 @@ export default function SchedulePage() {
                     <div
                       key={date}
                       onClick={() => handleSlotClick(date)}
-                      className="min-h-[400px] p-1.5 space-y-1.5 cursor-pointer hover:bg-gray-50 transition-colors"
+                      className="min-h-[400px] p-1.5 space-y-1.5 cursor-pointer hover:bg-slate-50 transition-colors"
                     >
                       {dayJobs.length === 0 && (
-                        <p className="text-[10px] text-gray-500-dark text-center pt-8">—</p>
+                        <p className="text-[10px] text-slate-500-dark text-center pt-8">—</p>
                       )}
                       {dayJobs.map((job) => {
                         const techNames = job.assignedTo
@@ -529,13 +529,13 @@ export default function SchedulePage() {
                               e.stopPropagation();
                               router.push(`/jobs/${job.id}`);
                             }}
-                            className={`rounded-lg px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-gray-50'}`}
+                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-slate-50'}`}
                           >
-                            <p className="text-[11px] font-semibold text-gray-900 truncate">{job.title}</p>
-                            <p className="text-[10px] text-gray-400 truncate">{job.clientName}</p>
+                            <p className="text-[11px] font-semibold text-slate-900 truncate">{job.title}</p>
+                            <p className="text-[10px] text-slate-400 truncate">{job.clientName}</p>
                             <div className="flex items-center gap-1 mt-0.5">
                               {job.scheduledTime && (
-                                <span className="text-[9px] text-gray-500">{formatTime(job.scheduledTime)}</span>
+                                <span className="text-[9px] text-slate-500">{formatTime(job.scheduledTime)}</span>
                               )}
                               <span className={`text-[9px] font-medium ${TEXT_COLORS[job.status] || 'text-steel'}`}>
                                 {job.status}
@@ -553,18 +553,18 @@ export default function SchedulePage() {
           )}
 
           {/* Legend */}
-          <div className="flex items-center gap-4 px-4 py-2 rounded-lg bg-whiteer flex-wrap">
-            <span className="text-[11px] text-gray-500">Legend:</span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+            <span className="text-[11px] text-slate-500">Legend:</span>
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded bg-electric/30" /> In Progress
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded bg-accent-amber/30" /> Scheduled
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded bg-green-500/30" /> Completed
             </span>
-            <span className="flex items-center gap-1 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1 text-[11px] text-slate-400">
               <span className="inline-block w-2.5 h-2.5 rounded bg-red-500/30" /> Urgent
             </span>
           </div>
@@ -588,7 +588,7 @@ export default function SchedulePage() {
                     />
                   </Card>
                 ) : (
-                  <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+                  <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
                     {/* Timeline */}
                     <div className="divide-y divide-white-border">
                       {HOUR_SLOTS.map((hour) => {
@@ -603,17 +603,17 @@ export default function SchedulePage() {
                           <div
                             key={hour}
                             onClick={() => handleSlotClick(dateStr)}
-                            className="flex min-h-[60px] cursor-pointer transition-colors hover:bg-gray-50 group"
+                            className="flex min-h-[60px] cursor-pointer transition-colors hover:bg-slate-50 group"
                           >
                             {/* Time label */}
-                            <div className="w-16 shrink-0 border-r border-gray-200 px-2 py-2 text-right">
-                              <span className="text-[11px] font-medium text-gray-500">{displayHour}{ampm}</span>
+                            <div className="w-16 shrink-0 border-r border-slate-200 px-2 py-2 text-right">
+                              <span className="text-[11px] font-medium text-slate-500">{displayHour}{ampm}</span>
                             </div>
                             {/* Slot content */}
                             <div className="flex-1 px-3 py-1.5 space-y-1">
                               {jobsAtHour.length === 0 && (
                                 <div className="flex items-center justify-center h-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <span className="text-[10px] text-gray-500-dark">+ Click to add job</span>
+                                  <span className="text-[10px] text-slate-500-dark">+ Click to add job</span>
                                 </div>
                               )}
                               {jobsAtHour.map((job) => {
@@ -627,18 +627,18 @@ export default function SchedulePage() {
                                       e.stopPropagation();
                                       router.push(`/jobs/${job.id}`);
                                     }}
-                                    className={`rounded-lg px-3 py-2 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-gray-50'}`}
+                                    className={`rounded-xl px-3 py-2 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-slate-50'}`}
                                   >
                                     <div className="flex items-center justify-between">
-                                      <p className="text-sm font-semibold text-gray-900">{job.title}</p>
+                                      <p className="text-sm font-semibold text-slate-900">{job.title}</p>
                                       <span className={`text-[11px] font-medium ${TEXT_COLORS[job.status]}`}>
                                         {job.status}
                                       </span>
                                     </div>
-                                    <p className="text-xs text-gray-400">{job.clientName}</p>
+                                    <p className="text-xs text-slate-400">{job.clientName}</p>
                                     <div className="flex items-center gap-3 mt-0.5">
-                                      <span className="text-[11px] text-gray-500">{techNames}</span>
-                                      <span className="text-[11px] font-semibold text-gray-900">{formatCurrency(job.estimatedCost)}</span>
+                                      <span className="text-[11px] text-slate-500">{techNames}</span>
+                                      <span className="text-[11px] font-semibold text-slate-900">{formatCurrency(job.estimatedCost)}</span>
                                     </div>
                                   </div>
                                 );
@@ -652,18 +652,18 @@ export default function SchedulePage() {
                 )}
 
                 {/* Legend */}
-                <div className="flex items-center gap-4 px-4 py-2 rounded-lg bg-whiteer flex-wrap">
-                  <span className="text-[11px] text-gray-500">Legend:</span>
-                  <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+                  <span className="text-[11px] text-slate-500">Legend:</span>
+                  <span className="flex items-center gap-1 text-[11px] text-slate-400">
                     <span className="inline-block w-2.5 h-2.5 rounded bg-electric/30" /> In Progress
                   </span>
-                  <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                  <span className="flex items-center gap-1 text-[11px] text-slate-400">
                     <span className="inline-block w-2.5 h-2.5 rounded bg-accent-amber/30" /> Scheduled
                   </span>
-                  <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                  <span className="flex items-center gap-1 text-[11px] text-slate-400">
                     <span className="inline-block w-2.5 h-2.5 rounded bg-green-500/30" /> Completed
                   </span>
-                  <span className="flex items-center gap-1 text-[11px] text-gray-400">
+                  <span className="flex items-center gap-1 text-[11px] text-slate-400">
                     <span className="inline-block w-2.5 h-2.5 rounded bg-red-500/30" /> Urgent
                   </span>
                 </div>

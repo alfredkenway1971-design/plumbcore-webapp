@@ -41,7 +41,7 @@ function timeAgo(dateStr: string): string {
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse space-y-3 rounded-xl border border-gray-200 bg-white p-5">
+    <div className="animate-pulse space-y-3 rounded-xl ring-1 ring-black/5 bg-white p-5">
       <div className="h-4 w-1/3 rounded bg-white/5" />
       <div className="h-8 w-3/4 rounded bg-white/5" />
       <div className="flex gap-2">
@@ -54,7 +54,7 @@ function SkeletonCard() {
 
 function SkeletonBarChart() {
   return (
-    <div className="animate-pulse space-y-3 rounded-xl border border-gray-200 bg-white p-5">
+    <div className="animate-pulse space-y-3 rounded-xl ring-1 ring-black/5 bg-white p-5">
       <div className="h-4 w-1/2 rounded bg-white/5" />
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="flex items-center gap-3">
@@ -69,7 +69,7 @@ function SkeletonBarChart() {
 
 function SkeletonTable() {
   return (
-    <div className="animate-pulse space-y-3 rounded-xl border border-gray-200 bg-white p-5">
+    <div className="animate-pulse space-y-3 rounded-xl ring-1 ring-black/5 bg-white p-5">
       <div className="h-4 w-1/3 rounded bg-white/5" />
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-3 py-2">
@@ -94,7 +94,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
       {Array.from({ length: max }).map((_, i) => {
         if (i < full) return <svg key={i} className="h-3.5 w-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>;
         if (i === full && half) return <svg key={i} className="h-3.5 w-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><defs><linearGradient id="half"><stop offset="50%" stopColor="currentColor" /><stop offset="50%" stopColor="transparent" /></linearGradient></defs><path fill="url(#half)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>;
-        return <svg key={i} className="h-3.5 w-3.5 text-gray-900/10" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>;
+        return <svg key={i} className="h-3.5 w-3.5 text-slate-900/10" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>;
       })}
     </span>
   );
@@ -107,7 +107,7 @@ type SortDir = 'asc' | 'desc' | null;
 function SortHeader({ label, active, direction, onClick }: { label: string; active: boolean; direction: SortDir; onClick: () => void }) {
   return (
     <th
-      className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 cursor-pointer select-none hover:text-gray-900 transition-colors"
+      className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 cursor-pointer select-none hover:text-slate-900 transition-colors"
       onClick={onClick}
     >
       <span className="inline-flex items-center gap-1">
@@ -414,7 +414,7 @@ export default function ReportsPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState
             title="Failed to load reports"
@@ -429,7 +429,7 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <SkeletonBarChart />
           <div className="space-y-4">
@@ -450,7 +450,7 @@ export default function ReportsPage() {
   if (!hasData) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
         <Card variant="bordered" padding="lg">
           <EmptyState
             title="Not enough data yet"
@@ -467,10 +467,10 @@ export default function ReportsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
         <div className="flex flex-wrap items-center gap-2">
           {/* Date Range Picker */}
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+          <div className="flex rounded-xl ring-1 ring-black/5 overflow-hidden">
             {(['7d', '30d', '90d', 'year'] as DateRange[]).map((range) => (
               <button
                 key={range}
@@ -478,7 +478,7 @@ export default function ReportsPage() {
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                   dateRange === range
                     ? 'bg-electric text-[#0a0e2a]'
-                    : 'text-gray-400 hover:text-gray-900 hover:bg-white/5'
+                    : 'text-slate-400 hover:text-slate-900 hover:bg-white/5'
                 }`}
               >
                 {range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : range === '90d' ? '90 Days' : 'This Year'}
@@ -494,16 +494,16 @@ export default function ReportsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Revenue by Technician (original) */}
         <Card variant="default" padding="lg">
-          <h2 className="mb-4 text-base font-semibold text-gray-900">Revenue by Technician</h2>
+          <h2 className="mb-4 text-base font-semibold text-slate-900">Revenue by Technician</h2>
           {reportData!.sortedTechRevenue.length === 0 ? (
-            <p className="text-sm text-gray-500">No completed jobs with revenue data.</p>
+            <p className="text-sm text-slate-500">No completed jobs with revenue data.</p>
           ) : (
             <div className="space-y-3">
               {reportData!.sortedTechRevenue.map(([name, revenue]) => {
                 const pct = (revenue / reportData!.maxRevenue) * 100;
                 return (
                   <div key={name} className="flex items-center gap-3">
-                    <span className="w-28 shrink-0 text-sm text-gray-400 font-medium truncate" title={name}>
+                    <span className="w-28 shrink-0 text-sm text-slate-400 font-medium truncate" title={name}>
                       {name}
                     </span>
                     <div className="flex-1 h-6 rounded-md bg-white/5 overflow-hidden">
@@ -512,7 +512,7 @@ export default function ReportsPage() {
                         style={{ width: `${Math.max(pct, 2)}%` }}
                       />
                     </div>
-                    <span className="w-20 shrink-0 text-right text-sm font-semibold text-gray-900">
+                    <span className="w-20 shrink-0 text-right text-sm font-semibold text-slate-900">
                       {formatCurrency(revenue)}
                     </span>
                   </div>
@@ -525,21 +525,21 @@ export default function ReportsPage() {
         {/* Original Stats Cards */}
         <div className="space-y-4">
           <Card variant="default" padding="lg">
-            <h2 className="mb-3 text-base font-semibold text-gray-900">Average Job Duration</h2>
+            <h2 className="mb-3 text-base font-semibold text-slate-900">Average Job Duration</h2>
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold text-blue-600">{reportData!.avgDays}</span>
-              <span className="text-sm text-gray-500">days (completed jobs)</span>
+              <span className="text-sm text-slate-500">days (completed jobs)</span>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-4 border-t border-gray-200 pt-4">
+            <div className="mt-4 grid grid-cols-2 gap-4 border-t border-slate-200 pt-4">
               <div>
-                <p className="text-xs text-gray-500">Most Common Job Type</p>
-                <p className="mt-0.5 text-sm font-semibold text-gray-900">{reportData!.mostCommonType}</p>
+                <p className="text-xs text-slate-500">Most Common Job Type</p>
+                <p className="mt-0.5 text-sm font-semibold text-slate-900">{reportData!.mostCommonType}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Fastest Completed</p>
-                <p className="mt-0.5 text-sm font-semibold text-gray-900">
+                <p className="text-xs text-slate-500">Fastest Completed</p>
+                <p className="mt-0.5 text-sm font-semibold text-slate-900">
                   {reportData!.fastestCat.name}
-                  <span className="ml-1 text-xs text-gray-500 font-normal">({reportData!.fastestCat.days}d avg)</span>
+                  <span className="ml-1 text-xs text-slate-500 font-normal">({reportData!.fastestCat.days}d avg)</span>
                 </p>
               </div>
             </div>
@@ -548,8 +548,8 @@ export default function ReportsPage() {
           <Card variant="default" padding="lg">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-base font-semibold text-gray-900">First-Time Fix Rate</h2>
-                <p className="mt-1 text-xs text-gray-500">Jobs completed on first visit</p>
+                <h2 className="text-base font-semibold text-slate-900">First-Time Fix Rate</h2>
+                <p className="mt-1 text-xs text-slate-500">Jobs completed on first visit</p>
               </div>
               <span
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
@@ -568,20 +568,20 @@ export default function ReportsPage() {
 
       {/* === REVENUE OVERVIEW === */}
       <Card variant="default" padding="lg">
-        <h2 className="mb-5 text-base font-semibold text-gray-900">Revenue Overview</h2>
+        <h2 className="mb-5 text-base font-semibold text-slate-900">Revenue Overview</h2>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-4">
-            <p className="text-xs text-gray-500 mb-1">Total Revenue (Current Month)</p>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(reportData!.currentMonthRevenue)}</p>
+          <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-4">
+            <p className="text-xs text-slate-500 mb-1">Total Revenue (Current Month)</p>
+            <p className="text-2xl font-bold text-slate-900">{formatCurrency(reportData!.currentMonthRevenue)}</p>
           </div>
-          <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-4">
-            <p className="text-xs text-gray-500 mb-1">vs Last Month</p>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(reportData!.lastMonthRevenue)}</p>
+          <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-4">
+            <p className="text-xs text-slate-500 mb-1">vs Last Month</p>
+            <p className="text-2xl font-bold text-slate-900">{formatCurrency(reportData!.lastMonthRevenue)}</p>
           </div>
-          <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-4">
-            <p className="text-xs text-gray-500 mb-1">% Change</p>
+          <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-4">
+            <p className="text-xs text-slate-500 mb-1">% Change</p>
             <p className={`text-2xl font-bold ${reportData!.revenueChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {reportData!.revenueChange >= 0 ? '+' : ''}{reportData!.revenueChange.toFixed(1)}%
             </p>
@@ -590,7 +590,7 @@ export default function ReportsPage() {
 
         {/* SVG Line Chart */}
         <div className="mb-6">
-          <p className="text-sm text-gray-500 mb-3">Monthly Revenue Trend (12 months)</p>
+          <p className="text-sm text-slate-500 mb-3">Monthly Revenue Trend (12 months)</p>
           <div className="w-full h-48">
             <svg viewBox="0 0 600 160" className="w-full h-full" preserveAspectRatio="none">
               {/* Grid lines */}
@@ -642,7 +642,7 @@ export default function ReportsPage() {
             {reportData!.monthlyRevenue.map((_, i) => {
               const m = (currentMonth - 11 + i + 12) % 12;
               return (
-                <span key={i} className="text-[10px] text-gray-500">{monthLabels[m]}</span>
+                <span key={i} className="text-[10px] text-slate-500">{monthLabels[m]}</span>
               );
             })}
           </div>
@@ -650,7 +650,7 @@ export default function ReportsPage() {
 
         {/* Monthly Revenue Bars */}
         <div>
-          <p className="text-sm text-gray-500 mb-3">Monthly Revenue Breakdown</p>
+          <p className="text-sm text-slate-500 mb-3">Monthly Revenue Breakdown</p>
           <div className="flex items-end gap-1.5 h-24">
             {reportData!.monthlyRevenue.map((val, i) => {
               const pct = (val / maxMonthlyVal) * 100;
@@ -658,13 +658,13 @@ export default function ReportsPage() {
               const isCurrent = i === reportData!.monthlyRevenue.length - 1;
               return (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[10px] text-gray-400 font-medium">{formatCurrency(val)}</span>
+                  <span className="text-[10px] text-slate-400 font-medium">{formatCurrency(val)}</span>
                   <div
                     className={`w-full rounded-t-sm transition-all duration-500 ${isCurrent ? 'bg-electric' : 'bg-electric/60'}`}
                     style={{ height: `${Math.max(pct, 2)}%` }}
                     title={`${monthLabels[m]}: ${formatCurrency(val)}`}
                   />
-                  <span className={`text-[10px] ${isCurrent ? 'text-gray-900 font-semibold' : 'text-steel'}`}>{monthLabels[m]}</span>
+                  <span className={`text-[10px] ${isCurrent ? 'text-slate-900 font-semibold' : 'text-steel'}`}>{monthLabels[m]}</span>
                 </div>
               );
             })}
@@ -674,11 +674,11 @@ export default function ReportsPage() {
 
       {/* === TECHNICIAN PERFORMANCE === */}
       <Card variant="default" padding="lg">
-        <h2 className="mb-4 text-base font-semibold text-gray-900">Technician Performance</h2>
+        <h2 className="mb-4 text-base font-semibold text-slate-900">Technician Performance</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
+              <tr className="border-b border-slate-200">
                 <SortHeader label="Tech Name" active={techSort.key === 'name'} direction={techSort.key === 'name' ? techSort.dir : null} onClick={() => handleSort('name')} />
                 <SortHeader label="Jobs Completed" active={techSort.key === 'jobsCompleted'} direction={techSort.key === 'jobsCompleted' ? techSort.dir : null} onClick={() => handleSort('jobsCompleted')} />
                 <SortHeader label="Revenue Generated" active={techSort.key === 'revenue'} direction={techSort.key === 'revenue' ? techSort.dir : null} onClick={() => handleSort('revenue')} />
@@ -689,26 +689,26 @@ export default function ReportsPage() {
             <tbody>
               {sortedTech.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">No technician data available.</td>
+                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-slate-500">No technician data available.</td>
                 </tr>
               ) : (
                 sortedTech.map((tech, i) => (
-                  <tr key={tech.name} className={`border-b border-gray-200/50 hover:bg-white/[0.02] transition-colors ${i === 0 ? 'bg-electric/5' : ''}`}>
+                  <tr key={tech.name} className={`border-b border-slate-200/50 hover:bg-white/[0.02] transition-colors ${i === 0 ? 'bg-electric/5' : ''}`}>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-[10px] font-semibold text-blue-600">
                           {tech.name.split(' ').map(n => n[0]).join('')}
                         </div>
-                        <span className="font-medium text-gray-900">{tech.name}</span>
+                        <span className="font-medium text-slate-900">{tech.name}</span>
                         {i === 0 && <span className="text-[10px] text-blue-600/70 font-semibold">TOP</span>}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-gray-900">{tech.jobsCompleted}</td>
-                    <td className="px-4 py-3 text-gray-900 font-medium">{formatCurrency(tech.revenue)}</td>
+                    <td className="px-4 py-3 text-slate-900">{tech.jobsCompleted}</td>
+                    <td className="px-4 py-3 text-slate-900 font-medium">{formatCurrency(tech.revenue)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <StarRating rating={tech.rating} />
-                        <span className="text-xs text-gray-400">{tech.rating}</span>
+                        <span className="text-xs text-slate-400">{tech.rating}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3">
@@ -731,23 +731,23 @@ export default function ReportsPage() {
 
         {/* Customer Acquisition */}
         <Card variant="default" padding="lg">
-          <h2 className="mb-4 text-base font-semibold text-gray-900">Customer Acquisition</h2>
+          <h2 className="mb-4 text-base font-semibold text-slate-900">Customer Acquisition</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
               <p className="text-2xl font-bold text-blue-600">{reportData!.newThisMonth}</p>
-              <p className="text-[10px] text-gray-500">New This Month</p>
+              <p className="text-[10px] text-slate-500">New This Month</p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
-              <p className="text-2xl font-bold text-gray-900">{reportData!.totalCustomers}</p>
-              <p className="text-[10px] text-gray-500">Total Customers</p>
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
+              <p className="text-2xl font-bold text-slate-900">{reportData!.totalCustomers}</p>
+              <p className="text-[10px] text-slate-500">Total Customers</p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
-              <p className="text-2xl font-bold text-gray-900">{reportData!.repeatRate}%</p>
-              <p className="text-[10px] text-gray-500">Repeat Rate</p>
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
+              <p className="text-2xl font-bold text-slate-900">{reportData!.repeatRate}%</p>
+              <p className="text-[10px] text-slate-500">Repeat Rate</p>
             </div>
           </div>
 
-          <p className="text-sm text-gray-500 mb-3">Acquisition Trend (Last 6 Months)</p>
+          <p className="text-sm text-slate-500 mb-3">Acquisition Trend (Last 6 Months)</p>
           <div className="flex items-end gap-2 h-24">
             {reportData!.acquisitionTrend.map((val, i) => {
               const maxAcq = Math.max(...reportData!.acquisitionTrend, 1);
@@ -755,12 +755,12 @@ export default function ReportsPage() {
               const m = (currentMonth - 5 + i + 12) % 12;
               return (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[10px] text-gray-400">{val}</span>
+                  <span className="text-[10px] text-slate-400">{val}</span>
                   <div
                     className="w-full rounded-t-sm bg-electric transition-all duration-500"
                     style={{ height: `${Math.max(pct, 2)}%` }}
                   />
-                  <span className="text-[10px] text-gray-500">{monthLabels[m]}</span>
+                  <span className="text-[10px] text-slate-500">{monthLabels[m]}</span>
                 </div>
               );
             })}
@@ -769,45 +769,45 @@ export default function ReportsPage() {
 
         {/* Inventory Turnover */}
         <Card variant="default" padding="lg">
-          <h2 className="mb-4 text-base font-semibold text-gray-900">Inventory Turnover</h2>
+          <h2 className="mb-4 text-base font-semibold text-slate-900">Inventory Turnover</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
-              <p className="text-xl font-bold text-gray-900">{reportData!.totalPartsUsed}</p>
-              <p className="text-[10px] text-gray-500">Total Parts Used</p>
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
+              <p className="text-xl font-bold text-slate-900">{reportData!.totalPartsUsed}</p>
+              <p className="text-[10px] text-slate-500">Total Parts Used</p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
-              <p className="text-xl font-bold text-gray-900">{reportData!.turnoverRate}</p>
-              <p className="text-[10px] text-gray-500">Turnover Rate</p>
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
+              <p className="text-xl font-bold text-slate-900">{reportData!.turnoverRate}</p>
+              <p className="text-[10px] text-slate-500">Turnover Rate</p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-3 text-center">
-              <p className="text-xl font-bold text-gray-900">{inventory.length}</p>
-              <p className="text-[10px] text-gray-500">Total SKUs</p>
+            <div className="rounded-xl ring-1 ring-black/5 bg-white/[0.02] p-3 text-center">
+              <p className="text-xl font-bold text-slate-900">{inventory.length}</p>
+              <p className="text-[10px] text-slate-500">Total SKUs</p>
             </div>
           </div>
 
           <div className="space-y-2 mb-3">
             <div className="flex justify-between text-xs">
               <span className="text-steel">Most Used:</span>
-              <span className="text-gray-900 font-medium">{reportData!.mostUsedPart}</span>
+              <span className="text-slate-900 font-medium">{reportData!.mostUsedPart}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-steel">Least Used:</span>
-              <span className="text-gray-900 font-medium">{reportData!.leastUsedPart}</span>
+              <span className="text-slate-900 font-medium">{reportData!.leastUsedPart}</span>
             </div>
           </div>
 
-          <p className="text-sm text-gray-500 mb-2">Top 5 Most Used Parts</p>
+          <p className="text-sm text-slate-500 mb-2">Top 5 Most Used Parts</p>
           <div className="space-y-2">
             {reportData!.top5Parts.map((part) => (
               <div key={part.name} className="flex items-center gap-2">
-                <span className="w-1/3 text-xs text-gray-400 truncate" title={part.name}>{part.name}</span>
+                <span className="w-1/3 text-xs text-slate-400 truncate" title={part.name}>{part.name}</span>
                 <div className="flex-1 h-4 rounded bg-white/5 overflow-hidden">
                   <div
                     className="h-full rounded bg-electric/70 transition-all"
                     style={{ width: `${(part.uses / reportData!.maxUses) * 100}%` }}
                   />
                 </div>
-                <span className="w-12 text-right text-xs text-gray-900 font-medium">{part.uses}</span>
+                <span className="w-12 text-right text-xs text-slate-900 font-medium">{part.uses}</span>
               </div>
             ))}
           </div>
@@ -817,7 +817,7 @@ export default function ReportsPage() {
       {/* Original Recent Reports + Export */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card variant="default" padding="lg">
-          <h2 className="mb-3 text-base font-semibold text-gray-900">Recent Reports</h2>
+          <h2 className="mb-3 text-base font-semibold text-slate-900">Recent Reports</h2>
           <div className="space-y-2">
             {[
               { name: 'Monthly Revenue Summary', date: 'Jul 2026', status: 'Ready' },
@@ -827,11 +827,11 @@ export default function ReportsPage() {
             ].map((r) => (
               <div
                 key={r.name}
-                className="flex items-center justify-between rounded-lg border border-gray-200 px-3.5 py-2.5 hover:bg-white/[0.02] transition-colors"
+                className="flex items-center justify-between rounded-xl ring-1 ring-black/5 px-3.5 py-2.5 hover:bg-white/[0.02] transition-colors"
               >
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{r.name}</p>
-                  <p className="text-xs text-gray-500">{r.date}</p>
+                  <p className="text-sm font-medium text-slate-900">{r.name}</p>
+                  <p className="text-xs text-slate-500">{r.date}</p>
                 </div>
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
@@ -848,7 +848,7 @@ export default function ReportsPage() {
         </Card>
 
         <Card variant="default" padding="lg" className="flex flex-col items-center justify-center">
-          <p className="text-sm text-gray-500 mb-4">Download full report data</p>
+          <p className="text-sm text-slate-500 mb-4">Download full report data</p>
           <div className="flex gap-3">
             <Button variant="outline" size="md" onClick={handleExportPDF}>Export as PDF</Button>
             <Button variant="outline" size="md" onClick={handleExportCSV}>Export as CSV</Button>

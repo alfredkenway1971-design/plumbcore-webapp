@@ -51,7 +51,7 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
   icon: any; iconBg: string; sub?: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
       <div className="flex items-start justify-between mb-3">
         <p className="text-sm font-medium text-slate-500">{label}</p>
         <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center`}>
@@ -108,7 +108,7 @@ function RevenueChart() {
   const pctChange = ((totalThis - totalPrev) / totalPrev * 100).toFixed(1);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -191,7 +191,7 @@ function JobDonutChart() {
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] h-full">
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 h-full">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-semibold text-slate-900">Job Breakdown</h3>
         <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
@@ -252,7 +252,7 @@ function WeeklyTechChart() {
   const maxRev = Math.max(...techs.map(t => t.revenue), 1);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-slate-900">Weekly Performance</h3>
         <div className="flex items-center gap-3">
@@ -441,7 +441,7 @@ const AlertsPanel = memo(function AlertsPanel() {
         {alerts.map((alert, i) => (
           <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-colors">
             <div className="flex items-start gap-3">
-              <div className={`w-8 h-8 rounded-lg ${alert.iconBg} flex items-center justify-center shrink-0 mt-0.5`}>
+              <div className={`w-8 h-8 rounded-xl ${alert.iconBg} flex items-center justify-center shrink-0 mt-0.5`}>
                 <alert.icon className={`w-4 h-4 ${alert.iconColor}`} />
               </div>
               <div className="flex-1 min-w-0">
@@ -474,7 +474,7 @@ const QuickActionsBar = memo(function QuickActionsBar() {
     { label: 'Dispatch Emergency', icon: I.Bolt, href: '/emergency-triage', color: 'bg-red-500' },
   ];
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <h3 className="text-base font-semibold text-slate-900 mb-4">Quick Actions</h3>
       <div className="space-y-2">
         {actions.map((a, i) => (
@@ -496,16 +496,18 @@ const QuickActionsBar = memo(function QuickActionsBar() {
    SUBSCRIPTION CARD
    ═══════════════════════════════════════════ */
 const planLabels: Record<string, string> = {
-  solo: 'Solo', team: 'Team', pro: 'Pro', business: 'Business', enterprise: 'Enterprise',
+  solo: 'Solo',
+  pro: 'Pro',
+  business: 'Business',
+  enterprise: 'Enterprise',
 };
 const planColors: Record<string, string> = {
   solo: 'from-slate-500 to-slate-600',
-  team: 'from-blue-500 to-blue-600',
   pro: 'from-blue-500 via-blue-600 to-cyan-600',
   business: 'from-purple-500 to-purple-600',
   enterprise: 'from-amber-500 to-orange-500',
 };
-const priceMap: Record<string, number> = {solo:149, team:249, pro:349, business:499};
+const priceMap: Record<string, number> = {solo:349, pro:799, business:1499};
 
 const UpgradeCard = memo(function UpgradeCard() {
   const router = useRouter();
@@ -547,7 +549,7 @@ const UpgradeCard = memo(function UpgradeCard() {
 
   if (!tier || status === 'none') {
     return (
-      <div className="relative rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-600 p-5 overflow-hidden shadow-md">
+      <div className="relative rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 shadow-[0_8px_32px_rgba(59,130,246,0.15)] p-5 overflow-hidden shadow-md">
         <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/5" />
         <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5" />
         <div className="relative z-10">
@@ -633,7 +635,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
             <I.Sparkles className="w-4 h-4 text-white" />
           </div>
-          <h3 className="text-sm font-semibold text-slate-900">PlumbCore AI</h3>
+          <h3 className="text-sm font-semibold tracking-tight text-slate-900">PlumbCore AI</h3>
         </div>
         {showChat && (
           <button onClick={() => { setShowChat(false); setMessages([]); }} className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Clear</button>
@@ -677,7 +679,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
               { label: 'Show me overdue invoices', icon: I.Cart },
             ].map((s) => (
               <button key={s.label} onClick={() => sendMessage(s.label)}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors text-left">
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors text-left">
                 <s.icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span>{s.label}</span>
               </button>
@@ -698,7 +700,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             className="w-full h-10 pl-4 pr-10 bg-slate-50 rounded-xl text-sm text-slate-600 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white border border-slate-200 transition-all disabled:opacity-50"
           />
           <button onClick={() => sendMessage(input)} disabled={loading || !input.trim()}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
             <I.Send className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -724,7 +726,7 @@ const MobileBottomNav = memo(function MobileBottomNav() {
       <div className="flex items-center justify-around h-16">
         {items.map((item) => (
           <a key={item.label} href={item.href}
-            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-1 rounded-lg transition-colors ${
+            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-1 rounded-xl transition-colors ${
               item.highlight ? 'relative -top-3' : item.active ? 'text-blue-500' : 'text-slate-400'
             }`}>
             {item.highlight ? (
@@ -782,7 +784,7 @@ export default function DashboardPage() {
       {status === 'past_due' && !dismissed && (
         <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
               </svg>
@@ -803,7 +805,7 @@ export default function DashboardPage() {
       {(status === 'cancelled' || status === 'none') && !dismissed && company && profile?.role !== 'super_admin' && (
         <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
               </svg>

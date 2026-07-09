@@ -24,7 +24,7 @@ const TAG_COLORS = [
 
 /* ── Skeleton states ── */
 function SkeletonBlock({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-whiteer ${className}`} />;
+  return <div className={`animate-pulse rounded-xl bg-whiteer ${className}`} />;
 }
 
 /* ── Status color ── */
@@ -33,7 +33,7 @@ const statusColor: Record<Job['status'], string> = {
   'in-progress': 'bg-accent-amber/10 text-amber-600',
   completed: 'bg-green-50 text-green-600',
   urgent: 'bg-red-50 text-red-600',
-  cancelled: 'bg-steel-dark/20 text-gray-500',
+  cancelled: 'bg-steel-dark/20 text-slate-500',
 };
 
 function formatCurrency(n: number) {
@@ -216,7 +216,7 @@ export default function ClientDetailPage() {
       {/* Back button */}
       <a
         href="/clients"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-900 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors"
       >
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -235,11 +235,11 @@ export default function ClientDetailPage() {
         ) : client ? (
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="space-y-2">
-              <h1 className="text-xl font-bold text-gray-900">{client.name}</h1>
+              <h1 className="text-xl font-bold text-slate-900">{client.name}</h1>
               {client.company && (
-                <p className="text-sm text-gray-500">{client.company}</p>
+                <p className="text-sm text-slate-500">{client.company}</p>
               )}
-              <div className="space-y-1 text-sm text-gray-400">
+              <div className="space-y-1 text-sm text-slate-400">
                 <p>
                   <span className="text-steel">Email:</span> {client.email}
                 </p>
@@ -280,22 +280,22 @@ export default function ClientDetailPage() {
       {!loading && client && (
         <Card variant="default" padding="md">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-900">Properties</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Properties</h3>
           </div>
           {properties.length === 0 ? (
-            <p className="text-sm text-gray-500">No properties saved for this client.</p>
+            <p className="text-sm text-slate-500">No properties saved for this client.</p>
           ) : (
             <div className="space-y-2">
               {properties.map((prop, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-lg border border-gray-200/50 px-3 py-2.5 bg-whiteer/50"
+                  className="flex items-center justify-between rounded-xl ring-1 ring-black/5/50 px-3 py-2.5 bg-whiteer/50"
                 >
                   <div className="flex items-center gap-2">
-                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span className="text-sm text-gray-900">{prop.address}</span>
+                    <span className="text-sm text-slate-900">{prop.address}</span>
                     <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${prop.type === 'commercial' ? 'bg-accent-amber/10 text-amber-600' : 'bg-blue-50 text-blue-600'}`}>
                       {prop.type}
                     </span>
@@ -328,15 +328,15 @@ export default function ClientDetailPage() {
               },
             ].map((s) => (
               <Card key={s.label} variant="default" padding="md">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{s.label}</p>
-                <p className="mt-1.5 text-2xl font-bold text-gray-900">{s.value}</p>
+                <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">{s.label}</p>
+                <p className="mt-1.5 text-2xl font-bold text-slate-900">{s.value}</p>
               </Card>
             ))}
       </div>
 
       {/* ── Job History Table ── */}
       <div>
-        <h2 className="mb-3 text-sm font-semibold text-gray-900">Job History</h2>
+        <h2 className="mb-3 text-sm font-semibold text-slate-900">Job History</h2>
         {loading ? (
           <div className="space-y-2">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -351,10 +351,10 @@ export default function ClientDetailPage() {
             />
           </Card>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+          <div className="overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <tr className="border-b border-slate-200 text-xs font-medium text-slate-500 uppercase tracking-wider">
                   <th className="py-3 px-4">Job ID</th>
                   <th className="py-3 px-4">Description</th>
                   <th className="py-3 px-4">Date</th>
@@ -366,7 +366,7 @@ export default function ClientDetailPage() {
                 {clientJobs.map((job) => (
                   <tr
                     key={job.id}
-                    className="border-b border-gray-200/50 transition-colors hover:bg-gray-50"
+                    className="border-b border-slate-200/50 transition-colors hover:bg-slate-50"
                   >
                     <td className="py-3 px-4">
                       <a
@@ -377,10 +377,10 @@ export default function ClientDetailPage() {
                       </a>
                     </td>
                     <td className="py-3 px-4 max-w-[260px]">
-                      <p className="text-gray-900 truncate">{job.title}</p>
-                      <p className="text-xs text-gray-500 truncate">{job.description}</p>
+                      <p className="text-slate-900 truncate">{job.title}</p>
+                      <p className="text-xs text-slate-500 truncate">{job.description}</p>
                     </td>
-                    <td className="py-3 px-4 text-gray-400 whitespace-nowrap">
+                    <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
                       {new Date(job.scheduledDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -398,7 +398,7 @@ export default function ClientDetailPage() {
                           : job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right text-gray-900 font-medium whitespace-nowrap">
+                    <td className="py-3 px-4 text-right text-slate-900 font-medium whitespace-nowrap">
                       {job.actualCost != null
                         ? formatCurrency(job.actualCost)
                         : formatCurrency(job.estimatedCost)}
@@ -414,7 +414,7 @@ export default function ClientDetailPage() {
       {/* ── Notes Section ── */}
       {!loading && client && (
         <Card variant="default" padding="md">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Notes</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-3">Notes</h3>
           <TextArea
             placeholder="Add notes about this client..."
             rows={4}

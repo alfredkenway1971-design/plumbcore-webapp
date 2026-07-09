@@ -20,6 +20,12 @@ export type Database = {
       line_items: { Row: LineItemDb; Insert: Omit<LineItemDb, 'id'>; Update: Partial<Omit<LineItemDb, 'id'>> };
       inventory_items: { Row: InventoryItemDb; Insert: Omit<InventoryItemDb, 'id' | 'created_at'>; Update: Partial<Omit<InventoryItemDb, 'id'>> };
       pricebook_items: { Row: PricebookItemDb; Insert: Omit<PricebookItemDb, 'id'>; Update: Partial<Omit<PricebookItemDb, 'id'>> };
+      review_requests: { Row: ReviewRequestDb; Insert: Omit<ReviewRequestDb, 'id' | 'created_at'>; Update: Partial<Omit<ReviewRequestDb, 'id'>> };
+      tech_review_scores: { Row: TechReviewScoreDb; Insert: Omit<TechReviewScoreDb, 'id'>; Update: Partial<Omit<TechReviewScoreDb, 'id'>> };
+      financing_applications: { Row: FinancingApplicationDb; Insert: Omit<FinancingApplicationDb, 'id' | 'created_at'>; Update: Partial<Omit<FinancingApplicationDb, 'id'>> };
+      maintenance_plans: { Row: MaintenancePlanDb; Insert: Omit<MaintenancePlanDb, 'id' | 'created_at'>; Update: Partial<Omit<MaintenancePlanDb, 'id'>> };
+      maintenance_subscriptions: { Row: MaintenanceSubscriptionDb; Insert: Omit<MaintenanceSubscriptionDb, 'id' | 'created_at'>; Update: Partial<Omit<MaintenanceSubscriptionDb, 'id'>> };
+      maintenance_visits: { Row: MaintenanceVisitDb; Insert: Omit<MaintenanceVisitDb, 'id' | 'created_at'>; Update: Partial<Omit<MaintenanceVisitDb, 'id'>> };
     };
   };
 };
@@ -31,7 +37,7 @@ export interface Company {
   business_hours: Record<string, {open:string;close:string}>;
   hourly_rate: number; service_fee_percent: number; tax_rate: number;
   stripe_account_id?: string; stripe_onboarding_complete: boolean;
-  trial_end: string; subscription_tier: 'starter' | 'pro' | 'unlimited';
+  trial_end: string; subscription_tier: 'solo' | 'pro' | 'business' | 'enterprise' | '';
   created_at: string; onboarding_complete: boolean;
 }
 export interface Profile {
@@ -88,4 +94,102 @@ export interface AuthUserDb {
   company_id: string; phone: string; role: string;
   stripe_customer_id: string; stripe_subscription_id: string;
   subscription_tier: string; created_at: string;
+}
+
+/* ── Review Automation Types ── */
+export interface ReviewRequestDb {
+  id: string;
+  company_id: string;
+  job_id: string;
+  customer_id: string;
+  tech_id: string;
+  message: string;
+  sent_at?: string;
+  status: 'pending' | 'sent' | 'clicked' | 'submitted';
+  review_link_clicked: boolean;
+  review_submitted: boolean;
+  rating?: number;
+  review_text?: string;
+  created_at: string;
+}
+
+export interface TechReviewScoreDb {
+  id: string;
+  company_id: string;
+  tech_id: string;
+  avg_rating: number;
+  total_reviews: number;
+  response_rate: number;
+  updated_at: string;
+}
+
+/* ── Customer Financing Types ── */
+export type FinancingStatus = 'draft' | 'pending' | 'approved' | 'declined' | 'active' | 'paid_off' | 'cancelled';
+export type FinancingProvider = 'affirm' | 'sunbit' | 'klarna' | 'other';
+
+export interface FinancingApplicationDb {
+  id: string;
+  company_id: string;
+  invoice_id: string;
+  job_id: string;
+  customer_id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+  amount: number;
+  provider: FinancingProvider;
+  status: FinancingStatus;
+  approved_amount?: number;
+  terms_months: number;
+  monthly_payment?: number;
+  apr?: number;
+  application_data?: Record<string, any>;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+/* ── Subscription Maintenance Plan Types ── */
+export type PlanTier = 'basic' | 'standard' | 'premium' | 'custom';
+
+export interface MaintenancePlanDb {
+  id: string;
+  company_id: string;
+  name: string;
+  price_monthly: number;
+  description: string;
+  benefits: string[];
+  included_services: string[];
+  plan_tier: PlanTier;
+  interval_months: number;
+  is_active: boolean;
+  created_at: string;
+}
+
+export type SubStatus = 'active' | 'paused' | 'cancelled' | 'expired';
+
+export interface MaintenanceSubscriptionDb {
+  id: string;
+  plan_id: string;
+  company_id: string;
+  customer_id: string;
+  start_date: string;
+  next_billing_date: string;
+  next_visit_date?: string;
+  status: SubStatus;
+  stripe_subscription_id?: string;
+  auto_renew: boolean;
+  created_at: string;
+}
+
+export interface MaintenanceVisitDb {
+  id: string;
+  subscription_id: string;
+  company_id: string;
+  scheduled_date: string;
+  completed_date?: string;
+  notes?: string;
+  status: 'scheduled' | 'in-progress' | 'completed' | 'missed';
+  upsell_opportunities?: { description: string; potential_revenue: number }[];
+  created_at: string;
 }

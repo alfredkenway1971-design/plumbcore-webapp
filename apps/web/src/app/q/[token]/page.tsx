@@ -153,7 +153,7 @@ export default function QuoteStatusPage() {
         )}
         {!isExpired && !data && <p className="text-center text-sm text-slate-500 py-12">No estimate data found for this link.</p>}
       </div>
-      {photoPreview && <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 cursor-pointer" onClick={() => setPhotoPreview(null)}><img src={photoPreview} alt="Enlarged" className="max-w-full max-h-[90vh] rounded-lg object-contain" /></div>}
+      {photoPreview && <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 cursor-pointer" onClick={() => setPhotoPreview(null)}><img src={photoPreview} alt="Enlarged" className="max-w-full max-h-[90vh] rounded-xl object-contain" /></div>}
     </div>
   );
 }

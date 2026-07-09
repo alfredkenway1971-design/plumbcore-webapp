@@ -102,7 +102,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
                   ? 'bg-electric text-[#0a0e2a]'
                   : isActive
                   ? 'bg-blue-100 text-blue-600 border-2 border-electric'
-                  : 'bg-gray-50 text-gray-400'
+                  : 'bg-slate-50 text-slate-400'
               }`}
             >
               {isDone ? (
@@ -114,7 +114,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
               )}
             </div>
             {step < total && (
-              <div className={`h-0.5 w-8 sm:w-12 rounded-full ${isDone ? 'bg-electric' : 'bg-gray-50'}`} />
+              <div className={`h-0.5 w-8 sm:w-12 rounded-full ${isDone ? 'bg-electric' : 'bg-slate-50'}`} />
             )}
           </div>
         );
@@ -163,7 +163,7 @@ function PhotoUpload({ photos, onAddPhotos, onRemove }: {
       className={`relative rounded-xl border-2 border-dashed p-6 text-center transition-all ${
         dragging
           ? 'border-electric bg-electric/5'
-          : 'border-gray-200 hover:border-white/20'
+          : 'border-slate-200 hover:border-white/20'
       }`}
     >
       <input
@@ -177,13 +177,13 @@ function PhotoUpload({ photos, onAddPhotos, onRemove }: {
 
       {photos.length === 0 ? (
         <div className="space-y-2">
-          <svg className="mx-auto h-10 w-10 text-gray-500-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <svg className="mx-auto h-10 w-10 text-slate-500-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
           </svg>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-slate-400">
             <span className="text-blue-600 cursor-pointer">Click to upload</span> or drag and drop
           </p>
-          <p className="text-xs text-gray-500">Photos help us diagnose faster — JPG, PNG up to 10MB</p>
+          <p className="text-xs text-slate-500">Photos help us diagnose faster — JPG, PNG up to 10MB</p>
         </div>
       ) : (
         <div className="flex flex-wrap gap-3 justify-center">
@@ -192,11 +192,11 @@ function PhotoUpload({ photos, onAddPhotos, onRemove }: {
               <img
                 src={src}
                 alt={`Upload ${i + 1}`}
-                className="h-24 w-24 sm:h-28 sm:w-28 rounded-lg object-cover border border-gray-200"
+                className="h-24 w-24 sm:h-28 sm:w-28 rounded-xl object-cover ring-1 ring-black/5"
               />
               <button
                 onClick={() => onRemove(i)}
-                className="absolute -top-2 -right-2 rounded-full bg-white border border-gray-200 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
+                className="absolute -top-2 -right-2 rounded-full bg-white ring-1 ring-black/5 p-1 text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
               >
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -206,7 +206,7 @@ function PhotoUpload({ photos, onAddPhotos, onRemove }: {
           ))}
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-lg border-2 border-dashed border-gray-200 text-gray-400 hover:border-electric/50 hover:text-blue-600 transition-all"
+            className="flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-electric/50 hover:text-blue-600 transition-all"
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -245,15 +245,15 @@ function CardInput({ onComplete }: { onComplete: () => void }) {
         onChange={(e) => setName(e.target.value)}
       />
       <div>
-        <label className="block text-sm font-medium text-gray-400 mb-1.5">Card Number</label>
+        <label className="block text-sm font-medium text-slate-400 mb-1.5">Card Number</label>
         <div className="relative">
           <input
             value={cardNumber}
             onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
             placeholder="4242 4242 4242 4242"
-            className="w-full rounded-lg border border-white/10 bg-whiteer px-4 py-2.5 pl-11 text-sm text-gray-900 placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+            className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 pl-11 text-sm text-slate-900 placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
           />
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
           </svg>
         </div>
@@ -399,7 +399,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
   const canAnalyze = issueDescription.trim().length > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* ── Loading State ── */}
       {false && null}
 
@@ -410,9 +410,9 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
           <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-blue-100 text-2xl mb-3">
             {scenario.companyLogo}
           </div>
-          <h1 className="text-lg font-semibold text-gray-900">{scenario.companyName}</h1>
-          <h2 className="mt-1 text-2xl sm:text-3xl font-bold text-gray-900">Get a Free Estimate</h2>
-          <p className="mt-1 text-sm text-gray-500">Tell us about your plumbing issue and we&apos;ll provide an AI-powered estimate instantly.</p>
+          <h1 className="text-lg font-semibold text-slate-900">{scenario.companyName}</h1>
+          <h2 className="mt-1 text-2xl sm:text-3xl font-bold text-slate-900">Get a Free Estimate</h2>
+          <p className="mt-1 text-sm text-slate-500">Tell us about your plumbing issue and we&apos;ll provide an AI-powered estimate instantly.</p>
         </div>
 
         <Card variant="elevated" padding="lg" className="space-y-6">
@@ -445,7 +445,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
           {/* ── STEP 2: Upload Photos ── */}
           {step === 2 && (
             <div className="space-y-4">
-              <p className="text-sm text-gray-400 font-medium">Upload photos of the issue (optional but recommended)</p>
+              <p className="text-sm text-slate-400 font-medium">Upload photos of the issue (optional but recommended)</p>
               <PhotoUpload
                 photos={photos}
                 onAddPhotos={handleAddPhotos}
@@ -468,7 +468,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
               {analyzing && (
                 <div className="flex flex-col items-center py-8 space-y-3">
                   <div className="relative h-14 w-14">
-                    <div className="absolute inset-0 rounded-full border-2 border-gray-200" />
+                    <div className="absolute inset-0 rounded-full border-2 border-slate-200" />
                     <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-electric animate-spin" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
@@ -477,7 +477,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                     </div>
                   </div>
                   <p className="text-sm font-medium text-blue-600">AI is analyzing your issue...</p>
-                  <p className="text-xs text-gray-500">Our AI is reviewing your description and photos to provide an accurate estimate.</p>
+                  <p className="text-xs text-slate-500">Our AI is reviewing your description and photos to provide an accurate estimate.</p>
                 </div>
               )}
 
@@ -495,40 +495,40 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                         <h3 className="text-sm font-semibold text-blue-600">AI Analysis Complete</h3>
                         <div className="mt-3 space-y-2">
                           <div>
-                            <p className="text-xs text-gray-500 uppercase tracking-wider">Issue Detected</p>
-                            <p className="text-sm text-gray-900">{apiAnalysisResult?.detectedIssue || scenario.issue}</p>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider">Issue Detected</p>
+                            <p className="text-sm text-slate-900">{apiAnalysisResult?.detectedIssue || scenario.issue}</p>
                           </div>
                           {apiAnalysisResult && (
                             <div>
-                              <p className="text-xs text-gray-500 uppercase tracking-wider">Severity</p>
-                              <p className="text-sm text-gray-900 capitalize">{apiAnalysisResult.severity}</p>
+                              <p className="text-xs text-slate-500 uppercase tracking-wider">Severity</p>
+                              <p className="text-sm text-slate-900 capitalize">{apiAnalysisResult.severity}</p>
                             </div>
                           )}
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="rounded-lg bg-whiteer p-3">
-                              <p className="text-xs text-gray-500 uppercase tracking-wider">Labor</p>
-                              <p className="text-lg font-bold text-gray-900">
+                            <div className="rounded-xl bg-whiteer p-3">
+                              <p className="text-xs text-slate-500 uppercase tracking-wider">Labor</p>
+                              <p className="text-lg font-bold text-slate-900">
                                 {apiAnalysisResult
                                   ? `$${apiAnalysisResult.estimatedLaborMin}–${apiAnalysisResult.estimatedLaborMax}`
                                   : scenario.laborRange}
                               </p>
                             </div>
-                            <div className="rounded-lg bg-whiteer p-3">
-                              <p className="text-xs text-gray-500 uppercase tracking-wider">Parts / Estimate</p>
-                              <p className="text-lg font-bold text-gray-900">
+                            <div className="rounded-xl bg-whiteer p-3">
+                              <p className="text-xs text-slate-500 uppercase tracking-wider">Parts / Estimate</p>
+                              <p className="text-lg font-bold text-slate-900">
                                 {apiAnalysisResult ? apiAnalysisResult.estimatedParts : scenario.partsRange}
                               </p>
                             </div>
                           </div>
                           {apiAnalysisResult && (
-                            <div className="rounded-lg bg-blue-50 p-3 border border-electric/20">
-                              <p className="text-xs text-gray-500 uppercase tracking-wider">AI Description</p>
-                              <p className="text-sm text-gray-900 mt-1">{apiAnalysisResult.description}</p>
+                            <div className="rounded-xl bg-blue-50 p-3 border border-electric/20">
+                              <p className="text-xs text-slate-500 uppercase tracking-wider">AI Description</p>
+                              <p className="text-sm text-slate-900 mt-1">{apiAnalysisResult.description}</p>
                             </div>
                           )}
                           {!apiAnalysisResult && (
-                            <div className="rounded-lg bg-blue-50 p-3 border border-electric/20">
-                              <p className="text-xs text-gray-500 uppercase tracking-wider">Total Estimate Range</p>
+                            <div className="rounded-xl bg-blue-50 p-3 border border-electric/20">
+                              <p className="text-xs text-slate-500 uppercase tracking-wider">Total Estimate Range</p>
                               <p className="text-2xl font-bold text-blue-600">{scenario.totalRange}</p>
                             </div>
                           )}
@@ -540,7 +540,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                   {/* Tips */}
                   <div className="rounded-xl bg-accent-amber/5 border border-accent-amber/20 p-3">
                     <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-2">Pro Tip</p>
-                    <p className="text-sm text-gray-900/80">{PLUMBING_TIPS[0]}</p>
+                    <p className="text-sm text-slate-900/80">{PLUMBING_TIPS[0]}</p>
                   </div>
 
                   {/* Actions */}
@@ -564,7 +564,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                     >
                       Book Now — Pay $49 Deposit
                     </Button>
-                    <p className="text-xs text-center text-gray-500">Your $49 deposit goes toward the final bill. No hidden fees.</p>
+                    <p className="text-xs text-center text-slate-500">Your $49 deposit goes toward the final bill. No hidden fees.</p>
                   </div>
                 </div>
               )}
@@ -577,14 +577,14 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
               {paymentStage === 'paying' && (
                 <>
                   <div className="text-center">
-                    <h3 className="text-lg font-semibold text-gray-900">Complete Your Booking</h3>
-                    <p className="text-sm text-gray-500 mt-1">Pay a $49 deposit to secure your appointment.</p>
+                    <h3 className="text-lg font-semibold text-slate-900">Complete Your Booking</h3>
+                    <p className="text-sm text-slate-500 mt-1">Pay a $49 deposit to secure your appointment.</p>
                   </div>
 
-                  <div className="rounded-xl bg-whiteer border border-gray-200 p-4 text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Deposit Amount</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-1">$49.00</p>
-                    <p className="text-xs text-gray-500 mt-1">Applied to final bill</p>
+                  <div className="rounded-xl bg-whiteer ring-1 ring-black/5 p-4 text-center">
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">Deposit Amount</p>
+                    <p className="text-3xl font-bold text-slate-900 mt-1">$49.00</p>
+                    <p className="text-xs text-slate-500 mt-1">Applied to final bill</p>
                   </div>
 
                   <CardInput onComplete={() => {}} />
@@ -598,7 +598,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                   >
                     Pay Deposit & Book
                   </Button>
-                  <p className="text-xs text-center text-gray-500">
+                  <p className="text-xs text-center text-slate-500">
                     Your card will be charged $49. Full payment is due at service completion.
                   </p>
                 </>
@@ -612,36 +612,36 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">Your appointment is confirmed!</h3>
-                    <p className="text-sm text-gray-500 mt-1">We&apos;ll send a reminder before we arrive.</p>
+                    <h3 className="text-xl font-bold text-slate-900">Your appointment is confirmed!</h3>
+                    <p className="text-sm text-slate-500 mt-1">We&apos;ll send a reminder before we arrive.</p>
                   </div>
 
-                  <div className="rounded-xl bg-whiteer border border-gray-200 p-4 space-y-2 text-left">
+                  <div className="rounded-xl bg-whiteer ring-1 ring-black/5 p-4 space-y-2 text-left">
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Confirmation</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Confirmation</span>
                       <span className="text-sm font-semibold text-blue-600">{confirmation.number}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Date</span>
-                      <span className="text-sm text-gray-900">{confirmation.date}</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Date</span>
+                      <span className="text-sm text-slate-900">{confirmation.date}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Time</span>
-                      <span className="text-sm text-gray-900">{confirmation.time}</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Time</span>
+                      <span className="text-sm text-slate-900">{confirmation.time}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Address</span>
-                      <span className="text-sm text-gray-900 text-right max-w-[200px]">{confirmation.address}</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Address</span>
+                      <span className="text-sm text-slate-900 text-right max-w-[200px]">{confirmation.address}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Deposit Paid</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Deposit Paid</span>
                       <span className="text-sm font-semibold text-green-600">$49.00</span>
                     </div>
                   </div>
 
                   <div className="rounded-xl bg-accent-amber/5 border border-accent-amber/20 p-3 text-left">
                     <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">What to Expect</p>
-                    <ul className="text-xs text-gray-900/80 space-y-1">
+                    <ul className="text-xs text-slate-900/80 space-y-1">
                       <li>• A licensed plumber will arrive during the appointment window</li>
                       <li>• Free diagnostic included with your deposit</li>
                       <li>• Final payment due after work is completed to your satisfaction</li>
@@ -654,7 +654,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
         </Card>
 
         {/* Footer */}
-        <p className="mt-6 text-center text-xs text-gray-500">
+        <p className="mt-6 text-center text-xs text-slate-500">
           Powered by PlumbCore AI — © {new Date().getFullYear()} PlumbCore Plumbing. All rights reserved.
         </p>
       </div>

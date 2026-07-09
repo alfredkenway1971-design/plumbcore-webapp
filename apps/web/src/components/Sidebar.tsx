@@ -5,9 +5,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { useAuthStore } from '@/lib/store';
+import { canAccess } from '@/lib/feature-gates';
+import type { PlanTier } from '@/lib/feature-gates';
 
 /* ── Icons ── */
-const Icons = {
+const Icons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Grid: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>,
   Wrench: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66 5.66a2 2 0 11-2.83-2.83l5.66-5.66M14.83 5.17l-2.83 2.83 5.66 5.66 2.83-2.83M18.36 2.14a2 2 0 112.83 2.83L14.83 11.4l-2.83-2.83 6.36-6.43z"/></svg>,
   Users: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.125-.952A4.125 4.125 0 0019.875 15h-1.5m-6 4.128A9.38 9.38 0 0112 19.5a9.38 9.38 0 01-2.625-.372A4.125 4.125 0 0113.125 15h2.25a4.125 4.125 0 014.125 4.125 9.337 9.337 0 01-4.125.952zM15 9a3 3 0 11-6 0 3 3 0 016 0z"/></svg>,
@@ -33,65 +35,99 @@ const Icons = {
   Cog: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>,
   ChevronLeft: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>,
   Logout: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>,
+  Dollar: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+  Mail: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>,
+  Tag: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/><path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z"/></svg>,
+  Flag: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"/></svg>,
+  Key: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>,
+  User: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>,
 };
 
-/* ── Nav Section Keys ── */
-const navConfig = [
-  {
-    sectionKey: 'main',
-    items: [
-      { labelKey: 'dashboard', icon: 'Grid', href: '/dashboard', badge: null },
-      { labelKey: 'jobs', icon: 'Wrench', href: '/jobs', badge: null },
-      { labelKey: 'clients', icon: 'Users', href: '/clients', badge: null },
-      { labelKey: 'schedule', icon: 'Calendar', href: '/schedule', badge: null },
-      { labelKey: 'routeMap', icon: 'MapPin', href: '/route-map', badge: null },
-      { labelKey: 'leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-500' } },
-    ],
-  },
-  {
-    sectionKey: 'aiTools',
-    items: [
-      { labelKey: 'aiChat', icon: 'Chat', href: '/ai-chat', badge: null },
-      { labelKey: 'voiceNotes', icon: 'Mic', href: '/ai-voice-notes', badge: null },
-      { labelKey: 'emergency', icon: 'Phone', href: '/emergency-triage', badge: { count: '!', color: 'bg-red-500' } },
-      { labelKey: 'receptionist', icon: 'Headphones', href: '/voice-receptionist', badge: null },
-      { labelKey: 'phoneCalls', icon: 'PhoneCall', href: '/phone-calls', badge: null },
-      { labelKey: 'sms', icon: 'ChatBubble', href: '/sms', badge: null },
-    ],
-  },
-  {
-    sectionKey: 'finance',
-    items: [
-      { labelKey: 'pricebook', icon: 'PriceTag', href: '/pricebook', badge: null },
-      { labelKey: 'priceIncreases', icon: 'TrendingUp', href: '/price-increases', badge: null },
-      { labelKey: 'invoicing', icon: 'FileText', href: '/invoicing', badge: null },
-      { labelKey: 'inventory', icon: 'Box', href: '/inventory', badge: null },
-      { labelKey: 'suppliers', icon: 'Truck', href: '/inventory/suppliers', badge: null },
-      { labelKey: 'purchaseOrders', icon: 'Clipboard', href: '/purchase-orders', badge: null },
-      { labelKey: 'insights', icon: 'Chart', href: '/inventory/insights', badge: null },
-    ],
-  },
-  {
-    sectionKey: 'admin',
-    items: [
-      { labelKey: 'team', icon: 'Team', href: '/team', badge: null },
-      { labelKey: 'notifications', icon: 'Bell', href: '/notifications', badge: null },
-      { labelKey: 'auditLog', icon: 'Shield', href: '/audit-log', badge: null },
-      { labelKey: 'settings', icon: 'Cog', href: '/settings', badge: null },
-    ],
-  },
-  // Admin panel — gated by role (super_admin or admin)
-  {
-    sectionKey: 'adminPanel',
-    roles: ['super_admin'],
-    items: [
-      { labelKey: 'platformOverview', icon: 'Grid', href: '/admin', badge: null },
-      { labelKey: 'customers', icon: 'Users', href: '/admin/customers', badge: null },
-      { labelKey: 'revenue', icon: 'TrendingUp', href: '/admin/revenue', badge: null },
-      { labelKey: 'usage', icon: 'Chart', href: '/admin/usage', badge: null },
-      { labelKey: 'support', icon: 'Headphones', href: '/admin/support', badge: null },
-    ],
-  },
+/* ── Admin-only nav config ── */
+const adminNav = [
+  { sectionKey: 'overview', items: [
+    { labelKey: 'platformOverview', label: 'Platform Overview', icon: 'Grid', href: '/admin' },
+  ]},
+  { sectionKey: 'companies', items: [
+    { labelKey: 'allCompanies', label: 'All Companies', icon: 'Users', href: '/admin/customers' },
+    { labelKey: 'trialPipeline', label: 'Trial Pipeline', icon: 'Chart', href: '/admin/trials' },
+    { labelKey: 'atRisk', label: 'At-Risk Accounts', icon: 'Bell', href: '/admin/at-risk' },
+    { labelKey: 'churned', label: 'Churned Accounts', icon: 'Shield', href: '/admin/churned' },
+  ]},
+  { sectionKey: 'leads', items: [
+    { labelKey: 'leadsMarketplace', label: 'Leads Marketplace', icon: 'Star', href: '/admin/leads' },
+  ]},
+  { sectionKey: 'revenue', items: [
+    { labelKey: 'mrrReport', label: 'MRR Report', icon: 'TrendingUp', href: '/admin/revenue' },
+    { labelKey: 'invoices', label: 'Invoices', icon: 'FileText', href: '/admin/invoices' },
+    { labelKey: 'payouts', label: 'Payouts', icon: 'Dollar', href: '/admin/payouts' },
+    { labelKey: 'pricingPlans', label: 'Pricing Plans', icon: 'PriceTag', href: '/admin/pricing' },
+  ]},
+  { sectionKey: 'usage', items: [
+    { labelKey: 'featureAdoption', label: 'Feature Adoption', icon: 'Chart', href: '/admin/usage' },
+    { labelKey: 'aiUsage', label: 'AI Usage Stats', icon: 'Chat', href: '/admin/ai-usage' },
+    { labelKey: 'apiLogs', label: 'API Logs', icon: 'Clipboard', href: '/admin/api-logs' },
+  ]},
+  { sectionKey: 'support', items: [
+    { labelKey: 'tickets', label: 'Tickets', icon: 'Headphones', href: '/admin/support' },
+    { labelKey: 'feedback', label: 'Feedback & Reviews', icon: 'Star', href: '/admin/feedback' },
+    { labelKey: 'featureRequests', label: 'Feature Requests', icon: 'ChatBubble', href: '/admin/feature-requests' },
+  ]},
+  { sectionKey: 'marketing', items: [
+    { labelKey: 'emailCampaigns', label: 'Email Campaigns', icon: 'Mail', href: '/admin/campaigns' },
+    { labelKey: 'promoCodes', label: 'Promo Codes', icon: 'Tag', href: '/admin/promos' },
+  ]},
+  { sectionKey: 'system', items: [
+    { labelKey: 'featureFlags', label: 'Feature Flags', icon: 'Flag', href: '/admin/feature-flags' },
+    { labelKey: 'adminUsers', label: 'Admin Users', icon: 'Key', href: '/admin/users' },
+    { labelKey: 'auditLog', label: 'Audit Log', icon: 'Shield', href: '/admin/audit' },
+    { labelKey: 'systemSettings', label: 'System Settings', icon: 'Cog', href: '/admin/settings' },
+  ]},
+  { sectionKey: 'profile', items: [
+    { labelKey: 'myProfile', label: 'My Profile', icon: 'User', href: '/settings' },
+  ]},
+];
+
+/* ── Plumber nav config (unchanged) ── */
+const plumberNav = [
+  { sectionKey: 'main', items: [
+    { labelKey: 'dashboard', label: 'Dashboard', icon: 'Grid', href: '/dashboard', feature: undefined },
+    { labelKey: 'jobs', label: 'Jobs', icon: 'Wrench', href: '/jobs' },
+    { labelKey: 'clients', label: 'Clients', icon: 'Users', href: '/clients' },
+    { labelKey: 'schedule', label: 'Schedule', icon: 'Calendar', href: '/schedule' },
+    { labelKey: 'routeMap', label: 'Route Map', icon: 'MapPin', href: '/route-map', feature: 'routeOptimization' },
+    { labelKey: 'liveTracking', label: 'Live Tracking', icon: 'Truck', href: '/live-tracking', feature: 'truckGps' },
+    { labelKey: 'leads', label: 'Leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-500' } },
+  ]},
+  { sectionKey: 'aiTools', items: [
+    { labelKey: 'aiChat', label: 'AI Chat', icon: 'Chat', href: '/ai-chat' },
+    { labelKey: 'voiceNotes', label: 'Voice Notes', icon: 'Mic', href: '/ai-voice-notes' },
+    { labelKey: 'emergency', label: 'Emergency Triage', icon: 'Phone', href: '/emergency-triage', badge: { count: '!', color: 'bg-red-500' } },
+    { labelKey: 'receptionist', label: 'AI Receptionist', icon: 'Headphones', href: '/voice-receptionist' },
+    { labelKey: 'phoneCalls', label: 'Phone Calls', icon: 'PhoneCall', href: '/phone-calls' },
+    { labelKey: 'sms', label: 'SMS', icon: 'ChatBubble', href: '/sms' },
+  ]},
+  { sectionKey: 'finance', items: [
+    { labelKey: 'pricebook', label: 'Pricebook', icon: 'PriceTag', href: '/pricebook' },
+    { labelKey: 'priceIncreases', label: 'Price Increases', icon: 'TrendingUp', href: '/price-increases' },
+    { labelKey: 'invoicing', label: 'Invoicing', icon: 'FileText', href: '/invoicing' },
+    { labelKey: 'inventory', label: 'Inventory', icon: 'Box', href: '/inventory', feature: 'inventoryTracking' },
+    { labelKey: 'suppliers', label: 'Suppliers', icon: 'Truck', href: '/inventory/suppliers', feature: 'inventoryTracking' },
+    { labelKey: 'purchaseOrders', label: 'Purchase Orders', icon: 'Clipboard', href: '/purchase-orders', feature: 'inventoryTracking' },
+    { labelKey: 'insights', label: 'Insights', icon: 'Chart', href: '/inventory/insights' },
+  ]},
+  { sectionKey: 'growth', items: [
+    { labelKey: 'maintenance', label: 'Maintenance Plans', icon: 'Clipboard', href: '/maintenance-plans', feature: 'maintenancePlans' },
+    { labelKey: 'reviews', label: 'Reviews', icon: 'Star', href: '/reviews', feature: 'reviewAutomation' },
+    { labelKey: 'financing', label: 'Financing', icon: 'PriceTag', href: '/financing', feature: 'customerFinancing' },
+    { labelKey: 'predictiveMaint', label: 'Predictive Maint.', icon: 'Chart', href: '/predictive-maintenance', feature: 'predictiveMaintenance' },
+  ]},
+  { sectionKey: 'admin', items: [
+    { labelKey: 'team', label: 'Team', icon: 'Team', href: '/team' },
+    { labelKey: 'notifications', label: 'Notifications', icon: 'Bell', href: '/notifications' },
+    { labelKey: 'auditLog', label: 'Audit Log', icon: 'Shield', href: '/audit-log' },
+    { labelKey: 'settings', label: 'Settings', icon: 'Cog', href: '/settings' },
+  ]},
 ];
 
 interface SidebarProps {
@@ -109,13 +145,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const profile = useAuthStore((s) => s.profile);
   const userRole = profile?.role;
   const avatarUrl = profile?.avatar_url;
+  const isAdmin = userRole === 'super_admin' || userRole === 'admin';
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
-        setProfileOpen(false);
-      }
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
@@ -127,75 +161,53 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     router.push('/login');
   };
 
-  // Filter nav sections by role — sections with a roles array require it
-  const visibleNav = navConfig.filter((section) => {
-    if (!('roles' in section)) return true;
-    return section.roles?.includes(userRole as any);
-  });
+  // Pick the right nav based on role
+  const company = useAuthStore((s) => s.company);
+  const tier = (company?.subscription_tier || '') as PlanTier;
+  const navSource = isAdmin ? adminNav : plumberNav;
 
+  const visibleNav = navSource
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item: any) => {
+        if (!item.feature) return true;
+        return canAccess(tier, item.feature);
+      }),
+    }))
+    .filter((section) => section.items.length > 0);
+
+  const sectionLabels: Record<string, string> = {
+    overview: 'Overview', companies: 'Companies', leads: 'Leads', revenue: 'Revenue',
+    usage: 'Usage Analytics', support: 'Support', marketing: 'Marketing',
+    system: 'System', profile: 'Profile',
+    main: 'Main', aiTools: 'AI Tools', finance: 'Finance', growth: 'Growth', admin: 'Admin',
+  };
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
   const initials = profile?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AM';
 
   return (
     <>
-      {/* Mobile overlay */}
       {mobileOpen && <div className="fixed inset-0 z-40 bg-black/30 md:hidden" onClick={onClose} />}
-
-      <aside
-        className={`
-          ${collapsed ? 'md:w-[72px]' : 'md:w-[260px]'}
-          fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-slate-200/80 transition-all duration-200
-          md:static md:z-auto
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}
-      >
-        {/* ── Logo + Collapse ── */}
-        <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-100">
+      <aside className={`${collapsed ? 'md:w-[72px]' : 'md:w-[260px]'} fixed inset-y-0 left-0 z-50 flex flex-col bg-white ring-1 ring-black/5 transition-all duration-200 md:static md:z-auto ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <div className="flex h-16 shrink-0 items-center justify-between px-4 ring-1 ring-inset ring-black/5">
           <PlumbCoreLogo size="sm" showText={!collapsed} />
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="hidden md:flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all shrink-0"
-          >
+          <button onClick={() => setCollapsed(!collapsed)} className="hidden md:flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all shrink-0">
             <Icons.ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
           </button>
         </div>
-
-        {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
           {visibleNav.map((section) => (
             <div key={section.sectionKey}>
-              {!collapsed && (
-                <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
-                  {t(`nav.${section.sectionKey}`)}
-                </p>
-              )}
+              {!collapsed && <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">{sectionLabels[section.sectionKey] || section.sectionKey}</p>}
               <div className="space-y-0.5">
-                {section.items.map((item) => {
+                {section.items.map((item: any) => {
                   const active = isActive(item.href);
                   const IconComponent = Icons[item.icon as keyof typeof Icons];
                   return (
-                    <a
-                      key={item.labelKey}
-                      href={item.href}
-                      className={`
-                        flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150
-                        ${active
-                          ? 'bg-blue-50 text-blue-600'
-                          : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-                        }
-                        ${collapsed ? 'justify-center px-0' : ''}
-                      `}
-                      title={collapsed ? t(`nav.${item.labelKey}`) : undefined}
-                    >
+                    <a key={item.labelKey} href={item.href} className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150 ${active ? 'bg-blue-50 text-blue-600' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'} ${collapsed ? 'justify-center px-0' : ''}`} title={collapsed ? item.label : undefined}>
                       {IconComponent && <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-500' : 'text-slate-400'}`} />}
-                      {!collapsed && (
-                        <span className="flex-1 truncate">{t(`nav.${item.labelKey}`)}</span>
-                      )}
-                      {!collapsed && item.badge && (
-                        <span className={`shrink-0 min-w-[20px] h-5 rounded-full ${item.badge.color} text-white text-[10px] font-bold flex items-center justify-center px-1.5`}>
-                          {item.badge.count}
-                        </span>
-                      )}
+                      {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+                      {!collapsed && item.badge && <span className={`shrink-0 min-w-[20px] h-5 rounded-full ${item.badge.color} text-white text-[10px] font-bold flex items-center justify-center px-1.5`}>{item.badge.count}</span>}
                     </a>
                   );
                 })}
@@ -203,56 +215,22 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             </div>
           ))}
         </nav>
-
-        {/* ── User Profile ── */}
-        <div className="shrink-0 border-t border-slate-100 p-3" ref={profileRef}>
-          <div
-            className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-50 transition-colors cursor-pointer group relative"
-            onClick={() => setProfileOpen(!profileOpen)}
-          >
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm" />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
-                {initials}
+        <div className="shrink-0 ring-1 ring-inset ring-black/5 p-3" ref={profileRef}>
+          <div className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-100 transition-colors cursor-pointer group relative" onClick={() => setProfileOpen(!profileOpen)}>
+            {avatarUrl ? <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]" /> :
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">{initials}</div>}
+            {!collapsed && <>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
+                <p className="text-xs text-slate-400 truncate">{isAdmin ? 'Admin' : userRole || 'PlumbCore'}</p>
               </div>
-            )}
-            {!collapsed && (
-              <>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
-                  <p className="text-xs text-slate-400 truncate">{userRole === 'super_admin' ? 'Super Admin' : userRole || 'PlumbCore'}</p>
-                </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleLogout(); }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
-                  title="Logout"
-                >
-                  <Icons.Logout className="w-4 h-4" />
-                </button>
-              </>
-            )}
+              <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500" title="Logout"><Icons.Logout className="w-4 h-4" /></button>
+            </>}
           </div>
-
-          {/* Dropdown menu */}
-          {profileOpen && (
-            <div className="mt-1 mx-1 rounded-xl border border-slate-100 bg-white shadow-lg overflow-hidden">
-              <button
-                onClick={() => { setProfileOpen(false); router.push('/settings'); }}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
-              >
-                <Icons.Cog className="w-4 h-4 text-slate-400" />
-                Settings
-              </button>
-              <button
-                onClick={handleLogout}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-slate-50"
-              >
-                <Icons.Logout className="w-4 h-4" />
-                Logout
-              </button>
-            </div>
-          )}
+          {profileOpen && <div className="mt-1 mx-1 rounded-xl ring-1 ring-black/5 bg-white shadow-[0_8px_32px_rgba(0,0,0,0.08)] overflow-hidden">
+            <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-100 transition-colors"><Icons.Cog className="w-4 h-4 text-slate-400" /> Settings</button>
+            <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors ring-1 ring-inset ring-black/5"><Icons.Logout className="w-4 h-4" /> Logout</button>
+          </div>}
         </div>
       </aside>
     </>

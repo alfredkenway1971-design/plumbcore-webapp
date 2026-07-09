@@ -28,7 +28,7 @@ interface CreatePOForm {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 animate-pulse">
+    <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 animate-pulse">
       <div className="h-4 w-24 rounded bg-slate-100" />
       <div className="h-4 w-36 rounded bg-slate-100" />
       <div className="h-4 w-12 rounded bg-slate-100" />
@@ -185,7 +185,7 @@ export default function PurchaseOrdersPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load purchase orders" message={error} onRetry={handleRetry} />
         </Card>
@@ -196,7 +196,7 @@ export default function PurchaseOrdersPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
         <div className="flex gap-2">
           {['All', 'Draft', 'Sent', 'Received', 'Cancelled'].map((s) => (
             <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-slate-100" />
@@ -204,7 +204,7 @@ export default function PurchaseOrdersPage() {
         </div>
         <Card variant="bordered" padding="sm">
           <div className="space-y-0">
-            <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-2.5">
+            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-2.5">
               <div className="h-3 w-24 rounded bg-slate-100" />
               <div className="h-3 w-36 rounded bg-slate-100" />
               <div className="h-3 w-12 rounded bg-slate-100" />
@@ -243,7 +243,7 @@ export default function PurchaseOrdersPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)}>← Back</Button>
-            <h1 className="text-2xl font-bold text-gray-900">{po.poNumber}</h1>
+            <h1 className="text-2xl font-bold text-slate-900">{po.poNumber}</h1>
             <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>{po.status}</span>
           </div>
           <div className="flex gap-2">
@@ -262,9 +262,9 @@ export default function PurchaseOrdersPage() {
         {/* Supplier Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card variant="bordered" padding="md">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Supplier Information</h3>
+            <h3 className="text-sm font-semibold text-slate-900 mb-2">Supplier Information</h3>
             <div className="space-y-1.5 text-sm">
-              <p className="text-gray-400">{po.supplierName}</p>
+              <p className="text-slate-400">{po.supplierName}</p>
               {supplier && (
                 <>
                   <p className="text-slate-500">{supplier.contactPerson}</p>
@@ -276,21 +276,21 @@ export default function PurchaseOrdersPage() {
             </div>
           </Card>
           <Card variant="bordered" padding="md">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Order Details</h3>
+            <h3 className="text-sm font-semibold text-slate-900 mb-2">Order Details</h3>
             <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between"><span className="text-slate-500">Created:</span><span className="text-gray-900">{po.createdAt}</span></div>
-              {po.sentDate && <div className="flex justify-between"><span className="text-slate-500">Sent:</span><span className="text-gray-900">{po.sentDate}</span></div>}
-              {po.receivedDate && <div className="flex justify-between"><span className="text-slate-500">Received:</span><span className="text-gray-900">{po.receivedDate}</span></div>}
-              <div className="flex justify-between"><span className="text-slate-500">Expected Delivery:</span><span className="text-gray-900">{po.expectedDelivery}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">Items:</span><span className="text-gray-900">{po.itemsCount}</span></div>
-              <div className="flex justify-between border-t border-gray-200 pt-2 mt-2"><span className="text-slate-500 font-semibold">Total:</span><span className="text-gray-900 font-bold">${po.total.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Created:</span><span className="text-slate-900">{po.createdAt}</span></div>
+              {po.sentDate && <div className="flex justify-between"><span className="text-slate-500">Sent:</span><span className="text-slate-900">{po.sentDate}</span></div>}
+              {po.receivedDate && <div className="flex justify-between"><span className="text-slate-500">Received:</span><span className="text-slate-900">{po.receivedDate}</span></div>}
+              <div className="flex justify-between"><span className="text-slate-500">Expected Delivery:</span><span className="text-slate-900">{po.expectedDelivery}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Items:</span><span className="text-slate-900">{po.itemsCount}</span></div>
+              <div className="flex justify-between border-t border-slate-200 pt-2 mt-2"><span className="text-slate-500 font-semibold">Total:</span><span className="text-slate-900 font-bold">${po.total.toFixed(2)}</span></div>
             </div>
           </Card>
         </div>
 
         {/* Status Timeline */}
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Status Timeline</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-3">Status Timeline</h3>
           <div className="flex items-center gap-0">
             {[['Draft', po.createdAt], ['Sent', po.sentDate], ['Received', po.receivedDate], ['Cancelled', po.cancelledDate]].map(([status, date], idx, arr) => {
               const isActive = !!date;
@@ -303,8 +303,8 @@ export default function PurchaseOrdersPage() {
                     }`}>
                       {isActive ? '✓' : idx + 1}
                     </div>
-                    <span className="mt-1 text-[10px] font-medium text-gray-500">{String(status)}</span>
-                    {date && <span className="text-[9px] text-gray-400/60">{date}</span>}
+                    <span className="mt-1 text-[10px] font-medium text-slate-500">{String(status)}</span>
+                    {date && <span className="text-[9px] text-slate-400/60">{date}</span>}
                   </div>
                   {idx < arr.length - 1 && (
                     <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-slate-100'}`} />
@@ -314,7 +314,7 @@ export default function PurchaseOrdersPage() {
             })}
           </div>
           {po.notes && (
-            <div className="mt-4 rounded-lg bg-slate-50 p-3">
+            <div className="mt-4 rounded-xl bg-slate-50 p-3">
               <p className="text-xs font-medium text-slate-500 mb-1">Notes:</p>
               <p className="text-sm text-slate-600">{po.notes}</p>
             </div>
@@ -325,27 +325,27 @@ export default function PurchaseOrdersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Item</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Quantity</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Item</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Quantity</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Total</th>
               </tr>
             </thead>
             <tbody>
               {po.items.map((item) => (
-                <tr key={item.itemId} className="border-b border-gray-200">
-                  <td className="px-4 py-3 text-gray-900 font-medium">{item.itemName}</td>
-                  <td className="px-4 py-3 text-right text-gray-900">{item.quantity}</td>
-                  <td className="px-4 py-3 text-right text-gray-900">${item.unitPrice.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-right text-gray-900 font-medium">${item.total.toFixed(2)}</td>
+                <tr key={item.itemId} className="border-b border-slate-200">
+                  <td className="px-4 py-3 text-slate-900 font-medium">{item.itemName}</td>
+                  <td className="px-4 py-3 text-right text-slate-900">{item.quantity}</td>
+                  <td className="px-4 py-3 text-right text-slate-900">${item.unitPrice.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right text-slate-900 font-medium">${item.total.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-gray-400">Total</td>
-                <td className="px-4 py-3 text-right text-sm font-bold text-gray-900">${po.total.toFixed(2)}</td>
+                <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-slate-400">Total</td>
+                <td className="px-4 py-3 text-right text-sm font-bold text-slate-900">${po.total.toFixed(2)}</td>
               </tr>
             </tfoot>
           </table>
@@ -371,7 +371,7 @@ export default function PurchaseOrdersPage() {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
         <Button onClick={() => setModalOpen(true)}>+ Create PO</Button>
       </div>
 
@@ -416,46 +416,46 @@ export default function PurchaseOrdersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">PO#</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Supplier</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Items</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+              <tr className="border-b border-slate-200">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">PO#</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Supplier</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Items</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Total</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Date</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((po) => (
                 <tr
                   key={po.id}
-                  className="border-b border-gray-200 transition-colors hover:bg-slate-50 cursor-pointer"
+                  className="border-b border-slate-200 transition-colors hover:bg-slate-50 cursor-pointer"
                   onClick={() => setDetailPO(po.id)}
                 >
-                  <td className="px-4 py-3 text-gray-900 font-mono text-xs font-medium">{po.poNumber}</td>
-                  <td className="px-4 py-3 text-gray-400">{po.supplierName}</td>
-                  <td className="px-4 py-3 text-right text-gray-900">{po.itemsCount}</td>
-                  <td className="px-4 py-3 text-right text-gray-900 font-medium">${po.total.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-slate-900 font-mono text-xs font-medium">{po.poNumber}</td>
+                  <td className="px-4 py-3 text-slate-400">{po.supplierName}</td>
+                  <td className="px-4 py-3 text-right text-slate-900">{po.itemsCount}</td>
+                  <td className="px-4 py-3 text-right text-slate-900 font-medium">${po.total.toFixed(2)}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>
                       {po.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">{po.createdAt}</td>
+                  <td className="px-4 py-3 text-slate-500 text-xs">{po.createdAt}</td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
                       {po.status === 'Draft' && (
                         <>
                           <button
                             onClick={() => updatePOStatus(po.id, 'Sent')}
-                            className="rounded-lg px-2 py-1 text-[10px] font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-blue-600 hover:bg-blue-50 transition-colors"
                           >
                             Send
                           </button>
                           <button
                             onClick={() => handleDeletePO(po.id)}
-                            className="rounded-lg px-2 py-1 text-[10px] font-medium text-red-600 hover:bg-red-50 transition-colors"
+                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-red-600 hover:bg-red-50 transition-colors"
                           >
                             Delete
                           </button>
@@ -464,13 +464,13 @@ export default function PurchaseOrdersPage() {
                       {po.status === 'Sent' && (
                         <button
                           onClick={() => updatePOStatus(po.id, 'Received')}
-                          className="rounded-lg px-2 py-1 text-[10px] font-medium text-green-600 hover:bg-green-50 transition-colors"
+                          className="rounded-xl px-2 py-1 text-[10px] font-medium text-green-600 hover:bg-green-50 transition-colors"
                         >
                           Receive
                         </button>
                       )}
                       {po.status === 'Received' && (
-                        <span className="text-[10px] text-gray-500">Complete</span>
+                        <span className="text-[10px] text-slate-500">Complete</span>
                       )}
                       {po.status === 'Cancelled' && (
                         <span className="text-[10px] text-red-600">Cancelled</span>
@@ -543,25 +543,25 @@ export default function PurchaseOrdersPage() {
             <div className="overflow-x-auto rounded-xl border border-slate-200">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-slate-50">
-                    <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">Item</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Qty</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Unit Price</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Total</th>
-                    <th className="px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500"></th>
+                  <tr className="border-b border-slate-200 bg-slate-50">
+                    <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Item</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Qty</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Total</th>
+                    <th className="px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-500"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {form.items.map((item) => (
-                    <tr key={item.itemId} className="border-b border-gray-200">
-                      <td className="px-3 py-2 text-gray-900 text-xs">{item.itemName}</td>
+                    <tr key={item.itemId} className="border-b border-slate-200">
+                      <td className="px-3 py-2 text-slate-900 text-xs">{item.itemName}</td>
                       <td className="px-3 py-2">
                         <input
                           type="number"
                           min={1}
                           value={item.quantity}
                           onChange={(e) => updateFormItem(item.itemId, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-16 h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-16 h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2">
@@ -571,10 +571,10 @@ export default function PurchaseOrdersPage() {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateFormItem(item.itemId, 'unitPrice', parseFloat(e.target.value) || 0)}
-                          className="w-20 h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-20 h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
-                      <td className="px-3 py-2 text-right text-gray-900 text-xs font-medium">
+                      <td className="px-3 py-2 text-right text-slate-900 text-xs font-medium">
                         ${(item.quantity * item.unitPrice).toFixed(2)}
                       </td>
                       <td className="px-3 py-2 text-center">
@@ -592,8 +592,8 @@ export default function PurchaseOrdersPage() {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={3} className="px-3 py-2 text-right text-xs font-semibold text-gray-400">Total</td>
-                    <td className="px-3 py-2 text-right text-xs font-bold text-gray-900">${formTotal.toFixed(2)}</td>
+                    <td colSpan={3} className="px-3 py-2 text-right text-xs font-semibold text-slate-400">Total</td>
+                    <td className="px-3 py-2 text-right text-xs font-bold text-slate-900">${formTotal.toFixed(2)}</td>
                     <td></td>
                   </tr>
                 </tfoot>

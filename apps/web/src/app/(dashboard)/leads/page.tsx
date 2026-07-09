@@ -157,15 +157,15 @@ function LeadRowSkeleton() {
     <div className="animate-pulse space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 px-4 py-3">
-          <div className="h-4 w-16 rounded bg-gray-50" />
-          <div className="h-4 w-28 rounded bg-gray-50" />
-          <div className="h-4 w-24 rounded bg-gray-50 hidden sm:block" />
-          <div className="h-4 w-32 rounded bg-gray-50 hidden md:block" />
-          <div className="h-4 w-28 rounded bg-gray-50 hidden md:block" />
-          <div className="h-4 w-40 rounded bg-gray-50 hidden lg:block" />
-          <div className="h-4 w-20 rounded bg-gray-50" />
-          <div className="h-4 w-12 rounded bg-gray-50" />
-          <div className="h-4 w-8 rounded bg-gray-50" />
+          <div className="h-4 w-16 rounded bg-slate-50" />
+          <div className="h-4 w-28 rounded bg-slate-50" />
+          <div className="h-4 w-24 rounded bg-slate-50 hidden sm:block" />
+          <div className="h-4 w-32 rounded bg-slate-50 hidden md:block" />
+          <div className="h-4 w-28 rounded bg-slate-50 hidden md:block" />
+          <div className="h-4 w-40 rounded bg-slate-50 hidden lg:block" />
+          <div className="h-4 w-20 rounded bg-slate-50" />
+          <div className="h-4 w-12 rounded bg-slate-50" />
+          <div className="h-4 w-8 rounded bg-slate-50" />
         </div>
       ))}
     </div>
@@ -270,14 +270,14 @@ function LeadDetailPanel({
           </div>
           {lead.photos.length > 0 && (
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1.5">Photos</p>
+              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5">Photos</p>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {lead.photos.map((src, i) => (
                   <img
                     key={i}
                     src={src}
                     alt={`Lead photo ${i + 1}`}
-                    className="h-20 w-28 rounded-lg object-cover border border-gray-200 shrink-0"
+                    className="h-20 w-28 rounded-xl object-cover ring-1 ring-black/5 shrink-0"
                   />
                 ))}
               </div>
@@ -520,7 +520,7 @@ export default function LeadsPage() {
                 <button
                   key={tab}
                   onClick={() => { setFilterTab(tab); setExpandedId(null); }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize ${
                     filterTab === tab
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50'
