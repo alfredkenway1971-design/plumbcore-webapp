@@ -17,6 +17,7 @@ import { generateInvoice, formatCurrency, generateInvoiceNumber, calculateDueDat
 import { pricebook, partsList, repairTypesList } from '@/lib/pricebook-data';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { jsPDF } from 'jspdf';
+import { useAuthStore } from '@/lib/store';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -227,8 +228,17 @@ export default function InvoicingPage() {
       URL.revokeObjectURL(url);
     } else {
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const logoUrl = useAuthStore.getState().company?.logo_url;
+      
+      // Add logo if available
+      if (logoUrl) {
+        try {
+          doc.addImage(logoUrl, 'PNG', 20, 15, 25, 10);
+        } catch {}
+      }
+      
       doc.setFontSize(18);
-      doc.text('PlumbCore AI — Invoices Report', 20, 30);
+      doc.text('PlumbCore AI — Invoices Report', logoUrl ? 50 : 20, 25);
       doc.setFontSize(10);
       let y = 45;
       doc.text('Invoice #', 20, y); doc.text('Client', 60, y); doc.text('Amount', 120, y); doc.text('Status', 160, y);
@@ -435,8 +445,14 @@ export default function InvoicingPage() {
                         size="sm"
                         onClick={() => {
                           const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+                          const logoUrl = useAuthStore.getState().company?.logo_url;
+                          
+                          if (logoUrl) {
+                            try { doc.addImage(logoUrl, 'PNG', 20, 15, 25, 10); } catch {}
+                          }
+                          
                           doc.setFontSize(18);
-                          doc.text('PlumbCore AI', 20, 30);
+                          doc.text('PlumbCore AI', logoUrl ? 50 : 20, 25);
                           doc.setFontSize(14);
                           doc.text(`Invoice: ${inv.id}`, 20, 45);
                           doc.setFontSize(11);

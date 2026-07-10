@@ -11,6 +11,7 @@ import {
 } from '@/pkg/ui-components';
 import { invoices, clients } from '@/lib/mock-data';
 import { formatCurrency } from '@/lib/invoice-engine';
+import { useAuthStore } from '@/lib/store';
 
 /* ── Helpers ── */
 function formatDate(d: string) {
@@ -71,6 +72,7 @@ export default function InvoicePrintPage() {
   };
 
   const invoice = useMemo(() => invoices.find((inv) => inv.id === invoiceId), [invoiceId]);
+  const companyLogo = useAuthStore((s) => s.company?.logo_url);
 
   const client = useMemo(
     () => (invoice ? clients.find((c) => c.id === invoice.clientId) : null),
@@ -151,11 +153,18 @@ export default function InvoicePrintPage() {
       <div className="max-w-4xl mx-auto p-8" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         {/* Header */}
         <div className="flex justify-between items-start mb-12">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">PlumbCore AI</h1>
-            <p className="text-sm text-slate-500 mt-1">Professional Plumbing Services</p>
-            <p className="text-sm text-slate-500">Austin, TX</p>
-            <p className="text-sm text-slate-500">contact@plumbcore.ai</p>
+          <div className="flex items-center gap-4">
+            {companyLogo ? (
+              <img src={companyLogo} alt="Company Logo" className="h-16 w-auto object-contain" />
+            ) : (
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">P</div>
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">PlumbCore AI</h1>
+              <p className="text-sm text-slate-500">Professional Plumbing Services</p>
+              <p className="text-sm text-slate-500">Austin, TX</p>
+              <p className="text-sm text-slate-500">contact@plumbcore.ai</p>
+            </div>
           </div>
           <div className="text-right">
             <h2 className="text-2xl font-bold text-slate-900">INVOICE</h2>
