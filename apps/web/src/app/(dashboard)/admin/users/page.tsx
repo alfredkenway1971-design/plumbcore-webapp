@@ -81,24 +81,24 @@ export default function AdminUsersPage() {
       {showAdd && (
         <Modal open={true} onClose={() => setShowAdd(false)} title="Add Admin User">
           <div className="space-y-4 p-4">
-            <div><label className="text-xs font-medium text-gray-500">Name</label><Input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} /></div>
-            <div><label className="text-xs font-medium text-gray-500">Email</label><Input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} /></div>
-            <div><label className="text-xs font-medium text-gray-500">Role</label>
-              <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none">
+            <div><label className="text-xs font-medium text-steel-light">Name <span className="text-status-error">*</span></label><Input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} /></div>
+            <div><label className="text-xs font-medium text-steel-light">Email <span className="text-status-error">*</span></label><Input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} /></div>
+            <div><label className="text-xs font-medium text-steel-light">Role</label>
+              <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-accent/50 focus:ring-1 focus:ring-accent/20">
                 <option value="admin">Admin</option><option value="super_admin">Super Admin</option>
               </select>
             </div>
-            <div><label className="text-xs font-medium text-gray-500">Permissions</label>
+            <div><label className="text-xs font-medium text-steel-light">Permissions</label>
               <div className="grid grid-cols-2 gap-1.5 mt-1">
                 {allPermissions.map(p => (
-                  <label key={p} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-                    <input type="checkbox" checked={editForm.permissions.includes(p)} onChange={() => togglePermission(p)} className="rounded" />
+                  <label key={p} className="flex items-center gap-2 text-xs text-steel-light cursor-pointer">
+                    <input type="checkbox" checked={editForm.permissions.includes(p)} onChange={() => togglePermission(p)} className="rounded accent-blue-500 h-4 w-4" />
                     {p.replace(/_/g, ' ')}
                   </label>
                 ))}
               </div>
             </div>
-            <div className="flex justify-end gap-2 pt-2"><Button variant="ghost" onClick={() => setShowAdd(false)}>Cancel</Button><Button onClick={addUser}>Add User</Button></div>
+            <div className="flex justify-end gap-2 pt-2"><Button variant="outline" onClick={() => setShowAdd(false)}>Cancel</Button><Button onClick={addUser}>Add User</Button></div>
           </div>
         </Modal>
       )}

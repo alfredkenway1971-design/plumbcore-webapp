@@ -34,6 +34,7 @@ export default function CampaignsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ subject: '', body: '', segment: 'all', scheduledDate: '' });
   const [preview, setPreview] = useState(false);
+  const [activeTemplate, setActiveTemplate] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const createCampaign = () => {
@@ -48,10 +49,12 @@ export default function CampaignsPage() {
     }]);
     setShowCreate(false);
     setForm({ subject: '', body: '', segment: 'all', scheduledDate: '' });
+    setActiveTemplate('');
   };
 
   const applyTemplate = (template: typeof templates[0]) => {
     setForm(f => ({ ...f, subject: template.subject, body: template.body }));
+    setActiveTemplate(template.name);
   };
 
   if (error) return <div className="p-6"><ErrorState title="Failed to load" message={error} onRetry={() => setError(null)} /></div>;
@@ -103,31 +106,49 @@ export default function CampaignsPage() {
         <Modal open={true} onClose={() => setShowCreate(false)} title="New Campaign">
           <div className="space-y-4 p-4">
             <div>
-              <label className="text-xs font-medium text-gray-500">Template</label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-medium text-steel-light">Template</label>
+                {form.body && (
+                  <button onClick={() => setPreview(!preview)} className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                    {preview ? '✕ Close preview' : '👁 Preview'}
+                  </button>
+                )}
+              </div>
               <div className="flex gap-1.5 mt-1 flex-wrap">
-                {templates.map(t => <button key={t.name} onClick={() => applyTemplate(t)} className="text-xs rounded-lg border border-gray-200 px-2.5 py-1.5 hover:bg-gray-50">{t.name}</button>)}
+                {templates.map(t => (
+                  <button
+                    key={t.name}
+                    onClick={() => applyTemplate(t)}
+                    className={`text-xs rounded-lg border px-2.5 py-1.5 transition-all ${
+                      activeTemplate === t.name
+                        ? 'border-blue-400 bg-blue-500/10 text-blue-300'
+                        : 'border-white-border text-steel-light hover:border-steel hover:text-white'
+                    }`}
+                  >
+                    {t.name}
+                  </button>
+                ))}
               </div>
             </div>
-            <div><label className="text-xs font-medium text-gray-500">Subject</label><Input value={form.subject} onChange={(e: any) => setForm(f => ({...f, subject: e.target.value}))} /></div>
-            <div><label className="text-xs font-medium text-gray-500">Body</label><textarea value={form.body} onChange={(e: any) => setForm(f => ({...f, body: e.target.value}))} rows={8} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-400 font-mono" /></div>
+            <div><label className="text-xs font-medium text-steel-light">Subject <span className="text-status-error">*</span></label><Input value={form.subject} onChange={(e: any) => setForm(f => ({...f, subject: e.target.value}))} /></div>
+            <div><label className="text-xs font-medium text-steel-light">Body</label><textarea value={form.body} onChange={(e: any) => setForm(f => ({...f, body: e.target.value}))} rows={8} className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-all focus:border-accent/50 focus:ring-1 focus:ring-accent/20 font-mono" /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div><label className="text-xs font-medium text-gray-500">Segment</label>
-                <select value={form.segment} onChange={(e: any) => setForm(f => ({...f, segment: e.target.value}))} className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none">
+              <div><label className="text-xs font-medium text-steel-light">Segment</label>
+                <select value={form.segment} onChange={(e: any) => setForm(f => ({...f, segment: e.target.value}))} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-accent/50 focus:ring-1 focus:ring-accent/20">
                   {segments.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
-              <div><label className="text-xs font-medium text-gray-500">Schedule Date (optional)</label><Input type="date" value={form.scheduledDate} onChange={(e: any) => setForm(f => ({...f, scheduledDate: e.target.value}))} /></div>
+              <div><label className="text-xs font-medium text-steel-light">Schedule Date (optional)</label><Input type="date" value={form.scheduledDate} onChange={(e: any) => setForm(f => ({...f, scheduledDate: e.target.value}))} /></div>
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="ghost" onClick={() => setShowCreate(false)}>Cancel</Button>
-              <Button variant="ghost" onClick={() => setPreview(!preview)}>{preview ? 'Edit' : 'Preview'}</Button>
+              <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
               <Button onClick={createCampaign}>Save Campaign</Button>
             </div>
             {preview && form.body && (
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                <p className="text-xs font-semibold text-gray-500 mb-2">Preview:</p>
+              <div className="rounded-xl border border-white-border bg-white-subtle p-4">
+                <p className="text-xs font-semibold text-steel-light mb-2">Preview:</p>
                 <div className="bg-white rounded-lg p-4 shadow-sm max-w-md mx-auto">
-                  <p className="text-sm whitespace-pre-wrap">{form.body.replace(/\{\{name\}\}/g, 'John').replace(/\{\{days\}\}/g, '3').replace(/\{\{feature\}\}/g, 'Predictive Maintenance')}</p>
+                  <p className="text-sm whitespace-pre-wrap text-gray-900">{form.body.replace(/\{\{name\}\}/g, 'John').replace(/\{\{days\}\}/g, '3').replace(/\{\{feature\}\}/g, 'Predictive Maintenance')}</p>
                 </div>
               </div>
             )}
