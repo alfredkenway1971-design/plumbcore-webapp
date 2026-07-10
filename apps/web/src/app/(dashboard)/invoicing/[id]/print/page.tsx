@@ -73,6 +73,11 @@ export default function InvoicePrintPage() {
 
   const invoice = useMemo(() => invoices.find((inv) => inv.id === invoiceId), [invoiceId]);
   const companyLogo = useAuthStore((s) => s.company?.logo_url);
+  const companyName = useAuthStore((s) => s.company?.name) || 'PlumbCore AI';
+  const companyEmail = useAuthStore((s) => s.company?.email) || 'contact@plumbcore.ai';
+  const companyPhone = useAuthStore((s) => s.company?.phone) || '(555) 123-4567';
+  const companyAddress = useAuthStore((s) => s.company?.address) || '123 Main St';
+  const companyCity = useAuthStore((s) => s.company?.city) || 'Austin, TX';
 
   const client = useMemo(
     () => (invoice ? clients.find((c) => c.id === invoice.clientId) : null),
@@ -160,10 +165,11 @@ export default function InvoicePrintPage() {
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">P</div>
             )}
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">PlumbCore AI</h1>
-              <p className="text-sm text-slate-500">Professional Plumbing Services</p>
-              <p className="text-sm text-slate-500">Austin, TX</p>
-              <p className="text-sm text-slate-500">contact@plumbcore.ai</p>
+              <h1 className="text-2xl font-bold text-slate-900">{companyName}</h1>
+              <p className="text-sm text-slate-500">{companyAddress}</p>
+              <p className="text-sm text-slate-500">{companyCity}</p>
+              <p className="text-sm text-slate-500">{companyEmail}</p>
+              {companyPhone && <p className="text-sm text-slate-500">{companyPhone}</p>}
             </div>
           </div>
           <div className="text-right">

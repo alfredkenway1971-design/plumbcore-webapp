@@ -229,16 +229,15 @@ export default function InvoicingPage() {
     } else {
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
       const logoUrl = useAuthStore.getState().company?.logo_url;
+      const companyName = useAuthStore.getState().company?.name || 'PlumbCore AI';
       
       // Add logo if available
       if (logoUrl) {
-        try {
-          doc.addImage(logoUrl, 'PNG', 20, 15, 25, 10);
-        } catch {}
+        try { doc.addImage(logoUrl, 'PNG', 20, 15, 25, 10); } catch {}
       }
       
       doc.setFontSize(18);
-      doc.text('PlumbCore AI — Invoices Report', logoUrl ? 50 : 20, 25);
+      doc.text(`${companyName} — Invoices Report`, logoUrl ? 50 : 20, 25);
       doc.setFontSize(10);
       let y = 45;
       doc.text('Invoice #', 20, y); doc.text('Client', 60, y); doc.text('Amount', 120, y); doc.text('Status', 160, y);
@@ -446,13 +445,14 @@ export default function InvoicingPage() {
                         onClick={() => {
                           const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                           const logoUrl = useAuthStore.getState().company?.logo_url;
+                          const companyName = useAuthStore.getState().company?.name || 'PlumbCore AI';
                           
                           if (logoUrl) {
                             try { doc.addImage(logoUrl, 'PNG', 20, 15, 25, 10); } catch {}
                           }
                           
                           doc.setFontSize(18);
-                          doc.text('PlumbCore AI', logoUrl ? 50 : 20, 25);
+                          doc.text(companyName, logoUrl ? 50 : 20, 25);
                           doc.setFontSize(14);
                           doc.text(`Invoice: ${inv.id}`, 20, 45);
                           doc.setFontSize(11);
