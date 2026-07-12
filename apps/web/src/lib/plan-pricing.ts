@@ -22,10 +22,10 @@ export const PLAN_LABELS_PRETTY: Record<string, string> = {
 };
 
 export const PLAN_LEAD_FEES: Record<string, number> = {
-  solo: 1500,    // $15/lead
-  pro: 1000,     // $10/lead
-  business: 500, // $5/lead
-  enterprise: 0, // $0 (API fee instead)
+  solo: 0,    // $49 flat deposit per lead — PlumbCore keeps 100%
+  pro: 0,     // Same flat rate across all plans
+  business: 0, // Lead fee = $49, deducted from customer's deposit
+  enterprise: 0,
 };
 
 export const PLAN_MAX_TECHS: Record<string, number> = {
@@ -51,7 +51,7 @@ export const PLAN_DESCRIPTIONS: Record<string, string> = {
 
 export const PLAN_FEATURES: Record<string, string[]> = {
   solo: [
-    'Shared lead marketplace access',
+    'Lead marketplace access (flat $49/lead)',
     'Unlimited AI photo estimates',
     '15 hrs/mo AI receptionist',
     'Job scheduling & dispatch',
@@ -63,7 +63,7 @@ export const PLAN_FEATURES: Record<string, string[]> = {
     'Up to 10 techs',
     'Your own subdomain quote page',
     '60 hrs/mo AI receptionist',
-    'Lower lead fees ($10/job)',
+    'Lead marketplace ($49/lead flat)',
     'Route optimization',
     'Team management',
     'Premium analytics',
@@ -73,7 +73,7 @@ export const PLAN_FEATURES: Record<string, string[]> = {
     'Up to 25 techs',
     'Embed quote page on your website',
     '150 hrs/mo AI receptionist',
-    'Lowest lead fees ($5/job)',
+    'Lead marketplace ($49/lead flat)',
     'Inventory tracking',
     'Customer portal',
     'White-label branding',
@@ -85,7 +85,7 @@ export const PLAN_FEATURES: Record<string, string[]> = {
     'Full API access',
     'Custom integrations',
     'Dedicated account manager',
-    '$0 lead fees (API fee model)',
+    '$0 lead fees (API model)',
     'Custom SLA',
     'On-premise option',
   ],
@@ -120,10 +120,14 @@ export function getPlanTierFromPriceId(priceId: string): string {
 
 /* ── Revenue Model (for reference) ── */
 /*
-Assumed Distribution @ 100 Plumbers:
-  Solo:  40 plumbers × $349 = $13,960/mo SaaS + 320 jobs × $49 = $29,640/mo total
-  Pro:   45 plumbers × $799 = $35,955/mo SaaS + 360 jobs × $49 = $53,595/mo total
-  Biz:   15 plumbers × $1,499 = $22,485/mo SaaS + 120 jobs × $49 = $28,365/mo total
-         ───────────────────────────────────────────────────────────────
+Revenue Model (@ 100 plumbers):
+  Plumber pays: SaaS subscription ($349/$799/$1,499/mo)
+  Customer pays: $49 deposit per lead (kept 100% by PlumbCore)
+  Plumber invoices customer directly for job — no revenue split
+
+  Solo:  40 × $349 = $13,960/mo + 320 leads × $49 = $15,680/mo
+  Pro:   45 × $799 = $35,955/mo + 360 leads × $49 = $17,640/mo
+  Biz:   15 × $1,499 = $22,485/mo + 120 leads × $49 = $5,880/mo
+         ──────────────────────────────────────────────────
          Total: $72,400/mo SaaS + $39,200/mo lead fees = $111,600/mo
 */
