@@ -481,6 +481,131 @@ function RevenueBreakdownTable() {
   );
 }
 
+/* ── Lead Revenue Breakdown ── */
+
+const DEPOSIT_TIERS_DISPLAY = [
+  { label: 'Under $1,000', min: 0, max: 1000, deposit: 49 },
+  { label: '$1,000 – $1,499', min: 1000, max: 1500, deposit: 99 },
+  { label: '$1,500 – $1,999', min: 1500, max: 2000, deposit: 149 },
+  { label: '$2,000+', min: 2000, max: Infinity, deposit: 199 },
+];
+
+function LeadRevenueBreakdown() {
+  // Demo data — replace with real Supabase query later
+  const totalLeads = 428;
+  const demoDistribution = [
+    { tier: 0, count: 180, label: 'Under $1,000', deposit: 49 },
+    { tier: 1, count: 120, label: '$1,000 – $1,499', deposit: 99 },
+    { tier: 2, count: 78, label: '$1,500 – $1,999', deposit: 149 },
+    { tier: 3, count: 50, label: '$2,000+', deposit: 199 },
+  ];
+
+  const totalLeadRevenue = demoDistribution.reduce((s, t) => s + t.count * t.deposit, 0);
+  const maxCount = Math.max(...demoDistribution.map(t => t.count));
+  const depositColors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B'];
+
+  return (
+    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-base font-semibold text-white">Lead Revenue Breakdown</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{totalLeads} total leads · ${totalLeadRevenue.toLocaleString()} total deposit revenue</p>
+        </div>
+        <div className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
+          <ArrowUp className="w-3 h-3" /> +{(totalLeadRevenue / 284500 * 100).toFixed(1)}% of total rev
+        </div>
+      </div>
+
+      {/* Stacked bar chart */}
+      <div className="flex items-end gap-1 h-28 mb-4">
+        {demoDistribution.map((tier, i) => {
+          const h = maxCount > 0 ? (tier.count / maxCount) * 100 : 0;
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
+              <span className="text-[10px] font-semibold text-slate-400">{tier.count}</span>
+              <div className="w-full flex flex-col items-center justify-end" style={{ height: '100%' }}>
+                <div
+                  className="w-full rounded-t-md transition-all hover:opacity-80"
+                  style={{
+                    height: `${Math.max(h, 4)}%`,
+                    backgroundColor: depositColors[i % depositColors.length],
+                    minHeight: '8px',
+                  }}
+                />
+              </div>
+              <span className="text-[9px] text-slate-600 text-center leading-tight">{tier.label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Tier table */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-t border-b border-white/5">
+              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-2.5">Tier</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-2.5">Deposit</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-2.5">Leads</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-2.5">Revenue</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-2.5 hidden sm:table-cell">% of Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {demoDistribution.map((tier, i) => {
+              const pct = ((tier.count * tier.deposit) / totalLeadRevenue * 100);
+              return (
+                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                  <td className="px-3 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: depositColors[i % depositColors.length] }} />
+                      <span className="text-xs font-medium text-slate-200">{tier.label}</span>
+                    </div>
+                  </td>
+                  <td className="px-3 py-2.5 text-right">
+                    <span className="text-xs font-semibold text-slate-200">${tier.deposit}</span>
+                  </td>
+                  <td className="px-3 py-2.5 text-right">
+                    <span className="text-xs text-slate-400">{tier.count}</span>
+                  </td>
+                  <td className="px-3 py-2.5 text-right">
+                    <span className="text-xs font-semibold text-emerald-400">${(tier.count * tier.deposit).toLocaleString()}</span>
+                  </td>
+                  <td className="px-3 py-2.5 text-right hidden sm:table-cell">
+                    <div className="flex items-center justify-end gap-2">
+                      <div className="w-12 h-1.5 bg-slate-800/30 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: depositColors[i % depositColors.length] }} />
+                      </div>
+                      <span className="text-[10px] font-semibold text-slate-500 w-8 text-right">{pct.toFixed(1)}%</span>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-white/5 bg-white/[0.02]">
+              <td className="px-3 py-2.5">
+                <span className="text-xs font-semibold text-slate-200">Total</span>
+              </td>
+              <td className="px-3 py-2.5 text-right" />
+              <td className="px-3 py-2.5 text-right">
+                <span className="text-xs font-bold text-white">{totalLeads}</span>
+              </td>
+              <td className="px-3 py-2.5 text-right">
+                <span className="text-xs font-bold text-white">${totalLeadRevenue.toLocaleString()}</span>
+              </td>
+              <td className="px-3 py-2.5 text-right hidden sm:table-cell">
+                <span className="text-xs font-semibold text-slate-500">100%</span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 /* ── Main Page ── */
 
 export default function AdminRevenuePage() {
@@ -525,6 +650,11 @@ export default function AdminRevenuePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <MonthlyComparison />
         <RevenueBreakdownTable />
+      </div>
+
+      {/* Row 4 — Lead Revenue Breakdown */}
+      <div className="mb-6">
+        <LeadRevenueBreakdown />
       </div>
     </div>
   );
