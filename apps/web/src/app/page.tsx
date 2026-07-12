@@ -104,10 +104,10 @@ function Hero({ t }: { t: (key: string) => string }) {
 /* ═══ STATS ═══ */
 function StatsRow({ t }: { t: (key: string) => string }) {
   const stats = [
-    { num: process.env.NEXT_PUBLIC_STAT_PROJECTS || '12,450+', label: t('home.statsProjectsDone') },
-    { num: process.env.NEXT_PUBLIC_STAT_CUSTOMERS || '500+', label: t('home.statsHappyCustomers') },
+    { num: process.env.NEXT_PUBLIC_STAT_PROJECTS || '—', label: t('home.statsProjectsDone') },
+    { num: process.env.NEXT_PUBLIC_STAT_CUSTOMERS || '—', label: t('home.statsHappyCustomers') },
     { num: t('home.statsStartingAt'), label: process.env.NEXT_PUBLIC_STAT_PRICE || '$149/mo', sub: true },
-    { num: process.env.NEXT_PUBLIC_STAT_ESTIMATES || '50K+', label: t('home.statsAIEstimates') },
+    { num: process.env.NEXT_PUBLIC_STAT_ESTIMATES || '—', label: t('home.statsAIEstimates') },
   ];
   return (
     <section className="py-12 bg-slate-50 ring-1 ring-black/5">

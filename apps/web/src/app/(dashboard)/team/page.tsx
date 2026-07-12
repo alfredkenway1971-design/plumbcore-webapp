@@ -113,6 +113,8 @@ export default function TeamPage() {
   const [editRole, setEditRole] = useState<TeamRole>('tech');
   const [editActive, setEditActive] = useState(true);
   const [members, setMembers] = useState<TeamMemberData[]>([]);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteForm, setInviteForm] = useState({ name: '', email: '', role: 'tech' });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -153,8 +155,36 @@ export default function TeamPage() {
 
   const handleOpenDetail = (member: TeamMemberData) => {
     setSelectedMember(member);
-    setEditingMember(null);
-    setShowRemoveConfirm(false);
+  };
+
+  const handleSendInvite = () => {
+    if (!inviteForm.name.trim() || !inviteForm.email.trim()) return;
+    const newMember: TeamMemberData = {
+      id: `TEMP-${Date.now()}`,
+      name: inviteForm.name,
+      email: inviteForm.email,
+      phone: '',
+      role: inviteForm.role as TeamRole,
+      status: 'offline',
+      activeJobs: 0,
+      completedToday: 0,
+      rating: 0,
+      specialties: [],
+      joinedAt: new Date().toISOString().split('T')[0],
+    };
+    setMembers((prev) => [...prev, newMember]);
+    setInviteOpen(false);
+    setInviteForm({ name: '', email: '', role: 'tech' });
+
+    const subject = encodeURIComponent(`You've been invited to join the team`);
+    const body = encodeURIComponent(
+      `Hi ${inviteForm.name},\n\n` +
+      `You've been invited to join as a ${inviteForm.role.replace('-', ' ')}.\n\n` +
+      `Click the link below to accept:\n\n` +
+      `https://plumbcore-ai.vercel.app/signup\n\n` +
+      `Welcome aboard!`
+    );
+    window.open(`mailto:${inviteForm.email}?subject=${subject}&body=${body}`, '_blank');
   };
 
   const handleEditMember = (member: TeamMemberData) => {
@@ -235,7 +265,7 @@ export default function TeamPage() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-56"
           />
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" onClick={() => setInviteOpen(true)}>
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
@@ -243,6 +273,55 @@ export default function TeamPage() {
           </Button>
         </div>
       </div>
+
+      {/* Invite Modal */}
+      <Modal
+        open={inviteOpen}
+        onClose={() => setInviteOpen(false)}
+        title="Invite Team Member"
+        description="Send an invitation to join your organization."
+        size="sm"
+        footer={
+          <div className="flex items-center gap-2 w-full justify-end">
+            <Button variant="ghost" onClick={() => setInviteOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSendInvite} disabled={!inviteForm.name.trim() || !inviteForm.email.trim()}>
+              Send Invitation
+            </Button>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <Input
+            label="Name"
+            placeholder="Full name"
+            value={inviteForm.name}
+            onChange={(e) => setInviteForm({ ...inviteForm, name: e.target.value })}
+          />
+          <Input
+            label="Email"
+            type="email"
+            placeholder="colleague@company.com"
+            value={inviteForm.email}
+            onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
+          />
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Role</label>
+            <select
+              value={inviteForm.role}
+              onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}
+              className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/50"
+            >
+              <option value="tech">Technician</option>
+              <option value="senior-tech">Senior Technician</option>
+              <option value="lead-tech">Lead Technician</option>
+              <option value="dispatcher">Dispatcher</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+      </Modal>
 
       {/* Empty State */}
       {filteredMembers.length === 0 && (
