@@ -20,7 +20,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-lg ring-1 ring-black/5">
+    <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-xl ring-1 ring-black/5 shadow-[0_1px_12px_rgba(0,0,0,0.03)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between h-14 sm:h-16 px-4 sm:px-6 lg:px-8">
         <PlumbCoreLogo size="sm" showText={true} />
 
@@ -37,7 +37,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
         </div>
 
         <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label="Menu">
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {open ? <X className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" /> : <Menu className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />}
         </button>
       </div>
       {open && (
@@ -57,7 +57,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
 function Hero({ t }: { t: (key: string) => string }) {
   const r = useRouter();
   return (
-    <section className="pt-28 pb-24 mesh-bg overflow-hidden">
+    <section className="pt-28 pb-24 mesh-bg-enhanced overflow-hidden relative">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center stagger-fade">
           <div className="text-center lg:text-left">
@@ -88,10 +88,9 @@ function Hero({ t }: { t: (key: string) => string }) {
           </div>
           <div className="flex justify-center">
             <div className="relative w-full max-w-md">
-              <link rel="preload" as="image" href="/generated/hero-plumber.webp" />
               <picture>
                 <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
-                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl shadow-xl rotate-1 ring-1 ring-slate-200" />
+                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl shadow-xl rotate-1 ring-1 ring-slate-200 animate-float" />
               </picture>
             </div>
           </div>
@@ -189,7 +188,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((f, i) => (
-            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left relative overflow-hidden">
+            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left relative overflow-hidden card-glow">
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-lg shadow-black/10 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
                 <f.icon className="w-6 h-6 text-white" />
               </div>
@@ -283,7 +282,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto stagger-fade">
       {plans.map((p, i) => (
-        <div key={i} className={`relative rounded-2xl transition-all duration-300 ${p.popular ? 'bg-white ring-2 ring-blue-500 shadow-[0_8px_32px_rgba(59,130,246,0.15)] scale-[1.02] lg:-translate-y-2 z-10' : 'bg-white ring-1 ring-black/5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1'}`}>
+        <div key={i} className={`animate-fade-up-${Math.min(i+1, 4)} relative rounded-2xl transition-all duration-300 ${p.popular ? 'bg-white ring-2 ring-blue-500 shadow-[0_8px_32px_rgba(59,130,246,0.15)] scale-[1.02] lg:-translate-y-2 z-10 animate-pulse-ring' : 'bg-white ring-1 ring-black/5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1'}`}>
           {p.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/25 z-20">Most Popular</div>}
           <div className={`p-6 text-center flex flex-col h-full ${p.popular ? '' : ''}`}>
             <h3 className={`text-lg font-semibold ${p.popular ? 'text-slate-900' : 'text-slate-900'}`}>{p.name}</h3>
@@ -490,13 +489,13 @@ function FaqSection({ t }: { t: (key: string) => string }) {
 function CtaSection({ t }: { t: (key: string) => string }) {
   const r = useRouter();
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.3),transparent)]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-3">{t('home.ctaTitle')}</h2>
         <p className="text-base sm:text-lg text-blue-100 max-w-xl mx-auto mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t('home.ctaSubtitle') }} />
-        <a href="/signup" className="h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-semibold shadow-lg shadow-blue-900/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mx-auto inline-flex">
-          {t('home.ctaButton')} <ArrowRight className="w-5 h-5" />
+        <a href="/signup" className="h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-semibold shadow-lg shadow-blue-900/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 mx-auto inline-flex group">
+          {t('home.ctaButton')} <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
         </a>
         <p className="text-sm text-blue-200 mt-4">{t('home.ctaFineprint')}</p>
       </div>
