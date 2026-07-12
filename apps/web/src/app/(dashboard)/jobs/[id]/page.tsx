@@ -125,6 +125,7 @@ export default function JobDetailPage() {
   const [editTime, setEditTime] = useState('');
   const [editTechId, setEditTechId] = useState('');
   const [savingEdit, setSavingEdit] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -450,9 +451,54 @@ export default function JobDetailPage() {
             <Button variant="outline" size="sm" onClick={openEditJob}>Edit Job</Button>
             <Button variant="secondary" size="sm">Create Invoice</Button>
             {job.status !== 'completed' && (
-              <Button variant="primary" size="sm">Mark Complete</Button>
+              <Button variant="primary" size="sm" onClick={() => setShowCompletion(true)}>Mark Complete</Button>
             )}
           </div>
+
+          {/* ══ Job Completion Celebration ══ */}
+          {showCompletion && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setShowCompletion(false)}>
+              <div className="relative bg-white rounded-3xl p-8 text-center max-w-sm mx-4 shadow-2xl animate-in zoom-in-105" onClick={e => e.stopPropagation()}>
+                {/* Confetti particles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
+                  {['🎉', '✨', '⭐', '🔧', '💵', '✅', '🎊', '🔥'].map((emoji, i) => (
+                    <span
+                      key={i}
+                      className="absolute text-xl animate-bounce"
+                      style={{
+                        left: `${10 + i * 10}%`,
+                        top: `${i % 2 === 0 ? '5%' : '15%'}`,
+                        animationDelay: `${i * 0.15}s`,
+                        animationDuration: '1.5s',
+                      }}
+                    >
+                      {emoji}
+                    </span>
+                  ))}
+                </div>
+                <div className="relative z-10">
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-200">
+                    <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Job Complete! 🎉</h2>
+                  <p className="text-sm text-slate-500 mb-2">{job.title} finished successfully.</p>
+                  <p className="text-2xl font-bold text-emerald-600 mb-5">
+                    {formatCurrency(job.actualCost || job.estimatedCost)}
+                  </p>
+                  <div className="space-y-2">
+                    <Button size="lg" className="w-full" onClick={() => { setShowCompletion(false); }}>
+                      Create Invoice
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-full" onClick={() => setShowCompletion(false)}>
+                      Dismiss
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── RIGHT PANEL: Activity Timeline (1/3) ── */}

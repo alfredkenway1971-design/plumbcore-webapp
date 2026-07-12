@@ -61,26 +61,26 @@ function Hero({ t }: { t: (key: string) => string }) {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center stagger-fade">
           <div className="text-center lg:text-left">
-            <span className="inline-flex items-center gap-2 bg-blue-500/10 backdrop-blur-xl border border-blue-400/20 rounded-full px-4 py-1.5 text-xs font-semibold text-white mb-4 sm:mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="inline-flex items-center gap-2 bg-blue-600/15 backdrop-blur-xl border border-blue-500/30 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-4 sm:mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               {t('home.heroBadge')}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-[1.05] mb-4 sm:mb-5 gradient-text-hero" dangerouslySetInnerHTML={{ __html: t('home.heroTitle') }} />
-            <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
               {t('home.heroSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start w-full">
               <a href="/#pricing" className="btn-gradient h-12 w-full sm:w-auto px-8 flex items-center justify-center gap-2 text-sm font-semibold">
                 {t('home.heroCTA1')} <ArrowRight className="w-4 h-4" />
               </a>
-              <a href="/quote/plumbcore" className="h-12 w-full sm:w-auto px-8 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 text-sm font-semibold transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+              <a href="/quote/plumbcore" className="h-12 w-full sm:w-auto px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition-all active:scale-[0.98] flex items-center justify-center gap-2">
                 {t('home.heroCTA2')}
               </a>
             </div>
             <div className="flex items-center gap-4 mt-8 justify-center lg:justify-start">
               <div className="flex -space-x-2">
                 {['MT','SC','JW','AK'].map((init, i) => (
-                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border-2 border-slate-800 flex items-center justify-center text-[9px] font-bold text-white shadow-sm">{init}</div>
+                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border-2 border-white ring-1 ring-slate-200 flex items-center justify-center text-[9px] font-bold text-white shadow-sm">{init}</div>
                 ))}
               </div>
               <p className="text-xs text-slate-400" dangerouslySetInnerHTML={{ __html: t('home.heroTrusted') }} />
@@ -91,7 +91,7 @@ function Hero({ t }: { t: (key: string) => string }) {
               <link rel="preload" as="image" href="/generated/hero-plumber.webp" />
               <picture>
                 <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
-                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl shadow-2xl rotate-1 border border-white/10" />
+                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl shadow-xl rotate-1 ring-1 ring-slate-200" />
               </picture>
             </div>
           </div>
@@ -277,37 +277,37 @@ function PricingSection({ t }: { t: (key: string) => string }) {
     <section id="pricing" className="mesh-bg">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-400 uppercase">{t('home.navPricing')}</span>
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mt-3 mb-3">{t('home.pricingTitle')}</h2>
-          <p className="text-base text-slate-400 max-w-2xl mx-auto">{t('home.pricingSubtitle')}</p>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.navPricing')}</span>
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">{t('home.pricingTitle')}</h2>
+          <p className="text-base text-slate-500 max-w-2xl mx-auto">{t('home.pricingSubtitle')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto stagger-fade">
       {plans.map((p, i) => (
-        <div key={i} className={`relative rounded-2xl transition-all duration-300 ${p.popular ? 'bg-slate-900 ring-2 ring-cyan-500 shadow-[0_8px_32px_rgba(6,182,212,0.15)] scale-[1.02] lg:-translate-y-2 z-10' : 'bg-white ring-1 ring-black/5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1'}`}>
-          {p.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-cyan-500/25 z-20">Most Popular</div>}
+        <div key={i} className={`relative rounded-2xl transition-all duration-300 ${p.popular ? 'bg-white ring-2 ring-blue-500 shadow-[0_8px_32px_rgba(59,130,246,0.15)] scale-[1.02] lg:-translate-y-2 z-10' : 'bg-white ring-1 ring-black/5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1'}`}>
+          {p.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/25 z-20">Most Popular</div>}
           <div className={`p-6 text-center flex flex-col h-full ${p.popular ? '' : ''}`}>
-            <h3 className={`text-lg font-semibold ${p.popular ? 'text-white' : 'text-slate-900'}`}>{p.name}</h3>
-            <p className={`text-xs mt-1 ${p.popular ? 'text-slate-400' : 'text-slate-500'}`}>{p.techs}</p>
+            <h3 className={`text-lg font-semibold ${p.popular ? 'text-slate-900' : 'text-slate-900'}`}>{p.name}</h3>
+            <p className={`text-xs mt-1 text-slate-500`}>{p.techs}</p>
             <div className="flex items-baseline justify-center gap-1 mt-4 mb-4 h-[48px]">
               {p.price > 0 ? (
-                <><span className={`text-3xl font-bold tracking-tight ${p.popular ? 'text-white' : 'text-slate-900'}`}>${p.price}</span><span className={`text-sm ${p.popular ? 'text-slate-400' : 'text-slate-400'}`}>/mo</span></>
+                <><span className={`text-3xl font-bold tracking-tight text-slate-900`}>${p.price}</span><span className={`text-sm text-slate-400`}>/mo</span></>
               ) : (
-                <span className="text-2xl font-bold tracking-tight text-white">Contact Us</span>
+                <span className="text-2xl font-bold tracking-tight text-slate-900">Contact Us</span>
               )}
             </div>
             <ul className="space-y-2.5 text-left max-w-[200px] mx-auto min-h-[180px]">
               {p.features.map((f, j) => (
                 <li key={j} className="flex items-start gap-2.5 text-sm leading-relaxed">
-                  <svg className={`w-4 h-4 mt-0.5 shrink-0 ${p.popular ? 'text-cyan-400' : 'text-cyan-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <svg className={`w-4 h-4 mt-0.5 shrink-0 text-blue-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className={p.popular ? 'text-slate-300' : 'text-slate-600'}>{f}</span>
+                  <span className="text-slate-600">{f}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-auto pt-6">
               {p.cta === 'Contact Sales' ? (
-                <button onClick={() => window.location.href = 'mailto:sales@plumbcore.ai'} className="w-full h-11 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm font-semibold transition-all active:scale-[0.98]">{loading === p.id ? 'Redirecting...' : p.cta}</button>
+                <button onClick={() => window.location.href = 'mailto:sales@plumbcore.ai'} className="w-full h-11 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition-all active:scale-[0.98]">{loading === p.id ? 'Redirecting...' : p.cta}</button>
               ) : p.popular ? (
                 <button onClick={() => handleCheckout(p)} disabled={loading !== null} className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm disabled:opacity-50">{loading === p.id ? 'Redirecting...' : 'Start Free Trial →'}</button>
               ) : (
@@ -319,7 +319,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
       ))}
         </div>
         <div className="text-center mt-8">
-          <p className="text-sm text-slate-400">{t('home.pricingFreeTrial')}</p>
+          <p className="text-sm text-slate-500">{t('home.pricingFreeTrial')}</p>
         </div>
       </div>
     </section>
@@ -328,7 +328,6 @@ function PricingSection({ t }: { t: (key: string) => string }) {
 
 /* ═══ COMPARE TABLE ═══ */
 function CompareSection({ t }: { t: (key: string) => string }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const planNames = [t('home.planSolo'), t('home.planTeam'), t('home.planPro'), t('home.planBusiness'), t('home.planEnterprise')];
   const compareRows = [
     { feature: t('home.planFeaturePhotoEstimates'), solo: true, team: true, pro: true, business: true, enterprise: true },
@@ -378,46 +377,33 @@ function CompareSection({ t }: { t: (key: string) => string }) {
           </table>
         </div>
 
-        {/* Mobile accordion */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-blue-50 rounded-xl text-sm font-semibold text-blue-600"
-          >
-            {t('home.compareAllPlans')}
-            <span className={`transition-transform ${mobileOpen ? 'rotate-180' : ''}`}>▼</span>
-          </button>
-          {mobileOpen && (
-            <div className="mt-3 space-y-2">
+        {/* Mobile — scrollable horizontal table */}
+        <div className="md:hidden overflow-x-auto -mx-4 px-4">
+          <table className="w-full min-w-[500px] border-collapse text-xs">
+            <thead>
+              <tr>
+                <th className="text-left py-2.5 pr-3 text-[11px] font-semibold text-slate-500 sticky left-0 bg-white z-10">{t('home.compareFeature')}</th>
+                {planNames.map((name, i) => (
+                  <th key={i} className={`py-2.5 px-2 text-center text-[11px] font-bold whitespace-nowrap ${i === 2 ? 'text-blue-600' : 'text-slate-700'}`}>
+                    {name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
               {compareRows.map((row, i) => (
-                <div key={i} className="flex items-center justify-between px-4 py-3 bg-slate-50 rounded-xl">
-                  <span className="text-sm font-medium text-slate-700">{row.feature}</span>
-                  <div className="flex gap-3">
-                    <div className="text-center">
-                      <p className="text-[10px] text-slate-400 mb-0.5">{t('home.planSolo')}</p>
-                      {row.solo ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Minus className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-[10px] text-slate-400 mb-0.5">{t('home.planTeam')}</p>
-                      {row.team ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Minus className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-[10px] text-slate-400 mb-0.5">{t('home.planPro')}</p>
-                      {row.pro ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Minus className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-[10px] text-slate-400 mb-0.5">{t('home.planBusiness')}</p>
-                      {row.business ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Minus className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-[10px] text-slate-400 mb-0.5">{t('home.planEnterprise')}</p>
-                      {row.enterprise ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Minus className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
-                  </div>
-                </div>
+                <tr key={i} className="border-b border-slate-100">
+                  <td className="py-3 pr-3 text-[11px] font-medium text-slate-700 sticky left-0 bg-white">{row.feature}</td>
+                  <td className="py-3 px-2 text-center">{row.solo ? <Check className="w-3.5 h-3.5 text-emerald-500 mx-auto" /> : <Minus className="w-3.5 h-3.5 text-slate-300 mx-auto" />}</td>
+                  <td className="py-3 px-2 text-center">{row.team ? <Check className="w-3.5 h-3.5 text-emerald-500 mx-auto" /> : <Minus className="w-3.5 h-3.5 text-slate-300 mx-auto" />}</td>
+                  <td className="py-3 px-2 text-center bg-blue-50/30">{row.pro ? <Check className="w-3.5 h-3.5 text-emerald-500 mx-auto" /> : <Minus className="w-3.5 h-3.5 text-slate-300 mx-auto" />}</td>
+                  <td className="py-3 px-2 text-center">{row.business ? <Check className="w-3.5 h-3.5 text-emerald-500 mx-auto" /> : <Minus className="w-3.5 h-3.5 text-slate-300 mx-auto" />}</td>
+                  <td className="py-3 px-2 text-center">{row.enterprise ? <Check className="w-3.5 h-3.5 text-emerald-500 mx-auto" /> : <Minus className="w-3.5 h-3.5 text-slate-300 mx-auto" />}</td>
+                </tr>
               ))}
-            </div>
-          )}
+            </tbody>
+          </table>
+          <p className="text-center text-[10px] text-slate-400 mt-3">← Scroll to see all plans →</p>
         </div>
       </div>
     </section>
@@ -521,32 +507,32 @@ function CtaSection({ t }: { t: (key: string) => string }) {
 /* ═══ FOOTER ═══ */
 function Footer({ t }: { t: (key: string) => string }) {
   return (
-    <footer className="bg-slate-900 text-slate-400 py-12 sm:py-16">
+    <footer className="bg-slate-50 text-slate-500 py-12 sm:py-16 ring-1 ring-inset ring-black/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           <div>
-            <PlumbCoreLogo size="md" showText={true} variant="light" />
-            <p className="text-sm text-slate-400 leading-relaxed mt-4">{t('home.footerDesc')}</p>
+            <PlumbCoreLogo size="md" showText={true} />
+            <p className="text-sm text-slate-500 leading-relaxed mt-4">{t('home.footerDesc')}</p>
             <div className="flex gap-3 mt-6 justify-center sm:justify-start">
               {[
                 { label: 'X', href: 'https://x.com/plumbcoreai' },
                 { label: 'in', href: 'https://linkedin.com/company/plumbcoreai' },
                 { label: 'fb', href: 'https://facebook.com/plumbcoreai' },
                 { label: 'ig', href: 'https://instagram.com/plumbcoreai' },
-              ].map((s,i) => <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-[10px] font-bold hover:bg-slate-700 transition-colors text-slate-400 hover:text-white">{s.label}</a>)}
+              ].map((s,i) => <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center text-[10px] font-bold hover:bg-slate-300 transition-colors text-slate-500 hover:text-slate-700">{s.label}</a>)}
             </div>
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{t('home.footerQuickLinks')}</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerQuickLinks')}</h4>
             <div className="space-y-2.5 text-sm">
-              <a href="#features" className="block hover:text-white transition-colors">{t('home.footerFeatures')}</a>
-              <a href="#pricing" className="block hover:text-white transition-colors">{t('home.footerPricing')}</a>
-              <a href="#compare" className="block hover:text-white transition-colors">{t('home.footerComparePlans')}</a>
-              <a href="/signup" className="block hover:text-white transition-colors">{t('home.footerGetStarted')}</a>
+              <a href="#features" className="block hover:text-slate-700 transition-colors">{t('home.footerFeatures')}</a>
+              <a href="#pricing" className="block hover:text-slate-700 transition-colors">{t('home.footerPricing')}</a>
+              <a href="#compare" className="block hover:text-slate-700 transition-colors">{t('home.footerComparePlans')}</a>
+              <a href="/signup" className="block hover:text-slate-700 transition-colors">{t('home.footerGetStarted')}</a>
             </div>
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{t('home.footerPlans')}</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerPlans')}</h4>
             <div className="space-y-2.5 text-sm">
               <span className="block">Solo — $349/mo</span>
               <span className="block">Pro — $799/mo</span>
@@ -555,15 +541,15 @@ function Footer({ t }: { t: (key: string) => string }) {
             </div>
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{t('home.footerContact')}</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerContact')}</h4>
             <div className="space-y-2.5 text-sm">
-              <span className="flex items-center gap-2 justify-center sm:justify-start"><Phone className="w-4 h-4 text-blue-400" /> (555) 123-4567</span>
-              <span className="flex items-center gap-2 justify-center sm:justify-start"><span className="text-blue-400">✉</span> hello@plumbcore.ai</span>
-              <span className="flex items-start gap-2 justify-center sm:justify-start"><MapPin className="w-4 h-4 text-blue-400 mt-0.5" /> 123 Main St, Austin, TX</span>
+              <span className="flex items-center gap-2 justify-center sm:justify-start"><Phone className="w-4 h-4 text-blue-500" /> (555) 123-4567</span>
+              <span className="flex items-center gap-2 justify-center sm:justify-start"><span className="text-blue-500">✉</span> hello@plumbcore.ai</span>
+              <span className="flex items-start gap-2 justify-center sm:justify-start"><MapPin className="w-4 h-4 text-blue-500 mt-0.5" /> 123 Main St, Austin, TX</span>
             </div>
           </div>
         </div>
-        <div className="mt-10 pt-8 ring-1 ring-inset ring-white/10 text-center text-xs text-slate-500">
+        <div className="mt-10 pt-8 ring-1 ring-inset ring-slate-200 text-center text-xs text-slate-400">
           <p>{t('home.footerCopyright')}</p>
         </div>
       </div>

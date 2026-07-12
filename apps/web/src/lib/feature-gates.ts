@@ -34,6 +34,9 @@ export type PlanFeatures = {
   truckGps: boolean;
   predictiveMaintenance: boolean;
   whiteLabelPortal: boolean;
+  subdomainQuote: boolean;
+  embedQuote: boolean;
+  leadRouting: boolean;
   dedicatedManager: boolean;
   customIntegrations: boolean;
   maxTechs: number | null; // null = unlimited
@@ -53,6 +56,9 @@ export const PLAN_FEATURES: Record<string, PlanFeatures> = {
     truckGps: false,
     predictiveMaintenance: false,
     whiteLabelPortal: false,
+    subdomainQuote: false,
+    embedQuote: false,
+    leadRouting: true,
     dedicatedManager: false,
     customIntegrations: false,
     maxTechs: 1,
@@ -70,6 +76,9 @@ export const PLAN_FEATURES: Record<string, PlanFeatures> = {
     truckGps: false,
     predictiveMaintenance: false,
     whiteLabelPortal: false,
+    subdomainQuote: true,
+    embedQuote: false,
+    leadRouting: true,
     dedicatedManager: false,
     customIntegrations: false,
     maxTechs: 10,
@@ -87,6 +96,9 @@ export const PLAN_FEATURES: Record<string, PlanFeatures> = {
     truckGps: true,
     predictiveMaintenance: false,
     whiteLabelPortal: false,
+    subdomainQuote: true,
+    embedQuote: true,
+    leadRouting: true,
     dedicatedManager: false,
     customIntegrations: false,
     maxTechs: 25,
@@ -104,6 +116,9 @@ export const PLAN_FEATURES: Record<string, PlanFeatures> = {
     truckGps: true,
     predictiveMaintenance: true,
     whiteLabelPortal: true,
+    subdomainQuote: true,
+    embedQuote: true,
+    leadRouting: true,
     dedicatedManager: true,
     customIntegrations: true,
     maxTechs: null,
@@ -123,6 +138,9 @@ export const EMPTY_PLAN: PlanFeatures = {
   truckGps: false,
   predictiveMaintenance: false,
   whiteLabelPortal: false,
+  subdomainQuote: false,
+  embedQuote: false,
+  leadRouting: false,
   dedicatedManager: false,
   customIntegrations: false,
   maxTechs: 0,

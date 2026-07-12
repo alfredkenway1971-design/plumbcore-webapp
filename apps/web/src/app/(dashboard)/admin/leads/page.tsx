@@ -47,56 +47,56 @@ export default function LeadsMarketplacePage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div><h1 className="text-xl sm:text-2xl font-bold text-gray-900">Leads Marketplace</h1><p className="text-sm text-gray-500 mt-0.5">Manage homeowner quotes and assign to plumbers</p></div>
+      <div><h1 className="text-xl sm:text-2xl font-bold text-white">Leads Marketplace</h1><p className="text-sm text-slate-500 mt-0.5">Manage homeowner quotes and assign to plumbers</p></div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-lg bg-blue-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-gray-500">Total Revenue</p><p className="text-lg font-bold text-blue-600">${revenue.toLocaleString()}</p></div>
-        <div className="rounded-lg bg-amber-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-gray-500">Unassigned</p><p className="text-lg font-bold text-amber-600">{unassigned}</p></div>
-        <div className="rounded-lg bg-green-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-gray-500">Assigned</p><p className="text-lg font-bold text-green-600">{leads.filter(l => l.status === 'assigned').length}</p></div>
-        <div className="rounded-lg bg-gray-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-gray-500">Completed</p><p className="text-lg font-bold text-gray-600">{leads.filter(l => l.status === 'completed').length}</p></div>
+        <div className="rounded-lg bg-blue-500/10 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Total Revenue</p><p className="text-lg font-bold text-blue-400">${revenue.toLocaleString()}</p></div>
+        <div className="rounded-lg bg-amber-500/10 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Unassigned</p><p className="text-lg font-bold text-amber-400">{unassigned}</p></div>
+        <div className="rounded-lg bg-green-500/10 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Assigned</p><p className="text-lg font-bold text-green-400">{leads.filter(l => l.status === 'assigned').length}</p></div>
+        <div className="rounded-lg bg-white/[0.02] px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Completed</p><p className="text-lg font-bold text-slate-400">{leads.filter(l => l.status === 'completed').length}</p></div>
       </div>
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
         {['all', 'unassigned', 'assigned', 'completed', 'spam'].map(f => (
-          <button key={f} onClick={() => setFilter(f)} className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${filter === f ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}>{f.charAt(0).toUpperCase() + f.slice(1)}</button>
+          <button key={f} onClick={() => setFilter(f)} className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${filter === f ? 'bg-blue-600 text-white border-blue-600' : 'bg-[#0F172A] text-slate-400 border-white/10 hover:border-white/20'}`}>{f.charAt(0).toUpperCase() + f.slice(1)}</button>
         ))}
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-xl border border-gray-200">
+      <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-xl border border-white/10">
         <table className="w-full min-w-[600px] text-sm">
-          <thead><tr className="bg-gray-50 border-b border-gray-200">
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Customer</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Photo</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Estimate</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Location</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Deposit</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Status</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Plumber</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-900">Actions</th>
+          <thead><tr className="bg-white/[0.02] border-b border-white/10">
+            <th className="text-left px-4 py-3 font-semibold text-white">Customer</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Photo</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Estimate</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Location</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Deposit</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Status</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Plumber</th>
+            <th className="text-left px-4 py-3 font-semibold text-white">Actions</th>
           </tr></thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/5">
             {filtered.map(lead => (
-              <tr key={lead.id} className="hover:bg-gray-50/50">
-                <td className="px-4 py-3 font-medium text-gray-900">{lead.customer}</td>
+              <tr key={lead.id} className="hover:bg-white/[0.02]">
+                <td className="px-4 py-3 font-medium text-white">{lead.customer}</td>
                 <td className="px-4 py-3 text-lg">{lead.photo}</td>
-                <td className="px-4 py-3 text-gray-700">${lead.estimate.toLocaleString()}</td>
-                <td className="px-4 py-3 text-gray-500 text-xs">{lead.location}</td>
-                <td className="px-4 py-3">{lead.depositPaid ? <span className="text-green-600 font-medium">✅ Paid</span> : <span className="text-gray-400">—</span>}</td>
-                <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${lead.status === 'completed' ? 'bg-green-100 text-green-700' : lead.status === 'assigned' ? 'bg-blue-100 text-blue-700' : lead.status === 'spam' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>{lead.status}</span></td>
-                <td className="px-4 py-3 text-sm text-gray-600">{lead.assignedPlumber || <span className="text-amber-500">—</span>}</td>
+                <td className="px-4 py-3 text-slate-300">${lead.estimate.toLocaleString()}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs">{lead.location}</td>
+                <td className="px-4 py-3">{lead.depositPaid ? <span className="text-green-400 font-medium">✅ Paid</span> : <span className="text-slate-600">—</span>}</td>
+                <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${lead.status === 'completed' ? 'bg-green-500/10 text-green-300' : lead.status === 'assigned' ? 'bg-blue-500/10 text-blue-300' : lead.status === 'spam' ? 'bg-red-500/10 text-red-300' : 'bg-amber-500/10 text-amber-300'}`}>{lead.status}</span></td>
+                <td className="px-4 py-3 text-sm text-slate-400">{lead.assignedPlumber || <span className="text-amber-500">—</span>}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-1.5">
                     {lead.status === 'unassigned' && (
-                      <select onChange={(e) => { if (e.target.value) assignLead(lead.id, e.target.value); }} value="" className="text-xs rounded border border-gray-200 px-1.5 py-1 outline-none w-28">
+                      <select onChange={(e) => { if (e.target.value) assignLead(lead.id, e.target.value); }} value="" className="text-xs rounded border border-white/10 px-1.5 py-1 outline-none w-28 bg-[#0F172A] text-slate-300">
                         <option value="">Assign to...</option>
                         {plumbers.map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     )}
                     {lead.status !== 'spam' && lead.status !== 'completed' && (
-                      <button onClick={() => rejectLead(lead.id)} className="text-xs text-red-500 hover:text-red-700 px-1.5 py-1">✕</button>
+                      <button onClick={() => rejectLead(lead.id)} className="text-xs text-red-400 hover:text-red-300 px-1.5 py-1">✕</button>
                     )}
                   </div>
                 </td>

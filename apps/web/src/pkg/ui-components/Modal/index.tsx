@@ -42,37 +42,40 @@ export function Modal({ open, onClose, title, description, children, footer, siz
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      {/* Backdrop — glass overlay */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Panel */}
+      {/* Panel — dark glass */}
       <div
-        className={`relative w-full ${sizeStyles[size]} rounded-2xl border border-white-border bg-surface-elevated shadow-2xl shadow-black/40 animate-in fade-in zoom-in-95`}
+        className={`relative w-full ${sizeStyles[size]} rounded-2xl bg-white ring-1 ring-slate-200 shadow-2xl shadow-black/10 animate-in fade-in zoom-in-95`}
       >
         {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 rounded-lg p-1 text-steel-light hover:bg-white-subtle hover:text-white transition-colors"
-        >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
 
         {/* Header */}
         {(title || description) && (
           <div className="px-6 pt-6 pb-2">
-            {title && <h2 className="text-lg font-semibold text-white">{title}</h2>}
-            {description && <p className="mt-1 text-sm text-steel">{description}</p>}
+            {title && <h2 className="text-lg font-semibold text-slate-900">{title}</h2>}
+            {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
           </div>
         )}
 
         {/* Body */}
-        {children && <div className="px-6 py-4">{children}</div>}
+        {children && <div className={`px-6 ${footer ? 'py-4' : 'py-6'}`}>{children}</div>}
 
         {/* Footer */}
         {footer && (
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-white-border px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-slate-200 px-6 py-4">
             {footer}
           </div>
         )}

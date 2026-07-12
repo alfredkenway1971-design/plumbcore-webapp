@@ -52,7 +52,7 @@ export default function ResetPasswordPage() {
             <div><label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
               <input type="email" placeholder="you@company.com" value={email} onChange={(e) => { setEmail(e.target.value); setTouched(true); }} className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-3 text-sm outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-all" disabled={loading} />
               {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}</div>
-            <button type="submit" disabled={loading || !isValid} className="w-full bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm">{loading ? 'Sending...' : 'Send Reset Link'}</button>
+            <button type="submit" disabled={loading || !isValid} className="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm">{loading ? 'Sending...' : 'Send Reset Link'}</button>
           </form>
         )}
       </div>

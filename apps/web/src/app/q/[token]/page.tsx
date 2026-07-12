@@ -138,6 +138,25 @@ export default function QuoteStatusPage() {
             <div className="space-y-3">
               {status === 'quoted' && <button className="w-full h-12 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold shadow-sm transition-all active:scale-[0.97]">Pay $49 Deposit &amp; Book</button>}
               {status === 'deposit_paid' && <button className="w-full h-12 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-sm transition-all active:scale-[0.97]"><Check className="w-4 h-4 inline mr-2" />Deposit Confirmed</button>}
+              {status === 'completed' && (
+                <div className="space-y-2">
+                  <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 p-5 text-center">
+                    <p className="text-lg mb-1">✅ Job done!</p>
+                    <p className="text-xs text-emerald-700 mb-4">Thanks for choosing PlumbCore. Help us grow and keep your plumbing in top shape.</p>
+                    <div className="space-y-2">
+                      <button className="w-full h-11 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm shadow-sm transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+                        <Star className="w-4 h-4" /> Leave a Review
+                      </button>
+                      <button className="w-full h-11 rounded-xl bg-white border border-emerald-300 text-emerald-700 font-semibold text-sm shadow-sm transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+                        <Phone className="w-4 h-4" /> Refer a Neighbor — Save $50
+                      </button>
+                      <button className="w-full h-11 rounded-xl bg-white border border-slate-200 text-slate-600 font-medium text-sm shadow-sm transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+                        <Calendar className="w-4 h-4" /> Schedule Maintenance Reminder
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="grid grid-cols-3 gap-2">
                 <button className="rounded-xl border border-slate-200 text-slate-600 text-xs py-3 h-11 font-medium active:scale-[0.97] transition-all"><Calendar className="w-4 h-4 inline mr-1.5" />Reschedule</button>
                 <button className="rounded-xl border border-slate-200 text-slate-600 text-xs py-3 h-11 font-medium active:scale-[0.97] transition-all"><MessageCircle className="w-4 h-4 inline mr-1.5" />Ask</button>

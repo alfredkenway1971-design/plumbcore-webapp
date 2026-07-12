@@ -2,43 +2,83 @@
 
 interface Props {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  variant?: 'dark' | 'light'; // dark = text on light bg, light = white text on dark bg
+  variant?: 'dark' | 'light'; // dark = navy text for light bg, light = white text for dark bg
   showText?: boolean;
   href?: string;
 }
 
 export default function PlumbCoreLogo({ size = 'sm', variant = 'dark', showText = true, href = '/dashboard' }: Props) {
-  const h = size === 'sm' ? 'h-8' : size === 'md' ? 'h-9' : size === 'lg' ? 'h-10' : size === 'xl' ? 'h-12' : 'h-14';
   const isLight = variant === 'light';
-  const textColor = isLight ? '#FFFFFF' : '#0F172A';
-  const mutedColor = isLight ? 'rgba(255,255,255,0.6)' : '#64748B';
-  const accentColor = '#3B82F6';
-  const accentLight = '#60A5FA';
+  const navyColor = isLight ? '#FFFFFF' : '#0F172A';
+  const blueColor = '#3B82F6';
+  const mutedColor = isLight ? 'rgba(255,255,255,0.6)' : '#94A3B8';
 
+  const heights: Record<string, string> = { sm: '28', md: '34', lg: '40', xl: '48', '2xl': '56' };
+  const h = heights[size] || '34';
   const Tag = href ? 'a' : 'div';
 
   return (
     // @ts-ignore
-    <Tag href={href || undefined} className="flex items-center gap-3 no-underline select-none">
-      {/* "P" icon */}
-      <svg viewBox="0 0 40 40" width={h.replace('h-', '') + 'px' as any} height={h.replace('h-', '') + 'px' as any} style={{ maxHeight: '100%' }} className="shrink-0 drop-shadow-sm">
-        <defs>
-          <linearGradient id={`lg-${variant}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={accentColor} />
-            <stop offset="100%" stopColor="#06B6D4" />
-          </linearGradient>
-        </defs>
-        <rect x="2" y="2" width="36" height="36" rx="10" fill={`url(#lg-${variant})`} />
-        <text x="20" y="27" textAnchor="middle" fill="white" fontSize="22" fontWeight="800" fontFamily="Inter, system-ui, sans-serif">P</text>
+    <Tag href={href || undefined} className="flex items-center gap-2.5 no-underline select-none shrink-0">
+      {/* Hexagon AI icon */}
+      <svg
+        viewBox="0 0 48 48"
+        width={h}
+        height={h}
+        className="shrink-0"
+        fill="none"
+      >
+        {/* Hexagonal border */}
+        <path
+          d="M14 8h20l10 16-10 16H14L4 24z"
+          fill="none"
+          stroke={blueColor}
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+        />
+        {/* Left line */}
+        <line x1="2" y1="24" x2="12" y2="24" stroke={blueColor} strokeWidth="2.5" strokeLinecap="round" />
+        {/* Right line */}
+        <line x1="36" y1="24" x2="46" y2="24" stroke={blueColor} strokeWidth="2.5" strokeLinecap="round" />
+        {/* AI text */}
+        <text
+          x="24"
+          y="29"
+          textAnchor="middle"
+          fill={blueColor}
+          fontSize="16"
+          fontWeight="800"
+          fontFamily="Inter, system-ui, sans-serif"
+          letterSpacing="0.05em"
+        >
+          AI
+        </text>
       </svg>
 
       {showText && (
-        <div className="flex flex-col leading-none" style={{ filter: isLight ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.25))' : 'none' }}>
-          <span style={{ color: textColor, fontSize: size === 'sm' ? '16px' : size === 'md' ? '18px' : '20px', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.2 }}>
-            PLUMB<span style={{ color: accentColor }}>CORE</span>
+        <div className="flex flex-col leading-none">
+          <span
+            style={{
+              fontSize: size === 'sm' ? '16px' : size === 'md' ? '18px' : size === 'lg' ? '20px' : size === 'xl' ? '22px' : '26px',
+              fontWeight: 700,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.2,
+            }}
+          >
+            <span style={{ color: navyColor }}>PLUMB</span>
+            <span style={{ color: blueColor }}>CORE</span>
           </span>
           {size !== 'sm' && (
-            <span style={{ color: mutedColor, fontSize: '10px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', lineHeight: 1 }}>
+            <span
+              style={{
+                color: mutedColor,
+                fontSize: '10px',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                lineHeight: 1,
+              }}
+            >
               AI · Plumbing Intelligence
             </span>
           )}

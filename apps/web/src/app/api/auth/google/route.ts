@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
         companySlug,
         companyId,
         phone: '',
-        role: email === 'amer.niyonzima@gmail.com' ? 'super_admin' : 'admin',
+        role: email === 'amer.niyonzima@gmail.com' ? 'super_admin' : 'tech',
         stripeCustomerId: '',
         stripeSubscriptionId: '',
         subscriptionTier: email === 'amer.niyonzima@gmail.com' ? 'unlimited' : '',

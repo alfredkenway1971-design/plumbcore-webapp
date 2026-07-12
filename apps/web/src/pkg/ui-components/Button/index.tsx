@@ -14,17 +14,22 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700',
-  secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300',
-  destructive: 'bg-status-error text-white hover:bg-red-600 active:bg-red-700',
-  ghost: 'bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200',
-  outline: 'border border-border text-gray-500 hover:border-gray-400 hover:text-gray-900 active:bg-gray-100',
+  primary:
+    'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98]',
+  secondary:
+    'bg-slate-800 text-slate-300 ring-1 ring-white/10 hover:bg-slate-700 hover:text-white',
+  destructive:
+    'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
+  ghost:
+    'bg-transparent text-slate-400 hover:text-white hover:bg-white/10 active:bg-white/5',
+  outline:
+    'ring-1 ring-white/10 text-slate-400 hover:text-white hover:ring-white/20 hover:bg-white/5 active:bg-white/10',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-xs rounded-lg gap-1.5',
-  md: 'px-4 py-2 text-sm rounded-lg gap-2',
-  lg: 'px-6 py-3 text-base rounded-xl gap-2.5',
+  sm: 'px-3 py-1.5 text-xs rounded-lg gap-1.5 min-h-[36px]',
+  md: 'px-4 py-2.5 text-sm rounded-xl gap-2 min-h-[44px]',
+  lg: 'px-6 py-3 text-base rounded-xl gap-2.5 min-h-[48px]',
 };
 
 export function Button({
@@ -41,9 +46,9 @@ export function Button({
   return (
     <button
       className={`
-        inline-flex items-center justify-center font-semibold transition-all
-        focus:outline-none focus:ring-2 focus:ring-electric/40
-        disabled:cursor-not-allowed disabled:opacity-40
+        inline-flex items-center justify-center font-semibold transition-all duration-200
+        focus:outline-none focus:ring-2 focus:ring-cyan-500/40
+        disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100
         ${fullWidth ? 'w-full' : ''}
         ${variantStyles[variant]}
         ${sizeStyles[size]}

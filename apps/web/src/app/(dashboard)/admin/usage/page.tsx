@@ -46,16 +46,16 @@ function UsageLoading() {
         <Skeleton className="h-4 w-64" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <div className="lg:col-span-3 rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-44 mb-4" />
           <Skeleton className="h-[220px] w-full" />
         </div>
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <div className="lg:col-span-2 rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-36 mb-4" />
           <Skeleton className="h-[200px] w-full" />
         </div>
       </div>
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+      <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-lg shadow-black/30">
         <Skeleton className="h-5 w-44 m-5" />
         <div className="overflow-x-auto px-5 pb-5">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -78,8 +78,8 @@ function UsageLoading() {
 function UsageError({ error }: { error: string }) {
   return (
     <div className="max-w-[1440px] mx-auto">
-      <div className="bg-white rounded-2xl border border-red-100 shadow-sm p-10 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+      <div className="bg-white rounded-2xl border border-red-100 shadow-lg shadow-black/30 p-10 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto mb-4">
           <AlertTriangle className="w-7 h-7 text-red-500" />
         </div>
         <h3 className="text-lg font-semibold text-slate-900 mb-1">Failed to load usage data</h3>
@@ -145,7 +145,7 @@ function UsageKPIs() {
         return (
           <div
             key={card.label}
-            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+            className="rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{card.label}</p>
@@ -153,9 +153,9 @@ function UsageKPIs() {
                 <Icon className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{card.value}</p>
+            <p className="text-3xl font-bold text-white mb-1.5">{card.value}</p>
             <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600">
+              <span className="inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400">
                 <ArrowUp className="w-3 h-3" />
                 {card.change}
               </span>
@@ -189,18 +189,18 @@ function DailyActiveUsersChart() {
   const pctChange = (((thisWeekTotal - prevWeekTotal) / prevWeekTotal) * 100).toFixed(1);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-slate-900">Daily Active Users (This Week)</h3>
-            <span className="flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600">
+            <h3 className="text-base font-semibold text-white">Daily Active Users (This Week)</h3>
+            <span className="flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400">
               <ArrowUp className="w-3 h-3" /> {pctChange}%
             </span>
           </div>
-          <p className="text-xs text-slate-400">vs {prevWeekTotal.toLocaleString()} last week</p>
+          <p className="text-xs text-slate-600">vs {prevWeekTotal.toLocaleString()} last week</p>
         </div>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+        <button className="text-slate-600 hover:text-slate-400 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
       </div>
@@ -227,7 +227,7 @@ function DailyActiveUsersChart() {
                   x={x + w / 2}
                   y={padT + innerH + 14}
                   textAnchor="middle"
-                  fill="#94A3B8"
+                  fill="#64748B"
                   fontSize="9"
                   fontFamily="system-ui"
                 >
@@ -251,7 +251,7 @@ function DailyActiveUsersChart() {
           })}
         </svg>
       </div>
-      <p className="text-xs text-slate-400 mt-3 text-center">
+      <p className="text-xs text-slate-600 mt-3 text-center">
         Total this week: {thisWeekTotal.toLocaleString()} active sessions
       </p>
     </div>
@@ -274,33 +274,33 @@ function FeatureAdoptionHeatmap() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Feature Adoption Heatmap</h3>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-sm bg-emerald-500" />
-            <span className="text-[10px] text-slate-400">Enabled</span>
+            <span className="text-[10px] text-slate-600">Enabled</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-sm bg-blue-500" />
-            <span className="text-[10px] text-slate-400">WAU</span>
+            <span className="text-[10px] text-slate-600">WAU</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-sm bg-violet-500" />
-            <span className="text-[10px] text-slate-400">Adoption</span>
+            <span className="text-[10px] text-slate-600">Adoption</span>
           </div>
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Feature</th>
-              <th className="text-center text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">Enabled</th>
-              <th className="text-center text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">WAU</th>
-              <th className="text-center text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-3">Trend</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Adoption</th>
+            <tr className="border-t border-b border-white/5">
+              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Feature</th>
+              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">Enabled</th>
+              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">WAU</th>
+              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">Trend</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Adoption</th>
             </tr>
           </thead>
           <tbody>
@@ -308,27 +308,27 @@ function FeatureAdoptionHeatmap() {
               const Icon = featureIcons[f.featureKey] || Activity;
               const trendIcon = f.trend === 'up' ? '↑' : f.trend === 'down' ? '↓' : '→';
               const trendColor =
-                f.trend === 'up' ? 'text-emerald-600' : f.trend === 'down' ? 'text-red-600' : 'text-slate-400';
+                f.trend === 'up' ? 'text-emerald-400' : f.trend === 'down' ? 'text-red-400' : 'text-slate-600';
               return (
-                <tr key={f.featureKey} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <tr key={f.featureKey} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-lg bg-white/[0.04] flex items-center justify-center">
                         <Icon className="w-3.5 h-3.5 text-slate-500" />
                       </div>
-                      <span className="text-sm font-medium text-slate-800">{f.featureName}</span>
+                      <span className="text-sm font-medium text-slate-200">{f.featureName}</span>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-1.5">
                       <div className={`w-2 h-2 rounded-full ${getHeatColor(f.totalEnabled, maxEnabled)}`} />
-                      <span className="text-xs font-semibold text-slate-700">{f.totalEnabled}</span>
+                      <span className="text-xs font-semibold text-slate-300">{f.totalEnabled}</span>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-1.5">
                       <div className={`w-2 h-2 rounded-full ${getHeatColor(f.weeklyActiveUsers, maxWau)}`} />
-                      <span className="text-xs font-semibold text-slate-700">{f.weeklyActiveUsers}</span>
+                      <span className="text-xs font-semibold text-slate-300">{f.weeklyActiveUsers}</span>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-center">
@@ -336,13 +336,13 @@ function FeatureAdoptionHeatmap() {
                   </td>
                   <td className="px-5 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="w-20 h-2 bg-white/[0.04] rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
                           style={{ width: `${f.adoptionRate}%` }}
                         />
                       </div>
-                      <span className="text-xs font-semibold text-slate-600 w-10 text-right">{f.adoptionRate.toFixed(1)}%</span>
+                      <span className="text-xs font-semibold text-slate-400 w-10 text-right">{f.adoptionRate.toFixed(1)}%</span>
                     </div>
                   </td>
                 </tr>
@@ -374,10 +374,10 @@ function TopActiveCompanies() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Top Active Companies</h3>
-        <span className="text-[10px] text-slate-400">by AI Usage</span>
+        <span className="text-[10px] text-slate-600">by AI Usage</span>
       </div>
       <div className="space-y-1 px-5 pb-5">
         {top.map((cust, i) => {
@@ -385,7 +385,7 @@ function TopActiveCompanies() {
           const barWidth = (cust.aiUsage / maxUsage) * 100;
           return (
             <div key={cust.id} className="flex items-center gap-3 py-2">
-              <span className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0">
+              <span className="w-5 h-5 rounded-full bg-white/[0.04] flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0">
                 {i + 1}
               </span>
               <div
@@ -395,10 +395,10 @@ function TopActiveCompanies() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="text-sm font-medium text-slate-800 truncate">{cust.name}</span>
-                  <span className="text-xs font-semibold text-slate-600">{cust.aiUsage}%</span>
+                  <span className="text-sm font-medium text-slate-200 truncate">{cust.name}</span>
+                  <span className="text-xs font-semibold text-slate-400">{cust.aiUsage}%</span>
                 </div>
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-white/[0.04] rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
                     style={{ width: `${barWidth}%` }}
@@ -428,10 +428,10 @@ function APIUsageStats() {
   const totalCalls = endpoints.reduce((s, e) => s + e.calls, 0);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30 h-full">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-slate-900">API Usage by Endpoint</h3>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+        <button className="text-slate-600 hover:text-slate-400 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
       </div>
@@ -439,13 +439,13 @@ function APIUsageStats() {
         {endpoints.map((ep) => (
           <div key={ep.name}>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-slate-600">{ep.name}</span>
+              <span className="text-xs text-slate-400">{ep.name}</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-800">{ep.calls.toLocaleString()}</span>
-                <span className="text-[10px] text-slate-400 w-8 text-right">{ep.pct}%</span>
+                <span className="text-xs font-semibold text-slate-200">{ep.calls.toLocaleString()}</span>
+                <span className="text-[10px] text-slate-600 w-8 text-right">{ep.pct}%</span>
               </div>
             </div>
-            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all ${ep.color}`}
                 style={{ width: `${ep.pct}%` }}
@@ -454,10 +454,10 @@ function APIUsageStats() {
           </div>
         ))}
       </div>
-      <div className="mt-4 pt-3 border-t border-slate-100">
+      <div className="mt-4 pt-3 border-t border-white/5">
         <div className="flex items-center justify-between text-xs">
           <span className="text-slate-500 font-medium">Total API Calls (This Month)</span>
-          <span className="font-bold text-slate-900">{totalCalls.toLocaleString()}</span>
+          <span className="font-bold text-white">{totalCalls.toLocaleString()}</span>
         </div>
       </div>
     </div>
@@ -478,12 +478,12 @@ export default function AdminUsagePage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Platform Usage</h1>
+          <h1 className="text-2xl font-bold text-white">Platform Usage</h1>
           <p className="text-sm text-slate-500 mt-1">
             {featureAdoption.length} features tracked · {featureAdoption.reduce((s, f) => s + f.weeklyActiveUsers, 0).toLocaleString()} weekly active users
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+        <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-black/30">
           <Download className="w-4 h-4" />
           <span className="hidden sm:inline text-xs">Export</span>
         </button>

@@ -48,9 +48,9 @@ function formatTimeAgo(d: string): string {
 }
 
 const healthConfig: Record<string, { label: string; icon: typeof CheckCircle; color: string; bg: string }> = {
-  green: { label: 'Good', icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-  yellow: { label: 'Warning', icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
-  red: { label: 'Critical', icon: XCircle, color: 'text-red-600', bg: 'bg-red-50' },
+  green: { label: 'Good', icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  yellow: { label: 'Warning', icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+  red: { label: 'Critical', icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/10' },
 };
 
 /* ── Skeleton ── */
@@ -79,7 +79,7 @@ function DetailSkeleton() {
       {/* Info Cards Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+          <div key={i} className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
             <Skeleton className="h-5 w-28 mb-3" />
             <Skeleton className="h-4 w-40 mb-2" />
             <Skeleton className="h-4 w-32 mb-2" />
@@ -91,7 +91,7 @@ function DetailSkeleton() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+          <div key={i} className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
             <Skeleton className="h-4 w-20 mb-3" />
             <Skeleton className="h-8 w-24" />
           </div>
@@ -99,7 +99,7 @@ function DetailSkeleton() {
       </div>
 
       {/* Activity */}
-      <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
         <Skeleton className="h-5 w-32 mb-4" />
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="flex items-start gap-3 mb-4">
@@ -132,20 +132,20 @@ function HealthBadge({ health }: { health: string }) {
 
 function ActivityIcon({ type }: { type: string }) {
   const iconMap: Record<string, { icon: typeof Activity; color: string; bg: string }> = {
-    estimate_accepted: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    job_completed: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    invoice_paid: { icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    ai_estimate: { icon: BrainCircuit, color: 'text-blue-600', bg: 'bg-blue-50' },
-    tech_assigned: { icon: User, color: 'text-blue-600', bg: 'bg-blue-50' },
-    payment_failed: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
-    scheduled: { icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50' },
-    estimate_sent: { icon: Activity, color: 'text-blue-600', bg: 'bg-blue-50' },
-    ai_alert: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
-    support_ticket: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
-    job_urgent: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
-    invoice_overdue: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
+    estimate_accepted: { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    job_completed: { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    invoice_paid: { icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    ai_estimate: { icon: BrainCircuit, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    tech_assigned: { icon: User, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    payment_failed: { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    scheduled: { icon: Clock, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    estimate_sent: { icon: Activity, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    ai_alert: { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    support_ticket: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
+    job_urgent: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
+    invoice_overdue: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
   };
-  const cfg = iconMap[type] ?? { icon: Activity, color: 'text-slate-500', bg: 'bg-slate-100' };
+  const cfg = iconMap[type] ?? { icon: Activity, color: 'text-slate-400', bg: 'bg-slate-800' };
   const Icon = cfg.icon;
   return (
     <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-full', cfg.bg)}>
@@ -164,15 +164,15 @@ function StatCard({ label, value, sub, icon: Icon, color }: {
   color: string;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md hover:ring-slate-300">
       <div className="flex items-start justify-between">
-        <p className="text-sm font-medium text-slate-500">{label}</p>
+        <p className="text-sm font-medium text-slate-400">{label}</p>
         <div className={cn('rounded-lg p-2', color)}>
           <Icon className="h-4 w-4 text-white" />
         </div>
       </div>
-      <p className="mt-2 text-2xl font-bold text-slate-900">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-slate-400">{sub}</p>}
+      <p className="mt-2 text-2xl font-bold text-white">{value}</p>
+      {sub && <p className="mt-0.5 text-xs text-slate-500">{sub}</p>}
     </div>
   );
 }
@@ -221,7 +221,7 @@ export default function CompanyDetailPage() {
   if (error) {
     return (
       <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-        <div className="rounded-2xl border border-slate-100 bg-white p-8 shadow-sm text-center">
+        <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-8 shadow-sm text-center">
           <AlertTriangle className="mx-auto h-12 w-12 text-red-400" />
           <h2 className="mt-4 text-lg font-semibold text-slate-900">Failed to load company</h2>
           <p className="mt-1 text-sm text-slate-500">{error}</p>
@@ -246,8 +246,8 @@ export default function CompanyDetailPage() {
   if (notFound || !company) {
     return (
       <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-        <div className="rounded-2xl border border-slate-100 bg-white p-8 shadow-sm text-center">
-          <Building2 className="mx-auto h-12 w-12 text-slate-300" />
+        <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-8 shadow-sm text-center">
+          <Building2 className="mx-auto h-12 w-12 text-slate-500" />
           <h2 className="mt-4 text-lg font-semibold text-slate-900">Company not found</h2>
           <p className="mt-1 text-sm text-slate-500">
             No customer exists with ID &quot;{companyId}&quot;. It may have been removed or the link is incorrect.
@@ -265,28 +265,28 @@ export default function CompanyDetailPage() {
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
       {/* ── Breadcrumb ── */}
-      <nav className="flex items-center gap-1.5 text-sm text-slate-400">
+      <nav className="flex items-center gap-1.5 text-sm text-slate-600">
         <Home className="h-3.5 w-3.5" />
         <span>Admin</span>
         <ChevronRight className="h-3.5 w-3.5" />
         <button
           onClick={() => router.push('/admin/customers')}
-          className="text-slate-500 hover:text-slate-900 transition-colors"
+          className="text-slate-500 hover:text-white transition-colors"
         >
           Customers
         </button>
         <ChevronRight className="h-3.5 w-3.5" />
-        <span className="text-slate-900 font-medium truncate max-w-[200px]">{company.name}</span>
+        <span className="text-white font-medium truncate max-w-[200px]">{company.name}</span>
       </nav>
 
       {/* ── Header Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-            <Building2 className="h-6 w-6 text-blue-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10">
+            <Building2 className="h-6 w-6 text-blue-400" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{company.name}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">{company.name}</h1>
             <div className="flex items-center gap-2 mt-0.5">
               <span className={cn('inline-flex h-2.5 w-2.5 rounded-full', {
                 'bg-emerald-500': company.health === 'green',
@@ -313,25 +313,25 @@ export default function CompanyDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* Plan & Health */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <CreditCard className="h-4 w-4 text-slate-400" />
+            <CreditCard className="h-4 w-4 text-slate-500" />
             Plan &amp; Health
           </h3>
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Plan</span>
-              <span className="text-sm font-medium text-slate-900">{company.plan}</span>
+              <span className="text-sm font-medium text-white">{company.plan}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Monthly</span>
-              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.mrr)}</span>
+              <span className="text-sm font-medium text-white">{formatCurrency(company.mrr)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Since</span>
-              <span className="text-sm text-slate-900">{formatDate(company.sinceDate)}</span>
+              <span className="text-sm text-white">{formatDate(company.sinceDate)}</span>
             </div>
-            <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-1 border-t border-white/5">
               <span className="text-sm text-slate-500">Health</span>
               <HealthBadge health={company.health} />
             </div>
@@ -339,22 +339,22 @@ export default function CompanyDetailPage() {
         </div>
 
         {/* Owner Info */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <User className="h-4 w-4 text-slate-400" />
+            <User className="h-4 w-4 text-slate-500" />
             Owner Info
           </h3>
           <div className="space-y-2.5">
-            <p className="text-sm font-medium text-slate-900">{company.ownerName}</p>
+            <p className="text-sm font-medium text-white">{company.ownerName}</p>
             <a
               href={`mailto:${company.ownerEmail}`}
-              className="block text-sm text-blue-600 hover:text-blue-700 transition-colors"
+              className="block text-sm text-blue-400 hover:text-blue-300 transition-colors"
             >
               {company.ownerEmail}
             </a>
             <a
               href={`tel:${company.ownerPhone}`}
-              className="block text-sm text-slate-600 hover:text-slate-900 transition-colors"
+              className="block text-sm text-slate-600 hover:text-white transition-colors"
             >
               {company.ownerPhone}
             </a>
@@ -362,28 +362,28 @@ export default function CompanyDetailPage() {
         </div>
 
         {/* Billing */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <DollarSign className="h-4 w-4 text-slate-400" />
+            <DollarSign className="h-4 w-4 text-slate-500" />
             Billing
           </h3>
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Price/Month</span>
-              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.mrr)}</span>
+              <span className="text-sm font-medium text-white">{formatCurrency(company.mrr)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Total Paid</span>
-              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.totalPaid)}</span>
+              <span className="text-sm font-medium text-white">{formatCurrency(company.totalPaid)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Next Payment</span>
-              <span className="text-sm text-slate-900">{formatDate(company.nextBillingDate)}</span>
+              <span className="text-sm text-white">{formatDate(company.nextBillingDate)}</span>
             </div>
-            <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-1 border-t border-white/5">
               <span className="text-sm text-slate-500">Payment Method</span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-900">
-                <CreditCard className="h-3.5 w-3.5 text-slate-400" />
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white">
+                <CreditCard className="h-3.5 w-3.5 text-slate-600" />
                 {company.billingInfo}
               </span>
             </div>
@@ -425,13 +425,13 @@ export default function CompanyDetailPage() {
       </div>
 
       {/* ── Recent Activity Feed ── */}
-      <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
         <h3 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
-          <Activity className="h-4 w-4 text-slate-400" />
+          <Activity className="h-4 w-4 text-slate-500" />
           Recent Activity
         </h3>
         {company.recentActivity.length === 0 ? (
-          <p className="text-sm text-slate-400 py-4 text-center">No recent activity</p>
+          <p className="text-sm text-slate-600 py-4 text-center">No recent activity</p>
         ) : (
           <div className="space-y-0">
             {company.recentActivity.map((act, idx) => (
@@ -439,13 +439,13 @@ export default function CompanyDetailPage() {
                 key={act.id}
                 className={cn(
                   'flex items-start gap-3 py-3',
-                  idx < company.recentActivity.length - 1 && 'border-b border-slate-50'
+                  idx < company.recentActivity.length - 1 && 'border-b border-white/5'
                 )}
               >
                 <ActivityIcon type={act.type} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-slate-700">{act.description}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">{formatTimeAgo(act.timestamp)}</p>
+                  <p className="text-sm text-slate-300">{act.description}</p>
+                  <p className="mt-0.5 text-xs text-slate-600">{formatTimeAgo(act.timestamp)}</p>
                 </div>
               </div>
             ))}

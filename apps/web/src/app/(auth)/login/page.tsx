@@ -41,13 +41,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Brand Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_30%,rgba(59,130,246,0.12),transparent),radial-gradient(ellipse_60%_40%_at_80%_70%,rgba(6,182,212,0.08),transparent),radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(99,102,241,0.06),transparent)]" />
-        <div className="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] bg-repeat" />
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-50 via-blue-100 to-cyan-50 text-slate-700 p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_30%,rgba(59,130,246,0.08),transparent),radial-gradient(ellipse_60%_40%_at_80%_70%,rgba(6,182,212,0.06),transparent),radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(99,102,241,0.04),transparent)]" />
+        <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNCI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] bg-repeat" />
         <div className="relative z-10">
-          <PlumbCoreLogo size="xl" showText={true} variant="light" />
-          <h2 className="text-3xl font-semibold tracking-tight mb-4 leading-tight">{t('auth.login.brandTitle')}</h2>
-          <p className="text-slate-400 text-sm max-w-md leading-relaxed">{t('auth.login.brandSubtitle')}</p>
+          <PlumbCoreLogo size="xl" showText={true} />
+          <h2 className="text-3xl font-semibold tracking-tight mb-4 leading-tight text-slate-800">{t('auth.login.brandTitle')}</h2>
+          <p className="text-slate-500 text-sm max-w-md leading-relaxed">{t('auth.login.brandSubtitle')}</p>
           <div className="mt-10 space-y-4">
             {[
               { icon: '🤖', text: t('auth.login.brandFeature1') },
@@ -55,11 +55,11 @@ export default function LoginPage() {
               { icon: '💰', text: t('auth.login.brandFeature3') },
               { icon: '📊', text: t('auth.login.brandFeature4') },
             ].map((f, i) => (
-              <div key={i} className="flex items-center gap-3"><span className="text-lg">{f.icon}</span><span className="text-sm text-slate-300">{f.text}</span></div>
+              <div key={i} className="flex items-center gap-3"><span className="text-lg">{f.icon}</span><span className="text-sm text-slate-600">{f.text}</span></div>
             ))}
           </div>
         </div>
-        <div className="relative z-10 flex items-center gap-4"><div className="flex -space-x-2">{[...Array(4)].map((_, i) => <div key={i} className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-800 flex items-center justify-center text-[10px] font-bold text-white">P{i+1}</div>)}</div><div><p className="text-sm font-medium">{t('auth.login.trusted')}</p><p className="text-xs text-slate-500">{t('auth.login.rating')}</p></div></div>
+        <div className="relative z-10 flex items-center gap-4"><div className="flex -space-x-2">{[...Array(4)].map((_, i) => <div key={i} className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-slate-600">P{i+1}</div>)}</div><div><p className="text-sm font-medium text-slate-700">{t('auth.login.trusted')}</p><p className="text-xs text-slate-400">{t('auth.login.rating')}</p></div></div>
       </div>
 
       {/* Form Panel */}

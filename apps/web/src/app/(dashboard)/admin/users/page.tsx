@@ -49,28 +49,28 @@ export default function AdminUsersPage() {
   return (
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-xl sm:text-2xl font-bold text-gray-900">Admin Users</h1><p className="text-sm text-gray-500 mt-0.5">Manage admin accounts and permissions</p></div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-white">Admin Users</h1><p className="text-sm text-slate-500 mt-0.5">Manage admin accounts and permissions</p></div>
         <Button size="sm" onClick={() => setShowAdd(true)}>+ Add Admin</Button>
       </div>
 
       <Card variant="bordered" padding="none">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[500px] text-sm">
-            <thead><tr className="bg-gray-50 border-b border-gray-200">
-              <th className="text-left px-4 py-3 font-semibold text-gray-900">Name</th>
-              <th className="text-left px-4 py-3 font-semibold text-gray-900">Email</th>
-              <th className="text-left px-4 py-3 font-semibold text-gray-900">Role</th>
-              <th className="text-left px-4 py-3 font-semibold text-gray-900">Last Login</th>
-              <th className="text-left px-4 py-3 font-semibold text-gray-900">Actions</th>
+            <thead><tr className="bg-slate-800/30 border-b border-white/10">
+              <th className="text-left px-4 py-3 font-semibold text-white">Name</th>
+              <th className="text-left px-4 py-3 font-semibold text-white">Email</th>
+              <th className="text-left px-4 py-3 font-semibold text-white">Role</th>
+              <th className="text-left px-4 py-3 font-semibold text-white">Last Login</th>
+              <th className="text-left px-4 py-3 font-semibold text-white">Actions</th>
             </tr></thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/5">
               {users.map(u => (
-                <tr key={u.id} className="hover:bg-gray-50/50">
-                  <td className="px-4 py-3 font-medium text-gray-900">{u.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{u.email}</td>
-                  <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.role === 'super_admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>{u.role}</span></td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">{u.lastLogin}</td>
-                  <td className="px-4 py-3">{u.email !== 'amer.niyonzima@gmail.com' && <button onClick={() => deleteUser(u.id)} className="text-xs text-red-500 hover:text-red-700">Remove</button>}</td>
+                <tr key={u.id} className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-3 font-medium text-white">{u.name}</td>
+                  <td className="px-4 py-3 text-slate-400">{u.email}</td>
+                  <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.role === 'super_admin' ? 'bg-purple-500/10 text-purple-300' : 'bg-blue-500/10 text-blue-300'}`}>{u.role}</span></td>
+                  <td className="px-4 py-3 text-slate-500 text-xs">{u.lastLogin}</td>
+                  <td className="px-4 py-3">{u.email !== 'amer.niyonzima@gmail.com' && <button onClick={() => deleteUser(u.id)} className="text-xs text-red-400 hover:text-red-300">Remove</button>}</td>
                 </tr>
               ))}
             </tbody>
@@ -81,17 +81,17 @@ export default function AdminUsersPage() {
       {showAdd && (
         <Modal open={true} onClose={() => setShowAdd(false)} title="Add Admin User">
           <div className="space-y-4 p-4">
-            <div><label className="text-xs font-medium text-steel-light">Name <span className="text-status-error">*</span></label><Input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} /></div>
-            <div><label className="text-xs font-medium text-steel-light">Email <span className="text-status-error">*</span></label><Input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} /></div>
-            <div><label className="text-xs font-medium text-steel-light">Role</label>
-              <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-accent/50 focus:ring-1 focus:ring-accent/20">
+            <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Name <span className="text-red-400">*</span></label><input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
+            <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Email <span className="text-red-400">*</span></label><input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
+            <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Role</label>
+              <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
                 <option value="admin">Admin</option><option value="super_admin">Super Admin</option>
               </select>
             </div>
-            <div><label className="text-xs font-medium text-steel-light">Permissions</label>
+            <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Permissions</label>
               <div className="grid grid-cols-2 gap-1.5 mt-1">
                 {allPermissions.map(p => (
-                  <label key={p} className="flex items-center gap-2 text-xs text-steel-light cursor-pointer">
+                  <label key={p} className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
                     <input type="checkbox" checked={editForm.permissions.includes(p)} onChange={() => togglePermission(p)} className="rounded accent-blue-500 h-4 w-4" />
                     {p.replace(/_/g, ' ')}
                   </label>

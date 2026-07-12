@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, memo, useRef } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -44,7 +44,7 @@ function compressImage(file: File, maxW: number = 512): Promise<File> {
 
 /* ── Step Indicator ── */
 function StepIndicator({ current, total, t }: { current: number; total: number; t: (key: string) => string }) {
-  const labels = [t('quote.stepUpload'), t('quote.stepInfo'), t('quote.stepAnalyze'), t('quote.stepEstimate')];
+  const labels = [t('quote.stepUpload'), t('quote.stepInfo'), t('quote.stepAnalyze'), t('quote.stepEstimate'), 'Done'];
   return (
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
@@ -198,6 +198,7 @@ function StepLoading({ t }: { t: (key: string) => string }) {
 }
 
 /* ── Step 4 — Result with Stripe ── */
+{/* ── Step 4 — Result ── */}
 function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any) {
   if (!result) return null;
   const sevColors: Record<string,string> = { low:'bg-emerald-50 text-emerald-700 border-emerald-200', moderate:'bg-amber-50 text-amber-700 border-amber-200', high:'bg-orange-50 text-orange-700 border-orange-200', emergency:'bg-red-50 text-red-700 border-red-200' };
@@ -260,7 +261,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         <h3 className="text-lg font-semibold">{t('quote.bookTitle')}</h3>
         <p className="text-sm text-slate-400">{t('quote.bookDesc')}</p>
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm">
-          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — ${f(result.totalPrice)}`}
+          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — $49 deposit`}
         </button>
         <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
       </div>
@@ -274,12 +275,40 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
   );
 }
 
+/* ── Step 5 — Payment Success ── */
+function StepSuccess({ t }: { t: (key: string) => string }) {
+  return (
+    <div className="text-center space-y-6 py-8">
+      <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
+        <svg className="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </div>
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Payment Successful! 🎉</h2>
+        <p className="text-slate-500 max-w-md mx-auto">
+          Your <strong>$49 deposit</strong> has been received. A PlumbCore technician will contact you within 24 hours to schedule your service.
+        </p>
+      </div>
+      <div className="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto text-left space-y-3">
+        <h3 className="font-semibold text-slate-900">What happens next?</h3>
+        <ul className="space-y-2 text-sm text-slate-600">
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>You&apos;ll receive a confirmation email</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>A technician will call to schedule your appointment</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>The $49 deposit is deducted from your final bill</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>Need help? Call <a href="tel:+15551234567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 /* ═══ MAIN PAGE ═══ */
 export default function QuotePage() {
   const params = useParams();
   const companySlug = params?.['company-slug'] as string || 'plumbcore';
   const { locale, changeLocale, t } = useI18n();
-  const [step, setStep] = useState<1|2|3|4>(1);
+  const [step, setStep] = useState<1|2|3|4|5>(1);
   const [photos, setPhotos] = useState<File[]>([]);
   const [form, setForm] = useState({ name:'', phone:'', email:'', address:'', desc:'', urgency:'routine', _enhancing: false });
   const [phoneDisplay, setPhoneDisplay] = useState('');
@@ -288,6 +317,34 @@ export default function QuotePage() {
   const [stripeLoading, setStripeLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
+
+  /* ── White-label detection ── */
+  const isWhiteLabel = companySlug && companySlug !== 'plumbcore';
+  const [wlBrand, setWlBrand] = useState<{ logo_url?: string; primary_color?: string; name?: string; phone?: string } | null>(null);
+
+  useEffect(() => {
+    if (isWhiteLabel) {
+      fetch(`/api/whitelabel/${companySlug}`)
+        .then(r => r.json())
+        .then(d => { if (d.brand) setWlBrand(d.brand); })
+        .catch(() => {});
+    }
+  }, [companySlug, isWhiteLabel]);
+
+  const accentColor = wlBrand?.primary_color || '#3B82F6';
+
+  /* ── Payment result from Stripe redirect ── */
+  const searchParams = useSearchParams();
+  const paymentStatus = searchParams.get('payment') as 'success' | 'cancelled' | null;
+  const [paymentHandled, setPaymentHandled] = useState(false);
+
+  useEffect(() => {
+    if (paymentStatus && !paymentHandled) {
+      setPaymentHandled(true);
+      if (paymentStatus === 'success') setStep(5 as any);
+      if (paymentStatus === 'cancelled') setError('Payment was cancelled. Your estimate is still saved — you can try again.');
+    }
+  }, [paymentStatus, paymentHandled]);
 
   /* ── Voice input ── */
   const toggleVoice = useCallback(() => {
@@ -347,7 +404,7 @@ export default function QuotePage() {
     setStep(4);
   }, [form, photos]);
 
-  /* ── Stripe checkout ── */
+  /* ── Stripe checkout — $49 deposit ── */
   const handleStripeCheckout = useCallback(async () => {
     if (!result) return;
     setStripeLoading(true);
@@ -356,15 +413,22 @@ export default function QuotePage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          priceId: 'price_1TrEh8D0AAcByeQ9hCRJDqHs',
-          planName: 'Deposit',
           mode: 'payment',
-          amount: Math.round(result.totalPrice * 100),
-          description: `Plumbing estimate deposit — ${result.diagnosis}`,
+          amount: 4900, // $49.00 deposit
+          description: `PlumbCore AI — Estimate Deposit`,
           customerEmail: form.email,
           customerName: form.name,
           customerPhone: form.phone,
-          metadata: { diagnosis: result.diagnosis, severity: result.severity, totalPrice: result.totalPrice, companySlug }
+          metadata: {
+            diagnosis: result.diagnosis,
+            severity: result.severity,
+            totalEstimate: result.totalPrice,
+            companySlug,
+            customerAddress: form.address,
+            estimateParts: JSON.stringify(result.parts || []),
+            estimateLabor: result.laborCost || 0,
+            quoteType: 'deposit',
+          }
         }),
       });
       const data = await res.json();
@@ -377,18 +441,22 @@ export default function QuotePage() {
     }
   }, [result, form, companySlug]);
 
-  const resetFlow = useCallback(() => { setStep(1); setPhotos([]); setForm({name:'',phone:'',email:'',address:'',desc:'',urgency:'routine',_enhancing:false}); setPhoneDisplay(''); setResult(null); setError(null); }, []);
+  const resetFlow = useCallback(() => { setStep(1); setPaymentHandled(false); setPhotos([]); setForm({name:'',phone:'',email:'',address:'',desc:'',urgency:'routine',_enhancing:false}); setPhoneDisplay(''); setResult(null); setError(null); }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" style={isWhiteLabel && wlBrand?.primary_color ? { '--pl-accent': wlBrand.primary_color } as any : undefined}>
       <header className="ring-1 ring-inset ring-black/5 bg-white">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
             <PlumbCoreLogo size="sm" showText={false} />
-            <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">Premium Plumbing Services</p></div>
+            {isWhiteLabel && wlBrand ? (
+              <div><p className="text-sm font-bold text-slate-900">{wlBrand.name || companySlug}</p><p className="text-[11px] text-slate-400">Plumbing Services</p></div>
+            ) : (
+              <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">Premium Plumbing Services</p></div>
+            )}
           </a>
           <div className="flex items-center gap-2">
-            <a href="tel:+15551234567" className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-all active:scale-95"><Phone className="w-4 h-4" /><span className="hidden sm:inline">(555) 123-4567</span></a>
+            <a href={`tel:${wlBrand?.phone || '+15551234567'}`} className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-all active:scale-95"><Phone className="w-4 h-4" /><span className="hidden sm:inline">{wlBrand?.phone || '(555) 123-4567'}</span></a>
             <LanguageSwitcher locale={locale} onLocaleChange={l => changeLocale(l as 'en'|'fr'|'es'|'de')} />
           </div>
         </div>
@@ -403,13 +471,14 @@ export default function QuotePage() {
       <section className="py-6 sm:py-10 pb-20">
         <div className="max-w-lg mx-auto px-4">
           {error && <div className="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center gap-2 text-sm text-red-700"><AlertTriangle className="w-4 h-4 shrink-0" />{error}</div>}
-          <StepIndicator current={step} total={4} t={t} />
+          <StepIndicator current={step} total={step === 5 ? 5 : 4} t={t} />
           <div style={{ display: step === 1 ? 'block' : 'none' }}><StepUpload photos={photos} onAdd={addPhotos} onRemove={removePhoto} onNext={() => setStep(2)} t={t} /></div>
           <div style={{ display: step === 2 ? 'block' : 'none' }}>
             <StepInfo form={form} setForm={setForm} phoneDisplay={phoneDisplay} onPhoneChange={handlePhone} phoneValid={phoneValid} emailValid={emailValid} canSubmit={canSubmit} onBack={() => setStep(1)} onEstimate={handleEstimate} t={t} isListening={isListening} onToggleVoice={toggleVoice} />
           </div>
           <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading t={t} /></div>
           <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} onStripeCheckout={handleStripeCheckout} stripeLoading={stripeLoading} t={t} /></div>
+          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess t={t} /></div>
         </div>
       </section>
     </div>

@@ -40,7 +40,7 @@ function RevenueLoading() {
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+          <div key={i} className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
             <Skeleton className="h-10 w-10 rounded-xl mb-3" />
             <Skeleton className="h-3 w-24 mb-2" />
             <Skeleton className="h-8 w-20 mb-2" />
@@ -49,11 +49,11 @@ function RevenueLoading() {
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <div className="lg:col-span-3 bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-44 mb-4" />
           <Skeleton className="h-[220px] w-full" />
         </div>
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <div className="lg:col-span-2 bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-36 mb-4" />
           <Skeleton className="h-[200px] w-full" />
         </div>
@@ -67,11 +67,11 @@ function RevenueLoading() {
 function RevenueError({ error }: { error: string }) {
   return (
     <div className="max-w-[1440px] mx-auto">
-      <div className="bg-white rounded-2xl border border-red-100 shadow-sm p-10 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
-          <AlertTriangle className="w-7 h-7 text-red-500" />
+      <div className="bg-[#0F172A] rounded-2xl border border-red-500/10 shadow-lg shadow-black/30 p-10 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto mb-4">
+          <AlertTriangle className="w-7 h-7 text-red-400" />
         </div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-1">Failed to load revenue data</h3>
+        <h3 className="text-lg font-semibold text-white mb-1">Failed to load revenue data</h3>
         <p className="text-sm text-slate-500 mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
@@ -134,7 +134,7 @@ function RevenueKPIs() {
         return (
           <div
             key={kpi.label}
-            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+            className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
@@ -142,13 +142,13 @@ function RevenueKPIs() {
                 <Icon className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{kpi.value}</p>
+            <p className="text-3xl font-bold text-white mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
               <span
                 className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
                   isGoodDown || (!isPositive && kpi.label !== 'Churn Rate')
-                    ? 'bg-red-50 text-red-600'
-                    : 'bg-emerald-50 text-emerald-600'
+                    ? 'bg-red-500/10 text-red-400'
+                    : 'bg-green-500/10 text-green-400'
                 }`}
               >
                 {isPositive || isGoodDown ? (
@@ -158,7 +158,7 @@ function RevenueKPIs() {
                 )}
                 {kpi.change}
               </span>
-              <span className="text-xs text-slate-400">vs last month</span>
+              <span className="text-xs text-slate-600">vs last month</span>
             </div>
           </div>
         );
@@ -205,23 +205,23 @@ function MRRChart() {
   const pctChange = ((totalThis - totalPrev) / totalPrev * 100).toFixed(1);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-slate-900">MRR Trend (12 Months)</h3>
+            <h3 className="text-base font-semibold text-white">MRR Trend (12 Months)</h3>
             <span
               className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
-                +pctChange >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
+                +pctChange >= 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
               }`}
             >
               <ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
             </span>
           </div>
-          <p className="text-3xl font-bold text-slate-900">${totalThis.toLocaleString()}</p>
-          <p className="text-xs text-slate-400 mt-0.5">vs ${totalPrev.toLocaleString()} last year</p>
+          <p className="text-3xl font-bold text-white">${totalThis.toLocaleString()}</p>
+          <p className="text-xs text-slate-600 mt-0.5">vs ${totalPrev.toLocaleString()} last year</p>
         </div>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+        <button className="text-slate-600 hover:text-slate-400 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
       </div>
@@ -232,7 +232,7 @@ function MRRChart() {
             <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.01" />
           </linearGradient>
         </defs>
-        <path d={prevPath} fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4 3" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+        <path d={prevPath} fill="none" stroke="#64748B" strokeWidth="1.5" strokeDasharray="4 3" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
         <path d={areaPath} fill="url(#revMrrGrad)" />
         <path d={thisPath} fill="none" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {thisPoints.map(
@@ -241,7 +241,7 @@ function MRRChart() {
         {data.map(
           (d, i) =>
             i % 2 === 0 && (
-              <text key={i} x={thisPoints[i].x} y={height - 3} textAnchor="middle" fill="#94A3B8" fontSize="9" fontFamily="system-ui">
+              <text key={i} x={thisPoints[i].x} y={height - 3} textAnchor="middle" fill="#64748B" fontSize="9" fontFamily="system-ui">
                 {d.month}
               </text>
             )
@@ -250,11 +250,11 @@ function MRRChart() {
       <div className="flex items-center gap-4 mt-2">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-0.5 bg-blue-500 rounded-full" />
-          <span className="text-[10px] text-slate-400">This Year</span>
+          <span className="text-[10px] text-slate-600">This Year</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{ borderTop: '2px dashed #94A3B8', height: 0 }} />
-          <span className="text-[10px] text-slate-400">Last Year</span>
+          <span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{ borderTop: '2px dashed #64748B', height: 0 }} />
+          <span className="text-[10px] text-slate-600">Last Year</span>
         </div>
       </div>
     </div>
@@ -274,21 +274,21 @@ function MonthlyComparison() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Monthly Comparison</h3>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+        <h3 className="text-base font-semibold text-white">Monthly Comparison</h3>
+        <button className="text-slate-600 hover:text-slate-400 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Month</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Current</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Previous</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3 hidden sm:table-cell">Change</th>
+            <tr className="border-t border-b border-white/5">
+              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Month</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Current</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Previous</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3 hidden sm:table-cell">Change</th>
             </tr>
           </thead>
           <tbody>
@@ -297,12 +297,12 @@ function MonthlyComparison() {
               const pct = ((diff / m.prev) * 100).toFixed(1);
               const isPositive = diff >= 0;
               return (
-                <tr key={m.month} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <tr key={m.month} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                   <td className="px-5 py-3.5">
-                    <span className="text-sm font-medium text-slate-800">{m.month}</span>
+                    <span className="text-sm font-medium text-slate-200">{m.month}</span>
                   </td>
                   <td className="px-4 py-3.5 text-right">
-                    <span className="text-sm font-semibold text-slate-800">${(m.value / 1000).toFixed(0)}K</span>
+                    <span className="text-sm font-semibold text-slate-200">${(m.value / 1000).toFixed(0)}K</span>
                   </td>
                   <td className="px-4 py-3.5 text-right hidden sm:table-cell">
                     <span className="text-sm text-slate-500">${(m.prev / 1000).toFixed(0)}K</span>
@@ -310,7 +310,7 @@ function MonthlyComparison() {
                   <td className="px-5 py-3.5 text-right hidden sm:table-cell">
                     <span
                       className={`inline-flex items-center gap-0.5 text-xs font-semibold ${
-                        isPositive ? 'text-emerald-600' : 'text-red-600'
+                        isPositive ? 'text-green-400' : 'text-red-400'
                       }`}
                     >
                       {isPositive ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
@@ -359,10 +359,10 @@ function RevenueByPlanDonut() {
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
+    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">Revenue by Plan</h3>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors">
+        <h3 className="text-base font-semibold text-white">Revenue by Plan</h3>
+        <button className="text-slate-600 hover:text-slate-400 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
       </div>
@@ -372,10 +372,10 @@ function RevenueByPlanDonut() {
             {slices.map((s, i) => (
               <path key={i} d={s.path} fill="none" stroke={s.color} strokeWidth={sw} strokeLinecap="round" />
             ))}
-            <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="central" fill="#0F172A" fontFamily="system-ui" fontSize="24" fontWeight="700">
+            <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="central" fill="#FFFFFF" fontFamily="system-ui" fontSize="24" fontWeight="700">
               ${(total / 1000).toFixed(0)}K
             </text>
-            <text x={cx} y={cy + 16} textAnchor="middle" dominantBaseline="central" fill="#64748B" fontFamily="system-ui" fontSize="11">
+            <text x={cx} y={cy + 16} textAnchor="middle" dominantBaseline="central" fill="#94A3B8" fontFamily="system-ui" fontSize="11">
               MRR
             </text>
           </svg>
@@ -385,11 +385,11 @@ function RevenueByPlanDonut() {
             <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                <span className="text-xs text-slate-600">{s.label}</span>
+                <span className="text-xs text-slate-400">{s.label}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-400">{s.count} accts</span>
-                <span className="text-xs font-semibold text-slate-900">{s.pct.toFixed(1)}%</span>
+                <span className="text-xs text-slate-600">{s.count} accts</span>
+                <span className="text-xs font-semibold text-white">{s.pct.toFixed(1)}%</span>
               </div>
             </div>
           ))}
@@ -405,20 +405,20 @@ function RevenueBreakdownTable() {
   const total = revenueBreakdown.reduce((s, p) => s + p.totalMrr, 0);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Plan Breakdown</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-700">View All →</button>
+        <h3 className="text-base font-semibold text-white">Plan Breakdown</h3>
+        <button className="text-xs font-medium text-blue-400 hover:text-blue-300">View All →</button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Plan</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">MRR</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">% of Total</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3 hidden md:table-cell">Companies</th>
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Avg MRR</th>
+            <tr className="border-t border-b border-white/5">
+              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Plan</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">MRR</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">% of Total</th>
+              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3 hidden md:table-cell">Companies</th>
+              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Avg MRR</th>
             </tr>
           </thead>
           <tbody>
@@ -427,29 +427,29 @@ function RevenueBreakdownTable() {
               const avgMrr = Math.round(plan.totalMrr / plan.companyCount);
               const barWidth = (plan.totalMrr / total) * 100;
               return (
-                <tr key={plan.planTier} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <tr key={plan.planTier} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                      <span className="text-sm font-medium text-slate-800">{planLabels[plan.planTier] || plan.planTier}</span>
+                      <span className="text-sm font-medium text-slate-200">{planLabels[plan.planTier] || plan.planTier}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3.5 text-right">
-                    <span className="text-sm font-semibold text-slate-800">${plan.totalMrr.toLocaleString()}</span>
+                    <span className="text-sm font-semibold text-slate-200">${plan.totalMrr.toLocaleString()}</span>
                   </td>
                   <td className="px-4 py-3.5 text-right hidden sm:table-cell">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="w-16 h-2 bg-slate-800/30 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all"
                           style={{ width: `${barWidth}%`, backgroundColor: color }}
                         />
                       </div>
-                      <span className="text-xs font-semibold text-slate-600 w-8 text-right">{plan.percentageOfTotal.toFixed(1)}%</span>
+                      <span className="text-xs font-semibold text-slate-400 w-8 text-right">{plan.percentageOfTotal.toFixed(1)}%</span>
                     </div>
                   </td>
                   <td className="px-5 py-3.5 text-right hidden md:table-cell">
-                    <span className="text-sm text-slate-600">{plan.companyCount}</span>
+                    <span className="text-sm text-slate-400">{plan.companyCount}</span>
                   </td>
                   <td className="px-4 py-3.5 hidden lg:table-cell">
                     <span className="text-sm text-slate-500">${avgMrr.toLocaleString()}</span>
@@ -459,18 +459,18 @@ function RevenueBreakdownTable() {
             })}
           </tbody>
           <tfoot>
-            <tr className="border-t border-slate-100 bg-slate-50/50">
+            <tr className="border-t border-white/5 bg-white/[0.02]">
               <td className="px-5 py-3.5">
-                <span className="text-sm font-semibold text-slate-800">Total</span>
+                <span className="text-sm font-semibold text-slate-200">Total</span>
               </td>
               <td className="px-4 py-3.5 text-right">
-                <span className="text-sm font-bold text-slate-900">${total.toLocaleString()}</span>
+                <span className="text-sm font-bold text-white">${total.toLocaleString()}</span>
               </td>
               <td className="px-4 py-3.5 text-right hidden sm:table-cell">
                 <span className="text-xs font-semibold text-slate-500">100%</span>
               </td>
               <td className="px-5 py-3.5 text-right hidden md:table-cell">
-                <span className="text-sm font-semibold text-slate-800">{revenueBreakdown.reduce((s, p) => s + p.companyCount, 0)}</span>
+                <span className="text-sm font-semibold text-slate-200">{revenueBreakdown.reduce((s, p) => s + p.companyCount, 0)}</span>
               </td>
               <td className="px-4 py-3.5 hidden lg:table-cell" />
             </tr>
@@ -495,12 +495,12 @@ export default function AdminRevenuePage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Revenue Analytics</h1>
+          <h1 className="text-2xl font-bold text-white">Revenue Analytics</h1>
           <p className="text-sm text-slate-500 mt-1">
             ${(platformKPIs.totalMRR / 1000).toFixed(1)}K MRR · ${((platformKPIs.totalMRR * 12) / 1000).toFixed(0)}K ARR · {platformKPIs.activePlumbers} active accounts
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-black/30">
           <Download className="w-4 h-4" />
           <span className="hidden sm:inline text-xs">Export</span>
         </button>

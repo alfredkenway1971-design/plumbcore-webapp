@@ -14,9 +14,9 @@ interface CardProps {
 }
 
 const variantStyles: Record<CardVariant, string> = {
-  default: 'bg-surface-card border border-white-border',
-  elevated: 'bg-surface-elevated border border-white-border shadow-lg shadow-black/20',
-  bordered: 'bg-surface-card border border-white/10',
+  default: 'bg-white ring-1 ring-black/5',
+  elevated: 'bg-white ring-1 ring-slate-200 shadow-lg shadow-black/5',
+  bordered: 'bg-white ring-1 ring-slate-200',
 };
 
 const paddingStyles: Record<string, string> = {
@@ -42,7 +42,7 @@ export function Card({
         rounded-xl
         ${variantStyles[variant]}
         ${paddingStyles[padding]}
-        ${hover ? 'transition-all hover:border-electric/20 hover:glow-electric' : ''}
+        ${hover ? 'transition-all duration-200 hover:ring-slate-300 hover:shadow-lg hover:shadow-black/10' : ''}
         ${onClick ? 'w-full text-left cursor-pointer' : ''}
         ${className}
       `}

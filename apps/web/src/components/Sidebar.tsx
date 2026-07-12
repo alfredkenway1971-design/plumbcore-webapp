@@ -43,7 +43,7 @@ const Icons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   User: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>,
 };
 
-/* ── Admin-only nav config ── */
+/* ── Admin nav config ── */
 const adminNav = [
   { sectionKey: 'overview', items: [
     { labelKey: 'platformOverview', label: 'Platform Overview', icon: 'Grid', href: '/admin' },
@@ -53,6 +53,7 @@ const adminNav = [
     { labelKey: 'trialPipeline', label: 'Trial Pipeline', icon: 'Chart', href: '/admin/trials' },
     { labelKey: 'atRisk', label: 'At-Risk Accounts', icon: 'Bell', href: '/admin/at-risk' },
     { labelKey: 'churned', label: 'Churned Accounts', icon: 'Shield', href: '/admin/churned' },
+    { labelKey: 'plumbers', label: 'Plumber Profiles', icon: 'Team', href: '/admin/plumbers' },
   ]},
   { sectionKey: 'leads', items: [
     { labelKey: 'leadsMarketplace', label: 'Leads Marketplace', icon: 'Star', href: '/admin/leads' },
@@ -88,7 +89,7 @@ const adminNav = [
   ]},
 ];
 
-/* ── Plumber nav config (unchanged) ── */
+/* ── Plumber nav config ── */
 const plumberNav = [
   { sectionKey: 'main', items: [
     { labelKey: 'dashboard', label: 'Dashboard', icon: 'Grid', href: '/dashboard', feature: undefined },
@@ -121,6 +122,10 @@ const plumberNav = [
     { labelKey: 'reviews', label: 'Reviews', icon: 'Star', href: '/reviews', feature: 'reviewAutomation' },
     { labelKey: 'financing', label: 'Financing', icon: 'PriceTag', href: '/financing', feature: 'customerFinancing' },
     { labelKey: 'predictiveMaint', label: 'Predictive Maint.', icon: 'Chart', href: '/predictive-maintenance', feature: 'predictiveMaintenance' },
+  ]},
+  { sectionKey: 'account', items: [
+    { labelKey: 'profile', label: 'Profile', icon: 'User', href: '/plumber/profile' },
+    { labelKey: 'earnings', label: 'Earnings', icon: 'Dollar', href: '/plumber/earnings' },
   ]},
   { sectionKey: 'admin', items: [
     { labelKey: 'team', label: 'Team', icon: 'Team', href: '/team' },
@@ -161,7 +166,6 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     router.push('/login');
   };
 
-  // Pick the right nav based on role
   const company = useAuthStore((s) => s.company);
   const tier = (company?.subscription_tier || '') as PlanTier;
   const navSource = isAdmin ? adminNav : plumberNav;
@@ -180,34 +184,78 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     overview: 'Overview', companies: 'Companies', leads: 'Leads', revenue: 'Revenue',
     usage: 'Usage Analytics', support: 'Support', marketing: 'Marketing',
     system: 'System', profile: 'Profile',
-    main: 'Main', aiTools: 'AI Tools', finance: 'Finance', growth: 'Growth', admin: 'Admin',
+    main: 'Main', aiTools: 'AI Tools', finance: 'Finance', growth: 'Growth', account: 'Account', admin: 'Admin',
   };
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
   const initials = profile?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AM';
 
   return (
     <>
-      {mobileOpen && <div className="fixed inset-0 z-40 bg-black/30 md:hidden" onClick={onClose} />}
-      <aside className={`${collapsed ? 'md:w-[72px]' : 'md:w-[260px]'} fixed inset-y-0 left-0 z-50 flex flex-col bg-white ring-1 ring-black/5 transition-all duration-200 md:static md:z-auto ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-        <div className="flex h-16 shrink-0 items-center justify-between px-4 ring-1 ring-inset ring-black/5">
+      {/* Mobile overlay */}
+      {mobileOpen && <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden" onClick={onClose} />}
+
+      <aside
+        className={`
+          ${collapsed ? 'md:w-[72px]' : 'md:w-[260px]'}
+          fixed inset-y-0 left-0 z-50 flex flex-col
+          bg-white ring-1 ring-black/5
+          transition-all duration-200
+          md:static md:z-auto
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          w-[280px] max-w-[85vw]
+        `}
+      >
+        {/* Logo + Collapse toggle */}
+        <div className="flex h-14 md:h-16 shrink-0 items-center justify-between px-4 ring-1 ring-slate-200">
           <PlumbCoreLogo size="sm" showText={!collapsed} />
-          <button onClick={() => setCollapsed(!collapsed)} className="hidden md:flex items-center justify-center w-6 h-6 rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all shrink-0">
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="hidden md:flex items-center justify-center w-7 h-7 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-all shrink-0"
+          >
             <Icons.ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
           </button>
+          {/* Mobile close */}
+          <button onClick={onClose} className="md:hidden w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
         </div>
+
+        {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
           {visibleNav.map((section) => (
             <div key={section.sectionKey}>
-              {!collapsed && <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">{sectionLabels[section.sectionKey] || section.sectionKey}</p>}
+              {!collapsed && (
+                <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                  {sectionLabels[section.sectionKey] || section.sectionKey}
+                </p>
+              )}
               <div className="space-y-0.5">
                 {section.items.map((item: any) => {
                   const active = isActive(item.href);
                   const IconComponent = Icons[item.icon as keyof typeof Icons];
                   return (
-                    <a key={item.labelKey} href={item.href} className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150 ${active ? 'bg-blue-50 text-blue-600' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'} ${collapsed ? 'justify-center px-0' : ''}`} title={collapsed ? item.label : undefined}>
-                      {IconComponent && <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-500' : 'text-slate-400'}`} />}
+                    <a
+                      key={item.labelKey}
+                      href={item.href}
+                      className={`
+                        flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150
+                        ${active
+                          ? 'bg-blue-50 text-blue-600 ring-1 ring-blue-200'
+                          : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                        }
+                        ${collapsed ? 'justify-center px-0' : ''}
+                      `}
+                      title={collapsed ? item.label : undefined}
+                    >
+                      {IconComponent && (
+                        <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-600' : 'text-slate-400'}`} />
+                      )}
                       {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
-                      {!collapsed && item.badge && <span className={`shrink-0 min-w-[20px] h-5 rounded-full ${item.badge.color} text-white text-[10px] font-bold flex items-center justify-center px-1.5`}>{item.badge.count}</span>}
+                      {!collapsed && item.badge && (
+                        <span className={`shrink-0 min-w-[20px] h-5 rounded-full ${item.badge.color} text-white text-[10px] font-bold flex items-center justify-center px-1.5`}>
+                          {item.badge.count}
+                        </span>
+                      )}
                     </a>
                   );
                 })}
@@ -215,22 +263,46 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             </div>
           ))}
         </nav>
-        <div className="shrink-0 ring-1 ring-inset ring-black/5 p-3" ref={profileRef}>
-          <div className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-slate-100 transition-colors cursor-pointer group relative" onClick={() => setProfileOpen(!profileOpen)}>
-            {avatarUrl ? <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]" /> :
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">{initials}</div>}
-            {!collapsed && <>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
-                <p className="text-xs text-slate-400 truncate">{isAdmin ? 'Admin' : userRole || 'PlumbCore'}</p>
+
+        {/* Profile */}
+        <div className="shrink-0 ring-1 ring-slate-200 p-3" ref={profileRef}>
+          <div
+            className="flex items-center gap-3 rounded-xl px-2.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer group relative"
+            onClick={() => setProfileOpen(!profileOpen)}
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 ring-2 ring-white/10" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">
+                {initials}
               </div>
-              <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500" title="Logout"><Icons.Logout className="w-4 h-4" /></button>
-            </>}
+            )}
+            {!collapsed && (
+              <>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
+                  <p className="text-xs text-slate-400 truncate">{isAdmin ? 'Admin' : userRole || 'PlumbCore'}</p>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleLogout(); }}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
+                  title="Logout"
+                >
+                  <Icons.Logout className="w-4 h-4" />
+                </button>
+              </>
+            )}
           </div>
-          {profileOpen && <div className="mt-1 mx-1 rounded-xl ring-1 ring-black/5 bg-white shadow-[0_8px_32px_rgba(0,0,0,0.08)] overflow-hidden">
-            <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-100 transition-colors"><Icons.Cog className="w-4 h-4 text-slate-400" /> Settings</button>
-            <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors ring-1 ring-inset ring-black/5"><Icons.Logout className="w-4 h-4" /> Logout</button>
-          </div>}
+          {profileOpen && (
+            <div className="mt-1 mx-1 rounded-xl ring-1 ring-slate-200 bg-white shadow-xl overflow-hidden">
+              <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+                <Icons.Cog className="w-4 h-4 text-slate-500" /> Settings
+              </button>
+              <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors ring-1 ring-inset ring-slate-200">
+                <Icons.Logout className="w-4 h-4" /> Logout
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>

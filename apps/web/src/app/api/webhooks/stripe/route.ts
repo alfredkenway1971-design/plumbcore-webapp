@@ -23,7 +23,8 @@ export async function POST(req: Request) {
 
     // Import dynamically to avoid circular deps
     const { updateUserSubscription } = await import('@/lib/custom-auth');
-    const { sendEmail, subscriptionPastDueEmail } = await import('@/lib/email');
+    const { sendEmail, subscriptionPastDueEmail, depositConfirmationEmail, adminNotificationEmail } = await import('@/lib/email');
+    const { getAdminClient } = await import('@/lib/supabase-admin');
 
     const priceMap: Record<string, string> = {
       'price_1TrEh8D0AAcByeQ9hCRJDqHs': 'solo',   // Solo $349/mo
@@ -75,6 +76,135 @@ export async function POST(req: Request) {
         const customerId = session.customer;
         const subscriptionId = session.subscription;
         const customerEmail = session.customer_details?.email;
+        const metadata = session.metadata || {};
+        const isDeposit = session.mode === 'payment' && metadata.quoteType === 'deposit';
+
+        /* ── Deposit payment (quote page $49 deposit) ── */
+        if (isDeposit) {
+          const customerName = metadata.customer_name || session.customer_details?.name || 'Customer';
+          const customerPhone = metadata.customer_phone || '';
+          const diagnosis = metadata.diagnosis || '';
+          const severity = metadata.severity || '';
+          const totalEstimate = parseFloat(metadata.totalEstimate || '0');
+          const companySlug = metadata.companySlug || '';
+          const customerAddress = metadata.customerAddress || '';
+          const customerCity = metadata.customerCity || '';
+          const amountPaid = (session.amount_total || 4900) / 100;
+
+          console.log(`💰 Deposit paid: $${amountPaid} — ${customerEmail} (${customerName})`);
+          console.log(`  → Estimate: $${totalEstimate} | ${diagnosis} | ${severity}`);
+
+          // 1. Create lead (or direct job for white-label)
+          const admin = getAdminClient();
+
+          // White-label: job goes directly to that plumber
+          if (companySlug && companySlug !== 'plumbcore') {
+            if (admin) {
+              try {
+                const { data: company } = await (admin as any)
+                  .from('companies')
+                  .select('id, owner_id')
+                  .eq('slug', companySlug)
+                  .single();
+
+                if (company) {
+                  await (admin as any).from('jobs').insert({
+                    company_id: company.id,
+                    customer_name: customerName,
+                    customer_email: customerEmail,
+                    customer_phone: customerPhone,
+                    customer_address: customerAddress,
+                    diagnosis,
+                    severity,
+                    total_estimate: totalEstimate,
+                    deposit_paid: amountPaid,
+                    deposit_stripe_id: session.id,
+                    status: 'deposit_paid',
+                  });
+                  console.log(`  → White-label job created for ${companySlug}`);
+                }
+              } catch (err: any) {
+                console.error('  → White-label job creation failed:', err.message);
+              }
+            }
+          } else {
+            // Marketplace: create lead for routing
+            if (admin) {
+              try {
+                const now = new Date();
+                const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24h
+
+                const { data: lead, error: leadErr } = await (admin as any)
+                  .from('leads')
+                  .insert({
+                    stripe_session_id: session.id,
+                    customer_name: customerName,
+                    customer_email: customerEmail,
+                    customer_phone: customerPhone,
+                    customer_address: customerAddress,
+                    diagnosis,
+                    severity,
+                    total_estimate: totalEstimate,
+                    deposit_paid: amountPaid,
+                    status: 'pending',
+                    created_at: now.toISOString(),
+                    expires_at: expiresAt.toISOString(),
+                  })
+                  .select('id')
+                  .single();
+
+                if (leadErr) {
+                  console.error('  → Failed to create lead:', leadErr.message);
+                } else if (lead) {
+                  console.log(`  → Lead created: ${lead.id} — triggering routing`);
+                  // Trigger routing asynchronously
+                  fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/api/leads/route`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leadId: lead.id }),
+                  }).catch(() => {});
+                }
+              } catch (err: any) {
+                console.error('  → Lead creation failed:', err.message);
+              }
+            } else {
+              console.log('  → Supabase not configured — skipping lead creation');
+            }
+          }
+
+          // 2. Send confirmation email to customer
+          if (customerEmail) {
+            const confirmEmail = depositConfirmationEmail({
+              customerName,
+              diagnosis,
+              totalEstimate,
+              amountPaid,
+              companySlug,
+            });
+            await sendEmail({ to: customerEmail, subject: confirmEmail.subject, html: confirmEmail.html });
+            console.log(`  → Sent confirmation to ${customerEmail}`);
+          }
+
+          // 3. Notify admin
+          const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'amer.niyonzima@gmail.com';
+          const adminNote = adminNotificationEmail({
+            customerName,
+            customerEmail,
+            customerPhone,
+            diagnosis,
+            totalEstimate,
+            amountPaid,
+            companySlug,
+            customerAddress,
+            customerCity,
+          });
+          await sendEmail({ to: adminEmail, subject: adminNote.subject, html: adminNote.html });
+          console.log(`  → Notified admin at ${adminEmail}`);
+
+          break;
+        }
+
+        /* ── Subscription checkout ── */
         console.log(`✅ New subscription: ${subscriptionId} — customer: ${customerEmail} (${customerId})`);
 
         // Fetch the subscription to get the tier

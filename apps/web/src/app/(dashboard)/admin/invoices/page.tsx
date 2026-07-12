@@ -5,10 +5,10 @@ import { Search, FileText, Download, Filter, ChevronDown, Building2, CheckCircle
 import { companies } from '@/lib/admin-data';
 
 const statusStyles: Record<string, { bg: string; text: string; icon: any }> = {
-  paid: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle },
-  pending: { bg: 'bg-amber-50', text: 'text-amber-700', icon: Clock },
-  overdue: { bg: 'bg-red-50', text: 'text-red-700', icon: AlertTriangle },
-  cancelled: { bg: 'bg-slate-100', text: 'text-slate-600', icon: XCircle },
+  paid: { bg: 'bg-green-500/10', text: 'text-green-300', icon: CheckCircle },
+  pending: { bg: 'bg-amber-500/10', text: 'text-amber-300', icon: Clock },
+  overdue: { bg: 'bg-red-500/10', text: 'text-red-300', icon: AlertTriangle },
+  cancelled: { bg: 'bg-slate-800/30', text: 'text-slate-400', icon: XCircle },
 };
 
 const generateInvoices = () => {
@@ -53,38 +53,38 @@ export default function AdminInvoicesPage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Invoices</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-white">Invoices</h1>
           <p className="text-sm text-slate-500 mt-1">Platform-wide invoice management</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-black/5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all">
+        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-[#0F172A] ring-1 ring-white/5 text-sm font-medium text-slate-300 hover:bg-white/[0.02] transition-all">
           <Download className="w-4 h-4" /> Export CSV
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        {[ { label: 'Collected', value: '$' + totalRevenue.toLocaleString(), color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Pending', value: '$' + pendingAmount.toLocaleString(), color: 'text-amber-500', bg: 'bg-amber-50' }, { label: 'Overdue', value: '$' + overdueAmount.toLocaleString(), color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-4 shadow-sm text-center">
-            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {[ { label: 'Collected', value: '$' + totalRevenue.toLocaleString(), color: 'text-green-400', bg: 'bg-green-500/10' }, { label: 'Pending', value: '$' + pendingAmount.toLocaleString(), color: 'text-amber-400', bg: 'bg-amber-500/10' }, { label: 'Overdue', value: '$' + overdueAmount.toLocaleString(), color: 'text-red-400', bg: 'bg-red-500/10' } ].map((s, i) => (
+          <div key={i} className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 p-4 shadow-lg shadow-black/30 text-center">
+            <p className="text-2xl font-bold text-white">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
+      <div className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 shadow-lg shadow-black/30 overflow-hidden">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-white/5">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input placeholder="Search invoices or companies..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-100" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
+            <input placeholder="Search invoices or companies..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 bg-white/[0.02] border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'paid', 'pending', 'overdue', 'cancelled'].map(s => (
-              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>{s}</button>
+              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-slate-700 text-white' : 'bg-white/[0.02] text-slate-400 hover:bg-white/[0.02]'}`}>{s}</button>
             ))}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead><tr className="border-b border-slate-100">
+            <thead><tr className="border-b border-white/5">
               {['Invoice', 'Company', 'Amount', 'Status', 'Due Date', 'Created'].map((h, i) => (
                 <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -94,16 +94,16 @@ export default function AdminInvoicesPage() {
                 const st = statusStyles[inv.status];
                 const StatusIcon = st.icon;
                 return (
-                  <tr key={inv.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                  <tr key={inv.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2"><FileText className="w-4 h-4 text-slate-400" /><span className="text-sm font-semibold text-slate-900">{inv.id}</span></div>
+                      <div className="flex items-center gap-2"><FileText className="w-4 h-4 text-slate-600" /><span className="text-sm font-semibold text-white">{inv.id}</span></div>
                     </td>
                     <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2"><Building2 className="w-4 h-4 text-slate-400" /><span className="text-sm text-slate-700">{inv.companyName}</span></div>
+                      <div className="flex items-center gap-2"><Building2 className="w-4 h-4 text-slate-600" /><span className="text-sm text-slate-300">{inv.companyName}</span></div>
                     </td>
-                    <td className="py-3.5 px-5"><span className="text-sm font-semibold text-slate-900">${inv.amount.toLocaleString()}</span></td>
+                    <td className="py-3.5 px-5"><span className="text-sm font-semibold text-white">${inv.amount.toLocaleString()}</span></td>
                     <td className="py-3.5 px-5"><span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${st.bg} ${st.text}`}><StatusIcon className="w-3 h-3" />{inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}</span></td>
-                    <td className="py-3.5 px-5"><span className="text-sm text-slate-600">{inv.dueDate}</span></td>
+                    <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{inv.dueDate}</span></td>
                     <td className="py-3.5 px-5"><span className="text-sm text-slate-500">{inv.created}</span></td>
                   </tr>
                 );

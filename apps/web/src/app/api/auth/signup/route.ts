@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       companySlug,
       companyId,
       phone: phone || '',
-      role: normalizedEmail === 'amer.niyonzima@gmail.com' ? 'super_admin' : 'admin',
+      role: normalizedEmail === 'amer.niyonzima@gmail.com' ? 'super_admin' : (sessionId ? 'admin' : 'tech'),
       stripeCustomerId,
       stripeSubscriptionId,
       subscriptionTier,

@@ -281,23 +281,45 @@ export default function OnboardingPage() {
 
   /* ── Success screen ── */
   if (step === 'success') {
+    const companyName = data.company.companyName || 'your company';
     return (
       <div className="w-full">
         <div className="rounded-2xl ring-1 ring-black/5 bg-white p-8 text-center">
-          {/* Checkmark animation */}
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20">
-            <svg className="h-10 w-10 text-green-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+          {/* Celebratory animation */}
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-200">
+            <svg className="h-10 w-10 text-white animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">Your company is set up!</h1>
-          <p className="mt-2 text-slate-500">
-            You&apos;re ready to start managing your plumbing business with PlumbCore AI.
+          <h1 className="text-2xl font-bold text-slate-900">🎉 {companyName} is live!</h1>
+          <p className="mt-2 text-slate-500 max-w-sm mx-auto">
+            You&apos;re all set. Your AI chat widget is ready — the first lead could arrive today.
           </p>
-          <div className="mt-8">
-            <Button size="lg" onClick={handleGoToDashboard}>
+
+          {/* Sparkline stats — variable reward preview */}
+          <div className="mt-6 grid grid-cols-3 gap-3 max-w-xs mx-auto">
+            {[
+              { label: 'Leads', value: '0', icon: '📋' },
+              { label: 'Jobs', value: '0', icon: '🔧' },
+              { label: 'Revenue', value: '$0', icon: '💰' },
+            ].map((s, i) => (
+              <div key={i} className="rounded-xl bg-slate-50 ring-1 ring-black/5 p-3">
+                <p className="text-lg">{s.icon}</p>
+                <p className="text-base font-bold text-slate-900 mt-0.5">{s.value}</p>
+                <p className="text-[10px] text-slate-400">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Next-trigger actions — investment loads future trigger */}
+          <div className="mt-6 space-y-2">
+            <Button size="lg" className="w-full max-w-xs" onClick={handleGoToDashboard}>
               Go to Dashboard
             </Button>
+            <div className="text-xs text-slate-400 mt-3 space-y-1">
+              <p>💡 <span className="font-medium text-slate-500">Next:</span> Set up your AI chat widget to start capturing leads</p>
+              <p>👥 Invite your team so they can see the schedule</p>
+            </div>
           </div>
         </div>
       </div>

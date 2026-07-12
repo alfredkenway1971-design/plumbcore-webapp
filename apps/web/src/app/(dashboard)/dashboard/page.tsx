@@ -71,6 +71,85 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
 });
 
 /* ═══════════════════════════════════════════
+   REVENUE GOAL PROGRESS BAR — Loss Aversion + Goal Gradient
+   ═══════════════════════════════════════════ */
+function RevenueGoalBar() {
+  const [goal, setGoal] = useState(50000); // $50K/month default
+  const [editing, setEditing] = useState(false);
+  const [editValue, setEditValue] = useState('50000');
+
+  const invoices = getStats();
+  const totalThis = invoices.totalRevenue || 0;
+  const pct = Math.min((totalThis / goal) * 100, 100);
+  const remaining = Math.max(goal - totalThis, 0);
+
+  return (
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+            <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+            </svg>
+          </div>
+          <h3 className="text-sm font-semibold text-slate-900">Monthly Revenue Goal</h3>
+        </div>
+        <div className="flex items-center gap-2">
+          {editing ? (
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                value={editValue}
+                onChange={e => setEditValue(e.target.value)}
+                className="w-20 h-7 rounded-lg border border-slate-200 px-2 text-xs font-medium text-slate-700 outline-none focus:border-blue-400"
+                autoFocus
+              />
+              <button onClick={() => { setGoal(Number(editValue) || 50000); setEditing(false); }}
+                className="h-7 px-2 rounded-lg bg-blue-500 text-white text-[10px] font-semibold hover:bg-blue-600 transition-colors">Set</button>
+            </div>
+          ) : (
+            <button onClick={() => { setEditValue(String(goal)); setEditing(true); }}
+              className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Edit</button>
+          )}
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="relative h-3 rounded-full bg-slate-100 overflow-hidden mb-2">
+        <div
+          className={`h-full rounded-full transition-all duration-700 ease-out ${
+            pct >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+          }`}
+          style={{ width: `${Math.max(pct, 2)}%` }}
+        />
+        {/* Goal marker */}
+        <div className="absolute top-0 bottom-0 w-0.5 bg-slate-400/50" style={{ left: '100%' }} />
+      </div>
+
+      <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-slate-900">${totalThis.toLocaleString()}</span>
+          <span className="text-slate-400">of ${goal.toLocaleString()}</span>
+          <span className={`font-semibold ${pct >= 100 ? 'text-emerald-600' : 'text-blue-600'}`}>
+            {pct.toFixed(0)}%
+          </span>
+        </div>
+        {remaining > 0 ? (
+          <span className="text-slate-400">${remaining.toLocaleString()} to go</span>
+        ) : (
+          <span className="flex items-center gap-1 text-emerald-600 font-semibold">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Goal reached! 🎉
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
    REVENUE LINE CHART (30-day, comparison)
    ═══════════════════════════════════════════ */
 function RevenueChart() {
@@ -835,6 +914,9 @@ export default function DashboardPage() {
         <StatCard label="Open Invoices" value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-amber-500" />
         <StatCard label="Total Jobs" value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-cyan-500" />
       </div>
+
+      {/* ── Revenue Goal Progress Bar ── */}
+      <RevenueGoalBar />
 
       {/* ── Row 2: Revenue Chart + Job Donut ── */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
