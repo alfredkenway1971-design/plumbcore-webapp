@@ -133,11 +133,86 @@ input, select, textarea { font-size: 16px !important; }
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
+  border: 1px solid #E2E8F0;
 }
 .card-modern:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
+
+/* ── KPI Card ── */
+.kpi-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #E2E8F0;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.kpi-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+/* ── Modern Table ── */
+.table-modern { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table-modern thead th {
+  text-align: left; padding: 12px 20px;
+  font-size: 11px; font-weight: 600; color: #94A3B8;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  background: #F8FAFC; border-bottom: 1px solid #E2E8F0;
+}
+.table-modern tbody td {
+  padding: 12px 20px; border-bottom: 1px solid #F1F5F9;
+  color: #475569;
+}
+.table-modern tbody tr:hover { background: #F8FAFC; }
+.table-modern tbody tr:last-child td { border-bottom: none; }
+
+/* ── Badge ── */
+.badge {
+  font-size: 11px; font-weight: 600; padding: 4px 12px;
+  border-radius: 999px; display: inline-block;
+}
+.badge-blue { background: #DBEAFE; color: #1D4ED8; }
+.badge-gray { background: #F1F5F9; color: #64748B; }
+.badge-green { background: #D1FAE5; color: #059669; }
+.badge-red { background: #FEE2E2; color: #DC2626; }
+.badge-amber { background: #FEF3C7; color: #D97706; }
+.badge-purple { background: #EDE9FE; color: #6D28D9; }
+
+/* ── Filter Button ── */
+.filter-btn {
+  height: 32px; padding: 0 14px; border-radius: 999px;
+  background: white; color: #64748B; font-size: 12px; font-weight: 500;
+  border: 1px solid #E2E8F0; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.filter-btn:hover { background: #F1F5F9; }
+.filter-btn.active { background: #2563EB; color: white; border-color: #2563EB; }
+
+/* ── Section Header ── */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 24px; gap: 12px; flex-wrap: wrap;
+}
+.page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: #0F172A; }
+.page-header p { font-size: 13px; color: #64748B; margin-top: 2px; }
+.page-actions { display: flex; gap: 8px; flex-shrink: 0; }
+@media (max-width: 640px) { .page-actions { width: 100%; } .page-actions a { flex: 1; justify-content: center; } }
+
+/* ── Detail Row ── */
+.detail-row {
+  display: flex; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid #F1F5F9;
+  align-items: center; gap: 12px;
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-label { color: #94A3B8; font-size: 12px; }
+.detail-value { font-weight: 600; color: #0F172A; font-size: 13px; }
+
+/* ── Section Padding ── */
+.section-padding { padding: 20px; }
 
 /* ── Glass card ── */
 .glass-card {
