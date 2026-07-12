@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Search, Clock, AlertTriangle, CheckCircle, TrendingUp, Filter, ChevronDown, MoreHorizontal, Download, Building2 } from 'lucide-react';
 import { trialPipeline } from '@/lib/admin-data';

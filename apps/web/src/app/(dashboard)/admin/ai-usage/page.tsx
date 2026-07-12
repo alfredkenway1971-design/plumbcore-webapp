@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Brain, TrendingUp, Users, Zap, BarChart3, Search, Download, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import { featureAdoption } from '@/lib/admin-data';

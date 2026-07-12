@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Search, Building2, TrendingUp, Users, Zap, Filter, ChevronDown, MoreHorizontal, Download, Phone, Mail, MapPin, Star, ArrowUp, ArrowDown, ArrowUpDown, CheckCircle, XCircle, AlertTriangle, SlidersHorizontal, Clock } from 'lucide-react';
 import { companies, platformKPIs, getPlatformSummary } from '@/lib/admin-data';

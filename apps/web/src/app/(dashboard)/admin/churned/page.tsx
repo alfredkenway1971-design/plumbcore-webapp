@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Search, Building2, XCircle, TrendingDown, Download, ArrowDown, Clock, AlertTriangle } from 'lucide-react';
 import { companies, platformKPIs } from '@/lib/admin-data';

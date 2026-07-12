@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Search, Filter, Download, Clock, CheckCircle, AlertTriangle, XCircle, Info, Building2 } from 'lucide-react';
 import { recentActivity } from '@/lib/admin-data';

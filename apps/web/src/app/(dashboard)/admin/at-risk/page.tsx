@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { Search, Building2, AlertTriangle, Phone, Mail, MoreHorizontal, Download, ArrowUp, ArrowDown } from 'lucide-react';
 import { atRiskAccounts } from '@/lib/admin-data';
