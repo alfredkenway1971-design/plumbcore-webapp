@@ -57,7 +57,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
 function Hero({ t }: { t: (key: string) => string }) {
   const r = useRouter();
   return (
-    <section className="pt-28 pb-24 mesh-bg-enhanced overflow-hidden relative">
+    <section className="pt-28 pb-24 mesh-bg-enhanced overflow-hidden relative min-h-[80vh] flex items-center">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center stagger-fade">
           <div className="text-center lg:text-left">
@@ -88,10 +88,18 @@ function Hero({ t }: { t: (key: string) => string }) {
           </div>
           <div className="flex justify-center">
             <div className="relative w-full max-w-md">
-              <picture>
-                <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
-                <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-2xl shadow-xl rotate-1 ring-1 ring-slate-200 animate-float" />
-              </picture>
+              <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/10 via-cyan-500/5 to-transparent rounded-3xl blur-2xl" />
+              <div className="relative bg-gradient-to-br from-slate-100 to-white rounded-2xl p-2 shadow-xl ring-1 ring-slate-200/50">
+                <picture>
+                  <source srcSet="/generated/hero-plumber.webp" type="image/webp" />
+                  <img src="/generated/hero-plumber.jpg" alt="PlumbCore AI Estimate Preview" fetchPriority="high" width="800" height="800" className="w-full rounded-xl shadow-sm" />
+                </picture>
+              </div>
+              {/* Floating badge */}
+              <div className="absolute -bottom-3 -right-3 bg-white rounded-xl shadow-lg ring-1 ring-slate-200 px-4 py-2 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-semibold text-slate-700">AI Analyzing...</span>
+              </div>
             </div>
           </div>
         </div>
@@ -103,19 +111,20 @@ function Hero({ t }: { t: (key: string) => string }) {
 /* ═══ STATS ═══ */
 function StatsRow({ t }: { t: (key: string) => string }) {
   const stats = [
-    { num: process.env.NEXT_PUBLIC_STAT_PROJECTS || '—', label: t('home.statsProjectsDone') },
-    { num: process.env.NEXT_PUBLIC_STAT_CUSTOMERS || '—', label: t('home.statsHappyCustomers') },
-    { num: t('home.statsStartingAt'), label: process.env.NEXT_PUBLIC_STAT_PRICE || '$149/mo', sub: true },
-    { num: process.env.NEXT_PUBLIC_STAT_ESTIMATES || '—', label: t('home.statsAIEstimates') },
+    { icon: '📊', num: process.env.NEXT_PUBLIC_STAT_PROJECTS || '—', label: t('home.statsProjectsDone') },
+    { icon: '👥', num: process.env.NEXT_PUBLIC_STAT_CUSTOMERS || '—', label: t('home.statsHappyCustomers') },
+    { icon: '📈', num: t('home.statsStartingAt'), label: process.env.NEXT_PUBLIC_STAT_PRICE || '$149/mo', sub: true },
+    { icon: '🤖', num: process.env.NEXT_PUBLIC_STAT_ESTIMATES || '—', label: t('home.statsAIEstimates') },
   ];
   return (
-    <section className="py-12 bg-slate-50 ring-1 ring-black/5">
+    <section className="py-16 bg-white ring-1 ring-black/5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s, i) => (
-            <div key={i}>
-              <p className={`${s.sub ? 'text-sm text-blue-500 font-semibold' : 'text-3xl sm:text-4xl font-extrabold text-slate-900'} ${s.num === '—' ? 'opacity-40 select-none' : ''}`}>{s.num}</p>
-              <p className="text-sm text-slate-500 mt-1">{s.label}{s.num === '—' ? <span className="block text-[10px] text-slate-400 mt-0.5">Awaiting data</span> : ''}</p>
+            <div key={i} className="bg-slate-50 rounded-2xl p-5 text-center ring-1 ring-black/5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
+              <span className="text-2xl block mb-2">{s.icon}</span>
+              <p className={`${s.sub ? 'text-sm text-blue-500 font-semibold' : 'text-2xl sm:text-3xl font-extrabold text-slate-900'} ${s.num === '—' ? 'opacity-40 select-none' : ''}`}>{s.num}</p>
+              <p className="text-xs text-slate-500 mt-1">{s.label}{s.num === '—' ? <span className="block text-[10px] text-slate-400 mt-0.5">Awaiting data</span> : ''}</p>
             </div>
           ))}
         </div>
@@ -130,7 +139,7 @@ function AboutSection({ t }: { t: (key: string) => string }) {
     <section className="py-16 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl shadow-blue-500/10 ring-1 ring-blue-200/50">
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl shadow-blue-500/10 ring-1 ring-blue-200/50 relative bg-gradient-to-br from-blue-50 to-cyan-50 p-1">
               <picture>
                 <source srcSet="/generated/dashboard-screenshot.webp" type="image/webp" />
                 <img src="/generated/dashboard-screenshot.jpg" alt="PlumbCore AI Dashboard" loading="lazy" width="800" height="600" className="w-full h-full object-cover" />
@@ -429,7 +438,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
         </div>
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {testimonials.map((tItem, i) => (
-            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center md:text-left">
+            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center md:text-left hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
               <div className="flex gap-1 mb-3 justify-center md:justify-start">{Array.from({length:tItem.rating}).map((_,j) => <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />)}</div>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">&ldquo;{tItem.text}&rdquo;</p>
               <div className="flex items-center gap-3 justify-center md:justify-start">
@@ -489,7 +498,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
 function CtaSection({ t }: { t: (key: string) => string }) {
   const r = useRouter();
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.3),transparent)]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-3">{t('home.ctaTitle')}</h2>
@@ -506,7 +515,7 @@ function CtaSection({ t }: { t: (key: string) => string }) {
 /* ═══ FOOTER ═══ */
 function Footer({ t }: { t: (key: string) => string }) {
   return (
-    <footer className="bg-slate-50 text-slate-500 py-12 sm:py-16 ring-1 ring-inset ring-black/5">
+    <footer className="bg-slate-50 text-slate-500 py-10 sm:py-14 ring-1 ring-inset ring-black/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           <div>
