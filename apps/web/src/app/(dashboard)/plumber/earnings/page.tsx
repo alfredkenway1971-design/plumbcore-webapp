@@ -48,7 +48,7 @@ export default function EarningsPage() {
     <div className="p-4 sm:p-6 space-y-5 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Earnings</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Earnings</h1>
           <p className="text-sm text-slate-500 mt-0.5">Track your revenue and payouts</p>
         </div>
         <a
@@ -63,15 +63,15 @@ export default function EarningsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-blue-400">This Week</p>
-          <p className="text-xl font-bold text-white mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-emerald-400">This Month</p>
-          <p className="text-xl font-bold text-white mt-1">${(summary.thisMonth / 100).toFixed(2)}</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisMonth / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-400">Lifetime</p>
-          <p className="text-xl font-bold text-white mt-1">${(summary.lifetime / 100).toLocaleString()}</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.lifetime / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-amber-400">Pending</p>
@@ -81,21 +81,21 @@ export default function EarningsPage() {
 
       {/* Revenue Breakdown */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Revenue Breakdown</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Revenue Breakdown</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Jobs This Month</span>
-              <span className="text-sm font-semibold text-white">{summary.jobsThisMonth}</span>
+              <span className="text-sm font-semibold text-slate-900">{summary.jobsThisMonth}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Avg. Per Job</span>
-              <span className="text-sm font-semibold text-white">${(summary.avgPerJob / 100).toFixed(2)}</span>
+              <span className="text-sm font-semibold text-slate-900">${(summary.avgPerJob / 100).toFixed(2)}</span>
             </div>
             <div className="h-px bg-white/5 my-1" />
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Lead Fees Charged (PlumbCore)</span>
-              <span className="text-sm font-semibold text-white">${(summary.leadFeesCharged / 100).toFixed(2)}</span>
+              <span className="text-sm font-semibold text-slate-900">${(summary.leadFeesCharged / 100).toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Platform Fees Paid</span>
@@ -106,7 +106,7 @@ export default function EarningsPage() {
             <p className="text-xs text-slate-500 mb-1">Next Payout</p>
             <div className="flex items-center gap-2">
               <I.Clock className="w-4 h-4 text-blue-400" />
-              <p className="text-sm font-semibold text-white">{summary.nextPayoutDate}</p>
+              <p className="text-sm font-semibold text-slate-900">{summary.nextPayoutDate}</p>
             </div>
             <p className="text-xs text-slate-600 mt-1">Weekly payout — every Sunday</p>
           </div>
@@ -119,7 +119,7 @@ export default function EarningsPage() {
           <div className="flex items-center gap-2">
             <I.Bank className="w-5 h-5 text-slate-500" />
             <div>
-              <p className="text-sm font-semibold text-white">Payout Method</p>
+              <p className="text-sm font-semibold text-slate-900">Payout Method</p>
               <p className="text-xs text-slate-500">Stripe Connect — Weekly automatic transfers</p>
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function EarningsPage() {
       {/* Payout History */}
       <Card variant="bordered" padding="none">
         <div className="px-4 py-3 border-b border-white/5">
-          <h3 className="text-sm font-semibold text-white">Payout History</h3>
+          <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -152,7 +152,7 @@ export default function EarningsPage() {
                 payouts.map(p => (
                   <tr key={p.id} className="hover:bg-white/[0.02]">
                     <td className="px-4 py-3">
-                      <span className="text-sm font-medium text-white">{p.period_start} — {p.period_end}</span>
+                      <span className="text-sm font-medium text-slate-900">{p.period_start} — {p.period_end}</span>
                     </td>
                     <td className="px-4 py-3 text-slate-300">${(p.gross_amount / 100).toFixed(2)}</td>
                     <td className="px-4 py-3 text-amber-400">-${(p.platform_fee / 100).toFixed(2)}</td>

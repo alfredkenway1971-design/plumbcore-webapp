@@ -19,25 +19,25 @@ export default function PayoutsPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div><h1 className="text-xl sm:text-2xl font-bold text-white">Payouts</h1><p className="text-sm text-slate-500 mt-0.5">Track lead fees owed to plumbers — Weekly schedule</p></div>
+      <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Payouts</h1><p className="text-sm text-slate-500 mt-0.5">Track lead fees owed to plumbers — Weekly schedule</p></div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-blue-400">Total Owed</p>
-          <p className="text-lg font-bold text-white mt-1">${(totalPending / 100).toLocaleString()}</p>
+          <p className="text-lg font-bold text-slate-900 mt-1">${(totalPending / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-emerald-400">Paid This Month</p>
-          <p className="text-lg font-bold text-white mt-1">${(totalPaid / 100).toLocaleString()}</p>
+          <p className="text-lg font-bold text-slate-900 mt-1">${(totalPaid / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-amber-400">Pending Pay</p>
-          <p className="text-lg font-bold text-white mt-1">{payouts.filter(p => p.status === 'pending').length}</p>
+          <p className="text-lg font-bold text-slate-900 mt-1">{payouts.filter(p => p.status === 'pending').length}</p>
         </div>
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-400">Connected Plumbers</p>
-          <p className="text-lg font-bold text-white mt-1">{connectedPlumbers}/{mockPlumberProfiles.length}</p>
+          <p className="text-lg font-bold text-slate-900 mt-1">{connectedPlumbers}/{mockPlumberProfiles.length}</p>
         </div>
       </div>
 
@@ -50,7 +50,7 @@ export default function PayoutsPage() {
       {/* Payouts Table */}
       <Card variant="bordered" padding="none">
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white">Payout History</h3>
+          <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
           <Button size="sm" variant="secondary">Process Weekly ↓</Button>
         </div>
         <div className="overflow-x-auto">
@@ -71,7 +71,7 @@ export default function PayoutsPage() {
               {payouts.map(p => (
                 <tr key={p.id} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
-                    <span className="text-sm font-medium text-white">{p.plumber_name || '—'}</span>
+                    <span className="text-sm font-medium text-slate-900">{p.plumber_name || '—'}</span>
                   </td>
                   <td className="px-4 py-3 text-xs text-slate-400">{p.period_start} — {p.period_end}</td>
                   <td className="px-4 py-3 text-slate-300">${(p.gross_amount / 100).toFixed(2)}</td>

@@ -186,7 +186,7 @@ export default function ReviewsPage() {
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">Reviews This Month</p>
               <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
-                <I.Star className="w-5 h-5 text-white" />
+                <I.Star className="w-5 h-5 text-slate-900" />
               </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">{stats.count}</p>
@@ -204,7 +204,7 @@ export default function ReviewsPage() {
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">Average Rating</p>
               <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center">
-                <I.StarFill className="w-5 h-5 text-white" />
+                <I.StarFill className="w-5 h-5 text-slate-900" />
               </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">{stats.avgRating || '—'}</p>
@@ -220,7 +220,7 @@ export default function ReviewsPage() {
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">Response Rate</p>
               <div className="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center">
-                <I.Users className="w-5 h-5 text-white" />
+                <I.Users className="w-5 h-5 text-slate-900" />
               </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">
@@ -237,7 +237,7 @@ export default function ReviewsPage() {
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">Pending Requests</p>
               <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center">
-                <I.Clock className="w-5 h-5 text-white" />
+                <I.Clock className="w-5 h-5 text-slate-900" />
               </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">{pendingJobs.length}</p>

@@ -55,7 +55,7 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
       <div className="flex items-start justify-between mb-3">
         <p className="text-sm font-medium text-slate-500">{label}</p>
         <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center`}>
-          <Icon className="w-5 h-5 text-white" />
+          <Icon className="w-5 h-5 text-slate-900" />
         </div>
       </div>
       <p className="text-3xl font-bold text-slate-900 mb-1.5">{value}</p>
@@ -560,7 +560,7 @@ const QuickActionsBar = memo(function QuickActionsBar() {
           <button key={i} onClick={() => router.push(a.href)}
             className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-slate-50 transition-colors active:scale-[0.98] group">
             <div className={`w-9 h-9 rounded-xl ${a.color} flex items-center justify-center shadow-sm group-hover:shadow transition-shadow`}>
-              <a.icon className="w-4 h-4 text-white" />
+              <a.icon className="w-4 h-4 text-slate-900" />
             </div>
             <span className="text-sm font-medium text-slate-700">{a.label}</span>
             <I.ArrowUp className="w-3.5 h-3.5 text-slate-300 ml-auto rotate-45 group-hover:text-slate-500 transition-colors" />
@@ -633,7 +633,7 @@ const UpgradeCard = memo(function UpgradeCard() {
         <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5" />
         <div className="relative z-10">
           <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm"><I.Zap className="w-4 h-4 text-white" /></div>
-          <h3 className="text-base font-bold text-white mb-1.5">Start Your Free Trial!</h3>
+          <h3 className="text-base font-bold text-slate-900 mb-1.5">Start Your Free Trial!</h3>
           <p className="text-xs text-blue-100 leading-relaxed mb-4">Unlock AI photo estimates, voice receptionist, and advanced analytics.</p>
           <button onClick={() => router.push('/#pricing')} className="h-9 px-4 rounded-xl bg-white text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
         </div>
@@ -647,9 +647,9 @@ const UpgradeCard = memo(function UpgradeCard() {
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11px] font-medium text-white/80 uppercase tracking-wider">{status === 'active' ? 'Active' : status}</span>
+          <span className="text-[11px] font-medium text-slate-900/80 uppercase tracking-wider">{status === 'active' ? 'Active' : status}</span>
         </div>
-        <h3 className="text-lg font-bold text-white mb-0.5">{label} Plan</h3>
+        <h3 className="text-lg font-bold text-slate-900 mb-0.5">{label} Plan</h3>
         {tier === 'enterprise' ? (
           <p className="text-xs text-blue-100 mb-3">Custom pricing</p>
         ) : (
@@ -712,7 +712,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
       <div className="flex items-center justify-between p-5 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
-            <I.Sparkles className="w-4 h-4 text-white" />
+            <I.Sparkles className="w-4 h-4 text-slate-900" />
           </div>
           <h3 className="text-sm font-semibold tracking-tight text-slate-900">PlumbCore AI</h3>
         </div>
@@ -810,7 +810,7 @@ const MobileBottomNav = memo(function MobileBottomNav() {
             }`}>
             {item.highlight ? (
               <div className="w-12 h-12 rounded-2xl bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-200">
-                <item.icon className="w-6 h-6 text-white" />
+                <item.icon className="w-6 h-6 text-slate-900" />
               </div>
             ) : (
               <item.icon className={`w-5 h-5 ${item.active ? 'text-blue-500' : ''}`} />

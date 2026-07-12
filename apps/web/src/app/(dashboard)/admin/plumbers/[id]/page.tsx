@@ -60,7 +60,7 @@ export default function AdminPlumberDetailPage() {
             {plumber.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">{plumber.company_name}</h1>
+            <h1 className="text-xl font-bold text-slate-900">{plumber.company_name}</h1>
             <p className="text-sm text-slate-500">@{plumber.slug}</p>
           </div>
           <span className={`ml-auto inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
@@ -75,41 +75,41 @@ export default function AdminPlumberDetailPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Plan Tier</p>
-          <p className="text-sm font-semibold text-white mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
+          <p className="text-sm font-semibold text-slate-900 mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Lead Fee</p>
-          <p className="text-sm font-semibold text-white mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}/job</p>
+          <p className="text-sm font-semibold text-slate-900 mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}/job</p>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Monthly Leads</p>
-          <p className="text-sm font-semibold text-white mt-0.5">{plumber.current_month_leads} / {plumber.monthly_lead_limit}</p>
+          <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.current_month_leads} / {plumber.monthly_lead_limit}</p>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Rating</p>
           <div className="flex items-center gap-1 mt-0.5">
             <I.Star className="w-4 h-4 text-amber-400" />
-            <span className="text-sm font-semibold text-white">{plumber.avg_rating}</span>
+            <span className="text-sm font-semibold text-slate-900">{plumber.avg_rating}</span>
             <span className="text-xs text-slate-500 ml-1">({plumber.total_reviews} reviews)</span>
           </div>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Acceptance Rate</p>
-          <p className="text-sm font-semibold text-white mt-0.5">{plumber.acceptance_rate}%</p>
+          <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.acceptance_rate}%</p>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Response Time</p>
-          <p className="text-sm font-semibold text-white mt-0.5">{plumber.response_time_avg} min avg</p>
+          <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.response_time_avg} min avg</p>
         </Card>
       </div>
 
       {/* Revenue Card */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Revenue Summary</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Revenue Summary</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div>
             <p className="text-xs text-slate-500">SaaS (Monthly)</p>
-            <p className="text-lg font-bold text-white">{plumber.plan_tier === 'enterprise' ? 'Custom' : `$${(PLAN_PRICES[plumber.plan_tier] / 100).toFixed(0)}`}</p>
+            <p className="text-lg font-bold text-slate-900">{plumber.plan_tier === 'enterprise' ? 'Custom' : `$${(PLAN_PRICES[plumber.plan_tier] / 100).toFixed(0)}`}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Lead Revenue (Mo)</p>
@@ -121,7 +121,7 @@ export default function AdminPlumberDetailPage() {
           </div>
           <div>
             <p className="text-xs text-slate-500">Jobs Completed</p>
-            <p className="text-lg font-bold text-white">{plumber.total_jobs_completed.toLocaleString()}</p>
+            <p className="text-lg font-bold text-slate-900">{plumber.total_jobs_completed.toLocaleString()}</p>
           </div>
         </div>
       </Card>
@@ -129,7 +129,7 @@ export default function AdminPlumberDetailPage() {
       {/* Specialties & Area */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-2">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-2">
             <I.Wrench className="w-4 h-4 text-slate-500" /> Specialties
           </h3>
           <div className="flex flex-wrap gap-1.5">
@@ -139,7 +139,7 @@ export default function AdminPlumberDetailPage() {
           </div>
         </Card>
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-2">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-2">
             <I.MapPin className="w-4 h-4 text-slate-500" /> Service Area
           </h3>
           <div className="flex flex-wrap gap-1.5">
@@ -153,7 +153,7 @@ export default function AdminPlumberDetailPage() {
       {/* Connect & Compliance */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white mb-2">Stripe Connect</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Stripe Connect</h3>
           {plumber.stripe_onboarding_complete ? (
             <div className="flex items-center gap-2">
               <I.Check className="w-4 h-4 text-emerald-400" />
@@ -165,7 +165,7 @@ export default function AdminPlumberDetailPage() {
           )}
         </Card>
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white mb-2">Background Check</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Background Check</h3>
           <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
             plumber.background_check_status === 'cleared' ? 'bg-emerald-500/10 text-emerald-400' :
             plumber.background_check_status === 'failed' ? 'bg-red-500/10 text-red-400' :
@@ -179,7 +179,7 @@ export default function AdminPlumberDetailPage() {
 
       {/* Admin Actions */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Admin Actions</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Admin Actions</h3>
         <div className="flex gap-2 flex-wrap">
           <Button size="sm" onClick={() => router.push('/admin/payouts')}>View Payouts →</Button>
           <Button size="sm" variant="secondary" onClick={() => router.push(`/admin/leads?plumber=${plumber.id}`)}>View Leads →</Button>

@@ -36,27 +36,27 @@ export default function AdminAiUsageStatsPage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-white">AI Usage Stats</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">AI Usage Stats</h1>
           <p className="text-sm text-slate-500 mt-1">Monitor AI feature adoption and usage patterns</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-[#0F172A] ring-1 ring-white/5 text-sm font-medium text-slate-300 hover:bg-white/[0.02] transition-all">
+        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Weekly AI Calls', value: totalWeekly.toLocaleString(), icon: Zap, color: 'text-purple-500', bg: 'bg-purple-500/10' }, { label: 'Photo Estimates', value: totalEstimates.toLocaleString(), icon: Brain, color: 'text-blue-500', bg: 'bg-blue-500/10' }, { label: 'Voice Notes', value: totalVoice.toLocaleString(), icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-500/10' }, { label: 'AI Chats', value: totalChats.toLocaleString(), icon: Users, color: 'text-amber-400', bg: 'bg-amber-500/10' } ].map((s, i) => (
-          <div key={i} className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 p-5 shadow-lg shadow-black/30">
+        {[ { label: 'Weekly AI Calls', value: totalWeekly.toLocaleString(), icon: Zap, color: 'text-purple-500', bg: 'bg-purple-500/10' }, { label: 'Photo Estimates', value: totalEstimates.toLocaleString(), icon: Brain, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Voice Notes', value: totalVoice.toLocaleString(), icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'AI Chats', value: totalChats.toLocaleString(), icon: Users, color: 'text-amber-600', bg: 'bg-amber-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
-            <p className="text-2xl font-bold text-white">{s.value}</p>
+            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-[#0F172A] rounded-2xl ring-1 ring-white/5 p-6 shadow-lg shadow-black/30">
-          <h3 className="text-sm font-semibold text-white mb-4">Daily AI Usage (This Week)</h3>
+        <div className="lg:col-span-2 bg-white rounded-2xl ring-1 ring-white/5 p-6 shadow-sm ring-1 ring-black/5">
+          <h3 className="text-sm font-semibold text-slate-900 mb-4">Daily AI Usage (This Week)</h3>
           <div className="flex items-end gap-3 h-48">
             {usageByDay.map(d => {
               const total = d.estimates + d.voiceNotes + d.chats;
@@ -80,15 +80,15 @@ export default function AdminAiUsageStatsPage() {
           </div>
         </div>
 
-        <div className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 p-6 shadow-lg shadow-black/30">
-          <h3 className="text-sm font-semibold text-white mb-4">Top Features</h3>
+        <div className="bg-white rounded-2xl ring-1 ring-white/5 p-6 shadow-sm ring-1 ring-black/5">
+          <h3 className="text-sm font-semibold text-slate-900 mb-4">Top Features</h3>
           <div className="space-y-4">
             {featureAdoption.slice(0, 4).map(f => {
               const TrendIcon = trendIcons[f.trend];
               return (
                 <div key={f.featureKey}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-sm font-medium text-slate-300">{f.featureName}</span>
+                    <span className="text-sm font-medium text-slate-700">{f.featureName}</span>
                     <div className="flex items-center gap-1"><TrendIcon className={`w-3.5 h-3.5 ${trendColors[f.trend]}`} /><span className="text-xs font-semibold text-slate-400">{f.adoptionRate}%</span></div>
                   </div>
                   <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
@@ -102,19 +102,19 @@ export default function AdminAiUsageStatsPage() {
         </div>
       </div>
 
-      <div className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 shadow-lg shadow-black/30 overflow-hidden">
-        <div className="px-5 py-4 border-b border-white/5">
+      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-100">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">Feature Adoption Details</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Feature Adoption Details</h3>
             <div className="relative w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-              <input placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 bg-white/[0.02] border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+              <input placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
             </div>
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead><tr className="border-b border-white/5">
+            <thead><tr className="border-b border-slate-100">
               {['Feature', 'Enabled', 'Weekly Users', 'Adoption', 'Trend'].map((h, i) => (
                 <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
               ))}
@@ -123,8 +123,8 @@ export default function AdminAiUsageStatsPage() {
               {filtered.map(f => {
                 const TrendIcon = trendIcons[f.trend];
                 return (
-                  <tr key={f.featureKey} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-5"><span className="text-sm font-semibold text-white">{f.featureName}</span></td>
+                  <tr key={f.featureKey} className="border-b border-white/[0.03] hover:hover:bg-slate-50 transition-colors">
+                    <td className="py-3.5 px-5"><span className="text-sm font-semibold text-slate-900">{f.featureName}</span></td>
                     <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{f.totalEnabled.toLocaleString()}</span></td>
                     <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{f.weeklyActiveUsers.toLocaleString()}</span></td>
                     <td className="py-3.5 px-5">

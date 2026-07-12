@@ -66,7 +66,7 @@ export default function PromoCodesPage() {
   return (
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-xl sm:text-2xl font-bold text-white">Promo Codes</h1><p className="text-sm text-slate-500 mt-0.5">Create and manage discount codes</p></div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Promo Codes</h1><p className="text-sm text-slate-500 mt-0.5">Create and manage discount codes</p></div>
         <Button size="sm" onClick={() => { generateCode(); setShowCreate(true); }}>+ New Code</Button>
       </div>
 
@@ -80,18 +80,18 @@ export default function PromoCodesPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px] text-sm">
             <thead><tr className="bg-slate-800/30 border-b border-white/10">
-              <th className="text-left px-4 py-3 font-semibold text-white">Code</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Discount</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Plans</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Expires</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Usage</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Status</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Toggle</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Code</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Discount</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Plans</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Expires</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Usage</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Status</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Toggle</th>
             </tr></thead>
             <tbody className="divide-y divide-white/5">
               {promos.map(p => (
                 <tr key={p.id} className="hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 font-mono font-bold text-white">{p.code}</td>
+                  <td className="px-4 py-3 font-mono font-bold text-slate-900">{p.code}</td>
                   <td className="px-4 py-3 text-slate-300">{p.discountType === 'percent' ? `${p.discountValue}%` : `$${p.discountValue}`}</td>
                   <td className="px-4 py-3 text-xs text-slate-500">{p.applicablePlans.join(', ')}</td>
                   <td className="px-4 py-3 text-slate-500 text-xs">{p.expiryDate || 'Never'}</td>

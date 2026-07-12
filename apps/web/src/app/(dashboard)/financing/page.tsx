@@ -81,7 +81,7 @@ function StatCard({ icon: Icon, label, value, sub, color }: {
   return (
     <Card padding="md" className="flex items-start gap-4">
       <div className={`shrink-0 w-10 h-10 rounded-xl ${color} flex items-center justify-center`}>
-        <Icon className="w-5 h-5 text-white" />
+        <Icon className="w-5 h-5 text-slate-900" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">{label}</p>

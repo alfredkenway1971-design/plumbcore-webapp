@@ -93,10 +93,10 @@ export default function PlumberProfilePage() {
           {plumber.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
         </div>
         <div className="flex-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-white">{plumber.company_name}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{plumber.company_name}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-blue-400">{tierLabel}</span>
-            <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${plumber.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>{plumber.status}</span>
+            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600">{tierLabel}</span>
+            <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${plumber.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{plumber.status}</span>
           </div>
         </div>
         <Button size="sm" onClick={() => saveProfile({})} disabled={saving}>{saving ? 'Saving...' : 'Save'}</Button>
@@ -107,7 +107,7 @@ export default function PlumberProfilePage() {
         {PROFILE_TABS.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-              activeTab === tab.key ? 'text-cyan-400 border-cyan-500' : 'text-slate-500 border-transparent hover:text-slate-300'
+              activeTab === tab.key ? 'text-cyan-600 border-cyan-500' : 'text-slate-500 border-transparent hover:text-slate-700'
             }`}>
             {tab.label}
           </button>
@@ -139,24 +139,24 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
     <>
       {/* Service Area */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
+        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
           <I.MapPin className="w-4 h-4 text-slate-500" /> Service Area
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.service_area_zipcodes.map(z => (
-            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-white/5 text-xs text-slate-300">{z}</span>
+            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-white/5 text-xs text-slate-700">{z}</span>
           ))}
         </div>
       </Card>
 
       {/* Specialties */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
+        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
           <I.Wrench className="w-4 h-4 text-slate-500" /> Specialties
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.specialties.map(s => (
-            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-800 text-xs font-medium text-slate-300">{s}</span>
+            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-800 text-xs font-medium text-slate-700">{s}</span>
           ))}
         </div>
       </Card>
@@ -178,44 +178,44 @@ function FinancialTab({ plumber, onConnectStripe, saving }: { plumber: PlumberPr
     <>
       {/* Plan Info */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Plan & Pricing</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Plan & Pricing</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div>
             <p className="text-xs text-slate-500">Plan Tier</p>
-            <p className="text-sm font-semibold text-white mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Lead Fee (per job)</p>
-            <p className="text-sm font-semibold text-white mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Monthly Lead Limit</p>
-            <p className="text-sm font-semibold text-white mt-0.5">{plumber.monthly_lead_limit}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.monthly_lead_limit}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Current Month Leads</p>
-            <p className="text-sm font-semibold text-white mt-0.5">{plumber.current_month_leads}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.current_month_leads}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Payout Schedule</p>
-            <p className="text-sm font-semibold text-white mt-0.5 capitalize">{plumber.payout_schedule}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5 capitalize">{plumber.payout_schedule}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Payout Threshold</p>
-            <p className="text-sm font-semibold text-white mt-0.5">${(plumber.payout_threshold_cents / 100).toFixed(2)}</p>
+            <p className="text-sm font-semibold text-slate-900 mt-0.5">${(plumber.payout_threshold_cents / 100).toFixed(2)}</p>
           </div>
         </div>
       </Card>
 
       {/* Stripe Connect */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
+        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
           <I.Bank className="w-4 h-4 text-slate-500" /> Bank Account (Stripe Connect)
         </h3>
         {plumber.stripe_onboarding_complete ? (
           <div className="flex items-center gap-2 text-sm">
-            <I.Check className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-400 font-medium">Connected</span>
+            <I.Check className="w-4 h-4 text-emerald-600" />
+            <span className="text-emerald-600 font-medium">Connected</span>
             <span className="text-slate-500 text-xs ml-2">Account: {plumber.stripe_connect_account_id}</span>
           </div>
         ) : (
@@ -225,7 +225,7 @@ function FinancialTab({ plumber, onConnectStripe, saving }: { plumber: PlumberPr
               {saving ? 'Loading...' : 'Link Bank Account'}
             </Button>
             {plumber.stripe_onboarding_url && (
-              <p className="text-xs text-slate-500 mt-1">Already started? <a href={plumber.stripe_onboarding_url} target="_blank" className="text-blue-400 hover:underline">Continue onboarding</a></p>
+              <p className="text-xs text-slate-500 mt-1">Already started? <a href={plumber.stripe_onboarding_url} target="_blank" className="text-blue-600 hover:underline">Continue onboarding</a></p>
             )}
           </div>
         )}
@@ -235,12 +235,12 @@ function FinancialTab({ plumber, onConnectStripe, saving }: { plumber: PlumberPr
       <div className="grid grid-cols-2 gap-3">
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">This Month Lead Revenue</p>
-          <p className="text-xl font-bold text-white mt-1">${(plumber.current_month_leads * plumber.lead_fee_cents / 100).toLocaleString()}</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">${(plumber.current_month_leads * plumber.lead_fee_cents / 100).toLocaleString()}</p>
           <p className="text-[10px] text-slate-600 mt-0.5">{plumber.current_month_leads} leads at ${(plumber.lead_fee_cents / 100).toFixed(2)} each</p>
         </Card>
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">PlumbCore Processing Fee</p>
-          <p className="text-xl font-bold text-amber-400 mt-1">${(plumber.current_month_leads * (4900 - plumber.lead_fee_cents) / 100).toLocaleString()}</p>
+          <p className="text-xl font-bold text-amber-600 mt-1">${(plumber.current_month_leads * (4900 - plumber.lead_fee_cents) / 100).toLocaleString()}</p>
           <p className="text-[10px] text-slate-600 mt-0.5">$49 deposit - ${(plumber.lead_fee_cents / 100).toFixed(2)} lead fee</p>
         </Card>
       </div>
@@ -264,7 +264,7 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
           <Card key={m.label} variant="bordered" padding="md">
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm text-slate-400">{m.label}</p>
-              <p className="text-lg font-bold text-white">{m.value}</p>
+              <p className="text-lg font-bold text-slate-900">{m.value}</p>
             </div>
             <div className="h-2 bg-white/5 rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${m.pct}%`, backgroundColor: m.color }} />
@@ -274,17 +274,17 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
       </div>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Reviews</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Reviews</h3>
         {plumber.total_reviews > 0 ? (
           <div className="space-y-3">
             {/* Star rating display */}
             <div className="flex items-center gap-2">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map(s => (
-                  <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`} />
+                  <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-600 fill-amber-400' : 'text-slate-600'}`} />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-white">{plumber.avg_rating}</span>
+              <span className="text-sm font-semibold text-slate-900">{plumber.avg_rating}</span>
               <span className="text-xs text-slate-500">({plumber.total_reviews} reviews)</span>
             </div>
           </div>
@@ -302,9 +302,9 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
   const [insurance, setInsurance] = useState(plumber.insurance_info);
 
   const bgCheckColors: Record<BackgroundCheckStatus, { bg: string; text: string }> = {
-    pending: { bg: 'bg-amber-500/10', text: 'text-amber-400' },
-    cleared: { bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
-    failed: { bg: 'bg-red-500/10', text: 'text-red-400' },
+    pending: { bg: 'bg-amber-50', text: 'text-amber-600' },
+    cleared: { bg: 'bg-emerald-50', text: 'text-emerald-600' },
+    failed: { bg: 'bg-red-50', text: 'text-red-600' },
   };
   const bcCfg = bgCheckColors[plumber.background_check_status];
 
@@ -312,7 +312,7 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-2">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-2">
             <I.Shield className="w-4 h-4 text-slate-500" /> Background Check
           </h3>
           <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${bcCfg.bg} ${bcCfg.text}`}>
@@ -320,28 +320,28 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
           </span>
         </Card>
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-white mb-2">License</h3>
-          <p className="text-sm text-slate-300">{plumber.license_number || 'Not provided'}</p>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">License</h3>
+          <p className="text-sm text-slate-700">{plumber.license_number || 'Not provided'}</p>
         </Card>
       </div>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Insurance</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Insurance</h3>
         <p className="text-sm text-slate-400">{plumber.insurance_info || 'Not provided'}</p>
       </Card>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-white mb-3">Update Compliance Info</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Update Compliance Info</h3>
         <div className="space-y-3">
           <div>
             <label className="block text-xs text-slate-500 mb-1">License Number</label>
             <input value={license} onChange={e => setLicense(e.target.value)}
-              className="w-full rounded-xl bg-[#0F172A] border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
+              className="w-full rounded-xl bg-white border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
           </div>
           <div>
             <label className="block text-xs text-slate-500 mb-1">Insurance Info</label>
             <textarea value={insurance} onChange={e => setInsurance(e.target.value)} rows={2}
-              className="w-full rounded-xl bg-[#0F172A] border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500 resize-none" />
+              className="w-full rounded-xl bg-white border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500 resize-none" />
           </div>
           <Button size="sm" onClick={() => onUpdate({ license_number: license, insurance_info: insurance })}>Save Changes</Button>
         </div>
@@ -361,7 +361,7 @@ function StatCard({ label, value, icon: Icon, sub }: { label: string; value: str
         {sub && <div>{sub}</div>}
       </div>
       <p className="text-xs text-slate-500">{label}</p>
-      <p className="text-lg font-bold text-white mt-0.5">{value}</p>
+      <p className="text-lg font-bold text-slate-900 mt-0.5">{value}</p>
     </Card>
   );
 }

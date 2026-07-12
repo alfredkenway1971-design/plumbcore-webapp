@@ -62,7 +62,7 @@ export default function CampaignsPage() {
   return (
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-xl sm:text-2xl font-bold text-white">Email Campaigns</h1><p className="text-sm text-slate-500 mt-0.5">Create, schedule, and track email campaigns</p></div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Email Campaigns</h1><p className="text-sm text-slate-500 mt-0.5">Create, schedule, and track email campaigns</p></div>
         <Button size="sm" onClick={() => setShowCreate(true)}>+ New Campaign</Button>
       </div>
 
@@ -77,18 +77,18 @@ export default function CampaignsPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px] text-sm">
             <thead><tr className="bg-slate-800/30 border-b border-white/10">
-              <th className="text-left px-4 py-3 font-semibold text-white">Subject</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Segment</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Status</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Sent</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Opens</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Clicks</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Date</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Subject</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Segment</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Status</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Sent</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Opens</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Clicks</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Date</th>
             </tr></thead>
             <tbody className="divide-y divide-white/5">
               {campaigns.map(c => (
                 <tr key={c.id} className="hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 font-medium text-white max-w-[200px] truncate">{c.subject}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900 max-w-[200px] truncate">{c.subject}</td>
                   <td className="px-4 py-3 capitalize text-slate-400">{c.segment}</td>
                   <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.status === 'sent' ? 'bg-green-500/10 text-green-300' : c.status === 'scheduled' ? 'bg-blue-500/10 text-blue-300' : 'bg-slate-800/30 text-slate-400'}`}>{c.status}</span></td>
                   <td className="px-4 py-3 text-slate-400">{c.sentCount || '—'}</td>

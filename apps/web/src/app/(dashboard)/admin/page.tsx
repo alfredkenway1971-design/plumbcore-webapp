@@ -20,15 +20,15 @@ import { useAuthStore } from '@/lib/store';
    CONSTANTS
    ═══════════════════════════════════════════ */
 const riskColors: Record<string, { bg: string; text: string; dot: string }> = {
-  high: { bg: 'bg-red-500/100/10', text: 'text-red-300', dot: 'bg-red-500/100' },
-  medium: { bg: 'bg-amber-500/10', text: 'text-amber-300', dot: 'bg-amber-500' },
-  low: { bg: 'bg-emerald-500/100/10', text: 'text-emerald-300', dot: 'bg-emerald-500/100' },
+  high: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
+  medium: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500' },
+  low: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
 };
 
 const engagementRiskColors: Record<string, { bg: string; text: string; dot: string }> = {
-  high: { bg: 'bg-red-500/100/10', text: 'text-red-300', dot: 'bg-red-500/100' },
-  medium: { bg: 'bg-amber-500/10', text: 'text-amber-300', dot: 'bg-amber-500' },
-  low: { bg: 'bg-emerald-500/100/10', text: 'text-emerald-300', dot: 'bg-emerald-500/100' },
+  high: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
+  medium: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500' },
+  low: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
 };
 
 const planColors: Record<string, string> = {
@@ -59,10 +59,10 @@ const activityIconMap: Record<string, any> = {
 };
 
 const activityColorMap: Record<string, string> = {
-  success: 'bg-emerald-500/100/10 text-emerald-400',
-  warning: 'bg-amber-500/10 text-amber-400',
-  error: 'bg-red-500/100/10 text-red-400',
-  info: 'bg-blue-500/10 text-blue-400',
+  success: 'bg-emerald-50 text-emerald-600',
+  warning: 'bg-amber-50 text-amber-600',
+  error: 'bg-red-50 text-red-600',
+  info: 'bg-blue-50 text-blue-600',
 };
 
 /* ═══════════════════════════════════════════
@@ -84,7 +84,7 @@ function KPICards() {
       change: `+${platformKPIs.plumberGrowth}%`,
       trend: 'up' as const,
       icon: Users,
-      color: 'bg-emerald-500/100',
+      color: 'bg-emerald-500',
     },
     {
       label: 'Active Free Trials',
@@ -100,7 +100,7 @@ function KPICards() {
       change: platformKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%',
       trend: platformKPIs.churnTrend === 'down' ? ('down' as const) : ('up' as const),
       icon: TrendingDown,
-      color: 'bg-red-500/100',
+      color: 'bg-red-500',
     },
   ];
 
@@ -113,21 +113,21 @@ function KPICards() {
         return (
           <div
             key={kpi.label}
-            className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
               <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center`}>
-                <Icon className="w-5 h-5 text-white" />
+                <Icon className="w-5 h-5 text-slate-900" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-white mb-1.5">{kpi.value}</p>
+            <p className="text-3xl font-bold text-slate-900 mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
               <span
                 className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
                   isGoodDown || (!isPositive && kpi.label !== 'Churn Rate')
-                    ? 'bg-red-500/10 text-red-400'
-                    : 'bg-emerald-500/10 text-emerald-400'
+                    ? 'bg-red-50 text-red-600'
+                    : 'bg-emerald-50 text-emerald-600'
                 }`}
               >
                 {isPositive || isGoodDown ? (
@@ -186,16 +186,16 @@ function MRRGrowthChart() {
   const pctChange = ((totalThis - totalPrev) / totalPrev * 100).toFixed(1);
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-white">MRR Growth (12 Months)</h3>
-            <span className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${+pctChange >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+            <h3 className="text-base font-semibold text-slate-900">MRR Growth (12 Months)</h3>
+            <span className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${+pctChange >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
               <ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
             </span>
           </div>
-          <p className="text-3xl font-bold text-white">${totalThis.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-slate-900">${totalThis.toLocaleString()}</p>
           <p className="text-xs text-slate-600 mt-0.5">vs ${totalPrev.toLocaleString()} last year</p>
         </div>
         <button className="text-slate-600 hover:text-slate-600 transition-colors">
@@ -246,9 +246,9 @@ function CustomerFunnel() {
   const maxCount = stages[0].count;
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30 h-full">
+    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-white">Customer Funnel</h3>
+        <h3 className="text-base font-semibold text-slate-900">Customer Funnel</h3>
         <button className="text-slate-600 hover:text-slate-600 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
@@ -260,10 +260,10 @@ function CustomerFunnel() {
             <div key={stage.name}>
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-white/[0.02] flex items-center justify-center text-[10px] font-bold text-slate-500">{i + 1}</span>
+                  <span className="w-5 h-5 rounded-full hover:bg-slate-50 flex items-center justify-center text-[10px] font-bold text-slate-500">{i + 1}</span>
                   <span className="text-sm text-slate-700">{stage.name}</span>
                 </div>
-                <span className="text-xs font-semibold text-white">{stage.count.toLocaleString()}</span>
+                <span className="text-xs font-semibold text-slate-900">{stage.count.toLocaleString()}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div
@@ -288,10 +288,10 @@ function CustomerFunnel() {
           );
         })}
       </div>
-      <div className="mt-4 pt-3 border-t border-white/5">
+      <div className="mt-4 pt-3 border-t border-slate-100">
         <div className="flex items-center justify-between text-xs">
           <span className="text-slate-500">Active retention rate:</span>
-          <span className="font-semibold text-emerald-400">{Math.round((summary.activeCompanies / summary.totalCompanies) * 100)}%</span>
+          <span className="font-semibold text-emerald-600">{Math.round((summary.activeCompanies / summary.totalCompanies) * 100)}%</span>
         </div>
       </div>
     </div>
@@ -310,12 +310,12 @@ function TrialPipelineTable() {
   }, [sortAsc]);
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-white">Trial Pipeline</h3>
+        <h3 className="text-base font-semibold text-slate-900">Trial Pipeline</h3>
         <button
           onClick={() => setSortAsc(!sortAsc)}
-          className="flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300"
+          className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-300"
         >
           Sort by days {sortAsc ? '↑' : '↓'}
         </button>
@@ -323,7 +323,7 @@ function TrialPipelineTable() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-white/5">
+            <tr className="border-t border-b border-slate-100">
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Company</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Plan</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Days Left</th>
@@ -337,14 +337,14 @@ function TrialPipelineTable() {
               const isUrgent = trial.daysRemaining <= 5 && trial.daysRemaining >= 0;
               const isOverdue = trial.daysRemaining < 0;
               return (
-                <tr key={trial.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={trial.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
                         {trial.companyName.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-200">{trial.companyName}</p>
+                        <p className="text-sm font-medium text-slate-900">{trial.companyName}</p>
                         <p className="text-[11px] text-slate-600">{trial.email}</p>
                       </div>
                     </div>
@@ -356,7 +356,7 @@ function TrialPipelineTable() {
                     <div className="flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-slate-600" />
                       <span className={`text-sm font-semibold ${
-                        isOverdue ? 'text-red-400' : isUrgent ? 'text-amber-400' : 'text-slate-200'
+                        isOverdue ? 'text-red-600' : isUrgent ? 'text-amber-600' : 'text-slate-900'
                       }`}>
                         {isOverdue ? `${Math.abs(trial.daysRemaining)}d overdue` : `${trial.daysRemaining}d`}
                       </span>
@@ -364,9 +364,9 @@ function TrialPipelineTable() {
                   </td>
                   <td className="px-4 py-3.5 hidden md:table-cell">
                     <div className="flex items-center gap-2">
-                      <div className="w-14 h-1.5 bg-white/[0.02] rounded-full overflow-hidden">
+                      <div className="w-14 h-1.5 hover:bg-slate-50 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full ${trial.engagementScore >= 70 ? 'bg-emerald-500/100' : trial.engagementScore >= 40 ? 'bg-amber-500' : 'bg-red-500/100'}`}
+                          className={`h-full rounded-full ${trial.engagementScore >= 70 ? 'bg-emerald-500' : trial.engagementScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
                           style={{ width: `${trial.engagementScore}%` }}
                         />
                       </div>
@@ -394,17 +394,17 @@ function TrialPipelineTable() {
    ═══════════════════════════════════════════ */
 function AtRiskCustomers() {
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-white">At-Risk Customers</h3>
-        <span className="flex items-center justify-center min-w-[22px] h-[22px] rounded-full bg-red-500/100 text-white text-[10px] font-bold px-1.5">
+        <h3 className="text-base font-semibold text-slate-900">At-Risk Customers</h3>
+        <span className="flex items-center justify-center min-w-[22px] h-[22px] rounded-full bg-red-500 text-white text-[10px] font-bold px-1.5">
           {atRiskAccounts.length}
         </span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-white/5">
+            <tr className="border-t border-b border-slate-100">
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Company</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">MRR</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Churn Prob.</th>
@@ -415,18 +415,18 @@ function AtRiskCustomers() {
           <tbody>
             {atRiskAccounts.map((acct) => {
               const probPct = Math.round(acct.churnProbability * 100);
-              const probColor = probPct >= 70 ? 'text-red-400' : probPct >= 40 ? 'text-amber-400' : 'text-emerald-400';
-              const probBg = probPct >= 70 ? 'bg-red-500/100/10' : probPct >= 40 ? 'bg-amber-500/10' : 'bg-emerald-500/100/10';
+              const probColor = probPct >= 70 ? 'text-red-600' : probPct >= 40 ? 'text-amber-600' : 'text-emerald-600';
+              const probBg = probPct >= 70 ? 'bg-red-50' : probPct >= 40 ? 'bg-amber-50' : 'bg-emerald-50';
               return (
-                <tr key={acct.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={acct.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div>
-                      <p className="text-sm font-medium text-slate-200">{acct.companyName}</p>
+                      <p className="text-sm font-medium text-slate-900">{acct.companyName}</p>
                       <p className="text-[11px] text-slate-600">{acct.techCount} techs</p>
                     </div>
                   </td>
                   <td className="px-4 py-3.5 hidden sm:table-cell">
-                    <span className="text-sm font-semibold text-slate-200">${acct.mrr.toLocaleString()}</span>
+                    <span className="text-sm font-semibold text-slate-900">${acct.mrr.toLocaleString()}</span>
                   </td>
                   <td className="px-4 py-3.5">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${probBg} ${probColor}`}>
@@ -461,15 +461,15 @@ function TopCustomersTable() {
   }, []);
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-white">Top Customers by Revenue</h3>
-        <button className="text-xs font-medium text-blue-400 hover:text-blue-300">View All →</button>
+        <h3 className="text-base font-semibold text-slate-900">Top Customers by Revenue</h3>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View All →</button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-white/5">
+            <tr className="border-t border-b border-slate-100">
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">#</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Company</th>
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Techs</th>
@@ -481,9 +481,9 @@ function TopCustomersTable() {
             {top.map((cust: Company, i: number) => {
               const initialColor = ['from-violet-400 to-purple-400', 'from-blue-400 to-cyan-400', 'from-emerald-400 to-teal-400', 'from-amber-400 to-orange-400', 'from-rose-400 to-pink-400', 'from-indigo-400 to-blue-400'];
               return (
-                <tr key={cust.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={cust.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
-                    <span className="w-6 h-6 rounded-full bg-white/[0.02] flex items-center justify-center text-[11px] font-bold text-slate-500">{i + 1}</span>
+                    <span className="w-6 h-6 rounded-full hover:bg-slate-50 flex items-center justify-center text-[11px] font-bold text-slate-500">{i + 1}</span>
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2.5">
@@ -491,7 +491,7 @@ function TopCustomersTable() {
                         {cust.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2)}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-200 truncate max-w-[160px]">{cust.name}</p>
+                        <p className="text-sm font-medium text-slate-900 truncate max-w-[160px]">{cust.name}</p>
                         <p className="text-[11px] text-slate-600">{cust.city}, {cust.state}</p>
                       </div>
                     </div>
@@ -500,7 +500,7 @@ function TopCustomersTable() {
                     <span className="text-sm text-slate-600">{cust.techCount}</span>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className="text-sm font-semibold text-slate-200">${cust.mrr.toLocaleString()}</span>
+                    <span className="text-sm font-semibold text-slate-900">${cust.mrr.toLocaleString()}</span>
                   </td>
                   <td className="px-5 py-3.5 text-right">
                     <span
@@ -528,25 +528,25 @@ function TopCustomersTable() {
    ═══════════════════════════════════════════ */
 function ActivityFeed() {
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-white">Activity Feed</h3>
-        <button className="text-xs font-medium text-blue-400 hover:text-blue-300">View All →</button>
+        <h3 className="text-base font-semibold text-slate-900">Activity Feed</h3>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View All →</button>
       </div>
       <div className="divide-y divide-white/5 max-h-[420px] overflow-y-auto">
         {recentActivity.map((item: ActivityFeedItem) => {
           const Icon = activityIconMap[item.type] || Activity;
-          const colorClass = activityColorMap[item.severity] || 'bg-white/[0.02] text-slate-600';
+          const colorClass = activityColorMap[item.severity] || 'hover:bg-slate-50 text-slate-600';
           const time = new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
           return (
-            <div key={item.id} className="px-5 py-3 hover:bg-white/[0.02] transition-colors">
+            <div key={item.id} className="px-5 py-3 hover:hover:bg-slate-50 transition-colors">
               <div className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-xl ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 mt-0.5`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-slate-700 leading-snug">
-                    <span className="font-medium text-white">{item.companyName}</span>
+                    <span className="font-medium text-slate-900">{item.companyName}</span>
                     {' '}{item.description}
                   </p>
                   <span className="text-[11px] text-slate-600 mt-0.5 block">{time}</span>
@@ -572,7 +572,7 @@ function FeatureUsageHeatmap() {
 
   const getHeatColor = (val: number, max: number) => {
     const ratio = val / max;
-    if (ratio > 0.75) return 'bg-emerald-500/100';
+    if (ratio > 0.75) return 'bg-emerald-500';
     if (ratio > 0.5) return 'bg-emerald-400';
     if (ratio > 0.35) return 'bg-amber-400';
     if (ratio > 0.2) return 'bg-amber-300';
@@ -580,12 +580,12 @@ function FeatureUsageHeatmap() {
   };
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-white">Feature Usage Heatmap</h3>
+        <h3 className="text-base font-semibold text-slate-900">Feature Usage Heatmap</h3>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-emerald-500/100" />
+            <span className="w-2 h-2 rounded-sm bg-emerald-500" />
             <span className="text-[10px] text-slate-600">Enabled</span>
           </div>
           <div className="flex items-center gap-1">
@@ -601,7 +601,7 @@ function FeatureUsageHeatmap() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-white/5">
+            <tr className="border-t border-b border-slate-100">
               <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Feature</th>
               <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">Enabled</th>
               <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">WAU</th>
@@ -613,11 +613,11 @@ function FeatureUsageHeatmap() {
             {featureAdoption.map((f) => {
               const adoptionRate = f.adoptionRate;
               const trendIcon = f.trend === 'up' ? '↑' : f.trend === 'down' ? '↓' : '→';
-              const trendColor = f.trend === 'up' ? 'text-emerald-400' : f.trend === 'down' ? 'text-red-400' : 'text-slate-600';
+              const trendColor = f.trend === 'up' ? 'text-emerald-600' : f.trend === 'down' ? 'text-red-600' : 'text-slate-600';
               return (
-                <tr key={f.featureKey} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={f.featureKey} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3">
-                    <span className="text-sm font-medium text-slate-200">{f.featureName}</span>
+                    <span className="text-sm font-medium text-slate-900">{f.featureName}</span>
                   </td>
                   <td className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-1.5">
@@ -636,7 +636,7 @@ function FeatureUsageHeatmap() {
                   </td>
                   <td className="px-5 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="w-16 h-2 bg-white/[0.02] rounded-full overflow-hidden">
+                      <div className="w-16 h-2 hover:bg-slate-50 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
                           style={{ width: `${adoptionRate}%` }}
@@ -687,9 +687,9 @@ function RevenueByPlanDonut() {
   });
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30 h-full">
+    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-white">Revenue by Plan</h3>
+        <h3 className="text-base font-semibold text-slate-900">Revenue by Plan</h3>
         <button className="text-slate-600 hover:text-slate-600 transition-colors">
           <MoreHorizontal className="w-5 h-5" />
         </button>
@@ -715,7 +715,7 @@ function RevenueByPlanDonut() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-600">{s.count} accts</span>
-                <span className="text-xs font-semibold text-white">{s.pct.toFixed(1)}%</span>
+                <span className="text-xs font-semibold text-slate-900">{s.pct.toFixed(1)}%</span>
               </div>
             </div>
           ))}
@@ -762,10 +762,10 @@ function GeographicMap() {
   const maxCount = Math.max(...regionMap.map(r => r.count), 1);
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border border-white/5 p-5 shadow-lg shadow-black/30">
+    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-white">Geographic Distribution</h3>
-        <button className="text-xs font-medium text-blue-400 hover:text-blue-300">Details →</button>
+        <h3 className="text-base font-semibold text-slate-900">Geographic Distribution</h3>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">Details →</button>
       </div>
       <div className="flex items-center gap-4">
         <div className="relative shrink-0">
@@ -812,15 +812,15 @@ function GeographicMap() {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-slate-600">{r.count} accts</span>
-                  <span className="text-xs font-semibold text-white">${(r.mrr / 1000).toFixed(0)}K</span>
+                  <span className="text-xs font-semibold text-slate-900">${(r.mrr / 1000).toFixed(0)}K</span>
                 </div>
               </div>
             );
           })}
-          <div className="pt-2 mt-2 border-t border-white/5">
+          <div className="pt-2 mt-2 border-t border-slate-100">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-500 font-medium">Total</span>
-              <span className="text-sm font-bold text-white">
+              <span className="text-sm font-bold text-slate-900">
                 {regionMap.reduce((s, r) => s + r.count, 0)} accts · ${(regionMap.reduce((s, r) => s + r.mrr, 0) / 1000).toFixed(0)}K MRR
               </span>
             </div>
@@ -843,18 +843,18 @@ export default function AdminPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Platform Overview</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Platform Overview</h1>
           <p className="text-sm text-slate-500 mt-1">
             Super Admin — {summary.totalCompanies} companies · {summary.totalTechs} plumbers · ${summary.totalMrr.toLocaleString()} MRR
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-white/10 text-sm text-slate-600 hover:bg-white/[0.02] transition-colors cursor-pointer">
+          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-white/10 text-sm text-slate-600 hover:hover:bg-slate-50 transition-colors cursor-pointer">
             <span className="text-xs">📅</span>
             <span className="text-xs font-medium">This Month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
           </div>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-black/30">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>

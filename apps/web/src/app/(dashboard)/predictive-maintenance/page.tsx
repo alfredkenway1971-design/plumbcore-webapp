@@ -235,7 +235,7 @@ export default function PredictiveMaintenancePage() {
                     <td className="px-4 py-2.5 text-slate-500 text-xs">{new Date(eq.installDate).getFullYear()}</td>
                     <td className="px-4 py-2.5">
                       {pred && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-white" style={{ backgroundColor: getRiskColor(pred.failureRiskScore) }}>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-slate-900" style={{ backgroundColor: getRiskColor(pred.failureRiskScore) }}>
                           {pred.failureRiskScore}%
                         </span>
                       )}

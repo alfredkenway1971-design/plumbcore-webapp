@@ -15,8 +15,8 @@ const reviews = [
 ];
 
 const statusStyles: Record<string, string> = {
-  published: 'bg-emerald-500/10 text-emerald-300',
-  flagged: 'bg-amber-500/10 text-amber-300',
+  published: 'bg-emerald-50 text-emerald-700',
+  flagged: 'bg-amber-50 text-amber-600',
 };
 
 export default function AdminFeedbackReviewsPage() {
@@ -38,49 +38,49 @@ export default function AdminFeedbackReviewsPage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-white">Feedback & Reviews</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Feedback & Reviews</h1>
           <p className="text-sm text-slate-500 mt-1">Customer reviews and feedback management</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-[#0F172A] ring-1 ring-white/5 text-sm font-medium text-slate-300 hover:bg-white/[0.02] transition-all">
+        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Total Reviews', value: reviews.length, icon: MessageSquare, color: 'text-blue-500', bg: 'bg-blue-500/10' }, { label: 'Avg Rating', value: avgRating + ' ★', icon: Star, color: 'text-amber-400', bg: 'bg-amber-500/10' }, { label: 'Published', value: reviews.filter(r => r.status === 'published').length, icon: ThumbsUp, color: 'text-emerald-500', bg: 'bg-emerald-500/10' }, { label: 'Flagged', value: reviews.filter(r => r.status === 'flagged').length, icon: Filter, color: 'text-red-500', bg: 'bg-red-500/10' } ].map((s, i) => (
-          <div key={i} className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 p-5 shadow-lg shadow-black/30">
+        {[ { label: 'Total Reviews', value: reviews.length, icon: MessageSquare, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Avg Rating', value: avgRating + ' ★', icon: Star, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Published', value: reviews.filter(r => r.status === 'published').length, icon: ThumbsUp, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Flagged', value: reviews.filter(r => r.status === 'flagged').length, icon: Filter, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
-            <p className="text-2xl font-bold text-white">{s.value}</p>
+            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-[#0F172A] rounded-2xl ring-1 ring-white/5 shadow-lg shadow-black/30 overflow-hidden">
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-white/5">
+      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search reviews..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 bg-white/[0.02] border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <input placeholder="Search reviews..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'published', 'flagged'].map(s => (
-              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-white/10 text-white' : 'bg-white/[0.02] text-slate-400 hover:bg-white/[0.04]'}`}>{s}</button>
+              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-white/10 text-white' : 'hover:bg-slate-50 text-slate-400 hover:bg-white/[0.04]'}`}>{s}</button>
             ))}
           </div>
         </div>
         <div className="divide-y divide-white/[0.03]">
           {filtered.map(r => (
-            <div key={r.id} className="px-5 py-4 hover:bg-white/[0.02] transition-colors">
+            <div key={r.id} className="px-5 py-4 hover:hover:bg-slate-50 transition-colors">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <Building2 className="w-4 h-4 text-slate-600 shrink-0" />
-                    <span className="text-sm font-semibold text-white">{r.company}</span>
+                    <span className="text-sm font-semibold text-slate-900">{r.company}</span>
                     <span className="text-xs text-slate-600">— {r.author}</span>
                   </div>
                   <div className="flex items-center gap-1 mb-1.5">
                     {Array.from({length: 5}).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < r.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < r.rating ? 'fill-amber-400 text-amber-600' : 'text-slate-900'}`} />
                     ))}
                   </div>
                   <p className="text-sm text-slate-400 leading-relaxed">{r.text}</p>

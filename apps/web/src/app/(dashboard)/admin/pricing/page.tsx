@@ -43,13 +43,13 @@ export default function PricingPlansPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div><h1 className="text-xl sm:text-2xl font-bold text-white">Pricing Plans</h1><p className="text-sm text-slate-500 mt-0.5">Manage subscription plans, features, and pricing</p></div>
+      <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Pricing Plans</h1><p className="text-sm text-slate-500 mt-0.5">Manage subscription plans, features, and pricing</p></div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {plans.filter(p => p.active).map(plan => (
           <Card key={plan.id} variant="bordered" padding="lg" className="flex flex-col">
-            <h3 className="text-lg font-bold text-white">{plan.name}</h3>
-            <p className="text-2xl font-bold text-white mt-2">${plan.price}<span className="text-sm font-normal text-slate-500">/mo</span></p>
+            <h3 className="text-lg font-bold text-slate-900">{plan.name}</h3>
+            <p className="text-2xl font-bold text-slate-900 mt-2">${plan.price}<span className="text-sm font-normal text-slate-500">/mo</span></p>
             <p className="text-xs text-slate-500 mt-1">{plan.techLimit} techs • {plan.hoursLimit}hrs AI</p>
             <ul className="mt-4 space-y-1.5 flex-1">
               {plan.features.map((f, i) => <li key={i} className="text-xs text-slate-400 flex items-start gap-1.5"><span className="text-green-400">✓</span>{f}</li>)}

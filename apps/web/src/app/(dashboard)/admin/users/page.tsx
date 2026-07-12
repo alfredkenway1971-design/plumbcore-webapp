@@ -49,7 +49,7 @@ export default function AdminUsersPage() {
   return (
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-xl sm:text-2xl font-bold text-white">Admin Users</h1><p className="text-sm text-slate-500 mt-0.5">Manage admin accounts and permissions</p></div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Admin Users</h1><p className="text-sm text-slate-500 mt-0.5">Manage admin accounts and permissions</p></div>
         <Button size="sm" onClick={() => setShowAdd(true)}>+ Add Admin</Button>
       </div>
 
@@ -57,16 +57,16 @@ export default function AdminUsersPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[500px] text-sm">
             <thead><tr className="bg-slate-800/30 border-b border-white/10">
-              <th className="text-left px-4 py-3 font-semibold text-white">Name</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Email</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Role</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Last Login</th>
-              <th className="text-left px-4 py-3 font-semibold text-white">Actions</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Name</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Email</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Role</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Last Login</th>
+              <th className="text-left px-4 py-3 font-semibold text-slate-900">Actions</th>
             </tr></thead>
             <tbody className="divide-y divide-white/5">
               {users.map(u => (
                 <tr key={u.id} className="hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 font-medium text-white">{u.name}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900">{u.name}</td>
                   <td className="px-4 py-3 text-slate-400">{u.email}</td>
                   <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.role === 'super_admin' ? 'bg-purple-500/10 text-purple-300' : 'bg-blue-500/10 text-blue-300'}`}>{u.role}</span></td>
                   <td className="px-4 py-3 text-slate-500 text-xs">{u.lastLogin}</td>

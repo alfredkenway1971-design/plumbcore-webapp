@@ -115,7 +115,7 @@ export default function LeadsPage() {
     <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Leads</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
           <p className="text-sm text-slate-500 mt-1">Accept or decline incoming job leads</p>
         </div>
         <div className="flex items-center gap-2">
@@ -151,7 +151,7 @@ export default function LeadsPage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-white">{lead.customer_name}</h3>
+                      <h3 className="font-semibold text-slate-900">{lead.customer_name}</h3>
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${sevColors[lead.severity] || ''}`}>
                         <AlertTriangle className="w-3 h-3" />{lead.severity}
                       </span>
@@ -210,7 +210,7 @@ export default function LeadsPage() {
               <Card key={lead.id} padding="md" className="!bg-emerald-500/5 !ring-1 !ring-emerald-500/10">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <h3 className="font-semibold text-white">{lead.customer_name}</h3>
+                  <h3 className="font-semibold text-slate-900">{lead.customer_name}</h3>
                 </div>
                 <p className="text-sm text-slate-400">{lead.diagnosis}</p>
                 <p className="text-xs text-slate-500 mt-1">Est. ${lead.total_estimate.toLocaleString()} · {lead.customer_address}</p>

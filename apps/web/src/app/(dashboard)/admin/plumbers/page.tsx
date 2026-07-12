@@ -19,16 +19,16 @@ const I = {
 };
 
 const planColors: Record<string, string> = {
-  solo: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  pro: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  business: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
+  solo: 'bg-amber-50 text-amber-600 border-amber-500/20',
+  pro: 'bg-blue-50 text-blue-600 border-blue-500/20',
+  business: 'bg-violet-500/10 text-violet-600 border-violet-500/20',
   enterprise: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
 };
 
 const statusColors: Record<string, string> = {
-  active: 'bg-emerald-500/10 text-emerald-400',
-  paused: 'bg-amber-500/10 text-amber-400',
-  suspended: 'bg-red-500/10 text-red-400',
+  active: 'bg-emerald-50 text-emerald-600',
+  paused: 'bg-amber-50 text-amber-600',
+  suspended: 'bg-red-50 text-red-600',
 };
 
 export default function AdminPlumbersPage() {
@@ -53,25 +53,25 @@ export default function AdminPlumbersPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div><h1 className="text-xl sm:text-2xl font-bold text-white">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
+      <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-blue-400">Total Plumbers</p>
-          <p className="text-xl font-bold text-white mt-1">{total}</p>
+        <div className="rounded-xl bg-blue-50 border border-blue-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-blue-600">Total Plumbers</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">{total}</p>
         </div>
-        <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-emerald-400">Active</p>
-          <p className="text-xl font-bold text-white mt-1">{totalActive}</p>
+        <div className="rounded-xl bg-emerald-50 border border-emerald-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-emerald-600">Active</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">{totalActive}</p>
         </div>
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-violet-400">Jobs Completed</p>
-          <p className="text-xl font-bold text-white mt-1">{totalCompleted.toLocaleString()}</p>
+          <p className="text-[10px] font-semibold uppercase text-violet-600">Jobs Completed</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">{totalCompleted.toLocaleString()}</p>
         </div>
-        <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-amber-400">Avg Rating</p>
-          <p className="text-xl font-bold text-white mt-1">{totalAvgRating} ⭐</p>
+        <div className="rounded-xl bg-amber-50 border border-amber-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-amber-600">Avg Rating</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">{totalAvgRating} ⭐</p>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ export default function AdminPlumbersPage() {
         <div className="relative flex-1 max-w-xs">
           <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search plumbers..."
-            className="w-full rounded-xl bg-[#0F172A] border border-white/10 pl-9 pr-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
+            className="w-full rounded-xl bg-white border border-white/10 pl-9 pr-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
         </div>
         <div className="flex gap-1.5">
           {['all', 'solo', 'pro', 'business', 'enterprise'].map(t => (
@@ -88,7 +88,7 @@ export default function AdminPlumbersPage() {
               className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
                 filterTier === t
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-[#0F172A] text-slate-400 border-white/10 hover:border-white/20'
+                  : 'bg-white text-slate-400 border-white/10 hover:border-white/20'
               }`}>
               {t === 'all' ? 'All' : PLAN_LABELS_PRETTY[t] || t}
             </button>
@@ -101,7 +101,7 @@ export default function AdminPlumbersPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
             <thead>
-              <tr className="bg-slate-800/30 border-b border-white/10">
+              <tr className="bg-slate-100 border-b border-white/10">
                 <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Plumber</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Plan</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Rating</th>
@@ -115,7 +115,7 @@ export default function AdminPlumbersPage() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {filtered.map(p => (
-                <tr key={p.id} className="hover:bg-white/[0.02] cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
+                <tr key={p.id} className="hover:hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold text-white shrink-0"
@@ -123,7 +123,7 @@ export default function AdminPlumbersPage() {
                         {p.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-white">{p.company_name}</p>
+                        <p className="text-sm font-medium text-slate-900">{p.company_name}</p>
                         <p className="text-[11px] text-slate-500">{p.specialties.slice(0, 2).join(', ')}</p>
                       </div>
                     </div>
@@ -135,17 +135,17 @@ export default function AdminPlumbersPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <I.Star className="w-3.5 h-3.5 text-amber-400" />
-                      <span className="text-sm font-semibold text-white">{p.avg_rating}</span>
+                      <I.Star className="w-3.5 h-3.5 text-amber-600" />
+                      <span className="text-sm font-semibold text-slate-900">{p.avg_rating}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-300">{p.total_jobs_completed.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-sm text-slate-300">{p.acceptance_rate}%</td>
-                  <td className="px-4 py-3 text-sm text-slate-300">{p.current_month_leads}/{p.monthly_lead_limit}</td>
+                  <td className="px-4 py-3 text-sm text-slate-700">{p.total_jobs_completed.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-sm text-slate-700">{p.acceptance_rate}%</td>
+                  <td className="px-4 py-3 text-sm text-slate-700">{p.current_month_leads}/{p.monthly_lead_limit}</td>
                   <td className="px-4 py-3">
                     {p.stripe_onboarding_complete
-                      ? <I.Check className="w-4 h-4 text-emerald-400" />
-                      : <span className="text-xs text-amber-400">Pending</span>
+                      ? <I.Check className="w-4 h-4 text-emerald-600" />
+                      : <span className="text-xs text-amber-600">Pending</span>
                     }
                   </td>
                   <td className="px-4 py-3">
@@ -155,7 +155,7 @@ export default function AdminPlumbersPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={(e) => { e.stopPropagation(); router.push(`/admin/plumbers/${p.id}`); }}
-                      className="text-xs text-blue-400 hover:text-blue-300">View →</button>
+                      className="text-xs text-blue-600 hover:text-blue-300">View →</button>
                   </td>
                 </tr>
               ))}

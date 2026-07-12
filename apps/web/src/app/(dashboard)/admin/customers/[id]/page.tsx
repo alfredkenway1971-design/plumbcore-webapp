@@ -168,10 +168,10 @@ function StatCard({ label, value, sub, icon: Icon, color }: {
       <div className="flex items-start justify-between">
         <p className="text-sm font-medium text-slate-400">{label}</p>
         <div className={cn('rounded-lg p-2', color)}>
-          <Icon className="h-4 w-4 text-white" />
+          <Icon className="h-4 w-4 text-slate-900" />
         </div>
       </div>
-      <p className="mt-2 text-2xl font-bold text-white">{value}</p>
+      <p className="mt-2 text-2xl font-bold text-slate-900">{value}</p>
       {sub && <p className="mt-0.5 text-xs text-slate-500">{sub}</p>}
     </div>
   );
@@ -271,12 +271,12 @@ export default function CompanyDetailPage() {
         <ChevronRight className="h-3.5 w-3.5" />
         <button
           onClick={() => router.push('/admin/customers')}
-          className="text-slate-500 hover:text-white transition-colors"
+          className="text-slate-500 hover:text-slate-900 transition-colors"
         >
           Customers
         </button>
         <ChevronRight className="h-3.5 w-3.5" />
-        <span className="text-white font-medium truncate max-w-[200px]">{company.name}</span>
+        <span className="text-slate-900 font-medium truncate max-w-[200px]">{company.name}</span>
       </nav>
 
       {/* ── Header Bar ── */}
@@ -286,7 +286,7 @@ export default function CompanyDetailPage() {
             <Building2 className="h-6 w-6 text-blue-400" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">{company.name}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{company.name}</h1>
             <div className="flex items-center gap-2 mt-0.5">
               <span className={cn('inline-flex h-2.5 w-2.5 rounded-full', {
                 'bg-emerald-500': company.health === 'green',
@@ -321,15 +321,15 @@ export default function CompanyDetailPage() {
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Plan</span>
-              <span className="text-sm font-medium text-white">{company.plan}</span>
+              <span className="text-sm font-medium text-slate-900">{company.plan}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Monthly</span>
-              <span className="text-sm font-medium text-white">{formatCurrency(company.mrr)}</span>
+              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.mrr)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Since</span>
-              <span className="text-sm text-white">{formatDate(company.sinceDate)}</span>
+              <span className="text-sm text-slate-900">{formatDate(company.sinceDate)}</span>
             </div>
             <div className="flex items-center justify-between pt-1 border-t border-white/5">
               <span className="text-sm text-slate-500">Health</span>
@@ -345,7 +345,7 @@ export default function CompanyDetailPage() {
             Owner Info
           </h3>
           <div className="space-y-2.5">
-            <p className="text-sm font-medium text-white">{company.ownerName}</p>
+            <p className="text-sm font-medium text-slate-900">{company.ownerName}</p>
             <a
               href={`mailto:${company.ownerEmail}`}
               className="block text-sm text-blue-400 hover:text-blue-300 transition-colors"
@@ -354,7 +354,7 @@ export default function CompanyDetailPage() {
             </a>
             <a
               href={`tel:${company.ownerPhone}`}
-              className="block text-sm text-slate-600 hover:text-white transition-colors"
+              className="block text-sm text-slate-600 hover:text-slate-900 transition-colors"
             >
               {company.ownerPhone}
             </a>
@@ -370,19 +370,19 @@ export default function CompanyDetailPage() {
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Price/Month</span>
-              <span className="text-sm font-medium text-white">{formatCurrency(company.mrr)}</span>
+              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.mrr)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Total Paid</span>
-              <span className="text-sm font-medium text-white">{formatCurrency(company.totalPaid)}</span>
+              <span className="text-sm font-medium text-slate-900">{formatCurrency(company.totalPaid)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Next Payment</span>
-              <span className="text-sm text-white">{formatDate(company.nextBillingDate)}</span>
+              <span className="text-sm text-slate-900">{formatDate(company.nextBillingDate)}</span>
             </div>
             <div className="flex items-center justify-between pt-1 border-t border-white/5">
               <span className="text-sm text-slate-500">Payment Method</span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-900">
                 <CreditCard className="h-3.5 w-3.5 text-slate-600" />
                 {company.billingInfo}
               </span>

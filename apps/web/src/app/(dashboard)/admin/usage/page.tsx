@@ -150,10 +150,10 @@ function UsageKPIs() {
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{card.label}</p>
               <div className={`w-10 h-10 rounded-xl ${card.color} flex items-center justify-center`}>
-                <Icon className="w-5 h-5 text-white" />
+                <Icon className="w-5 h-5 text-slate-900" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-white mb-1.5">{card.value}</p>
+            <p className="text-3xl font-bold text-slate-900 mb-1.5">{card.value}</p>
             <div className="flex items-center gap-1.5">
               <span className="inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400">
                 <ArrowUp className="w-3 h-3" />
@@ -193,7 +193,7 @@ function DailyActiveUsersChart() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-white">Daily Active Users (This Week)</h3>
+            <h3 className="text-base font-semibold text-slate-900">Daily Active Users (This Week)</h3>
             <span className="flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400">
               <ArrowUp className="w-3 h-3" /> {pctChange}%
             </span>
@@ -457,7 +457,7 @@ function APIUsageStats() {
       <div className="mt-4 pt-3 border-t border-white/5">
         <div className="flex items-center justify-between text-xs">
           <span className="text-slate-500 font-medium">Total API Calls (This Month)</span>
-          <span className="font-bold text-white">{totalCalls.toLocaleString()}</span>
+          <span className="font-bold text-slate-900">{totalCalls.toLocaleString()}</span>
         </div>
       </div>
     </div>
@@ -478,7 +478,7 @@ export default function AdminUsagePage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Platform Usage</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Platform Usage</h1>
           <p className="text-sm text-slate-500 mt-1">
             {featureAdoption.length} features tracked · {featureAdoption.reduce((s, f) => s + f.weeklyActiveUsers, 0).toLocaleString()} weekly active users
           </p>

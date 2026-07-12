@@ -38,10 +38,10 @@ const planColors: Record<string, string> = {
 };
 
 const statusStyles: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  active: { bg: 'bg-emerald-500/10', text: 'text-emerald-300', dot: 'bg-emerald-500', label: 'Active' },
-  trialing: { bg: 'bg-blue-500/10', text: 'text-blue-300', dot: 'bg-blue-500', label: 'Trialing' },
-  past_due: { bg: 'bg-red-500/10', text: 'text-red-300', dot: 'bg-red-500', label: 'Past Due' },
-  cancelled: { bg: 'bg-slate-800/30', text: 'text-slate-400', dot: 'bg-slate-400', label: 'Cancelled' },
+  active: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Active' },
+  trialing: { bg: 'bg-blue-50', text: 'text-blue-300', dot: 'bg-blue-500', label: 'Trialing' },
+  past_due: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Past Due' },
+  cancelled: { bg: 'bg-slate-100', text: 'text-slate-400', dot: 'bg-slate-400', label: 'Cancelled' },
 };
 
 const healthIconMap: Record<string, any> = {
@@ -70,7 +70,7 @@ function CustomersLoading() {
         </div>
         <Skeleton className="h-9 w-24" />
       </div>
-      <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
         <div className="p-5 pb-3">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             <Skeleton className="h-10 w-72" />
@@ -84,7 +84,7 @@ function CustomersLoading() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-t border-b border-white/5">
+              <tr className="border-t border-b border-slate-100">
                 {['Company', 'Plan', 'MRR', 'Techs', 'Status', 'Joined'].map((h) => (
                   <th key={h} className="px-5 py-3">
                     <Skeleton className="h-3 w-14" />
@@ -94,7 +94,7 @@ function CustomersLoading() {
             </thead>
             <tbody>
               {Array.from({ length: 6 }).map((_, i) => (
-                <tr key={i} className="border-b border-white/5">
+                <tr key={i} className="border-b border-slate-100">
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
                       <Skeleton className="w-8 h-8 rounded-xl" />
@@ -124,11 +124,11 @@ function CustomersLoading() {
 function CustomersError({ error }: { error: string }) {
   return (
     <div className="max-w-[1440px] mx-auto">
-      <div className="bg-[#0F172A] rounded-2xl border border-red-500/20 shadow-lg shadow-black/30 p-10 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto mb-4">
-          <AlertTriangle className="w-7 h-7 text-red-400" />
+      <div className="bg-white rounded-2xl border border-red-500/20 shadow-sm ring-1 ring-black/5 p-10 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+          <AlertTriangle className="w-7 h-7 text-red-600" />
         </div>
-        <h3 className="text-lg font-semibold text-white mb-1">Failed to load customers</h3>
+        <h3 className="text-lg font-semibold text-slate-900 mb-1">Failed to load customers</h3>
         <p className="text-sm text-slate-500 mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
@@ -147,10 +147,10 @@ function EmptyState({ search }: { search: string }) {
   return (
     <tr>
       <td colSpan={6} className="px-5 py-16 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-white/[0.02] flex items-center justify-center mx-auto mb-3">
+        <div className="w-14 h-14 rounded-2xl hover:bg-slate-50 flex items-center justify-center mx-auto mb-3">
           <Search className="w-6 h-6 text-slate-600" />
         </div>
-        <p className="text-sm font-medium text-slate-300">No customers found</p>
+        <p className="text-sm font-medium text-slate-700">No customers found</p>
         <p className="text-xs text-slate-600 mt-1">
           {search ? `No results matching "${search}"` : 'No customers match the selected filters'}
         </p>
@@ -174,7 +174,7 @@ function CustomersTable({
 }) {
   const SortHeader = ({ field, label, className }: { field: SortField; label: string; className?: string }) => (
     <th
-      className={`text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-5 py-3 cursor-pointer select-none hover:text-slate-300 transition-colors ${className || ''}`}
+      className={`text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-5 py-3 cursor-pointer select-none hover:text-slate-700 transition-colors ${className || ''}`}
       onClick={() => onSort(field)}
     >
       <div className="flex items-center gap-1">
@@ -197,7 +197,7 @@ function CustomersTable({
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-t border-b border-white/5">
+          <tr className="border-t border-b border-slate-100">
             <SortHeader field="name" label="Company" />
             <SortHeader field="planTier" label="Plan" className="hidden sm:table-cell" />
             <SortHeader field="mrr" label="MRR" />
@@ -215,7 +215,7 @@ function CustomersTable({
               const statusCfg = statusStyles[cust.status] || statusStyles.active;
               const HealthIcon = healthIconMap[cust.health] || CheckCircle;
               return (
-                <tr key={cust.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <tr key={cust.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div
@@ -224,7 +224,7 @@ function CustomersTable({
                         {cust.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2)}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-200 truncate max-w-[180px]">{cust.name}</p>
+                        <p className="text-sm font-medium text-slate-900 truncate max-w-[180px]">{cust.name}</p>
                         <p className="text-[11px] text-slate-600">{cust.city}, {cust.state}</p>
                       </div>
                     </div>
@@ -241,7 +241,7 @@ function CustomersTable({
                     </span>
                   </td>
                   <td className="px-5 py-3.5">
-                    <span className="text-sm font-semibold text-slate-200">${cust.mrr.toLocaleString()}</span>
+                    <span className="text-sm font-semibold text-slate-900">${cust.mrr.toLocaleString()}</span>
                   </td>
                   <td className="px-5 py-3.5 hidden md:table-cell">
                     <span className="text-sm text-slate-400">{cust.techCount}</span>
@@ -368,19 +368,19 @@ export default function AdminCustomersPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Customers</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
           <p className="text-sm text-slate-500 mt-1">
             {companies.length} total companies · ${companies.reduce((s, c) => s + c.mrr, 0).toLocaleString()} total MRR
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-black/30">
+        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" />
           <span className="hidden sm:inline text-xs">Export</span>
         </button>
       </div>
 
       {/* Filters Card */}
-      <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30 mb-4">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5 mb-4">
         <div className="p-5 pb-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             {/* Search */}
@@ -391,12 +391,12 @@ export default function AdminCustomersPage() {
                 placeholder="Search by name, city, or owner..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-xl border border-white/10 text-sm text-slate-300 placeholder:text-slate-600 bg-white/[0.02] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+                className="w-full h-10 pl-9 pr-3 rounded-xl border border-white/10 text-sm text-slate-700 placeholder:text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
               />
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-500"
                 >
                   <XCircle className="w-4 h-4" />
                 </button>
@@ -414,7 +414,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={planFilter || ''}
                   onChange={(e) => setPlanFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 bg-white/[0.02] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Plans</option>
                   {plans.map((p) => (
@@ -430,7 +430,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={statusFilter || ''}
                   onChange={(e) => setStatusFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 bg-white/[0.02] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Statuses</option>
                   {statuses.map((s) => (
@@ -449,7 +449,7 @@ export default function AdminCustomersPage() {
                     setStatusFilter(null);
                     setSearch('');
                   }}
-                  className="h-9 px-3 rounded-xl border border-white/10 text-xs font-medium text-slate-500 hover:bg-white/[0.02] transition-colors"
+                  className="h-9 px-3 rounded-xl border border-white/10 text-xs font-medium text-slate-500 hover:hover:bg-slate-50 transition-colors"
                 >
                   Clear
                 </button>
@@ -460,15 +460,15 @@ export default function AdminCustomersPage() {
       </div>
 
       {/* Customers Table */}
-      <div className="bg-[#0F172A] rounded-2xl border border-white/5 shadow-lg shadow-black/30">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
         <div className="flex items-center justify-between px-5 pt-5 pb-1">
-          <h3 className="text-base font-semibold text-white">
+          <h3 className="text-base font-semibold text-slate-900">
             All Customers
             <span className="ml-2 text-xs font-normal text-slate-600">({filtered.length})</span>
           </h3>
         </div>
         <CustomersTable data={filtered} sortField={sortField} sortAsc={sortAsc} onSort={handleSort} />
-        <div className="flex items-center justify-between px-5 py-3 border-t border-white/5">
+        <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100">
           <span className="text-xs text-slate-600">Showing {filtered.length} of {companies.length} customers</span>
         </div>
       </div>
