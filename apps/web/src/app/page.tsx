@@ -65,7 +65,10 @@ function Hero({ t }: { t: (key: string) => string }) {
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               {t('home.heroBadge')}
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-[1.05] mb-4 sm:mb-5 gradient-text-hero" dangerouslySetInnerHTML={{ __html: t('home.heroTitle') }} />
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-[1.05] mb-4 sm:mb-5 text-slate-900">
+              The <span className="gradient-text">Plumber OS</span><br />
+              That <span className="text-amber-500">Early Adopters</span> Already Trust
+            </h1>
             <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
               {t('home.heroSubtitle')}
             </p>
