@@ -1,8 +1,9 @@
-'use client';
-
 import { useState, useMemo } from 'react';
-import { Search, Building2, XCircle, TrendingDown, Download, ArrowDown } from 'lucide-react';
-import { companies } from '@/lib/admin-data';
+import { Search, Building2, XCircle, TrendingDown, Download, ArrowDown, Clock, AlertTriangle } from 'lucide-react';
+import { companies, platformKPIs } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
 
 const churnReasons = ['Price too high', 'Missing features', 'Poor support', 'No longer needed', 'Switched competitor', 'Budget cuts'];
 const churnedData = companies.filter(c => c.status === 'cancelled').length > 0 ? companies.filter(c => c.status === 'cancelled').map(c => ({ ...c, churnReason: churnReasons[Math.floor(Math.random() * churnReasons.length)], churnDate: '2026-06-' + (10 + Math.floor(Math.random() * 20)), lastPayment: c.totalPaid })) : [
@@ -24,6 +25,13 @@ const reasonColors: Record<string, string> = {
   'Budget cuts': 'bg-blue-50 text-blue-300',
 };
 
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    const labels: Record<string, string> = { companyName: 'Company', planTier: 'Plan', churnDate: 'Churn Date', reason: 'Reason' };
+    downloadCSV(data, 'churned_accounts', labels);
+  };
+
 export default function AdminChurnedAccountsPage() {
   const [search, setSearch] = useState('');
   const [reasonFilter, setReasonFilter] = useState('all');
@@ -44,7 +52,7 @@ export default function AdminChurnedAccountsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Churned Accounts</h1>
           <p className="text-sm text-slate-500 mt-1">Lost accounts and churn analysis</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

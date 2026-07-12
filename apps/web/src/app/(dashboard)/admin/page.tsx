@@ -15,6 +15,7 @@ import {
 } from '@/lib/admin-data';
 import type { TrialPipelineEntry, ActivityFeedItem, Company } from '@/lib/admin-data';
 import { useAuthStore } from '@/lib/store';
+import { downloadCSV } from '@/lib/csv-export';
 
 /* ═══════════════════════════════════════════
    CONSTANTS
@@ -838,6 +839,34 @@ export default function AdminPage() {
   const user = useAuthStore((s) => s.user);
   const summary = getPlatformSummary();
 
+  const handleExport = () => {
+    const kpiData = [
+      { Metric: 'Monthly Recurring Revenue', Value: `$${(platformKPIs.totalMRR / 1000).toFixed(1)}K`, Change: `+${platformKPIs.mrrGrowth}%` },
+      { Metric: 'Active Plumbers', Value: String(platformKPIs.activePlumbers), Change: `+${platformKPIs.plumberGrowth}%` },
+      { Metric: 'Active Free Trials', Value: String(platformKPIs.activeTrials), Change: `${platformKPIs.trialConversionRate}% convert` },
+      { Metric: 'Churn Rate', Value: `${platformKPIs.churnRate}%`, Change: platformKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%' },
+    ];
+
+    const trialData = (trialPipeline || []).map((t: any) => ({
+      Company: t.companyName || '',
+      Plan: t.planTier || '',
+      DaysLeft: t.daysRemaining ?? '',
+      RiskLevel: t.riskLevel || '',
+      MRR: t.mrr ? `$${t.mrr}` : '',
+    }));
+
+    const atRiskData = (atRiskAccounts || []).map((a: any) => ({
+      Company: a.companyName || '',
+      MRR: a.mrr ? `$${a.mrr}` : '',
+      RiskLevel: a.riskLevel || '',
+      Reason: a.reason || '',
+    }));
+
+    downloadCSV(kpiData, 'platform_kpis');
+    if (trialData.length) downloadCSV(trialData, 'trial_pipeline');
+    if (atRiskData.length) downloadCSV(atRiskData, 'at_risk_accounts');
+  };
+
   return (
     <div className="max-w-[1440px] mx-auto">
       {/* Page Header */}
@@ -854,7 +883,7 @@ export default function AdminPage() {
             <span className="text-xs font-medium">This Month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
           </div>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
+          <button onClick={handleExport} className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>

@@ -1,9 +1,16 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { Search, Building2, AlertTriangle, Phone, Mail, MoreHorizontal, Download, ArrowUp, ArrowDown } from 'lucide-react';
-import { atRiskAccounts, companies } from '@/lib/admin-data';
-import type { AtRiskAccount } from '@/lib/admin-data';
+import { atRiskAccounts } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
+
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'at-risk');
+  };
 
 export default function AdminAtRiskAccountsPage() {
   const [search, setSearch] = useState('');
@@ -26,7 +33,7 @@ export default function AdminAtRiskAccountsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">At-Risk Accounts</h1>
           <p className="text-sm text-slate-500 mt-1">Accounts showing signs of potential churn</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

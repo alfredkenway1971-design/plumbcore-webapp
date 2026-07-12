@@ -1,8 +1,9 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { Brain, TrendingUp, Users, Zap, BarChart3, Search, Download, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import { featureAdoption } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
 
 const trendIcons: Record<string, any> = { up: ArrowUp, down: ArrowDown, flat: Minus };
 const trendColors: Record<string, string> = { up: 'text-emerald-500', down: 'text-red-500', flat: 'text-slate-600' };
@@ -18,6 +19,12 @@ const usageByDay = [
 ];
 
 const maxUsage = Math.max(...usageByDay.map(d => d.estimates + d.voiceNotes + d.chats));
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'ai-usage');
+  };
 
 export default function AdminAiUsageStatsPage() {
   const [search, setSearch] = useState('');
@@ -39,7 +46,7 @@ export default function AdminAiUsageStatsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">AI Usage Stats</h1>
           <p className="text-sm text-slate-500 mt-1">Monitor AI feature adoption and usage patterns</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

@@ -1,8 +1,9 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { Search, FileText, Download, Filter, ChevronDown, Building2, CheckCircle, Clock, AlertTriangle, XCircle } from 'lucide-react';
-import { companies } from '@/lib/admin-data';
+import { companies, platformKPIs } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
 
 const statusStyles: Record<string, { bg: string; text: string; icon: any }> = {
   paid: { bg: 'bg-green-500/10', text: 'text-green-300', icon: CheckCircle },
@@ -34,6 +35,12 @@ const generateInvoices = () => {
 
 const allInvoices = generateInvoices();
 
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'invoices');
+  };
+
 export default function AdminInvoicesPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -56,7 +63,7 @@ export default function AdminInvoicesPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Invoices</h1>
           <p className="text-sm text-slate-500 mt-1">Platform-wide invoice management</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export CSV
         </button>
       </div>

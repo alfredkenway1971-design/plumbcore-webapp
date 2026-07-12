@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Search, Star, MessageSquare, ThumbsUp, Filter, Download, Building2 } from 'lucide-react';
-
+import { downloadCSV } from '@/lib/csv-export';
 const reviews = [
   { id: 'rev-001', company: 'Johnson Plumbing Co.', rating: 5, text: 'PlumbCore AI cut our estimate time from 30 minutes to 10 seconds. Our close rate went up 40% in the first month.', author: 'Mike Johnson', date: '2026-07-08', status: 'published', helpful: 24 },
   { id: 'rev-002', company: 'Bluewater Plumbing', rating: 5, text: 'The voice-to-invoice feature alone saves my techs 2 hours a day. Best investment we\'ve made.', author: 'Emily Waters', date: '2026-07-07', status: 'published', helpful: 18 },
@@ -18,6 +18,12 @@ const statusStyles: Record<string, string> = {
   published: 'bg-emerald-50 text-emerald-700',
   flagged: 'bg-amber-50 text-amber-600',
 };
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'feedback');
+  };
 
 export default function AdminFeedbackReviewsPage() {
   const [search, setSearch] = useState('');
@@ -41,7 +47,7 @@ export default function AdminFeedbackReviewsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Feedback & Reviews</h1>
           <p className="text-sm text-slate-500 mt-1">Customer reviews and feedback management</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

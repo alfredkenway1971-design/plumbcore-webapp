@@ -1,23 +1,12 @@
-'use client';
-
 import { useState, useMemo } from 'react';
-import {
-  Search,
-  Building2,
-  ChevronDown,
-  MoreHorizontal,
-  Download,
-  ArrowUpDown,
-  CheckCircle,
-  XCircle,
-  Clock,
-  AlertTriangle,
-  Filter,
-  SlidersHorizontal,
-} from 'lucide-react';
-import { companies } from '@/lib/admin-data';
+import { Search, Building2, TrendingUp, Users, Zap, Filter, ChevronDown, MoreHorizontal, Download, Phone, Mail, MapPin, Star, ArrowUp, ArrowDown, ArrowUpDown, CheckCircle, XCircle, AlertTriangle, SlidersHorizontal, Clock } from 'lucide-react';
+import { companies, platformKPIs, getPlatformSummary } from '@/lib/admin-data';
 import type { Company } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
 import { Skeleton } from '@/components/ui/skeleton';
+
+
+
 
 /* ── Constants ── */
 
@@ -276,6 +265,12 @@ function CustomersTable({
 }
 
 /* ── Main Page ── */
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'customers');
+  };
 
 export default function AdminCustomersPage() {
   const [search, setSearch] = useState('');

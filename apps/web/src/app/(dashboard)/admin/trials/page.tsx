@@ -1,9 +1,10 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { Search, Clock, AlertTriangle, CheckCircle, TrendingUp, Filter, ChevronDown, MoreHorizontal, Download, Building2 } from 'lucide-react';
 import { trialPipeline } from '@/lib/admin-data';
-import type { TrialPipelineEntry } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
+
 
 const riskStyles: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   high: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'High Risk' },
@@ -12,6 +13,12 @@ const riskStyles: Record<string, { bg: string; text: string; dot: string; label:
 };
 
 const planColors: Record<string, string> = { solo: '#F59E0B', team: '#3B82F6', pro: '#10B981', business: '#8B5CF6', enterprise: '#EC4899' };
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'trials');
+  };
 
 export default function AdminTrialPipelinePage() {
   const [search, setSearch] = useState('');
@@ -35,7 +42,7 @@ export default function AdminTrialPipelinePage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Trial Pipeline</h1>
           <p className="text-sm text-slate-500 mt-1">Monitor active trials and conversion progress</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

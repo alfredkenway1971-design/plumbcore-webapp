@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Search, Filter, Download, Clock, CheckCircle, XCircle, AlertTriangle, ChevronDown } from 'lucide-react';
+import { downloadCSV } from '@/lib/csv-export';
 
 const statusStyles: Record<number, { bg: string; text: string; icon: any }> = {
   200: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle },
@@ -34,6 +35,12 @@ const generateLogs = () => {
 };
 
 const apiLogs = generateLogs();
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'api-logs');
+  };
 
 export default function AdminApiLogsPage() {
   const [search, setSearch] = useState('');
@@ -68,7 +75,7 @@ export default function AdminApiLogsPage() {
           <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
             <Filter className="w-4 h-4" /> Filters
           </button>
-          <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+          <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
             <Download className="w-4 h-4" /> Export
           </button>
         </div>

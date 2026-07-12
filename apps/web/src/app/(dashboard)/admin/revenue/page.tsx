@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import {
   DollarSign,
@@ -9,14 +7,16 @@ import {
   ArrowUp,
   ArrowDown,
   MoreHorizontal,
-  ChevronDown,
   Building2,
   Download,
   AlertTriangle,
   XCircle,
 } from 'lucide-react';
 import { platformKPIs, revenueBreakdown } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
 import { Skeleton } from '@/components/ui/skeleton';
+
+
 
 /* ── Constants ── */
 
@@ -607,6 +607,12 @@ function LeadRevenueBreakdown() {
 }
 
 /* ── Main Page ── */
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'revenue');
+  };
 
 export default function AdminRevenuePage() {
   const [error, setError] = useState<string | null>(null);

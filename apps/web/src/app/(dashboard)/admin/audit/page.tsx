@@ -1,8 +1,9 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import { Search, Filter, Download, Clock, CheckCircle, AlertTriangle, XCircle, Info, Building2 } from 'lucide-react';
 import { recentActivity } from '@/lib/admin-data';
+import { downloadCSV } from '@/lib/csv-export';
+
+
 
 const severityStyles: Record<string, { bg: string; text: string; icon: any; dot: string }> = {
   success: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle, dot: 'bg-emerald-500' },
@@ -20,6 +21,12 @@ const typeLabels: Record<string, string> = {
   onboarding_complete: 'Onboarding Complete',
   payment_failed: 'Payment Failed',
 };
+
+
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, 'audit');
+  };
 
 export default function AdminAuditLogPage() {
   const [search, setSearch] = useState('');
@@ -39,7 +46,7 @@ export default function AdminAuditLogPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Audit Log</h1>
           <p className="text-sm text-slate-500 mt-1">Track all platform activity and changes</p>
         </div>
-        <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export Log
         </button>
       </div>
