@@ -448,7 +448,22 @@ export default function SettingsPage() {
     setSavingCompany(true);
     setCompanySaved(false);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${useAuthStore.getState().token}` },
+        body: JSON.stringify({
+          name: company.name,
+          email: company.email,
+          phone: company.phone,
+          logo_url: company.logo_url || '',
+          address: company.street,
+          city: company.city,
+          state: company.state,
+          zip: company.zip,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Save failed');
       // Persist company data to Zustand store
       useAuthStore.getState().updateCompany({
         name: company.name,
@@ -462,8 +477,8 @@ export default function SettingsPage() {
       });
       setCompanySaved(true);
       setTimeout(() => setCompanySaved(false), 3000);
-    } catch {
-      // swallow
+    } catch (err: any) {
+      console.error('Company save error:', err);
     } finally {
       setSavingCompany(false);
     }

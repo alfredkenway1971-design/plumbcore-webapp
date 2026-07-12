@@ -1,15 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findUserByEmail, generateId, createSessionToken, buildSession, hashPw } from '@/lib/custom-auth';
 import { sendEmail, passwordResetEmail } from '@/lib/email';
+import { createHmac, randomBytes } from 'crypto';
 
-// In-memory reset tokens (survives restarts in dev only, but acceptable for password reset flow)
-const resetTokens = new Map<string, { email: string; expiresAt: number }>();
+const authSecret = process.env.AUTH_SECRET || '';
 
-// POST /api/auth/reset-password - Request a reset link
+// Self-contained reset token: HMAC(email + expiry, secret)
+// No server-side storage needed — works on serverless (Vercel)
+function generateResetToken(email: string): { token: string; expiry: number } {
+  const expiry = Date.now() + 60 * 60 * 1000; // 1 hour
+  const payload = `${email}:${expiry}`;
+  const hmac = createHmac('sha256', authSecret).update(payload).digest('hex');
+  return { token: `${Buffer.from(payload).toString('base64url')}.${hmac}`, expiry };
+}
+
+function verifyResetToken(token: string): { email: string; valid: boolean } {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 2) return { email: '', valid: false };
+    const payload = Buffer.from(parts[0], 'base64url').toString();
+    const [email, expiryStr] = payload.split(':');
+    const expiry = parseInt(expiryStr, 10);
+    if (isNaN(expiry) || expiry < Date.now()) return { email: '', valid: false };
+    const expectedHmac = createHmac('sha256', authSecret).update(payload).digest('hex');
+    if (parts[1] !== expectedHmac) return { email: '', valid: false };
+    return { email, valid: true };
+  } catch {
+    return { email: '', valid: false };
+  }
+}
+
+// POST /api/auth/reset-password — Request a reset link
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
-
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
@@ -17,15 +41,8 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = email.toLowerCase().trim();
     const user = await findUserByEmail(normalizedEmail);
 
-    // Don't reveal whether the email exists (security best practice)
-    // Just say "if the email exists, a reset link was sent"
     if (user) {
-      const token = generateId();
-      resetTokens.set(token, {
-        email: normalizedEmail,
-        expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour
-      });
-
+      const { token } = generateResetToken(normalizedEmail);
       const resetLink = 'https://plumbcore-ai.vercel.app/reset-password?token=' + token;
       const emailContent = passwordResetEmail(resetLink);
       await sendEmail({
@@ -44,7 +61,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT /api/auth/reset-password - Actually reset the password using a token
+// PUT /api/auth/reset-password — Actually reset the password using a token
 export async function PUT(request: NextRequest) {
   try {
     const { token, password } = await request.json();
@@ -57,29 +74,18 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
     }
 
-    const resetData = resetTokens.get(token);
-    if (!resetData) {
+    const { email, valid } = verifyResetToken(token);
+    if (!valid || !email) {
       return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 400 });
     }
 
-    if (resetData.expiresAt < Date.now()) {
-      resetTokens.delete(token);
-      return NextResponse.json({ error: 'Reset token has expired. Request a new one.' }, { status: 400 });
-    }
-
     // Find and update the user
-    const user = await findUserByEmail(resetData.email);
+    const user = await findUserByEmail(email);
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // We need to update the password in our store
-    // Since custom-auth doesn't expose an update function, we update the in-memory store directly
-    // In production (Supabase), we'd update the auth_users table
     user.passwordHash = hashPw(password);
-
-    // Clean up the used token
-    resetTokens.delete(token);
 
     // Generate new session
     const session = buildSession(user);
