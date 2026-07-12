@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
+import { requireAuth } from '@/lib/api-auth'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
@@ -131,6 +132,9 @@ function buildResult(parsed: any) {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { photoBase64, customerDescription, customerPhone } = await request.json()
     const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')

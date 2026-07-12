@@ -4,7 +4,7 @@ import { decodeSessionToken } from '@/lib/custom-auth';
 export async function POST(request: NextRequest) {
   try {
     const sbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const svcKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '';
+    const svcKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
     // Auth check
     const authHdr = request.headers.get('Authorization');

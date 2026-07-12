@@ -2,6 +2,7 @@
 // Uses Qwen3 8B via OpenRouter (cheapest capable model)
 
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/api-auth'
 
 const AI_MODEL = 'qwen/qwen3-8b' // cheapest capable model
 
@@ -65,6 +66,9 @@ Rules:
 }
 
 export async function POST(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { text } = await request.json()
     

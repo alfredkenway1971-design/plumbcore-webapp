@@ -55,7 +55,7 @@ export interface AuthSession {
 }
 
 // ── Config ──
-const authSecret = process.env.AUTH_SECRET || 'plumbcore-dev-secret-change-in-prod';
+const authSecret = process.env.AUTH_SECRET || '';
 
 // ── Password Hashing ──
 function hashPassword(password: string): string {
