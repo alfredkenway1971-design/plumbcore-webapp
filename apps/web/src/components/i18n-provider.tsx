@@ -65,7 +65,7 @@ const defaultTranslations: Translations = {
     navRequestDemo: "Try It Free →",
     navGetStarted: "Get Started Free",
     heroBadge: "🔥 EARLY ACCESS — BE THE FIRST",
-    heroTitle: 'The <span class="bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">Plumber OS</span> <br /> That <span class="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">Early Adopters</span> Already Trust',
+    heroTitle: 'The <span class="gradient-text">Plumber OS</span> <br /> That <span class="gradient-text-amber">Early Adopters</span> Already Trust',
     heroSubtitle: "Master plumbers built it. Join the early access program and help shape the future of plumbing software.",
     heroCTA1: "Claim Your Free Trial →",
     heroCTA2: "Get a Free Estimate",

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
+import { useI18n } from '@/components/i18n-provider';
 import { jobs, invoices, teamMembers, activities, getStats } from '@/lib/mock-data';
 import type { Job } from '@/lib/mock-data';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -831,6 +832,7 @@ export default function DashboardPage() {
   const [company, setCompany] = useState<any>(null);
   const [dismissed, setDismissed] = useState(false);
   const profile = useAuthStore((s) => s.profile);
+  const { t } = useI18n();
   const stats = getStats();
 
   useEffect(() => {
@@ -909,10 +911,10 @@ export default function DashboardPage() {
 
       {/* ── Row 1: Stats — Field-Service KPIs ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Today's Revenue" value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-blue-500" />
-        <StatCard label="Active Jobs" value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-violet-500" />
-        <StatCard label="Open Invoices" value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-amber-500" />
-        <StatCard label="Total Jobs" value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-cyan-500" />
+        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-blue-500" />
+        <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-violet-500" />
+        <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-amber-500" />
+        <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-cyan-500" />
       </div>
 
       {/* ── Revenue Goal Progress Bar ── */}
