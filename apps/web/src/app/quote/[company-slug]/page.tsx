@@ -14,6 +14,7 @@ import { useI18n } from '@/components/i18n-provider';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { Camera, Check, Clock, Shield, RefreshCcw, Wrench, AlertTriangle, Phone, ChevronLeft, ChevronRight, Star, Mic, MicOff, Sparkles } from 'lucide-react';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
+import { calcDeposit, depositDollars } from '@/lib/plan-pricing';
 
 /* ── Helpers ── */
 const formatName = (v: string) => v.replace(/^\s+/, '').slice(0, 50).replace(/[a-zA-Z\s'-]+/g, m => /^[a-z\s'-]+$/i.test(m) ? m.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/['-][a-z]/g, c => c.toUpperCase()) : m);
@@ -260,8 +261,10 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white text-center space-y-4 shadow-lg">
         <h3 className="text-lg font-semibold">{t('quote.bookTitle')}</h3>
         <p className="text-sm text-slate-400">{t('quote.bookDesc')}</p>
+        <p className="text-sm text-slate-400 mb-1">To confirm this estimate, deposit:</p>
+        <p className="text-3xl font-bold text-white mb-3">{depositDollars(result.depositAmount)}</p>
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm">
-          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — $49 deposit`}
+          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — ${depositDollars(result.depositAmount)} deposit`}
         </button>
         <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
       </div>
@@ -276,7 +279,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
 }
 
 /* ── Step 5 — Payment Success ── */
-function StepSuccess({ t }: { t: (key: string) => string }) {
+function StepSuccess({ result, t }: { result?: any; t: (key: string) => string }) {
   return (
     <div className="text-center space-y-6 py-8">
       <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
@@ -287,7 +290,7 @@ function StepSuccess({ t }: { t: (key: string) => string }) {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Payment Successful! 🎉</h2>
         <p className="text-slate-500 max-w-md mx-auto">
-          Your <strong>$49 deposit</strong> has been received. A PlumbCore technician will contact you within 24 hours to schedule your service.
+          Your <strong>{depositDollars(result?.depositAmount || 4900)} deposit</strong> has been received. A PlumbCore technician will contact you within 24 hours to schedule your service.
         </p>
       </div>
       <div className="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto text-left space-y-3">
@@ -414,7 +417,7 @@ export default function QuotePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'payment',
-          amount: 4900, // $49.00 deposit
+          amount: result.depositAmount || 4900,
           description: `PlumbCore AI — Estimate Deposit`,
           customerEmail: form.email,
           customerName: form.name,
@@ -427,6 +430,8 @@ export default function QuotePage() {
             customerAddress: form.address,
             estimateParts: JSON.stringify(result.parts || []),
             estimateLabor: result.laborCost || 0,
+            depositCharged: String(result.depositAmount || 4900),
+            depositTier: result.depositTier || '',
             quoteType: 'deposit',
           }
         }),
@@ -478,7 +483,7 @@ export default function QuotePage() {
           </div>
           <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading t={t} /></div>
           <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} onStripeCheckout={handleStripeCheckout} stripeLoading={stripeLoading} t={t} /></div>
-          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess t={t} /></div>
+          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess result={result} t={t} /></div>
         </div>
       </section>
     </div>

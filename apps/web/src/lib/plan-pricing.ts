@@ -118,16 +118,39 @@ export function getPlanTierFromPriceId(priceId: string): string {
   return map[priceId] || 'solo';
 }
 
+/* ── Tiered Deposit Model ── */
+export const DEPOSIT_TIERS = [
+  { max: 1000, deposit: 4900, label: 'Under $1,000' },
+  { max: 1500, deposit: 9900, label: '$1,000 – $1,499' },
+  { max: 2000, deposit: 14900, label: '$1,500 – $1,999' },
+  { max: Infinity, deposit: 19900, label: '$2,000+' },
+];
+
+export function calcDeposit(estimatedPrice: number): { deposit: number; tier: string } {
+  for (const t of DEPOSIT_TIERS) {
+    if (estimatedPrice < t.max) {
+      return { deposit: t.deposit, tier: t.label };
+    }
+  }
+  return { deposit: 19900, tier: '$2,000+' };
+}
+
+export function depositDollars(cents: number): string {
+  return `$${(cents / 100).toFixed(0)}`;
+}
+
 /* ── Revenue Model (for reference) ── */
 /*
 Revenue Model (@ 100 plumbers):
   Plumber pays: SaaS subscription ($349/$799/$1,499/mo)
-  Customer pays: $49 deposit per lead (kept 100% by PlumbCore)
+  Customer pays: deposit based on estimate tier ($49–$199, kept 100% by PlumbCore)
   Plumber invoices customer directly for job — no revenue split
 
-  Solo:  40 × $349 = $13,960/mo + 320 leads × $49 = $15,680/mo
-  Pro:   45 × $799 = $35,955/mo + 360 leads × $49 = $17,640/mo
-  Biz:   15 × $1,499 = $22,485/mo + 120 leads × $49 = $5,880/mo
+  Deposit tiers: Under $1K = $49 | $1K–$1.5K = $99 | $1.5K–$2K = $149 | $2K+ = $199
+
+  Solo:  40 × $349 = $13,960/mo + 320 leads × avg $62 = $19,840/mo
+  Pro:   45 × $799 = $35,955/mo + 360 leads × avg $62 = $22,320/mo
+  Biz:   15 × $1,499 = $22,485/mo + 120 leads × avg $62 = $7,440/mo
          ──────────────────────────────────────────────────
-         Total: $72,400/mo SaaS + $39,200/mo lead fees = $111,600/mo
+         Total: $72,400/mo SaaS + $49,600/mo lead fees = $122,000/mo
 */

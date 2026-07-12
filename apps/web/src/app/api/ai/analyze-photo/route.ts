@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 import { requireAuth } from '@/lib/api-auth'
+import { calcDeposit } from '@/lib/plan-pricing'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
@@ -116,6 +117,7 @@ function buildResult(parsed: any) {
   const totalPrice = Math.round((laborCost + partsTotal + tax) * 100) / 100
   const confidence = Math.min(100, Math.max(0, parsed.confidence || 85))
 
+  const depositInfo = calcDeposit(totalPrice)
   return {
     diagnosis: parsed.diagnosis || 'Plumbing issue detected',
     severity: parsed.severity || 'moderate',
@@ -128,6 +130,8 @@ function buildResult(parsed: any) {
     taxRate: TAX_RATE,
     totalPrice,
     confidence,
+    depositAmount: depositInfo.deposit,
+    depositTier: depositInfo.tier,
   }
 }
 

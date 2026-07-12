@@ -87,6 +87,8 @@ export async function POST(req: Request) {
           const severity = metadata.severity || '';
           const totalEstimate = parseFloat(metadata.totalEstimate || '0');
           const companySlug = metadata.companySlug || '';
+          const depositCharged = parseInt(metadata.depositCharged || '4900');
+          const depositTier = metadata.depositTier || '';
           const customerAddress = metadata.customerAddress || '';
           const customerCity = metadata.customerCity || '';
           const amountPaid = (session.amount_total || 4900) / 100;
@@ -119,6 +121,9 @@ export async function POST(req: Request) {
                     total_estimate: totalEstimate,
                     deposit_paid: amountPaid,
                     deposit_stripe_id: session.id,
+                    deposit_charged: depositCharged / 100,
+                    deposit_tier: depositTier,
+                    estimated_job_value: totalEstimate,
                     status: 'deposit_paid',
                   });
                   console.log(`  → White-label job created for ${companySlug}`);
@@ -146,6 +151,9 @@ export async function POST(req: Request) {
                     severity,
                     total_estimate: totalEstimate,
                     deposit_paid: amountPaid,
+                    deposit_charged: depositCharged / 100,
+                    deposit_tier: depositTier,
+                    estimated_job_value: totalEstimate,
                     status: 'pending',
                     created_at: now.toISOString(),
                     expires_at: expiresAt.toISOString(),
