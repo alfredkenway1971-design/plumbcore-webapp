@@ -61,7 +61,7 @@ function Hero({ t }: { t: (key: string) => string }) {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center stagger-fade">
           <div className="text-center lg:text-left">
-            <span className="inline-flex items-center gap-2 bg-blue-600/15 backdrop-blur-xl border border-blue-500/30 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-4 sm:mb-6">
+            <span className="inline-flex items-center gap-2 bg-blue-600/15 backdrop-blur-xl border border-blue-500/30 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-4 sm:mb-6 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               {t('home.heroBadge')}
             </span>
@@ -115,8 +115,8 @@ function StatsRow({ t }: { t: (key: string) => string }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {stats.map((s, i) => (
             <div key={i}>
-              <p className={`${s.sub ? 'text-sm text-blue-500 font-semibold' : 'text-3xl sm:text-4xl font-extrabold text-slate-900'}`}>{s.num}</p>
-              <p className="text-sm text-slate-500 mt-1">{s.label}</p>
+              <p className={`${s.sub ? 'text-sm text-blue-500 font-semibold' : 'text-3xl sm:text-4xl font-extrabold text-slate-900'} ${s.num === '—' ? 'opacity-40 select-none' : ''}`}>{s.num}</p>
+              <p className="text-sm text-slate-500 mt-1">{s.label}{s.num === '—' ? <span className="block text-[10px] text-slate-400 mt-0.5">Awaiting data</span> : ''}</p>
             </div>
           ))}
         </div>
@@ -189,11 +189,11 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((f, i) => (
-            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-lg shadow-black/10 mx-auto sm:mx-0`}>
+            <div key={i} className="bg-white rounded-2xl ring-1 ring-black/5 p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left relative overflow-hidden">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-lg shadow-black/10 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
                 <f.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">{f.title}</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2 transition-colors duration-300 group-hover:text-blue-600">{f.title}</h3>
               <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}
