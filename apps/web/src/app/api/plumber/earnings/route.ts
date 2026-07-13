@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 
 /**
  * GET /api/plumber/earnings?companyId=xxx
@@ -6,6 +7,9 @@ import { NextResponse } from 'next/server';
  * POST /api/plumber/earnings — trigger payout
  */
 export async function GET(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { searchParams } = new URL(req.url);
     const companyId = searchParams.get('companyId');
@@ -81,6 +85,9 @@ export async function GET(req: Request) {
  * POST /api/plumber/earnings — create a manual payout (admin trigger)
  */
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { companyId, periodStart, periodEnd, amount, feeCount, notes } = await req.json();
     if (!companyId || !periodStart || !periodEnd) {

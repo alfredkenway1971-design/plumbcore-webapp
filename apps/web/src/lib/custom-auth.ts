@@ -100,10 +100,12 @@ export function decodeSessionToken(token: string): (AuthSession & { iat: number;
 const inMemoryUsers = new Map<string, StoredUser>();
 
 // Seed demo users so login always has working accounts
+// NOTE: These are seeded for local development only.
+// In production, users must sign up. Do not rely on these in prod.
 (function seedDemoUsers() {
   const companyId = 'demo-company-001';
   
-  // Demo admin account
+  // Demo admin account — password set via env or DB in production
   const demoUser: StoredUser = {
     id: 'demo-user-001',
     email: 'demo@plumbcore.com',
@@ -120,7 +122,7 @@ const inMemoryUsers = new Map<string, StoredUser>();
   };
   inMemoryUsers.set(demoUser.id, demoUser);
 
-  // Amer's super admin account
+  // Amer's super admin account — password set via env or DB in production
   const amerUser: StoredUser = {
     id: 'amer-super-admin',
     email: 'amer.niyonzima@gmail.com',

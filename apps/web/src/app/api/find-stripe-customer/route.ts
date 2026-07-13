@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 
 const stripeKey = process.env.STRIPE_SECRET_KEY || '';
 
 export async function GET(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');
 

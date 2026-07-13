@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 
 /**
  * POST /api/stripe/create-connect-account
  * Creates a Stripe Connect Express account for a plumber
  */
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { companyId, email, companyName, phone } = await req.json();
     if (!companyId || !email) {

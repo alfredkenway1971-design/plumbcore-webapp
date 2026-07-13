@@ -6,9 +6,9 @@ export async function POST(request: NextRequest) {
   try {
     const { email, role, secret } = await request.json();
 
-    // Protect with admin secret
-    const expectedSecret = process.env.ADMIN_SECRET || 'plumbcore-admin-secret-2026';
-    if (secret !== expectedSecret) {
+    // Protect with admin secret — MUST be set in environment variables
+    const expectedSecret = process.env.ADMIN_SECRET;
+    if (!expectedSecret || secret !== expectedSecret) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

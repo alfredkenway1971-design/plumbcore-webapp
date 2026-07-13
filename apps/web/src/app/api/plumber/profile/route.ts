@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { mockPlumberProfiles } from '@/lib/plumber-profiles';
 import type { PlumberProfile } from '@/lib/plumber-profiles';
 
@@ -9,6 +10,9 @@ import type { PlumberProfile } from '@/lib/plumber-profiles';
  * POST /api/plumber/profile — update profile fields
  */
 export async function GET(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { searchParams } = new URL(req.url);
     const companyId = searchParams.get('companyId');
@@ -47,6 +51,9 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const body = await req.json();
     const { companyId, ...updates } = body;

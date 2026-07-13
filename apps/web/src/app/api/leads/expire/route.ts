@@ -11,8 +11,15 @@ import { sendEmail } from '@/lib/email';
 
 const stripeKey = process.env.STRIPE_SECRET_KEY || '';
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
+    // Protect with cron secret
+    const authHeader = req.headers.get('authorization');
+    const expectedKey = process.env.CRON_SECRET || '';
+    if (authHeader !== `Bearer ${expectedKey}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const admin = getAdminClient();
     if (!admin) return NextResponse.json({ message: 'DB not configured' });
 

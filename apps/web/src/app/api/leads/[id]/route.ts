@@ -4,10 +4,14 @@
  */
 
 import { NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { getAdminClient } from '@/lib/supabase-admin';
 import { sendEmail } from '@/lib/email';
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = requireAuth(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const { id } = await params;
     const { action, companyId, reason } = await req.json();

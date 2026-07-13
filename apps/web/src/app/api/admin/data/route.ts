@@ -1,8 +1,17 @@
 // Admin API — Real platform-wide metrics from Supabase
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { getAdminClient } from '@/lib/supabase-admin';
 
 export async function GET(request: NextRequest) {
+  const auth = requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
+  // Only super_admin and admin can access
+  if (auth.role !== 'super_admin' && auth.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   try {
     const admin = getAdminClient();
     if (!admin) {
