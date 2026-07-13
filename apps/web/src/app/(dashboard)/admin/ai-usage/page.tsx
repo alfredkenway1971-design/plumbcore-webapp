@@ -22,12 +22,6 @@ const usageByDay = [
 
 const maxUsage = Math.max(...usageByDay.map(d => d.estimates + d.voiceNotes + d.chats));
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'ai-usage');
-  };
-
 export default function AdminAiUsageStatsPage() {
   const [search, setSearch] = useState('');
 
@@ -41,6 +35,11 @@ export default function AdminAiUsageStatsPage() {
     return featureAdoption.filter(f => f.featureName.toLowerCase().includes(search.toLowerCase()));
   }, [search]);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

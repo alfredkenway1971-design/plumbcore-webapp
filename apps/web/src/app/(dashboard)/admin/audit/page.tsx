@@ -24,12 +24,6 @@ const typeLabels: Record<string, string> = {
   payment_failed: 'Payment Failed',
 };
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'audit');
-  };
-
 export default function AdminAuditLogPage() {
   const [search, setSearch] = useState('');
   const [severityFilter, setSeverityFilter] = useState('all');
@@ -41,6 +35,11 @@ export default function AdminAuditLogPage() {
     return data;
   }, [search, severityFilter]);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

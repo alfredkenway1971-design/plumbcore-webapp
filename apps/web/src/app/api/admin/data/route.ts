@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/api-auth';
 import { getAdminClient } from '@/lib/supabase-admin';
+import { PLAN_PRICES } from '@/lib/plan-pricing';
 
 export async function GET(request: NextRequest) {
   const auth = requireAuth(request);
@@ -42,10 +43,9 @@ export async function GET(request: NextRequest) {
         const trialingCompanies = companies.filter((c: any) => c.subscription_status === 'trialing');
         const cancelledCompanies = companies.filter((c: any) => c.subscription_status === 'cancelled' || c.subscription_status === 'past_due');
 
-        // MRR: sum of subscription prices for active companies
-        const planPrices: Record<string, number> = { solo: 149, team: 249, pro: 349, business: 499, enterprise: 799 };
+        // MRR: sum of subscription prices for active companies (PLAN_PRICES is in cents, convert to dollars)
         const mrr = activeCompanies.reduce((sum: number, c: any) => {
-          return sum + (planPrices[c.subscription_tier] || 0);
+          return sum + ((PLAN_PRICES[c.subscription_tier] || 0) / 100);
         }, 0);
 
         const totalJobs30d = jobs.filter((j: any) => {

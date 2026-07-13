@@ -27,13 +27,6 @@ const reasonColors: Record<string, string> = {
   'Budget cuts': 'bg-blue-50 text-blue-300',
 };
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    const labels: Record<string, string> = { companyName: 'Company', planTier: 'Plan', churnDate: 'Churn Date', reason: 'Reason' };
-    downloadCSV(data, 'churned_accounts', labels);
-  };
-
 export default function AdminChurnedAccountsPage() {
   const [search, setSearch] = useState('');
   const [reasonFilter, setReasonFilter] = useState('all');
@@ -47,6 +40,11 @@ export default function AdminChurnedAccountsPage() {
 
   const totalLostMrr = churnedData.reduce((s, c) => s + c.mrr, 0);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

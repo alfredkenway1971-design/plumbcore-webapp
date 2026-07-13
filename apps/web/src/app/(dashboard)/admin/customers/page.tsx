@@ -268,12 +268,6 @@ function CustomersTable({
 
 /* ── Main Page ── */
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'customers');
-  };
-
 export default function AdminCustomersPage() {
   const [search, setSearch] = useState('');
   const [planFilter, setPlanFilter] = useState<string | null>(null);

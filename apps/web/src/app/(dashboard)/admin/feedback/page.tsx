@@ -19,12 +19,6 @@ const statusStyles: Record<string, string> = {
   flagged: 'bg-amber-50 text-amber-600',
 };
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'feedback');
-  };
-
 export default function AdminFeedbackReviewsPage() {
   const [search, setSearch] = useState('');
   const [ratingFilter, setRatingFilter] = useState<number | 'all'>('all');
@@ -40,6 +34,11 @@ export default function AdminFeedbackReviewsPage() {
 
   const avgRating = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

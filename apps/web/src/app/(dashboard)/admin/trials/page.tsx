@@ -16,12 +16,6 @@ const riskStyles: Record<string, { bg: string; text: string; dot: string; label:
 
 const planColors: Record<string, string> = { solo: '#F59E0B', team: '#3B82F6', pro: '#10B981', business: '#8B5CF6', enterprise: '#EC4899' };
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'trials');
-  };
-
 export default function AdminTrialPipelinePage() {
   const [search, setSearch] = useState('');
   const [riskFilter, setRiskFilter] = useState<string>('all');
@@ -37,6 +31,11 @@ export default function AdminTrialPipelinePage() {
 
   const stats = { total: trialPipeline.length, highRisk: trialPipeline.filter(t => t.riskLevel === 'high').length, expired: trialPipeline.filter(t => t.daysRemaining <= 0).length, avgEngagement: Math.round(trialPipeline.reduce((s, t) => s + t.engagementScore, 0) / trialPipeline.length) };
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

@@ -197,8 +197,8 @@ function RevenueChart() {
               <I.ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
             </span>
           </div>
-          <p className="text-3xl font-bold text-slate-900">${(totalThis * 100).toLocaleString()}</p>
-          <p className="text-xs text-slate-400 mt-0.5">vs ${(totalPrev * 100).toLocaleString()} last month</p>
+          <p className="text-3xl font-bold text-slate-900">${totalThis.toLocaleString()}</p>
+          <p className="text-xs text-slate-400 mt-0.5">vs ${totalPrev.toLocaleString()} last month</p>
         </div>
         <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
       </div>

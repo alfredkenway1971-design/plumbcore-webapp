@@ -5,15 +5,6 @@ import { Search, Building2, AlertTriangle, Phone, Mail, MoreHorizontal, Download
 import { atRiskAccounts } from '@/lib/admin-data';
 import { downloadCSV } from '@/lib/csv-export';
 
-
-
-
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'at-risk');
-  };
-
 export default function AdminAtRiskAccountsPage() {
   const [search, setSearch] = useState('');
   const [sortField, setSortField] = useState<'churnProbability' | 'mrr'>('churnProbability');
@@ -28,6 +19,11 @@ export default function AdminAtRiskAccountsPage() {
   const totalMrrAtRisk = atRiskAccounts.reduce((s, a) => s + a.mrr, 0);
   const avgChurnProb = Math.round(atRiskAccounts.reduce((s, a) => s + a.churnProbability, 0) / atRiskAccounts.length * 100);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

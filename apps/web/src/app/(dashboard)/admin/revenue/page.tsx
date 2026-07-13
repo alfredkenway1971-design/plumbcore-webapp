@@ -610,12 +610,6 @@ function LeadRevenueBreakdown() {
 
 /* ── Main Page ── */
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'revenue');
-  };
-
 export default function AdminRevenuePage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

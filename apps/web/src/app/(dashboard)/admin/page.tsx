@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   DollarSign, Users, Zap, TrendingDown,
   ArrowUp, ArrowDown, ChevronDown, MoreHorizontal,
@@ -8,14 +8,14 @@ import {
   UserPlus, CreditCard, LogOut, Activity,
   MapPin, CheckCircle, XCircle,
 } from 'lucide-react';
+import { useAuthStore } from '@/lib/store';
+import { downloadCSV } from '@/lib/csv-export';
 import {
   platformKPIs, trialPipeline, atRiskAccounts,
   featureAdoption, revenueBreakdown, recentActivity,
   companies, getPlatformSummary,
 } from '@/lib/admin-data';
 import type { TrialPipelineEntry, ActivityFeedItem, Company } from '@/lib/admin-data';
-import { useAuthStore } from '@/lib/store';
-import { downloadCSV } from '@/lib/csv-export';
 
 /* ═══════════════════════════════════════════
    CONSTANTS
@@ -71,8 +71,8 @@ const activityColorMap: Record<string, string> = {
    ═══════════════════════════════════════════ */
 function KPICards() {
   const kpis = [
-    {
-      label: 'Monthly Recurring Revenue',
+      {
+        label: 'Monthly Recurring Revenue',
       value: `$${(platformKPIs.totalMRR / 1000).toFixed(1)}K`,
       change: `+${platformKPIs.mrrGrowth}%`,
       trend: 'up' as const,

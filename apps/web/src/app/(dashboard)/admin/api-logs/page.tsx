@@ -36,12 +36,6 @@ const generateLogs = () => {
 
 const apiLogs = generateLogs();
 
-
-  const handleExport = () => {
-    const data: Record<string, any>[] = [];
-    downloadCSV(data, 'api-logs');
-  };
-
 export default function AdminApiLogsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -64,6 +58,11 @@ export default function AdminApiLogsPage() {
   const errorRate = Math.round(apiLogs.filter(l => l.status >= 400).length / totalRequests * 100);
   const avgLatency = Math.round(apiLogs.reduce((s, l) => s + l.latency, 0) / totalRequests);
 
+  const handleExport = () => {
+    const data: Record<string, any>[] = [];
+    downloadCSV(data, "export");
+  };
+  
   return (
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
