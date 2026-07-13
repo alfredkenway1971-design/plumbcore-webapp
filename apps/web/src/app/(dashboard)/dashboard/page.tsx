@@ -75,6 +75,8 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
    REVENUE GOAL PROGRESS BAR — Loss Aversion + Goal Gradient
    ═══════════════════════════════════════════ */
 function RevenueGoalBar() {
+    const { t } = useI18n();
+  
   const [goal, setGoal] = useState(50000); // $50K/month default
   const [editing, setEditing] = useState(false);
   const [editValue, setEditValue] = useState('50000');
@@ -93,7 +95,7 @@ function RevenueGoalBar() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-slate-900">Monthly Revenue Goal</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('dashboard.monthlyGoal')}</h3>
         </div>
         <div className="flex items-center gap-2">
           {editing ? (
@@ -136,13 +138,13 @@ function RevenueGoalBar() {
           </span>
         </div>
         {remaining > 0 ? (
-          <span className="text-slate-400">${remaining.toLocaleString()} to go</span>
+          <span className="text-slate-400">${remaining.toLocaleString()} {t('dashboard.toGo')}</span>
         ) : (
           <span className="flex items-center gap-1 text-emerald-600 font-semibold">
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Goal reached! 🎉
+            {t('dashboard.goalReached')} 🎉
           </span>
         )}
       </div>
@@ -154,6 +156,8 @@ function RevenueGoalBar() {
    REVENUE LINE CHART (30-day, comparison)
    ═══════════════════════════════════════════ */
 function RevenueChart() {
+    const { t } = useI18n();
+  
   // Generate 30-day revenue data from invoices
   const days = 30;
   const now = Date.now();
@@ -192,7 +196,7 @@ function RevenueChart() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-slate-900">Revenue (30 Days)</h3>
+            <h3 className="text-base font-semibold text-slate-900">{t('dashboard.revenueChart')}</h3>
             <span className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${+pctChange >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
               <I.ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
             </span>
@@ -213,7 +217,7 @@ function RevenueChart() {
         <polyline points={prevPoints} fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4 3" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
         {/* Area fill */}
         <polygon points={areaPoints} fill="url(#revGrad)" />
-        {/* This month (solid) */}
+        {/* {t('dashboard.thisMonth')} (solid) */}
         <polyline points={thisPoints} fill="none" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {/* Dot markers */}
         {chartThis.map((v, i) => i % 5 === 0 && (
@@ -222,7 +226,7 @@ function RevenueChart() {
       </svg>
       <div className="flex items-center gap-4 mt-2">
         <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-500 rounded-full" /><span className="text-[10px] text-slate-400">This month</span></div>
-        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-slate-400">Last month</span></div>
+        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-slate-400">{t('dashboard.lastMonth')}</span></div>
       </div>
     </div>
   );
@@ -232,6 +236,8 @@ function RevenueChart() {
    JOB BREAKDOWN DONUT
    ═══════════════════════════════════════════ */
 function JobDonutChart() {
+    const { t } = useI18n();
+  
   // Compute breakdown from actual jobs data
   const completed = jobs.filter(j => j.status === 'completed').length;
   const inProgress = jobs.filter(j => j.status === 'in-progress').length;
@@ -251,7 +257,7 @@ function JobDonutChart() {
         { label: 'Completed', value: 60, color: '#10B981' },
         { label: 'In Progress', value: 20, color: '#3B82F6' },
         { label: 'Cancelled', value: 12, color: '#94A3B8' },
-        { label: 'No-Show', value: 8, color: '#F59E0B' },
+        { label: t('dashboard.noShow'), value: 8, color: '#F59E0B' },
       ];
   const total = segments.reduce((s, v) => s + v.value, 0);
   const cx = 100, cy = 100, r = 72, sw = 28;
@@ -273,7 +279,7 @@ function JobDonutChart() {
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">Job Breakdown</h3>
+        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.jobBreakdown')}</h3>
         <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
       </div>
       <div className="flex items-start gap-4">
@@ -306,6 +312,8 @@ function JobDonutChart() {
    WEEKLY PERFORMANCE (jobs + revenue per tech)
    ═══════════════════════════════════════════ */
 function WeeklyTechChart() {
+    const { t } = useI18n();
+  
   // Compute from actual team members and their job assignments
   const hasTeamData = teamMembers.length > 0 && jobs.length > 0;
   const techs = hasTeamData
@@ -334,7 +342,7 @@ function WeeklyTechChart() {
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-slate-900">Weekly Performance</h3>
+        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.weeklyPerformance')}</h3>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-500" /><span className="text-[10px] text-slate-400">Jobs</span></div>
           <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /><span className="text-[10px] text-slate-400">Revenue</span></div>
@@ -381,14 +389,15 @@ const demoJobs = [
 ];
 
 const UpcomingJobsTable = memo(function UpcomingJobsTable() {
+  const { t } = useI18n();
   const router = useRouter();
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Upcoming Jobs</h3>
+        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.upcomingJobs')}</h3>
         <div className="flex items-center gap-3">
           <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
-          <a href="/jobs" className="text-xs font-medium text-blue-600 hover:text-blue-700">View All →</a>
+          <a href="/jobs" className="text-xs font-medium text-blue-600 hover:text-blue-700">{t('dashboard.viewAll')} →</a>
         </div>
       </div>
       <div className="overflow-x-auto">
@@ -469,10 +478,11 @@ const statusDotColors: Record<string, string> = {
 };
 
 const TechStatusTable = memo(function TechStatusTable() {
+  const { t } = useI18n();
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Tech Status</h3>
+        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.techStatus')}</h3>
         <a href="/team" className="text-xs font-medium text-blue-600 hover:text-blue-700">View All →</a>
       </div>
       <div className="divide-y divide-slate-50 max-h-[380px] overflow-y-auto">
@@ -828,11 +838,12 @@ const MobileBottomNav = memo(function MobileBottomNav() {
    MAIN DASHBOARD PAGE
    ═══════════════════════════════════════════ */
 export default function DashboardPage() {
+  const { t } = useI18n();
+  
   const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState<any>(null);
   const [dismissed, setDismissed] = useState(false);
   const profile = useAuthStore((s) => s.profile);
-  const { t } = useI18n();
   const stats = getStats();
 
   useEffect(() => {
