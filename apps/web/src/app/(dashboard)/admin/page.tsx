@@ -69,37 +69,38 @@ const activityColorMap: Record<string, string> = {
 /* ═══════════════════════════════════════════
    ROW 1 — KPI CARDS
    ═══════════════════════════════════════════ */
-function KPICards() {
+function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: number; activePlumbers: number; plumberGrowth: number; activeTrials: number; trialConversionRate: number; churnRate: number; churnTrend: 'down' | 'up' } }) {
+  const activeKPIs = kpiConfig || platformKPIs;
   const kpis = [
       {
         label: 'Monthly Recurring Revenue',
-      value: `$${(platformKPIs.totalMRR / 1000).toFixed(1)}K`,
-      change: `+${platformKPIs.mrrGrowth}%`,
+      value: `$${(activeKPIs.totalMRR / 1000).toFixed(1)}K`,
+      change: `+${activeKPIs.mrrGrowth}%`,
       trend: 'up' as const,
       icon: DollarSign,
       color: 'bg-blue-500',
     },
     {
       label: 'Active Plumbers',
-      value: platformKPIs.activePlumbers.toLocaleString(),
-      change: `+${platformKPIs.plumberGrowth}%`,
+      value: activeKPIs.activePlumbers.toLocaleString(),
+      change: `+${activeKPIs.plumberGrowth}%`,
       trend: 'up' as const,
       icon: Users,
       color: 'bg-emerald-500',
     },
     {
       label: 'Active Free Trials',
-      value: String(platformKPIs.activeTrials),
-      change: `${platformKPIs.trialConversionRate}% convert`,
+      value: String(activeKPIs.activeTrials),
+      change: `${activeKPIs.trialConversionRate}% convert`,
       trend: 'up' as const,
       icon: Zap,
       color: 'bg-amber-500',
     },
     {
       label: 'Churn Rate',
-      value: `${platformKPIs.churnRate}%`,
-      change: platformKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%',
-      trend: platformKPIs.churnTrend === 'down' ? ('down' as const) : ('up' as const),
+      value: `${activeKPIs.churnRate}%`,
+      change: activeKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%',
+      trend: activeKPIs.churnTrend === 'down' ? ('down' as const) : ('up' as const),
       icon: TrendingDown,
       color: 'bg-red-500',
     },
@@ -838,13 +839,36 @@ function GeographicMap() {
 export default function AdminPage() {
   const user = useAuthStore((s) => s.user);
   const summary = getPlatformSummary();
+  const [realKPIs, setRealKPIs] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch real platform data from the API
+  useEffect(() => {
+    fetch('/api/admin/data?endpoint=summary')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) setRealKPIs(data);
+      })
+      .catch(() => { /* fall back to mock */ })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Merge real KPIs with mock defaults for display
+  const displayKPIs = realKPIs ? {
+    ...platformKPIs,
+    totalMRR: (realKPIs as any).mrr || platformKPIs.totalMRR,
+    activePlumbers: (realKPIs as any).activePlumbers ?? platformKPIs.activePlumbers,
+    activeTrials: (realKPIs as any).freeTrials ?? platformKPIs.activeTrials,
+    churnRate: parseFloat(String((realKPIs as any).churnRate || platformKPIs.churnRate)),
+    churnTrend: (parseFloat(String((realKPIs as any).churnRate || '0')) < 2.5 ? 'down' : 'up') as 'down' | 'up',
+  } : platformKPIs;
 
   const handleExport = () => {
     const kpiData = [
-      { Metric: 'Monthly Recurring Revenue', Value: `$${(platformKPIs.totalMRR / 1000).toFixed(1)}K`, Change: `+${platformKPIs.mrrGrowth}%` },
-      { Metric: 'Active Plumbers', Value: String(platformKPIs.activePlumbers), Change: `+${platformKPIs.plumberGrowth}%` },
-      { Metric: 'Active Free Trials', Value: String(platformKPIs.activeTrials), Change: `${platformKPIs.trialConversionRate}% convert` },
-      { Metric: 'Churn Rate', Value: `${platformKPIs.churnRate}%`, Change: platformKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%' },
+      { Metric: 'Monthly Recurring Revenue', Value: `$${(displayKPIs.totalMRR / 1000).toFixed(1)}K`, Change: `+${displayKPIs.mrrGrowth}%` },
+      { Metric: 'Active Plumbers', Value: String(displayKPIs.activePlumbers), Change: `+${displayKPIs.plumberGrowth}%` },
+      { Metric: 'Active Free Trials', Value: String(displayKPIs.activeTrials), Change: `${displayKPIs.trialConversionRate}% convert` },
+      { Metric: 'Churn Rate', Value: `${displayKPIs.churnRate}%`, Change: displayKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%' },
     ];
 
     const trialData = (trialPipeline || []).map((t: any) => ({
@@ -874,7 +898,7 @@ export default function AdminPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Platform Overview</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Super Admin — {summary.totalCompanies} companies · {summary.totalTechs} plumbers · ${summary.totalMrr.toLocaleString()} MRR
+            Super Admin — {displayKPIs.activePlumbers} plumbers · ${displayKPIs.totalMRR.toLocaleString()} MRR
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -891,7 +915,7 @@ export default function AdminPage() {
       </div>
 
       {/* Row 1 — KPI Cards */}
-      <div className="mb-6"><KPICards /></div>
+      <div className="mb-6"><KPICards kpis={displayKPIs} /></div>
 
       {/* Row 2 — MRR Growth + Customer Funnel (60/40) */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
