@@ -17,6 +17,8 @@ const MIN_CONFIDENCE_FOR_ESTIMATE = 90
 
 const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the photo of the plumbing issue and the customer's description, then provide a detailed professional estimate. Return ONLY valid JSON, no other text.
 
+CRITICAL: You MUST include specific parts with their exact prices in the "parts" array. Do NOT leave parts empty. Every estimate needs at least 2-5 specific parts.
+
 Look carefully at the photo. Identify:
 - What type of plumbing fixture/problem is shown (faucet, pipe, toilet, drain, water heater, etc.)
 - The specific issue (leak, clog, corrosion, break, wear, etc.)
@@ -27,20 +29,35 @@ Return:
 {
   "diagnosis": "A specific, detailed diagnosis based on what you SEE in the photo (e.g. 'The photo shows a Moen bathroom faucet with water pooling around the base, indicating a failed O-ring seal. Mineral deposits visible on the handle suggest a slow leak that has been ongoing for weeks.')",
   "severity": "low|moderate|high|emergency",
-  "estimatedHours": number (realistic labor, 0.5-4),
+  "estimatedHours": number (realistic labor, 0.5-8 based on severity),
   "parts": [
-    {"name": "Specific part with brand/model", "qty": number, "unitPrice": number}
+    {"name": "Specific part name with brand/model/size", "qty": number, "unitPrice": number}
   ],
   "confidence": number (0-100 based on how clearly the issue is visible in the photo)
 }
 
+IMPORTANT: The "parts" array MUST contain real, specific parts with exact prices. Here are examples of good parts arrays for common issues:
+
+For a burst pipe: [{"name":"4ft section of 3/4\" copper pipe Type L","qty":1,"unitPrice":18},{"name":"2x 3/4\" copper coupling","qty":2,"unitPrice":4},{"name":"Flux & solder kit","qty":1,"unitPrice":12},{"name":"Shut-off valve 3/4\"","qty":1,"unitPrice":22}]
+
+For a faucet leak: [{"name":"Faucet cartridge (brand-specific)","qty":1,"unitPrice":35},{"name":"O-ring seal set","qty":1,"unitPrice":8},{"name":"Valve seat wrench","qty":1,"unitPrice":12}]
+
+For a toilet issue: [{"name":"Fluidmaster fill valve 400A","qty":1,"unitPrice":18},{"name":"Korky wax ring with flange","qty":1,"unitPrice":8},{"name":"Fluidmaster flapper","qty":1,"unitPrice":7}]
+
+For a water heater: [{"name":"Water heater 40gal electric","qty":1,"unitPrice":550},{"name":"Flexible water heater connectors","qty":2,"unitPrice":15},{"name":"T&P relief valve","qty":1,"unitPrice":18},{"name":"Gas line connector (if gas)","qty":1,"unitPrice":22}]
+
+For drain clog: [{"name":"Drain snake cable 50ft","qty":1,"unitPrice":35},{"name":"Drain cleaning solvent","qty":1,"unitPrice":15}]
+
 Parts pricing reference:
-- Faucet: cartridge $25-45, O-rings $3-8, valve seat $8-15
-- Toilet: flapper $5-12, fill valve $15-25, wax ring $6-10
-- Pipe: section $8-20/ft, coupling $3-8, shut-off valve $15-30
-- Water heater: element $25-45, thermostat $30-55, anode rod $20-35
-- Drain: P-trap $12-25, snake rental $35-65
-- Garbage disposal: unit $80-200, mounting ring $10-15
+- Faucet: cartridge $25-45, O-rings $3-8, valve seat $8-15, handle $15-30
+- Toilet: flapper $5-12, fill valve $15-25, wax ring $6-10, bowl gasket $8-15
+- Pipe (copper): section 3/4\" $15-25/ft, coupling $3-8, elbow $3-6, shut-off valve $15-30, PEX $1-3/ft
+- Pipe (PVC): section 2\" $5-10/ft, coupling $2-5, 90° elbow $2-4, cleanout adapter $5-10
+- Water heater: element $25-45, thermostat $30-55, anode rod $20-35, dip tube $12-20
+- Drain: P-trap $12-25, snake rental $35-65, auger head $15-30
+- Garbage disposal: unit $80-200, mounting ring $10-15, splash guard $5-10
+- Sump pump: pump $80-150, check valve $15-25, discharge pipe $10-20
+- Water softener: resin $40-80, control valve $120-250, bypass valve $25-45
 
 Labor rate is $120/hr. Return ONLY the JSON object.`
 
@@ -171,9 +188,11 @@ export async function POST(request: NextRequest) {
     let usedFallback = false
     let modelUsed = 'qwen/qwen3-vl-8b-instruct'
 
-    // ── TIER 2: GPT-4o Mini fallback ──
-    if (!tier1Result || (tier1Result.confidence ?? 0) < CONFIDENCE_THRESHOLD) {
-      console.log(`Qwen confidence ${tier1Result?.confidence ?? 'N/A'} < ${CONFIDENCE_THRESHOLD} — trying GPT-4o Mini`)
+    // ── TIER 2: GPT-4o Mini fallback (if Qwen fails, low confidence, or missing parts) ──
+    const needsBetterParts = finalParsed && (!finalParsed.parts || finalParsed.parts.length === 0 || finalParsed.parts.every((p: any) => !p.unitPrice || p.unitPrice === 0))
+    if (!tier1Result || (tier1Result.confidence ?? 0) < CONFIDENCE_THRESHOLD || needsBetterParts) {
+      if (needsBetterParts) console.log(`Qwen returned {confidence:${tier1Result?.confidence}} but no parts — trying GPT-4o Mini for detailed parts`)
+      else console.log(`Qwen confidence ${tier1Result?.confidence ?? 'N/A'} < ${CONFIDENCE_THRESHOLD} — trying GPT-4o Mini`)
       const tier2Result = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey)
       if (tier2Result) {
         finalParsed = tier2Result
