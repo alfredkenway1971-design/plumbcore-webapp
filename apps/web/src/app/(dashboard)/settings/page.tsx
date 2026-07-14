@@ -13,7 +13,7 @@ import {
 import { teamMembers, getStats } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
 import { supabase } from '@/lib/supabase';
-import { PLAN_LABELS, PLAN_PRICES } from '@/lib/plan-pricing';
+import { PLAN_LABELS, PLAN_PRICES, PLAN_FEATURES } from '@/lib/plan-pricing';
 import { STRIPE_PRICE_IDS } from '@/lib/feature-gates';
 
 /* ── Types ── */
