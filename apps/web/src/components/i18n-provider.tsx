@@ -268,6 +268,7 @@ const defaultTranslations: Translations = {
     diagnosis: "Diagnosis",
     severity: "Severity",
     labor: "Labor",
+    travelFee: "Travel Fee",
     parts: "Parts",
     tax: "Tax",
     total: "Total",

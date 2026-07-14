@@ -281,6 +281,11 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
             </div>
           ))}
         </div>
+        {/* Travel Fee */}
+        <div className="flex items-center justify-between py-3 border-b border-slate-100">
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.travelFee')}</span>
+          <span className="text-sm font-semibold text-slate-900">{f(result.travelFee || 150)}</span>
+        </div>
         {/* Tax */}
         <div className="flex items-center justify-between py-3 border-b border-slate-100">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.tax')} <span className="font-normal text-slate-400 ml-1">{(result.taxRate||0.085)*100}%</span></span>

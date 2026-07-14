@@ -1,7 +1,6 @@
-// AI Photo Analysis API Route — Smart Tiered Analysis
-// 1. Try Qwen3 VL 8B (cheap, fast) — sends actual photo for vision analysis
-// 2. If confidence < 70% → fallback to GPT-4o Mini (more capable)
-// 3. Caches results to avoid redundant AI calls
+// AI Photo Analysis API Route — Single powerful model
+// Uses GPT-4o Mini as the primary model for accurate pricing
+// Caches results to avoid redundant AI calls
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
@@ -12,6 +11,7 @@ const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
 const LABOR_RATE = 120
 const TAX_RATE = 0.085
+const TRAVEL_FEE = 150 // flat travel/service fee charged by all plumbers
 const CONFIDENCE_THRESHOLD = 70
 const MIN_CONFIDENCE_FOR_ESTIMATE = 90
 
@@ -131,8 +131,10 @@ function buildResult(parsed: any) {
   const partsTotal = Math.round(parts.reduce((s: number, p: any) => s + p.total, 0) * 100) / 100
   const estimatedHours = parsed.estimatedHours || 1.0
   const laborCost = Math.round(estimatedHours * LABOR_RATE * 100) / 100
-  const tax = Math.round((laborCost + partsTotal) * TAX_RATE * 100) / 100
-  const totalPrice = Math.round((laborCost + partsTotal + tax) * 100) / 100
+  const travelFee = TRAVEL_FEE
+  const subtotal = laborCost + partsTotal + travelFee
+  const tax = Math.round(subtotal * TAX_RATE * 100) / 100
+  const totalPrice = Math.round((subtotal + tax) * 100) / 100
   const confidence = Math.min(100, Math.max(0, parsed.confidence || 85))
 
   const depositInfo = calcDeposit(totalPrice)
@@ -152,6 +154,7 @@ function buildResult(parsed: any) {
     estimatedHours: canProvideEstimate ? estimatedHours : 0,
     laborRate: LABOR_RATE,
     laborCost: canProvideEstimate ? laborCost : 0,
+    travelFee: canProvideEstimate ? travelFee : 0,
     parts: canProvideEstimate ? parts : [],
     partsTotal: canProvideEstimate ? partsTotal : 0,
     tax: canProvideEstimate ? tax : 0,
@@ -181,23 +184,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'AI not configured' }, { status: 500 })
     }
 
-    // ── TIER 1: Qwen3 VL 8B (vision model) with actual photo ──
-    const tier1Result = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey)
+    // ── PRIMARY: GPT-4o Mini (more accurate pricing) ──
+    const primaryResult = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey)
     
-    let finalParsed = tier1Result
-    let usedFallback = false
-    let modelUsed = 'qwen/qwen3-vl-8b-instruct'
+    let finalParsed = primaryResult
+    let modelUsed = 'openai/gpt-4o-mini'
 
-    // ── TIER 2: GPT-4o Mini fallback (if Qwen fails, low confidence, or missing parts) ──
-    const needsBetterParts = finalParsed && (!finalParsed.parts || finalParsed.parts.length === 0 || finalParsed.parts.every((p: any) => !p.unitPrice || p.unitPrice === 0))
-    if (!tier1Result || (tier1Result.confidence ?? 0) < CONFIDENCE_THRESHOLD || needsBetterParts) {
-      if (needsBetterParts) console.log(`Qwen returned {confidence:${tier1Result?.confidence}} but no parts — trying GPT-4o Mini for detailed parts`)
-      else console.log(`Qwen confidence ${tier1Result?.confidence ?? 'N/A'} < ${CONFIDENCE_THRESHOLD} — trying GPT-4o Mini`)
-      const tier2Result = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey)
-      if (tier2Result) {
-        finalParsed = tier2Result
-        usedFallback = true
-        modelUsed = 'openai/gpt-4o-mini'
+    // ── FALLBACK: Qwen3 VL 8B (if GPT-4o Mini fails) ──
+    if (!primaryResult) {
+      console.log('GPT-4o Mini failed — trying Qwen3 VL 8B as fallback')
+      const fallbackResult = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey)
+      if (fallbackResult) {
+        finalParsed = fallbackResult
+        modelUsed = 'qwen/qwen3-vl-8b-instruct'
       }
     }
 
@@ -212,7 +211,6 @@ export async function POST(request: NextRequest) {
       success: true,
       result,
       model: modelUsed,
-      fallback: usedFallback,
     })
 
   } catch (error) {
