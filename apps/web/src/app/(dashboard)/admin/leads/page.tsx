@@ -43,7 +43,7 @@ export default function LeadsMarketplacePage() {
   };
 
   const rejectLead = (id: string) => {
-    setLeads(prev => prev.map(l => l.id === id ? { ...l, status: 'spam' as const } : l));
+    setLeads(prev => prev.map((l): Lead => l.id === id ? { ...l, status: 'unfulfilled' } : l));
   };
 
   if (error) return <div className="p-6"><ErrorState title="Failed to load" message={error} onRetry={() => setError(null)} /></div>;
@@ -55,9 +55,9 @@ export default function LeadsMarketplacePage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-lg bg-blue-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Total Revenue</p><p className="text-lg font-bold text-blue-600">${revenue.toLocaleString()}</p></div>
-        <div className="rounded-lg bg-amber-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Unassigned</p><p className="text-lg font-bold text-amber-600">{unassigned}</p></div>
+        <div className="rounded-lg bg-purple-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Matching</p><p className="text-lg font-bold text-purple-600">{matching}</p></div>
         <div className="rounded-lg bg-green-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Assigned</p><p className="text-lg font-bold text-emerald-600">{leads.filter(l => l.status === 'assigned').length}</p></div>
-        <div className="rounded-lg hover:bg-slate-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Completed</p><p className="text-lg font-bold text-slate-400">{leads.filter(l => l.status === 'completed').length}</p></div>
+        <div className="rounded-lg hover:bg-slate-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Completed</p><p className="text-lg font-bold text-slate-400">{leads.filter(l => l.status === 'complete').length}</p></div>
       </div>
 
       {/* Filters */}
@@ -100,7 +100,7 @@ export default function LeadsMarketplacePage() {
                     lead.status === 'arrived' ? 'bg-emerald-50 text-emerald-600' : 
                     lead.status === 'unfulfilled' ? 'bg-red-50 text-red-700' : 
                     lead.status === 'refunded' ? 'bg-orange-50 text-orange-600' : 
-                    'bg-amber-50 text-amber-600'
+                    'bg-purple-50 text-purple-600'
                   }`}>
                     {lead.status === 'en_route' ? 'En Route' : lead.status.charAt(0).toUpperCase() + lead.status.slice(1).replace('_', ' ')}
                   </span>

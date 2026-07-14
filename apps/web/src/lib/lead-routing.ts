@@ -583,11 +583,14 @@ export async function processRefund(
           }
 
           if (session) {
-            routingSessions.set(leadId, {
-              ...session,
-              status: 'refunded',
-              lastActionAt: Date.now(),
-            });
+            const existingSession = routingSessions.get(leadId);
+            if (existingSession) {
+              routingSessions.set(leadId, {
+                ...existingSession,
+                status: 'refunded',
+                lastActionAt: Date.now(),
+              });
+            }
           }
 
           return { status: 'refunded', refundId: refund.id };
