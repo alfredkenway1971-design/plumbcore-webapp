@@ -289,7 +289,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">{t('home.pricingTitle')}</h2>
           <p className="text-base text-slate-500 max-w-2xl mx-auto">{t('home.pricingSubtitle')}</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto stagger-fade">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 max-w-7xl mx-auto stagger-fade">
       {plans.map((p, i) => (
         <div key={i} className={`animate-fade-up-${Math.min(i+1, 4)} relative rounded-2xl transition-all duration-300 ${p.popular ? 'bg-white ring-2 ring-blue-500 shadow-[0_8px_32px_rgba(59,130,246,0.15)] scale-[1.02] lg:-translate-y-2 z-10 animate-pulse-ring' : 'bg-white ring-1 ring-black/5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1'}`}>
           {p.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/25 z-20">Most Popular</div>}

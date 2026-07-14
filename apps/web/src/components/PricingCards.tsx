@@ -78,7 +78,7 @@ export default function PricingPage() {
       </div>
 
       {/* 3-Tier Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {PLAN_ORDER.slice(0, 3).map((tier) => {
           const plan = PLAN_PRICING[tier];
           const features = getPlanFeatures(tier);
