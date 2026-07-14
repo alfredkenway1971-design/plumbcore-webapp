@@ -140,6 +140,7 @@ function buildResult(parsed: any) {
     totalPrice,
     confidence,
     deposit: depositInfo.deposit,
+    depositAmount: depositInfo.deposit,
     depositTier: depositInfo.tier,
     depositPriceId: DEPOSIT_PRICE_IDS[depositTierKey] || DEPOSIT_PRICE_IDS.small,
   }
