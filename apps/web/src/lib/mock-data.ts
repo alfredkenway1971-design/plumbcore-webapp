@@ -147,6 +147,8 @@ export async function loadDataFromSupabase(companyId?: string) {
   if (!storedAuth) return;
 
   try {
+    let hasRealData = false;
+
     // Load clients
     const { data: dbClients } = await supabase
       .from('clients')
@@ -154,6 +156,7 @@ export async function loadDataFromSupabase(companyId?: string) {
       .eq('company_id', companyId);
     
     if (dbClients && dbClients.length > 0) {
+      hasRealData = true;
       data.clients.length = 0;
       dbClients.forEach((c: any) => {
         data.clients.push({
@@ -172,6 +175,7 @@ export async function loadDataFromSupabase(companyId?: string) {
       .eq('company_id', companyId);
     
     if (dbJobs && dbJobs.length > 0) {
+      hasRealData = true;
       data.jobs.length = 0;
       dbJobs.forEach((j: any) => {
         data.jobs.push({
@@ -195,6 +199,7 @@ export async function loadDataFromSupabase(companyId?: string) {
       .eq('company_id', companyId);
     
     if (dbInvoices && dbInvoices.length > 0) {
+      hasRealData = true;
       data.invoices.length = 0;
       dbInvoices.forEach((inv: any) => {
         const client = data.clients.find(c => c.id === inv.client_id);
@@ -215,6 +220,7 @@ export async function loadDataFromSupabase(companyId?: string) {
       .eq('company_id', companyId);
     
     if (dbTeam && dbTeam.length > 0) {
+      hasRealData = true;
       data.teamMembers.length = 0;
       dbTeam.forEach((t: any) => {
         const activeJobs = data.jobs.filter(j => j.assignedTo.includes(t.id) && j.status === 'in-progress').length;
@@ -230,10 +236,30 @@ export async function loadDataFromSupabase(companyId?: string) {
         });
       });
     }
-    
-    console.log(`[PlumbCore] Data loaded: ${data.clients.length} clients, ${data.jobs.length} jobs, ${data.invoices.length} invoices, ${data.teamMembers.length} team members`);
+
+    // If user is authenticated but has NO real data in Supabase, clear all mock data
+    // so new users see empty states instead of fake demo data
+    if (!hasRealData) {
+      data.clients.length = 0;
+      data.jobs.length = 0;
+      data.invoices.length = 0;
+      data.teamMembers.length = 0;
+      console.log('[PlumbCore] Authenticated user with no data — showing empty states');
+    } else {
+      console.log(`[PlumbCore] Data loaded: ${data.clients.length} clients, ${data.jobs.length} jobs, ${data.invoices.length} invoices, ${data.teamMembers.length} team members`);
+    }
   } catch (e) {
-    console.warn('[PlumbCore] Using fallback data:', e);
+    // On error, clear mock data for authenticated users to avoid showing fake data
+    const storedAuth = typeof window !== 'undefined' ? localStorage.getItem('plumbcore-auth') : null;
+    if (storedAuth) {
+      data.clients.length = 0;
+      data.jobs.length = 0;
+      data.invoices.length = 0;
+      data.teamMembers.length = 0;
+      console.warn('[PlumbCore] Auth error — cleared mock data, showing empty states:', e);
+    } else {
+      console.warn('[PlumbCore] Using fallback data:', e);
+    }
   }
 }
 

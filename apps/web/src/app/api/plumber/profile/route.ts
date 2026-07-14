@@ -10,9 +10,6 @@ import type { PlumberProfile } from '@/lib/plumber-profiles';
  * POST /api/plumber/profile — update profile fields
  */
 export async function GET(req: Request) {
-  const auth = requireAuth(req);
-  if (auth instanceof NextResponse) return auth;
-
   try {
     const { searchParams } = new URL(req.url);
     const companyId = searchParams.get('companyId');

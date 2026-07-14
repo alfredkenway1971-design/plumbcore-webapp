@@ -21,7 +21,7 @@ const I = {
 const planColors: Record<string, string> = {
   solo: 'bg-amber-50 text-amber-600 border-amber-500/20',
   pro: 'bg-blue-50 text-blue-600 border-blue-500/20',
-  business: 'bg-violet-500/10 text-violet-600 border-violet-500/20',
+  business: 'bg-violet-50 text-violet-600 border-violet-500/20',
   enterprise: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
 };
 
@@ -65,7 +65,7 @@ export default function AdminPlumbersPage() {
           <p className="text-[10px] font-semibold uppercase text-emerald-600">Active</p>
           <p className="text-xl font-bold text-slate-900 mt-1">{totalActive}</p>
         </div>
-        <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
+        <div className="rounded-xl bg-violet-50 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-600">Jobs Completed</p>
           <p className="text-xl font-bold text-slate-900 mt-1">{totalCompleted.toLocaleString()}</p>
         </div>
@@ -80,7 +80,7 @@ export default function AdminPlumbersPage() {
         <div className="relative flex-1 max-w-xs">
           <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search plumbers..."
-            className="w-full rounded-xl bg-white border border-white/10 pl-9 pr-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
+            className="w-full rounded-xl bg-white border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500" />
         </div>
         <div className="flex gap-1.5">
           {['all', 'solo', 'pro', 'business', 'enterprise'].map(t => (
@@ -88,7 +88,7 @@ export default function AdminPlumbersPage() {
               className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
                 filterTier === t
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-slate-400 border-white/10 hover:border-white/20'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
               }`}>
               {t === 'all' ? 'All' : PLAN_LABELS_PRETTY[t] || t}
             </button>
@@ -101,21 +101,21 @@ export default function AdminPlumbersPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
             <thead>
-              <tr className="bg-slate-100 border-b border-white/10">
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Plumber</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Plan</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Rating</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Jobs</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Acceptance</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Leads (mo)</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Connect</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Status</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-400 text-xs">Actions</th>
+              <tr className="bg-slate-100 border-b border-slate-200">
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plumber</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plan</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Rating</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Jobs</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Acceptance</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Leads (mo)</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Connect</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Status</th>
+                <th className="text-right px-4 py-3 font-semibold text-slate-500 text-xs">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-100">
               {filtered.map(p => (
-                <tr key={p.id} className="hover:hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
+                <tr key={p.id} className="hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold text-white shrink-0"
@@ -155,7 +155,7 @@ export default function AdminPlumbersPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={(e) => { e.stopPropagation(); router.push(`/admin/plumbers/${p.id}`); }}
-                      className="text-xs text-blue-600 hover:text-blue-300">View →</button>
+                      className="text-xs text-blue-600 hover:text-blue-600">View →</button>
                   </td>
                 </tr>
               ))}

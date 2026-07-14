@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { useI18n } from '@/components/i18n-provider';
-import { jobs, invoices, teamMembers, activities, getStats } from '@/lib/mock-data';
+import { jobs, invoices, teamMembers, activities, getStats, loadDataFromSupabase } from '@/lib/mock-data';
 import type { Job } from '@/lib/mock-data';
 import { useDebounce } from '@/hooks/useDebounce';
 
@@ -855,6 +855,10 @@ export default function DashboardPage() {
     import('@/lib/store').then(mod => {
       const state = mod.useAuthStore.getState();
       setCompany(state.company);
+      // Load real data from Supabase (clears mock data for authenticated users with no data)
+      if (state.company?.id) {
+        loadDataFromSupabase(state.company.id);
+      }
     });
     const stored = localStorage.getItem('dismiss_subscription_banner');
     if (stored) {

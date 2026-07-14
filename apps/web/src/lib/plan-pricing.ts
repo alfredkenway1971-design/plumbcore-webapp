@@ -92,9 +92,9 @@ export const PLAN_FEATURES: Record<string, string[]> = {
 };
 
 export const PLAN_STRIPE_PRICE_IDS: Record<string, string> = {
-  solo: 'price_1TrEh8D0AAcByeQ9hCRJDqHs',
-  pro: 'price_1TrEhCD0AAcByeQ9ERNDiEHS',
-  business: 'price_1TrEhED0AAcByeQ9yyeuUONo',
+  solo: 'price_1Tt6HsDynIU5fZLWP1DRWDud',
+  pro: 'price_1Tt6HtDynIU5fZLWHSiADfxM',
+  business: 'price_1Tt6HtDynIU5fZLWkjEeHFOP',
 };
 
 export const PLAN_LEAD_LIMITS: Record<string, number> = {
@@ -106,14 +106,9 @@ export const PLAN_LEAD_LIMITS: Record<string, number> = {
 
 export function getPlanTierFromPriceId(priceId: string): string {
   const map: Record<string, string> = {
-    'price_1TrEh8D0AAcByeQ9hCRJDqHs': 'solo',
-    'price_1TrEhCD0AAcByeQ9ERNDiEHS': 'pro',
-    'price_1TrEhED0AAcByeQ9yyeuUONo': 'business',
-    'price_1TqFwHD0AAcByeQ9qNUaikbx': 'solo',
-    'price_1TqFwOD0AAcByeQ94DnPlHr1': 'pro',
-    'price_1TqFwPD0AAcByeQ9SjTdf8VF': 'pro',
-    'price_1TqFwVD0AAcByeQ90c6KWdEJ': 'business',
-    'price_1TqFwXD0AAcByeQ9vJ2OGA8G': 'enterprise',
+    'price_1Tt6HsDynIU5fZLWP1DRWDud': 'solo',
+    'price_1Tt6HtDynIU5fZLWHSiADfxM': 'pro',
+    'price_1Tt6HtDynIU5fZLWkjEeHFOP': 'business',
   };
   return map[priceId] || 'solo';
 }

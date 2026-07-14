@@ -1,11 +1,8 @@
 /**
- * Email service using Resend API
+ * Email service — supports AgentMail (primary) and Resend (fallback)
  *
- * Setup: Get a free API key at https://resend.com and add to env:
- *   RESEND_API_KEY=re_xxxxxxxxxxxx
+ * All env vars read at call time for Vercel serverless compatibility.
  */
-
-const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 
 interface SendEmailParams {
   to: string;
@@ -14,23 +11,57 @@ interface SendEmailParams {
   text?: string;
 }
 
+/**
+ * Send an email using AgentMail (primary) or Resend (fallback)
+ */
 export async function sendEmail({ to, subject, html, text }: SendEmailParams): Promise<boolean> {
-  if (!RESEND_API_KEY) {
-    console.log('[EMAIL DISABLED] Would send to ' + to + ': ' + subject);
-    return false;
+  // Read env vars at CALL TIME (not module load time) for Vercel compatibility
+  const agentmailKey = process.env.AGENTMAIL_API_KEY || '';
+
+  // Try AgentMail first
+  if (agentmailKey) {
+    return sendViaAgentMail(agentmailKey, to, subject, html, text);
   }
 
+  // Fallback to Resend
+  const resendKey = process.env.RESEND_API_KEY || '';
+  if (resendKey) {
+    return sendViaResend(resendKey, to, subject, html, text);
+  }
+
+  console.log('[EMAIL DISABLED] Would send to ' + to + ': ' + subject);
+  return false;
+}
+
+/**
+ * Send via AgentMail API
+ */
+async function sendViaAgentMail(apiKey: string, to: string, subject: string, html: string, text?: string): Promise<boolean> {
+  const AGENTMAIL_BASE = 'https://api.agentmail.to/v0';
+  const resendKey = process.env.RESEND_API_KEY || '';
+
   try {
-    const authHeader = 'Bearer ' + RESEND_API_KEY;
-    const res = await fetch('https://api.resend.com/emails', {
+    let inboxId = process.env.AGENTMAIL_FROM_INBOX || '';
+
+    // If no inbox configured, create one on the fly
+    if (!inboxId) {
+      const created = await createDefaultInbox(apiKey);
+      if (!created) {
+        console.warn('[AgentMail] Could not create inbox');
+        if (resendKey) return sendViaResend(resendKey, to, subject, html, text);
+        return false;
+      }
+      inboxId = created;
+    }
+
+    const res = await fetch(`${AGENTMAIL_BASE}/inboxes/${encodeURIComponent(inboxId)}/messages/send`, {
       method: 'POST',
       headers: {
-        'Authorization': authHeader,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'PlumbCore AI <noreply@plumbcore.ai>',
-        to,
+        to: [to],
         subject,
         html,
         text: text || html.replace(/<[^>]*>/g, ''),
@@ -38,14 +69,92 @@ export async function sendEmail({ to, subject, html, text }: SendEmailParams): P
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error('Resend API error:', err);
+      const errBody = await res.text();
+      console.error('[AgentMail] Send error:', res.status, errBody);
+      if (resendKey) return sendViaResend(resendKey, to, subject, html, text);
       return false;
     }
 
+    console.log('[AgentMail] Email sent to', to);
     return true;
   } catch (err) {
-    console.error('Failed to send email:', err);
+    console.error('[AgentMail] Failed to send:', err);
+    if (resendKey) return sendViaResend(resendKey, to, subject, html, text);
+    return false;
+  }
+}
+
+let _defaultInboxId: string | null = null;
+
+async function createDefaultInbox(apiKey: string): Promise<string | null> {
+  if (_defaultInboxId) return _defaultInboxId;
+  const AGENTMAIL_BASE = 'https://api.agentmail.to/v0';
+
+  try {
+    // Try existing
+    const listRes = await fetch(`${AGENTMAIL_BASE}/inboxes?limit=10`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+    });
+    if (listRes.ok) {
+      const list = await listRes.json();
+      if (list.inboxes?.length > 0) {
+        _defaultInboxId = list.inboxes[0].inbox_id;
+        return _defaultInboxId;
+      }
+    }
+
+    // Create new
+    const createRes = await fetch(`${AGENTMAIL_BASE}/inboxes`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: 'plumbcore',
+        domain: 'agentmail.to',
+        display_name: 'PlumbCore AI',
+      }),
+    });
+    if (createRes.ok) {
+      const inbox = await createRes.json();
+      _defaultInboxId = inbox.inbox_id;
+      return _defaultInboxId;
+    }
+    return null;
+  } catch (err) {
+    console.error('[AgentMail] Inbox setup error:', err);
+    return null;
+  }
+}
+
+/**
+ * Send via Resend API (fallback)
+ */
+async function sendViaResend(apiKey: string, to: string, subject: string, html: string, text?: string): Promise<boolean> {
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || 'PlumbCore AI <onboarding@resend.dev>',
+        to,
+        subject,
+        html,
+        text: text || html.replace(/<[^>]*>/g, ''),
+      }),
+    });
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error('[Resend] API error:', errBody);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('[Resend] Failed to send:', err);
     return false;
   }
 }
@@ -143,6 +252,28 @@ export function depositConfirmationEmail({ customerName, diagnosis, totalEstimat
             <p style="margin: 0; color: #475569; font-size: 14px;"><strong>Remaining Balance:</strong> $${balance.toFixed(2)}</p>
           </div>
           <p style="color: #94a3b8; font-size: 13px;">The deposit is fully refundable and will be deducted from your final bill. If you have any questions, reply to this email.</p>
+        </div>
+      </div>
+    `,
+  };
+}
+
+/* ── Team Invite Email ── */
+export function teamInviteEmail(params: { invitedByName: string; companyName: string; inviteLink: string; role: string }): { subject: string; html: string } {
+  return {
+    subject: `${params.invitedByName} invited you to join ${params.companyName} on PlumbCore AI`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #3B82F6, #06B6D4); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: white; margin: 0; font-size: 22px;">You're Invited! 🎉</h1>
+        </div>
+        <div style="padding: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi there,</p>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;"><strong>${params.invitedByName}</strong> has invited you to join <strong>${params.companyName}</strong> on PlumbCore AI as a <strong>${params.role}</strong>.</p>
+          <p style="color: #475569; font-size: 15px; line-height: 1.6;">PlumbCore AI helps plumbing teams manage scheduling, invoicing, inventory, AI estimates, and more — all in one place.</p>
+          <a href="${params.inviteLink}" style="display: inline-block; padding: 14px 36px; background: #3B82F6; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 16px; margin: 16px 0;">Accept Invitation</a>
+          <p style="color: #64748b; font-size: 13px; margin-top: 8px;">Or copy this link:<br/><span style="color: #3B82F6;">${params.inviteLink}</span></p>
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">This invitation expires in 7 days. If you weren't expecting this, you can ignore this email.</p>
         </div>
       </div>
     `,

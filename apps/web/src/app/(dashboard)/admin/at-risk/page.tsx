@@ -31,14 +31,14 @@ export default function AdminAtRiskAccountsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">At-Risk Accounts</h1>
           <p className="text-sm text-slate-500 mt-1">Accounts showing signs of potential churn</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'At-Risk Accounts', value: atRiskAccounts.length, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'MRR at Risk', value: '$' + totalMrrAtRisk.toLocaleString(), icon: ArrowDown, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Avg Churn Probability', value: avgChurnProb + '%', icon: AlertTriangle, color: 'text-orange-400', bg: 'bg-orange-500/10' }, { label: 'Reps Assigned', value: new Set(atRiskAccounts.map(a => a.assignedRep)).size, icon: Phone, color: 'text-blue-600', bg: 'bg-blue-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-5 shadow-sm ring-1 ring-black/5">
+        {[ { label: 'At-Risk Accounts', value: atRiskAccounts.length, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'MRR at Risk', value: '$' + totalMrrAtRisk.toLocaleString(), icon: ArrowDown, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Avg Churn Probability', value: avgChurnProb + '%', icon: AlertTriangle, color: 'text-orange-600', bg: 'bg-orange-50' }, { label: 'Reps Assigned', value: new Set(atRiskAccounts.map(a => a.assignedRep)).size, icon: Phone, color: 'text-blue-600', bg: 'bg-blue-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
             <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
@@ -46,11 +46,11 @@ export default function AdminAtRiskAccountsPage() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search accounts..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <input placeholder="Search accounts..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -62,7 +62,7 @@ export default function AdminAtRiskAccountsPage() {
             </tr></thead>
             <tbody>
               {filtered.map(a => (
-                <tr key={a.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="py-3.5 px-5">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center"><Building2 className="w-4 h-4 text-red-600" /></div>
@@ -79,7 +79,7 @@ export default function AdminAtRiskAccountsPage() {
                   <td className="py-3.5 px-5">
                     <div className="flex gap-2">
                       <button className="h-8 px-3 rounded-lg bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors">Contact</button>
-                      <button className="h-8 px-3 rounded-lg ring-1 ring-white/5 text-slate-400 text-xs font-medium hover:hover:bg-slate-50 transition-colors">View</button>
+                      <button className="h-8 px-3 rounded-lg ring-1 ring-slate-200 text-slate-400 text-xs font-medium hover:bg-slate-50 transition-colors">View</button>
                     </div>
                   </td>
                 </tr>

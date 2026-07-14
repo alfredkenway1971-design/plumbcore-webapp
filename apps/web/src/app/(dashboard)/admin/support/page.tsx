@@ -181,14 +181,14 @@ const priorityConfig: Record<string, { bg: string; text: string; dot: string; ic
   critical: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', icon: AlertTriangle, label: 'Critical' },
   high: { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500', icon: ArrowUp, label: 'High' },
   medium: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', icon: ArrowUp, label: 'Medium' },
-  low: { bg: 'bg-white/[0.04]', text: 'text-slate-400', dot: 'bg-slate-400', icon: ArrowDown, label: 'Low' },
+  low: { bg: 'bg-slate-50', text: 'text-slate-400', dot: 'bg-slate-400', icon: ArrowDown, label: 'Low' },
 };
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  open: { bg: 'bg-blue-50', text: 'text-blue-300', dot: 'bg-blue-500', label: 'Open' },
+  open: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', label: 'Open' },
   in_progress: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', label: 'In Progress' },
   resolved: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Resolved' },
-  closed: { bg: 'bg-white/[0.04]', text: 'text-slate-500', dot: 'bg-slate-400', label: 'Closed' },
+  closed: { bg: 'bg-slate-50', text: 'text-slate-500', dot: 'bg-slate-400', label: 'Closed' },
 };
 
 const agents = ['Sarah Chen', 'Mike Torres', 'Lisa Park', 'James Wilson'];
@@ -216,7 +216,7 @@ function SupportLoading() {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
         <Skeleton className="h-5 w-44 m-5" />
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 px-5 py-4 border-t border-white/[0.03]">
+          <div key={i} className="flex items-center gap-4 px-5 py-4 border-t border-slate-100">
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-4 w-48 flex-1" />
             <Skeleton className="h-5 w-20" />
@@ -382,7 +382,7 @@ function TicketsTable({
           <span className="ml-2 text-xs font-normal text-slate-600">({filtered.length})</span>
         </h3>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1 h-8 px-3 rounded-lg border border-white/10 text-xs font-medium text-slate-400 hover:hover:bg-slate-50 transition-colors">
+          <button className="inline-flex items-center gap-1 h-8 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors">
             <Eye className="w-3.5 h-3.5" />
             View All
           </button>
@@ -432,7 +432,7 @@ function TicketsTable({
                 return (
                   <tr
                     key={ticket.id}
-                    className={`border-b border-white/[0.03] hover:hover:bg-slate-50 transition-colors ${ticket.priority === 'critical' ? 'bg-red-50/30' : ''}`}
+                    className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${ticket.priority === 'critical' ? 'bg-red-50/30' : ''}`}
                   >
                     <td className="px-5 py-3.5">
                       <div>
@@ -499,7 +499,7 @@ function TicketsTable({
       <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100">
         <span className="text-xs text-slate-600">Showing {filtered.length} of {tickets.length} tickets</span>
         <div className="flex items-center gap-3">
-          <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View Report →</button>
+          <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View Report →</button>
         </div>
       </div>
     </div>
@@ -541,7 +541,7 @@ export default function AdminSupportPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg border border-white/10 text-sm font-medium text-slate-400 hover:hover:bg-slate-50 transition-colors">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg border border-slate-200 text-sm font-medium text-slate-400 hover:bg-slate-50 transition-colors">
             <Reply className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">New Ticket</span>
           </button>
@@ -569,7 +569,7 @@ export default function AdminSupportPage() {
                 placeholder="Search tickets..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-lg border border-white/10 text-sm text-slate-700 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+                className="w-full h-10 pl-9 pr-3 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
               />
               {search && (
                 <button
@@ -593,7 +593,7 @@ export default function AdminSupportPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-white/10 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Statuses</option>
                   <option value="open">Open</option>
@@ -609,7 +609,7 @@ export default function AdminSupportPage() {
                 <select
                   value={priorityFilter}
                   onChange={(e) => setPriorityFilter(e.target.value)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-white/10 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Priorities</option>
                   <option value="critical">Critical</option>
@@ -625,7 +625,7 @@ export default function AdminSupportPage() {
                 <select
                   value={agentFilter}
                   onChange={(e) => setAgentFilter(e.target.value)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-white/10 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Agents</option>
                   {agents.map((a) => (
@@ -640,7 +640,7 @@ export default function AdminSupportPage() {
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-white/10 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Categories</option>
                   {categories.map((c) => (
@@ -660,7 +660,7 @@ export default function AdminSupportPage() {
                     setAgentFilter('');
                     setCategoryFilter('');
                   }}
-                  className="h-9 px-3 rounded-lg border border-white/10 text-xs font-medium text-slate-500 hover:hover:bg-slate-50 transition-colors"
+                  className="h-9 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors"
                 >
                   Clear
                 </button>
@@ -673,7 +673,7 @@ export default function AdminSupportPage() {
       {/* Quick Actions */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-xs text-slate-600 font-medium mr-1">Quick Actions:</span>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-50 text-blue-300 text-[11px] font-semibold hover:bg-blue-100 transition-colors">
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-50 text-blue-600 text-[11px] font-semibold hover:bg-blue-100 transition-colors">
           <MessageSquare className="w-3 h-3" />
           View Open
         </button>
@@ -689,7 +689,7 @@ export default function AdminSupportPage() {
           <CheckCircle className="w-3 h-3" />
           Resolved
         </button>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-white/[0.04] text-slate-400 text-[11px] font-semibold hover:bg-slate-700 transition-colors">
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-slate-50 text-slate-400 text-[11px] font-semibold hover:bg-slate-700 transition-colors">
           <User className="w-3 h-3" />
           My Tickets
         </button>

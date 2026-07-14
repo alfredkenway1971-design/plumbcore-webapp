@@ -64,9 +64,9 @@ export default function AdminPlumberDetailPage() {
             <p className="text-sm text-slate-500">@{plumber.slug}</p>
           </div>
           <span className={`ml-auto inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
-            plumber.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' :
-            plumber.status === 'paused' ? 'bg-amber-500/10 text-amber-400' :
-            'bg-red-500/10 text-red-400'
+            plumber.status === 'active' ? 'bg-emerald-50 text-emerald-600' :
+            plumber.status === 'paused' ? 'bg-amber-50 text-amber-600' :
+            'bg-red-50 text-red-600'
           }`}>{plumber.status}</span>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default function AdminPlumberDetailPage() {
         <Card variant="bordered" padding="md">
           <p className="text-xs text-slate-500">Rating</p>
           <div className="flex items-center gap-1 mt-0.5">
-            <I.Star className="w-4 h-4 text-amber-400" />
+            <I.Star className="w-4 h-4 text-amber-600" />
             <span className="text-sm font-semibold text-slate-900">{plumber.avg_rating}</span>
             <span className="text-xs text-slate-500 ml-1">({plumber.total_reviews} reviews)</span>
           </div>
@@ -113,11 +113,11 @@ export default function AdminPlumberDetailPage() {
           </div>
           <div>
             <p className="text-xs text-slate-500">Lead Revenue (Mo)</p>
-            <p className="text-lg font-bold text-emerald-400">${(monthlyLeadRevenue / 100).toLocaleString()}</p>
+            <p className="text-lg font-bold text-emerald-600">${(monthlyLeadRevenue / 100).toLocaleString()}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">PlumbCore Fee (Mo)</p>
-            <p className="text-lg font-bold text-amber-400">${(plumber.current_month_leads * (49 - plumber.lead_fee_cents / 100)).toLocaleString()}</p>
+            <p className="text-lg font-bold text-amber-600">${(plumber.current_month_leads * (49 - plumber.lead_fee_cents / 100)).toLocaleString()}</p>
           </div>
           <div>
             <p className="text-xs text-slate-500">Jobs Completed</p>
@@ -134,7 +134,7 @@ export default function AdminPlumberDetailPage() {
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {plumber.specialties.map(s => (
-              <span key={s} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-300">{s}</span>
+              <span key={s} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-700">{s}</span>
             ))}
           </div>
         </Card>
@@ -144,7 +144,7 @@ export default function AdminPlumberDetailPage() {
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {plumber.service_area_zipcodes.map(z => (
-              <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-300">{z}</span>
+              <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-700">{z}</span>
             ))}
           </div>
         </Card>
@@ -156,20 +156,20 @@ export default function AdminPlumberDetailPage() {
           <h3 className="text-sm font-semibold text-slate-900 mb-2">Stripe Connect</h3>
           {plumber.stripe_onboarding_complete ? (
             <div className="flex items-center gap-2">
-              <I.Check className="w-4 h-4 text-emerald-400" />
-              <span className="text-sm text-emerald-400">Onboarded</span>
+              <I.Check className="w-4 h-4 text-emerald-600" />
+              <span className="text-sm text-emerald-600">Onboarded</span>
               <span className="text-xs text-slate-500 ml-2">{plumber.stripe_connect_account_id}</span>
             </div>
           ) : (
-            <p className="text-sm text-amber-400">Not connected</p>
+            <p className="text-sm text-amber-600">Not connected</p>
           )}
         </Card>
         <Card variant="bordered" padding="md">
           <h3 className="text-sm font-semibold text-slate-900 mb-2">Background Check</h3>
           <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
-            plumber.background_check_status === 'cleared' ? 'bg-emerald-500/10 text-emerald-400' :
-            plumber.background_check_status === 'failed' ? 'bg-red-500/10 text-red-400' :
-            'bg-amber-500/10 text-amber-400'
+            plumber.background_check_status === 'cleared' ? 'bg-emerald-50 text-emerald-600' :
+            plumber.background_check_status === 'failed' ? 'bg-red-50 text-red-600' :
+            'bg-amber-50 text-amber-600'
           }`}>{plumber.background_check_status}</span>
           {plumber.license_number && (
             <p className="text-xs text-slate-500 mt-2">License: {plumber.license_number}</p>

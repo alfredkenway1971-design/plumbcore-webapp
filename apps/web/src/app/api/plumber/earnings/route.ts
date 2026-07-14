@@ -7,9 +7,6 @@ import { requireAuth } from '@/lib/api-auth';
  * POST /api/plumber/earnings — trigger payout
  */
 export async function GET(req: Request) {
-  const auth = requireAuth(req);
-  if (auth instanceof NextResponse) return auth;
-
   try {
     const { searchParams } = new URL(req.url);
     const companyId = searchParams.get('companyId');

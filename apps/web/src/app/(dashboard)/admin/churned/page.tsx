@@ -21,10 +21,10 @@ const churnedData = companies.filter(c => c.status === 'cancelled').length > 0 ?
 const reasonColors: Record<string, string> = {
   'Price too high': 'bg-red-50 text-red-700',
   'Missing features': 'bg-amber-50 text-amber-600',
-  'Poor support': 'bg-orange-500/10 text-orange-300',
+  'Poor support': 'bg-orange-50 text-orange-600',
   'No longer needed': 'bg-slate-100 text-slate-400',
-  'Switched competitor': 'bg-purple-500/10 text-purple-300',
-  'Budget cuts': 'bg-blue-50 text-blue-300',
+  'Switched competitor': 'bg-purple-50 text-purple-600',
+  'Budget cuts': 'bg-blue-50 text-blue-600',
 };
 
 export default function AdminChurnedAccountsPage() {
@@ -52,14 +52,14 @@ export default function AdminChurnedAccountsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Churned Accounts</h1>
           <p className="text-sm text-slate-500 mt-1">Lost accounts and churn analysis</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[ { label: 'Total Churned', value: churnedData.length, icon: XCircle, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'MRR Lost', value: '$' + totalLostMrr.toLocaleString(), icon: ArrowDown, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'Churn Rate', value: '2.1%', icon: TrendingDown, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Avg Lifetime', value: '14 mo', icon: Building2, color: 'text-blue-600', bg: 'bg-blue-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-5 shadow-sm ring-1 ring-black/5">
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
             <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
@@ -67,16 +67,16 @@ export default function AdminChurnedAccountsPage() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search accounts..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <input placeholder="Search accounts..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2 flex-wrap">
-            <button onClick={() => setReasonFilter('all')} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${reasonFilter === 'all' ? 'bg-slate-700 text-slate-900' : 'hover:bg-slate-50 text-slate-400 hover:bg-white/[0.05]'}`}>All</button>
+            <button onClick={() => setReasonFilter('all')} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${reasonFilter === 'all' ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>All</button>
             {churnReasons.map(r => (
-              <button key={r} onClick={() => setReasonFilter(r)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${reasonFilter === r ? 'bg-slate-700 text-slate-900' : 'hover:bg-slate-50 text-slate-400 hover:bg-white/[0.05]'}`}>{r}</button>
+              <button key={r} onClick={() => setReasonFilter(r)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${reasonFilter === r ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{r}</button>
             ))}
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function AdminChurnedAccountsPage() {
             </tr></thead>
             <tbody>
               {filtered.map(c => (
-                <tr key={c.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={c.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="py-3.5 px-5">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl hover:bg-slate-50 flex items-center justify-center"><Building2 className="w-4 h-4 text-slate-500" /></div>
@@ -99,7 +99,7 @@ export default function AdminChurnedAccountsPage() {
                   <td className="py-3.5 px-5"><span className="text-sm font-medium text-slate-700">{c.planTier?.charAt(0).toUpperCase() + (c.planTier?.slice(1) || '')}</span></td>
                   <td className="py-3.5 px-5"><span className="text-sm font-semibold text-red-600">-${c.mrr.toLocaleString()}/mo</span></td>
                   <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{c.churnDate}</span></td>
-                  <td className="py-3.5 px-5"><span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${reasonColors[c.churnReason] || 'hover:bg-slate-50 text-slate-400'}`}>{c.churnReason}</span></td>
+                  <td className="py-3.5 px-5"><span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${reasonColors[c.churnReason] || 'hover:bg-slate-100 text-slate-600'}`}>{c.churnReason}</span></td>
                   <td className="py-3.5 px-5"><span className="text-sm font-medium text-slate-700">${c.lastPayment.toLocaleString()}</span></td>
                 </tr>
               ))}

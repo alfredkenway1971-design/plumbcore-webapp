@@ -30,7 +30,7 @@ const planColors: Record<string, string> = {
 
 const statusStyles: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   active: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Active' },
-  trialing: { bg: 'bg-blue-50', text: 'text-blue-300', dot: 'bg-blue-500', label: 'Trialing' },
+  trialing: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', label: 'Trialing' },
   past_due: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Past Due' },
   cancelled: { bg: 'bg-slate-100', text: 'text-slate-400', dot: 'bg-slate-400', label: 'Cancelled' },
 };
@@ -206,7 +206,7 @@ function CustomersTable({
               const statusCfg = statusStyles[cust.status] || statusStyles.active;
               const HealthIcon = healthIconMap[cust.health] || CheckCircle;
               return (
-                <tr key={cust.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={cust.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div
@@ -364,10 +364,7 @@ export default function AdminCustomersPage() {
             {companies.length} total companies · ${companies.reduce((s, c) => s + c.mrr, 0).toLocaleString()} total MRR
           </p>
         </div>
-        <button className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
-          <Download className="w-4 h-4" />
-          <span className="hidden sm:inline text-xs">Export</span>
-        </button>
+
       </div>
 
       {/* Filters Card */}
@@ -382,7 +379,7 @@ export default function AdminCustomersPage() {
                 placeholder="Search by name, city, or owner..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-xl border border-white/10 text-sm text-slate-700 placeholder:text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+                className="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
               />
               {search && (
                 <button
@@ -405,7 +402,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={planFilter || ''}
                   onChange={(e) => setPlanFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-slate-200 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Plans</option>
                   {plans.map((p) => (
@@ -421,7 +418,7 @@ export default function AdminCustomersPage() {
                 <select
                   value={statusFilter || ''}
                   onChange={(e) => setStatusFilter(e.target.value || null)}
-                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-white/10 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
+                  className="appearance-none h-9 pl-3 pr-7 rounded-xl border border-slate-200 text-xs font-medium text-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 cursor-pointer"
                 >
                   <option value="">All Statuses</option>
                   {statuses.map((s) => (
@@ -440,7 +437,7 @@ export default function AdminCustomersPage() {
                     setStatusFilter(null);
                     setSearch('');
                   }}
-                  className="h-9 px-3 rounded-xl border border-white/10 text-xs font-medium text-slate-500 hover:hover:bg-slate-50 transition-colors"
+                  className="h-9 px-3 rounded-xl border border-slate-200 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors"
                 >
                   Clear
                 </button>

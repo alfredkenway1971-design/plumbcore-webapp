@@ -6,7 +6,7 @@
  */
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { decodeSessionToken } from '@/lib/custom-auth';
+import { decodeSessionTokenEdge } from '@/lib/edge-auth';
 
 // Routes that require authentication
 const PROTECTED_ROUTES = ['/dashboard', '/admin'];
@@ -14,7 +14,7 @@ const PROTECTED_ROUTES = ['/dashboard', '/admin'];
 // Routes that don't require auth (already authenticated users might land here)
 const AUTH_ROUTES = ['/login', '/signup', '/reset-password'];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // Skip public routes
@@ -45,7 +45,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Decode and verify the HMAC-signed token
-  const session = decodeSessionToken(token);
+  const session = await decodeSessionTokenEdge(token);
   
   if (!session) {
     // Token is invalid or expired

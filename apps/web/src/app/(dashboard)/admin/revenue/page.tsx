@@ -140,9 +140,6 @@ function RevenueKPIs() {
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
-              <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center`}>
-                <Icon className="w-5 h-5 text-slate-900" />
-              </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
@@ -150,7 +147,7 @@ function RevenueKPIs() {
                 className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
                   isGoodDown || (!isPositive && kpi.label !== 'Churn Rate')
                     ? 'bg-red-50 text-red-600'
-                    : 'bg-green-500/10 text-emerald-600'
+                    : 'bg-green-50 text-emerald-600'
                 }`}
               >
                 {isPositive || isGoodDown ? (
@@ -214,7 +211,7 @@ function MRRChart() {
             <h3 className="text-base font-semibold text-slate-900">MRR Trend (12 Months)</h3>
             <span
               className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
-                +pctChange >= 0 ? 'bg-green-500/10 text-emerald-600' : 'bg-red-50 text-red-600'
+                +pctChange >= 0 ? 'bg-green-50 text-emerald-600' : 'bg-red-50 text-red-600'
               }`}
             >
               <ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
@@ -299,7 +296,7 @@ function MonthlyComparison() {
               const pct = ((diff / m.prev) * 100).toFixed(1);
               const isPositive = diff >= 0;
               return (
-                <tr key={m.month} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={m.month} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <span className="text-sm font-medium text-slate-900">{m.month}</span>
                   </td>
@@ -410,7 +407,7 @@ function RevenueBreakdownTable() {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Plan Breakdown</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View All →</button>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View All →</button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -429,7 +426,7 @@ function RevenueBreakdownTable() {
               const avgMrr = Math.round(plan.totalMrr / plan.companyCount);
               const barWidth = (plan.totalMrr / total) * 100;
               return (
-                <tr key={plan.planTier} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={plan.planTier} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
@@ -557,7 +554,7 @@ function LeadRevenueBreakdown() {
             {demoDistribution.map((tier, i) => {
               const pct = ((tier.count * tier.deposit) / totalLeadRevenue * 100);
               return (
-                <tr key={i} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-3 py-2.5">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: depositColors[i % depositColors.length] }} />

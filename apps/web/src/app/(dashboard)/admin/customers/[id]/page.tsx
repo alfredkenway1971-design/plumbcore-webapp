@@ -48,9 +48,9 @@ function formatTimeAgo(d: string): string {
 }
 
 const healthConfig: Record<string, { label: string; icon: typeof CheckCircle; color: string; bg: string }> = {
-  green: { label: 'Good', icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-  yellow: { label: 'Warning', icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-  red: { label: 'Critical', icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/10' },
+  green: { label: 'Good', icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  yellow: { label: 'Warning', icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
+  red: { label: 'Critical', icon: XCircle, color: 'text-red-600', bg: 'bg-red-50' },
 };
 
 /* ── Skeleton ── */
@@ -132,18 +132,18 @@ function HealthBadge({ health }: { health: string }) {
 
 function ActivityIcon({ type }: { type: string }) {
   const iconMap: Record<string, { icon: typeof Activity; color: string; bg: string }> = {
-    estimate_accepted: { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    job_completed: { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    invoice_paid: { icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    ai_estimate: { icon: BrainCircuit, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    tech_assigned: { icon: User, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    payment_failed: { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-    scheduled: { icon: Clock, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    estimate_sent: { icon: Activity, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    ai_alert: { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-    support_ticket: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
-    job_urgent: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
-    invoice_overdue: { icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
+    estimate_accepted: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    job_completed: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    invoice_paid: { icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    ai_estimate: { icon: BrainCircuit, color: 'text-blue-600', bg: 'bg-blue-50' },
+    tech_assigned: { icon: User, color: 'text-blue-600', bg: 'bg-blue-50' },
+    payment_failed: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
+    scheduled: { icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50' },
+    estimate_sent: { icon: Activity, color: 'text-blue-600', bg: 'bg-blue-50' },
+    ai_alert: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
+    support_ticket: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
+    job_urgent: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
+    invoice_overdue: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
   };
   const cfg = iconMap[type] ?? { icon: Activity, color: 'text-slate-400', bg: 'bg-slate-800' };
   const Icon = cfg.icon;
@@ -222,7 +222,7 @@ export default function CompanyDetailPage() {
     return (
       <div className="p-4 sm:p-6 max-w-6xl mx-auto">
         <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-8 shadow-sm text-center">
-          <AlertTriangle className="mx-auto h-12 w-12 text-red-400" />
+          <AlertTriangle className="mx-auto h-12 w-12 text-red-600" />
           <h2 className="mt-4 text-lg font-semibold text-slate-900">Failed to load company</h2>
           <p className="mt-1 text-sm text-slate-500">{error}</p>
           <Button variant="outline" size="sm" className="mt-4" onClick={handleRetry}>
@@ -282,8 +282,8 @@ export default function CompanyDetailPage() {
       {/* ── Header Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10">
-            <Building2 className="h-6 w-6 text-blue-400" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
+            <Building2 className="h-6 w-6 text-blue-600" />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{company.name}</h1>
@@ -331,7 +331,7 @@ export default function CompanyDetailPage() {
               <span className="text-sm text-slate-500">Since</span>
               <span className="text-sm text-slate-900">{formatDate(company.sinceDate)}</span>
             </div>
-            <div className="flex items-center justify-between pt-1 border-t border-white/5">
+            <div className="flex items-center justify-between pt-1 border-t border-slate-100">
               <span className="text-sm text-slate-500">Health</span>
               <HealthBadge health={company.health} />
             </div>
@@ -348,7 +348,7 @@ export default function CompanyDetailPage() {
             <p className="text-sm font-medium text-slate-900">{company.ownerName}</p>
             <a
               href={`mailto:${company.ownerEmail}`}
-              className="block text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              className="block text-sm text-blue-600 hover:text-blue-600 transition-colors"
             >
               {company.ownerEmail}
             </a>
@@ -380,7 +380,7 @@ export default function CompanyDetailPage() {
               <span className="text-sm text-slate-500">Next Payment</span>
               <span className="text-sm text-slate-900">{formatDate(company.nextBillingDate)}</span>
             </div>
-            <div className="flex items-center justify-between pt-1 border-t border-white/5">
+            <div className="flex items-center justify-between pt-1 border-t border-slate-100">
               <span className="text-sm text-slate-500">Payment Method</span>
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-900">
                 <CreditCard className="h-3.5 w-3.5 text-slate-600" />
@@ -439,12 +439,12 @@ export default function CompanyDetailPage() {
                 key={act.id}
                 className={cn(
                   'flex items-start gap-3 py-3',
-                  idx < company.recentActivity.length - 1 && 'border-b border-white/5'
+                  idx < company.recentActivity.length - 1 && 'border-b border-slate-100'
                 )}
               >
                 <ActivityIcon type={act.type} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-slate-300">{act.description}</p>
+                  <p className="text-sm text-slate-700">{act.description}</p>
                   <p className="mt-0.5 text-xs text-slate-600">{formatTimeAgo(act.timestamp)}</p>
                 </div>
               </div>

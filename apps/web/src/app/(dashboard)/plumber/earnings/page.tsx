@@ -53,7 +53,7 @@ export default function EarningsPage() {
         </div>
         <a
           href={`/api/plumber/earnings?companyId=${company?.id}&format=csv`}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-slate-800 px-3 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700 transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-200 transition-colors"
         >
           <I.TrendingUp className="w-3.5 h-3.5" /> Export
         </a>
@@ -62,20 +62,20 @@ export default function EarningsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-blue-400">This Week</p>
+          <p className="text-[10px] font-semibold uppercase text-blue-600">This Week</p>
           <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-emerald-400">This Month</p>
+          <p className="text-[10px] font-semibold uppercase text-emerald-600">This Month</p>
           <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisMonth / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-violet-400">Lifetime</p>
+          <p className="text-[10px] font-semibold uppercase text-violet-600">Lifetime</p>
           <p className="text-xl font-bold text-slate-900 mt-1">${(summary.lifetime / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-amber-400">Pending</p>
-          <p className="text-xl font-bold text-amber-400 mt-1">${(summary.pendingPayouts / 100).toFixed(2)}</p>
+          <p className="text-[10px] font-semibold uppercase text-amber-600">Pending</p>
+          <p className="text-xl font-bold text-amber-600 mt-1">${(summary.pendingPayouts / 100).toFixed(2)}</p>
         </div>
       </div>
 
@@ -92,23 +92,23 @@ export default function EarningsPage() {
               <span className="text-sm text-slate-400">Avg. Per Job</span>
               <span className="text-sm font-semibold text-slate-900">${(summary.avgPerJob / 100).toFixed(2)}</span>
             </div>
-            <div className="h-px bg-white/5 my-1" />
+            <div className="h-px bg-slate-200 my-1" />
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Lead Fees Charged (PlumbCore)</span>
               <span className="text-sm font-semibold text-slate-900">${(summary.leadFeesCharged / 100).toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Platform Fees Paid</span>
-              <span className="text-sm font-semibold text-amber-400">-${(summary.platformFeesPaid / 100).toFixed(2)}</span>
+              <span className="text-sm font-semibold text-amber-600">-${(summary.platformFeesPaid / 100).toFixed(2)}</span>
             </div>
           </div>
-          <div className="bg-slate-800/30 rounded-xl p-4">
+          <div className="bg-slate-50 rounded-xl p-4">
             <p className="text-xs text-slate-500 mb-1">Next Payout</p>
             <div className="flex items-center gap-2">
-              <I.Clock className="w-4 h-4 text-blue-400" />
+              <I.Clock className="w-4 h-4 text-blue-500" />
               <p className="text-sm font-semibold text-slate-900">{summary.nextPayoutDate}</p>
             </div>
-            <p className="text-xs text-slate-600 mt-1">Weekly payout — every Sunday</p>
+            <p className="text-xs text-slate-500 mt-1">Weekly payout — every Sunday</p>
           </div>
         </div>
       </Card>
@@ -129,23 +129,23 @@ export default function EarningsPage() {
 
       {/* Payout History */}
       <Card variant="bordered" padding="none">
-        <div className="px-4 py-3 border-b border-white/5">
+        <div className="px-4 py-3 border-b border-slate-200">
           <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-800/30 border-b border-white/10">
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Period</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Gross</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Fee</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Net</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Jobs</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Status</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Date</th>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Period</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Gross</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Fee</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Net</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Jobs</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Status</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-100">
               {payouts.length === 0 ? (
                 <tr><td colSpan={7} className="px-4 py-6 text-center text-sm text-slate-500">No payouts yet</td></tr>
               ) : (
@@ -154,18 +154,18 @@ export default function EarningsPage() {
                     <td className="px-4 py-3">
                       <span className="text-sm font-medium text-slate-900">{p.period_start} — {p.period_end}</span>
                     </td>
-                    <td className="px-4 py-3 text-slate-300">${(p.gross_amount / 100).toFixed(2)}</td>
-                    <td className="px-4 py-3 text-amber-400">-${(p.platform_fee / 100).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-slate-600">${(p.gross_amount / 100).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-amber-600">-${(p.platform_fee / 100).toFixed(2)}</td>
                     <td className="px-4 py-3">
-                      <span className="font-semibold text-emerald-400">${(p.net_amount / 100).toFixed(2)}</span>
+                      <span className="font-semibold text-emerald-600">${(p.net_amount / 100).toFixed(2)}</span>
                     </td>
                     <td className="px-4 py-3 text-slate-400">{p.fee_count}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                        p.status === 'paid' ? 'bg-emerald-500/10 text-emerald-400' :
-                        p.status === 'processing' ? 'bg-blue-500/10 text-blue-400' :
-                        p.status === 'failed' ? 'bg-red-500/10 text-red-400' :
-                        'bg-amber-500/10 text-amber-400'
+                        p.status === 'paid' ? 'bg-emerald-50 text-emerald-700' :
+                        p.status === 'processing' ? 'bg-blue-50 text-blue-700' :
+                        p.status === 'failed' ? 'bg-red-50 text-red-700' :
+                        'bg-amber-50 text-amber-700'
                       }`}>
                         {p.status}
                       </span>

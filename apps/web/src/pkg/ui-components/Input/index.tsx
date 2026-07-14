@@ -15,10 +15,10 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 const baseInputStyles = `
-  w-full rounded-xl bg-slate-800/50 border-0 ring-1 ring-white/10
-  px-4 py-3 text-sm text-white placeholder:text-slate-600 outline-none
+  w-full rounded-xl bg-white border-0 ring-1 ring-slate-200
+  px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none
   transition-all duration-200
-  focus:ring-cyan-500/50 focus:bg-slate-800/80
+  focus:ring-blue-500/50 focus:bg-white
   disabled:cursor-not-allowed disabled:opacity-40
 `;
 
@@ -29,7 +29,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="space-y-1.5">
         {label && (
-          <label className="block text-sm font-medium text-slate-400 uppercase tracking-wider">
+          <label className="block text-sm font-medium text-slate-600 uppercase tracking-wider">
             {label}
           </label>
         )}
@@ -51,7 +51,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className="space-y-1.5">
         {label && (
-          <label className="block text-sm font-medium text-slate-400 uppercase tracking-wider">
+          <label className="block text-sm font-medium text-slate-600 uppercase tracking-wider">
             {label}
           </label>
         )}

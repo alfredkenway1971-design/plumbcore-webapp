@@ -119,9 +119,6 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
-              <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center`}>
-                <Icon className="w-5 h-5 text-slate-900" />
-              </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
@@ -317,7 +314,7 @@ function TrialPipelineTable() {
         <h3 className="text-base font-semibold text-slate-900">Trial Pipeline</h3>
         <button
           onClick={() => setSortAsc(!sortAsc)}
-          className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-300"
+          className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-600"
         >
           Sort by days {sortAsc ? '↑' : '↓'}
         </button>
@@ -339,7 +336,7 @@ function TrialPipelineTable() {
               const isUrgent = trial.daysRemaining <= 5 && trial.daysRemaining >= 0;
               const isOverdue = trial.daysRemaining < 0;
               return (
-                <tr key={trial.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={trial.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
@@ -420,7 +417,7 @@ function AtRiskCustomers() {
               const probColor = probPct >= 70 ? 'text-red-600' : probPct >= 40 ? 'text-amber-600' : 'text-emerald-600';
               const probBg = probPct >= 70 ? 'bg-red-50' : probPct >= 40 ? 'bg-amber-50' : 'bg-emerald-50';
               return (
-                <tr key={acct.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={acct.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div>
                       <p className="text-sm font-medium text-slate-900">{acct.companyName}</p>
@@ -466,7 +463,7 @@ function TopCustomersTable() {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Top Customers by Revenue</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View All →</button>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View All →</button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -483,7 +480,7 @@ function TopCustomersTable() {
             {top.map((cust: Company, i: number) => {
               const initialColor = ['from-violet-400 to-purple-400', 'from-blue-400 to-cyan-400', 'from-emerald-400 to-teal-400', 'from-amber-400 to-orange-400', 'from-rose-400 to-pink-400', 'from-indigo-400 to-blue-400'];
               return (
-                <tr key={cust.id} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={cust.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <span className="w-6 h-6 rounded-full hover:bg-slate-50 flex items-center justify-center text-[11px] font-bold text-slate-500">{i + 1}</span>
                   </td>
@@ -533,15 +530,15 @@ function ActivityFeed() {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Activity Feed</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">View All →</button>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View All →</button>
       </div>
-      <div className="divide-y divide-white/5 max-h-[420px] overflow-y-auto">
+      <div className="divide-y divide-slate-100 max-h-[420px] overflow-y-auto">
         {recentActivity.map((item: ActivityFeedItem) => {
           const Icon = activityIconMap[item.type] || Activity;
           const colorClass = activityColorMap[item.severity] || 'hover:bg-slate-50 text-slate-600';
           const time = new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
           return (
-            <div key={item.id} className="px-5 py-3 hover:hover:bg-slate-50 transition-colors">
+            <div key={item.id} className="px-5 py-3 hover:bg-slate-50 transition-colors">
               <div className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-xl ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 mt-0.5`}>
                   <Icon className="w-4 h-4" />
@@ -617,7 +614,7 @@ function FeatureUsageHeatmap() {
               const trendIcon = f.trend === 'up' ? '↑' : f.trend === 'down' ? '↓' : '→';
               const trendColor = f.trend === 'up' ? 'text-emerald-600' : f.trend === 'down' ? 'text-red-600' : 'text-slate-600';
               return (
-                <tr key={f.featureKey} className="border-b border-slate-100 hover:hover:bg-slate-50 transition-colors">
+                <tr key={f.featureKey} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                   <td className="px-5 py-3">
                     <span className="text-sm font-medium text-slate-900">{f.featureName}</span>
                   </td>
@@ -767,7 +764,7 @@ function GeographicMap() {
     <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-semibold text-slate-900">Geographic Distribution</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-300">Details →</button>
+        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">Details →</button>
       </div>
       <div className="flex items-center gap-4">
         <div className="relative shrink-0">
@@ -902,15 +899,12 @@ export default function AdminPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-white/10 text-sm text-slate-600 hover:hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
             <span className="text-xs">📅</span>
             <span className="text-xs font-medium">This Month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
           </div>
-          <button onClick={handleExport} className="flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline text-xs">Export</span>
-          </button>
+
         </div>
       </div>
 

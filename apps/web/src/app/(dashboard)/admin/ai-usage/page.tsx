@@ -47,14 +47,14 @@ export default function AdminAiUsageStatsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">AI Usage Stats</h1>
           <p className="text-sm text-slate-500 mt-1">Monitor AI feature adoption and usage patterns</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Weekly AI Calls', value: totalWeekly.toLocaleString(), icon: Zap, color: 'text-purple-500', bg: 'bg-purple-500/10' }, { label: 'Photo Estimates', value: totalEstimates.toLocaleString(), icon: Brain, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Voice Notes', value: totalVoice.toLocaleString(), icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'AI Chats', value: totalChats.toLocaleString(), icon: Users, color: 'text-amber-600', bg: 'bg-amber-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-5 shadow-sm ring-1 ring-black/5">
+        {[ { label: 'Weekly AI Calls', value: totalWeekly.toLocaleString(), icon: Zap, color: 'text-purple-500', bg: 'bg-purple-50' }, { label: 'Photo Estimates', value: totalEstimates.toLocaleString(), icon: Brain, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Voice Notes', value: totalVoice.toLocaleString(), icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'AI Chats', value: totalChats.toLocaleString(), icon: Users, color: 'text-amber-600', bg: 'bg-amber-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
             <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
@@ -63,7 +63,7 @@ export default function AdminAiUsageStatsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl ring-1 ring-white/5 p-6 shadow-sm ring-1 ring-black/5">
+        <div className="lg:col-span-2 bg-white rounded-2xl ring-1 ring-slate-200 p-6 shadow-sm ring-1 ring-black/5">
           <h3 className="text-sm font-semibold text-slate-900 mb-4">Daily AI Usage (This Week)</h3>
           <div className="flex items-end gap-3 h-48">
             {usageByDay.map(d => {
@@ -88,7 +88,7 @@ export default function AdminAiUsageStatsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl ring-1 ring-white/5 p-6 shadow-sm ring-1 ring-black/5">
+        <div className="bg-white rounded-2xl ring-1 ring-slate-200 p-6 shadow-sm ring-1 ring-black/5">
           <h3 className="text-sm font-semibold text-slate-900 mb-4">Top Features</h3>
           <div className="space-y-4">
             {featureAdoption.slice(0, 4).map(f => {
@@ -99,7 +99,7 @@ export default function AdminAiUsageStatsPage() {
                     <span className="text-sm font-medium text-slate-700">{f.featureName}</span>
                     <div className="flex items-center gap-1"><TrendIcon className={`w-3.5 h-3.5 ${trendColors[f.trend]}`} /><span className="text-xs font-semibold text-slate-400">{f.adoptionRate}%</span></div>
                   </div>
-                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: f.adoptionRate + '%'}} />
                   </div>
                   <p className="text-xs text-slate-600 mt-1">{f.weeklyActiveUsers.toLocaleString()} weekly users</p>
@@ -110,13 +110,13 @@ export default function AdminAiUsageStatsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-slate-900">Feature Adoption Details</h3>
             <div className="relative w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-              <input placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+              <input placeholder="Search features..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
             </div>
           </div>
         </div>
@@ -131,12 +131,12 @@ export default function AdminAiUsageStatsPage() {
               {filtered.map(f => {
                 const TrendIcon = trendIcons[f.trend];
                 return (
-                  <tr key={f.featureKey} className="border-b border-white/[0.03] hover:hover:bg-slate-50 transition-colors">
+                  <tr key={f.featureKey} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td className="py-3.5 px-5"><span className="text-sm font-semibold text-slate-900">{f.featureName}</span></td>
                     <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{f.totalEnabled.toLocaleString()}</span></td>
                     <td className="py-3.5 px-5"><span className="text-sm text-slate-400">{f.weeklyActiveUsers.toLocaleString()}</span></td>
                     <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2"><div className="w-20 h-2 bg-white/[0.04] rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{width: f.adoptionRate + '%'}} /></div><span className="text-xs font-semibold text-slate-400">{f.adoptionRate}%</span></div>
+                      <div className="flex items-center gap-2"><div className="w-20 h-2 bg-slate-50 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{width: f.adoptionRate + '%'}} /></div><span className="text-xs font-semibold text-slate-400">{f.adoptionRate}%</span></div>
                     </td>
                     <td className="py-3.5 px-5"><TrendIcon className={`w-4 h-4 ${trendColors[f.trend]}`} /></td>
                   </tr>

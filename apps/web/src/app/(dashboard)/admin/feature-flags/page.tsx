@@ -40,7 +40,7 @@ export default function FeatureFlagsPage() {
       <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Feature Flags</h1><p className="text-sm text-slate-500 mt-0.5">Toggle features on/off, A/B test, and control rollouts</p></div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <div className="rounded-lg bg-green-500/10 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Enabled</p><p className="text-lg font-bold text-emerald-600">{flags.filter(f => f.enabled).length}</p></div>
+        <div className="rounded-lg bg-green-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Enabled</p><p className="text-lg font-bold text-emerald-600">{flags.filter(f => f.enabled).length}</p></div>
         <div className="rounded-lg bg-red-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">Disabled</p><p className="text-lg font-bold text-red-600">{flags.filter(f => !f.enabled).length}</p></div>
         <div className="rounded-lg bg-blue-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-slate-500">A/B Tests Active</p><p className="text-lg font-bold text-blue-600">{flags.filter(f => f.rolloutPercent < 100 && f.rolloutPercent > 0).length}</p></div>
       </div>
@@ -49,13 +49,13 @@ export default function FeatureFlagsPage() {
         {flags.map(flag => {
           const activeABTest = flag.rolloutPercent < 100 && flag.rolloutPercent > 0 && flag.enabled;
           return (
-            <div key={flag.id} className={`rounded-xl border ${flag.enabled ? 'border-white/10 bg-white' : 'border-slate-100 hover:bg-slate-50'} p-4`}>
+            <div key={flag.id} className={`rounded-xl border ${flag.enabled ? 'border-slate-200 bg-white' : 'border-slate-100 hover:bg-slate-50'} p-4`}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full ${flag.enabled ? 'bg-green-500' : 'bg-slate-600'}`} />
                     <p className="text-sm font-semibold text-slate-900 font-mono">{flag.name}</p>
-                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[9px] font-semibold ${flag.enabled ? 'bg-green-500/10 text-green-300' : 'bg-white/[0.04] text-slate-500'}`}>{flag.enabled ? 'ON' : 'OFF'}</span>
+                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[9px] font-semibold ${flag.enabled ? 'bg-green-50 text-green-700' : 'bg-slate-50 text-slate-500'}`}>{flag.enabled ? 'ON' : 'OFF'}</span>
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">{flag.description}</p>
                   <div className="flex items-center gap-3 mt-2">

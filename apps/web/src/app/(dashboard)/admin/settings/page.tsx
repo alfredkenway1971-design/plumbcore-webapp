@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Save, Shield, Globe, Bell, Database, Key, Zap, Mail, Smartphone } from 'lucide-react';
 
 export default function AdminSystemSettingsPage() {
@@ -20,6 +20,25 @@ export default function AdminSystemSettingsPage() {
     defaultLanguage: 'en',
   });
   const [saved, setSaved] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load persisted language/currency from localStorage on mount
+  useEffect(() => {
+    try {
+      const lang = localStorage.getItem('plumbcore_admin_language');
+      const currency = localStorage.getItem('plumbcore_admin_currency');
+      if (lang || currency) {
+        setSettings(p => ({
+          ...p,
+          ...(lang ? { defaultLanguage: lang } : {}),
+          ...(currency ? { defaultCurrency: currency } : {}),
+        }));
+      }
+    } catch {
+      // localStorage unavailable — use defaults
+    }
+    setLoaded(true);
+  }, []);
 
   const update = (key: string, value: any) => {
     setSettings(p => ({ ...p, [key]: value }));
@@ -27,6 +46,12 @@ export default function AdminSystemSettingsPage() {
   };
 
   const handleSave = () => {
+    try {
+      localStorage.setItem('plumbcore_admin_language', settings.defaultLanguage);
+      localStorage.setItem('plumbcore_admin_currency', settings.defaultCurrency);
+    } catch {
+      // localStorage unavailable
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -84,16 +109,13 @@ export default function AdminSystemSettingsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">System Settings</h1>
           <p className="text-sm text-slate-500 mt-1">Configure platform-wide settings and preferences</p>
         </div>
-        <button onClick={handleSave} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-all shadow-sm ring-1 ring-black/5">
-          <Save className="w-4 h-4" /> {saved ? 'Saved!' : 'Save Changes'}
-        </button>
       </div>
 
       <div className="space-y-6">
         {sections.map(section => {
           const Icon = section.icon;
           return (
-            <div key={section.title} className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+            <div key={section.title} className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center"><Icon className="w-5 h-5 text-blue-500" /></div>
                 <h2 className="text-sm font-semibold text-slate-900">{section.title}</h2>
@@ -124,6 +146,20 @@ export default function AdminSystemSettingsPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Save Button — centered at bottom */}
+      <div className="flex flex-col items-center justify-center pt-8 pb-4">
+        <button
+          onClick={handleSave}
+          className="inline-flex items-center justify-center gap-3 h-12 px-10 rounded-xl bg-blue-600 text-white text-base font-semibold hover:bg-blue-700 transition-all shadow-md ring-1 ring-black/10 min-w-[200px]"
+        >
+          <Save className="w-5 h-5" />
+          {saved ? 'Saved!' : 'Save Changes'}
+        </button>
+        {saved && (
+          <span className="mt-2 text-sm text-green-600 animate-pulse">All settings saved successfully</span>
+        )}
       </div>
     </div>
   );

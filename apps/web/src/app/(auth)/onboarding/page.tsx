@@ -64,15 +64,15 @@ const INITIAL_DATA: OnboardingData = {
   hours: { ...DEFAULT_HOURS },
   pricing: { hourlyRate: '85', serviceFee: '15', taxRate: '8.25', partsMarkup: '30' },
   team: [],
-  plan: 'pro',
+  plan: 'solo',
 };
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const SUBSCRIPTION_TIERS = [
-  { id: 'starter', name: 'Starter', price: 79, desc: 'Best for solo operators', features: ['Up to 2 technicians', 'Basic scheduling', 'Invoice management', 'Email support'] },
-  { id: 'pro', name: 'Pro', price: 129, desc: 'Most popular for growing teams', features: ['Up to 10 technicians', 'Advanced scheduling', 'Inventory tracking', 'Reports & analytics', 'Priority support'] },
-  { id: 'unlimited', name: 'Unlimited', price: 199, desc: 'For large operations', features: ['Unlimited technicians', 'Everything in Pro', 'API access', 'Dedicated account manager', 'Custom integrations'] },
+  { id: 'solo', name: 'Solo', price: 349, desc: 'Best for solo operators', features: ['Up to 2 technicians', 'Basic scheduling', 'Invoice management', 'Email support'] },
+  { id: 'pro', name: 'Pro', price: 799, desc: 'Most popular for growing teams', features: ['Up to 10 technicians', 'Advanced scheduling', 'Inventory tracking', 'Reports & analytics', 'Priority support'] },
+  { id: 'business', name: 'Business', price: 1499, desc: 'For large operations', features: ['Unlimited technicians', 'Everything in Pro', 'API access', 'Dedicated account manager', 'Custom integrations'] },
 ];
 
 /* ── Loading spinner ── */

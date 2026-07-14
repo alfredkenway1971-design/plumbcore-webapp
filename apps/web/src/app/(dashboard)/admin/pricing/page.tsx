@@ -52,7 +52,7 @@ export default function PricingPlansPage() {
             <p className="text-2xl font-bold text-slate-900 mt-2">${plan.price}<span className="text-sm font-normal text-slate-500">/mo</span></p>
             <p className="text-xs text-slate-500 mt-1">{plan.techLimit} techs • {plan.hoursLimit}hrs AI</p>
             <ul className="mt-4 space-y-1.5 flex-1">
-              {plan.features.map((f, i) => <li key={i} className="text-xs text-slate-400 flex items-start gap-1.5"><span className="text-green-400">✓</span>{f}</li>)}
+              {plan.features.map((f, i) => <li key={i} className="text-xs text-slate-400 flex items-start gap-1.5"><span className="text-green-600">✓</span>{f}</li>)}
             </ul>
             <Button size="sm" variant="ghost" onClick={() => startEdit(plan)} className="mt-4">Edit Plan</Button>
           </Card>
@@ -68,7 +68,7 @@ export default function PricingPlansPage() {
               <div><label className="text-xs font-medium text-slate-500">Tech Limit</label><Input type="number" value={editForm.techLimit} onChange={(e: any) => setEditForm(f => ({...f, techLimit: Number(e.target.value)}))} /></div>
             </div>
             <div><label className="text-xs font-medium text-slate-500">AI Hours Limit</label><Input type="number" value={editForm.hoursLimit} onChange={(e: any) => setEditForm(f => ({...f, hoursLimit: Number(e.target.value)}))} /></div>
-            <div><label className="text-xs font-medium text-slate-500">Features (one per line)</label><textarea value={editForm.features} onChange={(e: any) => setEditForm(f => ({...f, features: e.target.value}))} rows={6} className="w-full rounded-lg border border-white/10 px-3 py-2 text-sm outline-none focus:border-blue-400" /></div>
+            <div><label className="text-xs font-medium text-slate-500">Features (one per line)</label><textarea value={editForm.features} onChange={(e: any) => setEditForm(f => ({...f, features: e.target.value}))} rows={6} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-400" /></div>
             <div className="flex justify-end gap-2 pt-2"><Button variant="ghost" onClick={() => setEditingPlan(null)}>Cancel</Button><Button onClick={savePlan}>Save Plan</Button></div>
           </div>
         </Modal>

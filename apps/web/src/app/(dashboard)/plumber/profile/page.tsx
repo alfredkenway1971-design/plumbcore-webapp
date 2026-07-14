@@ -103,7 +103,7 @@ export default function PlumberProfilePage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-white/10 pb-0 overflow-x-auto">
+      <div className="flex gap-1 border-b border-slate-200 pb-0 overflow-x-auto">
         {PROFILE_TABS.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
@@ -144,7 +144,7 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.service_area_zipcodes.map(z => (
-            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-white/5 text-xs text-slate-700">{z}</span>
+            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-slate-100 text-xs text-slate-700">{z}</span>
           ))}
         </div>
       </Card>
@@ -156,7 +156,7 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.specialties.map(s => (
-            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-800 text-xs font-medium text-slate-700">{s}</span>
+            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-100 text-xs font-medium text-slate-700">{s}</span>
           ))}
         </div>
       </Card>
@@ -266,7 +266,7 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
               <p className="text-sm text-slate-400">{m.label}</p>
               <p className="text-lg font-bold text-slate-900">{m.value}</p>
             </div>
-            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${m.pct}%`, backgroundColor: m.color }} />
             </div>
           </Card>
@@ -281,7 +281,7 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
             <div className="flex items-center gap-2">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map(s => (
-                  <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-600 fill-amber-400' : 'text-slate-600'}`} />
+                  <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-600 fill-amber-400' : 'text-slate-300'}`} />
                 ))}
               </div>
               <span className="text-sm font-semibold text-slate-900">{plumber.avg_rating}</span>
@@ -336,12 +336,12 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
           <div>
             <label className="block text-xs text-slate-500 mb-1">License Number</label>
             <input value={license} onChange={e => setLicense(e.target.value)}
-              className="w-full rounded-xl bg-white border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500" />
+              className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500" />
           </div>
           <div>
             <label className="block text-xs text-slate-500 mb-1">Insurance Info</label>
             <textarea value={insurance} onChange={e => setInsurance(e.target.value)} rows={2}
-              className="w-full rounded-xl bg-white border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-blue-500 resize-none" />
+              className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 resize-none" />
           </div>
           <Button size="sm" onClick={() => onUpdate({ license_number: license, insurance_info: insurance })}>Save Changes</Button>
         </div>
@@ -355,7 +355,7 @@ function StatCard({ label, value, icon: Icon, sub }: { label: string; value: str
   return (
     <Card variant="bordered" padding="md">
       <div className="flex items-start justify-between mb-1">
-        <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center">
           <Icon className="w-4 h-4 text-slate-400" />
         </div>
         {sub && <div>{sub}</div>}

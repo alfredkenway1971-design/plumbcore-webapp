@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [isLoading, isAuthenticated, profile, pathname, router]);
 
   useEffect(() => {
-    loadDataFromSupabase(companyId || 'comp-001');
+    loadDataFromSupabase(companyId);
   }, [companyId]);
 
   useEffect(() => {

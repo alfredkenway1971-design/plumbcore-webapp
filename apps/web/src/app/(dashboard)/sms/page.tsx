@@ -257,8 +257,8 @@ export default function SMSPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">SMS Messaging</h1>
           <p className="text-sm text-slate-500 mt-0.5">Send and receive SMS messages</p>
         </div>
-        <Button size="sm" onClick={() => setNewMessageModalOpen(true)}>
-          <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <Button size="sm" onClick={() => setNewMessageModalOpen(true)} className="h-7 px-2.5 text-xs gap-1">
+          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           New Message

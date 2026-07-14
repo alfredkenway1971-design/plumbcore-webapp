@@ -11,7 +11,7 @@ const severityStyles: Record<string, { bg: string; text: string; icon: any; dot:
   success: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle, dot: 'bg-emerald-500' },
   warning: { bg: 'bg-amber-50', text: 'text-amber-600', icon: AlertTriangle, dot: 'bg-amber-500' },
   error: { bg: 'bg-red-50', text: 'text-red-700', icon: XCircle, dot: 'bg-red-500' },
-  info: { bg: 'bg-blue-50', text: 'text-blue-300', icon: Info, dot: 'bg-blue-500' },
+  info: { bg: 'bg-blue-50', text: 'text-blue-600', icon: Info, dot: 'bg-blue-500' },
 };
 
 const typeLabels: Record<string, string> = {
@@ -47,29 +47,27 @@ export default function AdminAuditLogPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Audit Log</h1>
           <p className="text-sm text-slate-500 mt-1">Track all platform activity and changes</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-white/5 text-sm font-medium text-slate-700 hover:hover:bg-slate-50 transition-all">
-          <Download className="w-4 h-4" /> Export Log
-        </button>
+
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[ { label: 'Total Events', value: recentActivity.length, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Success', value: recentActivity.filter(a => a.severity === 'success').length, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Warnings', value: recentActivity.filter(a => a.severity === 'warning').length, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Errors', value: recentActivity.filter(a => a.severity === 'error').length, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-white/5 p-4 shadow-sm ring-1 ring-black/5 text-center">
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-4 shadow-sm ring-1 ring-black/5 text-center">
             <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-white/5 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search events..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-white placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <input placeholder="Search events..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'success', 'warning', 'error', 'info'].map(s => (
-              <button key={s} onClick={() => setSeverityFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${severityFilter === s ? 'bg-white/10 text-white' : 'hover:bg-slate-50 text-slate-400 hover:bg-white/[0.04]'}`}>{s}</button>
+              <button key={s} onClick={() => setSeverityFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${severityFilter === s ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{s}</button>
             ))}
           </div>
         </div>
@@ -85,7 +83,7 @@ export default function AdminAuditLogPage() {
                 const sev = severityStyles[a.severity];
                 const SevIcon = sev.icon;
                 return (
-                  <tr key={a.id} className="border-b border-white/[0.03] hover:hover:bg-slate-50 transition-colors">
+                  <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td className="py-3.5 px-5"><span className="text-xs text-slate-500 font-mono">{new Date(a.timestamp).toLocaleString()}</span></td>
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-2"><Building2 className="w-4 h-4 text-slate-600" /><span className="text-sm font-medium text-slate-700">{a.companyName}</span></div>

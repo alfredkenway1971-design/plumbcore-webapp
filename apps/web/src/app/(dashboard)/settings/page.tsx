@@ -13,6 +13,7 @@ import {
 import { teamMembers, getStats } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
 import { supabase } from '@/lib/supabase';
+import { PLAN_LABELS, PLAN_PRICES } from '@/lib/plan-pricing';
 
 /* ── Types ── */
 type Tab = 'profile' | 'company' | 'team' | 'notifications' | 'billing';
@@ -143,9 +144,10 @@ const NOTIFICATION_TYPES: NotificationPreference[] = [
 ];
 
 const SUBSCRIPTION_PLANS = [
-  { id: 'starter', name: 'Starter', price: 79, features: ['Up to 2 technicians', 'Basic scheduling', 'Invoice management', 'Email support'] },
-  { id: 'pro', name: 'Pro', price: 129, features: ['Up to 10 technicians', 'Advanced scheduling', 'Inventory tracking', 'Reports & analytics', 'Priority support'] },
-  { id: 'unlimited', name: 'Unlimited', price: 199, features: ['Unlimited technicians', 'Everything in Pro', 'API access', 'Dedicated account manager', 'Custom integrations'] },
+  { id: 'solo', name: 'Solo', price: 349, features: ['Up to 2 technicians', 'Basic scheduling', 'Invoice management', 'Email support'] },
+  { id: 'pro', name: 'Pro', price: 799, features: ['Up to 10 technicians', 'Advanced scheduling', 'Inventory tracking', 'Reports & analytics', 'Priority support'] },
+  { id: 'business', name: 'Business', price: 1499, features: ['Unlimited technicians', 'Everything in Pro', 'API access', 'Dedicated account manager', 'Custom integrations'] },
+  { id: 'enterprise', name: 'Enterprise', price: 0, features: ['Everything in Business', 'Predictive maintenance', 'White-label portal', 'Dedicated manager', 'Custom integrations'] },
 ];
 
 const BILLING_HISTORY: InvoiceRecord[] = [
@@ -411,7 +413,10 @@ export default function SettingsPage() {
 
   // Change plan modal
   const [changePlanOpen, setChangePlanOpen] = useState(false);
-  const [currentPlan, setCurrentPlan] = useState('pro');
+  const [currentPlan, setCurrentPlan] = useState(() => {
+    const state = useAuthStore.getState();
+    return state.company?.subscription_tier || 'pro';
+  });
 
   // Members state (local for editing/removing)
   const [members, setMembers] = useState([...teamMembers]);
@@ -513,37 +518,48 @@ export default function SettingsPage() {
     });
   };
 
-  /* ── Invite handler ── */
-  const handleSendInvitation = () => {
+  /* ── Invite handler (background send) ── */
+  const [inviteSending, setInviteSending] = useState(false);
+  const [inviteError, setInviteError] = useState<string | null>(null);
+  const [inviteSuccess, setInviteSuccess] = useState<string | null>(null);
+  const handleSendInvitation = async () => {
     if (!inviteForm.name.trim() || !inviteForm.email.trim()) return;
-    const newMember = {
-      id: `TEMP-${Date.now()}`,
-      name: inviteForm.name,
-      email: inviteForm.email,
-      phone: '',
-      role: inviteForm.role as 'tech' | 'senior-tech' | 'lead-tech' | 'dispatcher' | 'admin',
-      status: 'offline' as const,
-      activeJobs: 0,
-      completedToday: 0,
-      rating: 0,
-      specialties: [],
-      joinedAt: new Date().toISOString().split('T')[0],
-    };
-    setMembers((prev) => [...prev, newMember]);
-    setInviteOpen(false);
-    setInviteForm({ name: '', email: '', role: 'tech' });
-
-    // Open mailto link with invitation email
-    const subject = encodeURIComponent(`You've been invited to join ${company.name || 'PlumbCore AI'}`);
-    const body = encodeURIComponent(
-      `Hi ${inviteForm.name},\n\n` +
-      `You've been invited to join ${company.name || 'PlumbCore AI'} as a ${inviteForm.role.replace('-', ' ')}.\n\n` +
-      `Click the link below to accept your invitation and set up your account:\n\n` +
-      `https://app.plumbcore.ai/accept-invite?email=${encodeURIComponent(inviteForm.email)}\n\n` +
-      `Welcome aboard!\n` +
-      `— The PlumbCore AI Team`
-    );
-    window.open(`mailto:${inviteForm.email}?subject=${subject}&body=${body}`, '_blank');
+    setInviteSending(true);
+    setInviteError(null);
+    setInviteSuccess(null);
+    try {
+      const res = await fetch('/api/team/invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${useAuthStore.getState().token}` },
+        body: JSON.stringify({ name: inviteForm.name, email: inviteForm.email, role: inviteForm.role }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send invitation');
+      // Add member to local state optimistically
+      const newMember = {
+        id: `TEMP-${Date.now()}`,
+        name: inviteForm.name,
+        email: inviteForm.email,
+        phone: '',
+        role: inviteForm.role as 'tech' | 'senior-tech' | 'lead-tech' | 'dispatcher' | 'admin',
+        status: 'offline' as const,
+        activeJobs: 0,
+        completedToday: 0,
+        rating: 0,
+        specialties: [],
+        joinedAt: new Date().toISOString().split('T')[0],
+      };
+      setMembers((prev) => [...prev, newMember]);
+      setInviteOpen(false);
+      setInviteForm({ name: '', email: '', role: 'tech' });
+      setInviteSuccess(`Invitation sent to ${inviteForm.email}`);
+      setTimeout(() => setInviteSuccess(null), 5000);
+    } catch (err: any) {
+      console.error('Invite failed:', err);
+      setInviteError(err.message || 'Failed to send invitation');
+    } finally {
+      setInviteSending(false);
+    }
   };
 
   /* ── Edit team member ── */
@@ -776,11 +792,11 @@ export default function SettingsPage() {
                 return (
                   <div
                     key={day}
-                    className={`grid grid-cols-[1fr_80px_80px_60px] gap-2 items-center rounded-xl ring-1 ring-black/5 px-3 py-2.5 transition-colors ${
+                    className={`grid grid-cols-[70px_1fr_1fr_44px] sm:grid-cols-[100px_100px_100px_60px] gap-2 sm:gap-3 items-center rounded-xl ring-1 ring-black/5 bg-white px-3 py-2.5 transition-colors ${
                       !h.open ? 'opacity-50' : ''
                     }`}
                   >
-                    <span className="text-sm font-medium text-slate-900">{day}</span>
+                    <span className="text-sm font-medium text-slate-900 whitespace-nowrap">{day}</span>
                     <input
                       type="time"
                       value={h.openTime}
@@ -791,7 +807,7 @@ export default function SettingsPage() {
                         }))
                       }
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <input
                       type="time"
@@ -803,7 +819,7 @@ export default function SettingsPage() {
                         }))
                       }
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <div className="flex justify-end">
                       <button
@@ -814,8 +830,8 @@ export default function SettingsPage() {
                             [day]: { ...prev[day], open: !prev[day].open },
                           }))
                         }
-                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-electric/40 ${
-                          h.open ? 'bg-electric' : 'bg-white/10'
+                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-400/40 ${
+                          h.open ? 'bg-green-500' : 'bg-gray-300'
                         }`}
                       >
                         <span
@@ -887,7 +903,12 @@ export default function SettingsPage() {
       {activeTab === 'team' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-slate-500">{members.length} team members</p>
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-slate-500">{members.length} team members</p>
+              {inviteSuccess && (
+                <span className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">{inviteSuccess}</span>
+              )}
+            </div>
             <Button size="sm" onClick={() => setInviteOpen(true)}>+ Invite Member</Button>
           </div>
 
@@ -1009,8 +1030,8 @@ export default function SettingsPage() {
                 <Button variant="ghost" onClick={() => setInviteOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleSendInvitation} disabled={!inviteForm.name.trim() || !inviteForm.email.trim()}>
-                  Send Invitation
+                <Button onClick={handleSendInvitation} disabled={!inviteForm.name.trim() || !inviteForm.email.trim()} loading={inviteSending}>
+                  {inviteSending ? 'Sending…' : 'Send Invitation'}
                 </Button>
               </div>
             }
@@ -1034,7 +1055,7 @@ export default function SettingsPage() {
                 <select
                   value={inviteForm.role}
                   onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}
-                  className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
                 >
                   <option value="admin">Admin</option>
                   <option value="dispatcher">Dispatcher</option>
@@ -1044,6 +1065,12 @@ export default function SettingsPage() {
                 </select>
               </div>
             </div>
+
+            {inviteError && (
+              <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+                {inviteError}
+              </div>
+            )}
           </Modal>
 
           {/* Edit Member Modal */}
@@ -1084,7 +1111,7 @@ export default function SettingsPage() {
                   <select
                     value={editMember.role}
                     onChange={(e) => setEditMember({ ...editMember, role: e.target.value })}
-                    className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
                   >
                     <option value="admin">Admin</option>
                     <option value="dispatcher">Dispatcher</option>
@@ -1172,8 +1199,11 @@ export default function SettingsPage() {
                   </span> plan
                 </p>
                 <p className="text-2xl font-bold text-slate-900 mt-2">
-                  ${SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.price || 129}
-                  <span className="text-sm font-normal text-slate-500">/mo</span>
+                  {currentPlan === 'enterprise' ? (
+                    <span>Custom</span>
+                  ) : (
+                    <>${SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.price || 349}<span className="text-sm font-normal text-slate-500">/mo</span></>
+                  )}
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={() => setChangePlanOpen(true)}>
@@ -1195,7 +1225,7 @@ export default function SettingsPage() {
           {/* Payment Method */}
           <Card variant="bordered" padding="lg">
             <h2 className="text-base font-semibold text-slate-900 mb-3">Payment Method</h2>
-            <div className="flex items-center gap-4 rounded-xl ring-1 ring-black/5 bg-whiteer p-4">
+            <div className="flex items-center gap-4 rounded-xl ring-1 ring-black/5 bg-white p-4">
               <div className="flex h-10 w-14 items-center justify-center rounded-xl bg-white/5 text-slate-400">
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
@@ -1249,17 +1279,37 @@ export default function SettingsPage() {
                         <td className="py-3 text-right">
                           <button
                             type="button"
-                            onClick={() => {
-                              const { jsPDF } = window as any;
-                              const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-                              doc.setFontSize(18);
-                              doc.text('PlumbCore AI', 20, 30);
-                              doc.setFontSize(11);
-                              doc.text(`Invoice: ${inv.id}`, 20, 45);
-                              doc.text(`Date: ${new Date(inv.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 20, 55);
-                              doc.text(`Amount: $${inv.amount.toFixed(2)}`, 20, 65);
-                              doc.text(`Status: ${inv.status.toUpperCase()}`, 20, 75);
-                              doc.save(`${inv.id}.pdf`);
+                            onClick={async () => {
+                              function downloadPdfFallback() {
+                                // Minimal PDF generator (no external lib needed)
+                                const pdfContent = `PlumbCore AI\n\nInvoice: ${inv.id}\nDate: ${new Date(inv.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}\nAmount: $${inv.amount.toFixed(2)}\nStatus: ${inv.status.toUpperCase()}`;
+                                const blob = new Blob([pdfContent], { type: 'text/plain' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `${inv.id}.txt`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                              }
+
+                              try {
+                                // Try dynamic import of jsPDF
+                                const { jsPDF } = await import('jspdf');
+                                const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+                                doc.setFontSize(18);
+                                doc.text('PlumbCore AI', 20, 30);
+                                doc.setFontSize(11);
+                                doc.text(`Invoice: ${inv.id}`, 20, 45);
+                                doc.text(`Date: ${new Date(inv.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 20, 55);
+                                doc.text(`Amount: $${inv.amount.toFixed(2)}`, 20, 65);
+                                doc.text(`Status: ${inv.status.toUpperCase()}`, 20, 75);
+                                doc.save(`${inv.id}.pdf`);
+                              } catch {
+                                // Fallback: download as text file
+                                downloadPdfFallback();
+                              }
                             }}
                             className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1"
                           >
@@ -1304,7 +1354,7 @@ export default function SettingsPage() {
                   className={`w-full text-left rounded-xl border p-4 transition-all ${
                     currentPlan === plan.id
                       ? 'border-electric bg-electric/5'
-                      : 'border-slate-200 bg-whiteer hover:border-white/20'
+                      : 'border-slate-200 bg-white hover:border-slate-300'
                   }`}
                 >
                   <div className="flex items-start justify-between">

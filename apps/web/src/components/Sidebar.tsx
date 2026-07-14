@@ -130,6 +130,7 @@ const plumberNav = [
   { sectionKey: 'admin', items: [
     { labelKey: 'team', label: 'Team', icon: 'Team', href: '/team' },
     { labelKey: 'notifications', label: 'Notifications', icon: 'Bell', href: '/notifications' },
+    { labelKey: 'featureRequests', label: 'Feature Requests', icon: 'ChatBubble', href: '/feature-requests' },
     { labelKey: 'auditLog', label: 'Audit Log', icon: 'Shield', href: '/audit-log' },
     { labelKey: 'settings', label: 'Settings', icon: 'Cog', href: '/settings' },
   ]},
