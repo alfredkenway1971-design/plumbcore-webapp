@@ -465,7 +465,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         </div>
         
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-bold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-base">
-          {stripeLoading ? 'Redirecting to payment...' : `${ctaCopy} — ${depositDollars(result.depositAmount)} to Lock In`}
+          {stripeLoading ? 'Redirecting...' : `${ctaCopy} →`}
         </button>
         
         <p className="text-xs text-slate-500 text-center">{t('quote.bookRefundable')}</p>
