@@ -299,27 +299,26 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         
         {/* Refund Guarantee Banner */}
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-center">
-          <p className="text-xs text-emerald-300 font-semibold mb-1">🔒 100% Refund Guarantee</p>
+          <p className="text-xs text-emerald-300 font-semibold mb-1">🔒 {t('quote.refundGuaranteeTitle')}</p>
           <p className="text-[11px] text-emerald-200/80 leading-relaxed">
-            Fully refundable — if no plumber is available in your area within 24 hours, 
-            your deposit is automatically refunded. <strong>No questions asked.</strong>
+            {t('quote.refundGuaranteeText')}
           </p>
         </div>
         
         <div className="flex items-center justify-center gap-2">
-          <p className="text-sm text-slate-400">To confirm this estimate, deposit:</p>
+          <p className="text-sm text-slate-400">{t('quote.confirmDeposit')}</p>
           <div className="relative group">
             <span className="text-3xl font-bold text-white">{depositDollars(result.depositAmount)}</span>
             <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-600 text-[10px] text-slate-300 cursor-help ml-1.5 font-bold" 
-                  title="This deposit secures your appointment. It covers our AI matching service. The plumber bills you separately for the actual repair.">?</span>
+                  title={t('quote.depositTooltip')}>?</span>
           </div>
         </div>
         
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm">
-          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — ${depositDollars(result.depositAmount)} deposit`}
+          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — ${depositDollars(result.depositAmount)} ${t('quote.depositSuffix')}`}
         </button>
         
-        <p className="text-xs text-slate-500">Fully refundable if you cancel within 24 hours</p>
+        <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
         <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.securePayment')}</span>

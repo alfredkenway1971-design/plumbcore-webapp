@@ -279,6 +279,11 @@ const defaultTranslations: Translations = {
     fullyRefundable: "Fully refundable deposit",
     licensedInsured: "Licensed & insured plumbers only",
     startOver: "Start Over",
+    refundGuaranteeTitle: "100% Refund Guarantee",
+    refundGuaranteeText: "Fully refundable — if no plumber is available in your area within 24 hours, your deposit is automatically refunded. No questions asked.",
+    depositTooltip: "This deposit secures your appointment. It covers our AI matching service. The plumber bills you separately for the actual repair.",
+    confirmDeposit: "To confirm this estimate, deposit:",
+    depositSuffix: "deposit",
   },
 };
 
