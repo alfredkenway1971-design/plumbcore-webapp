@@ -7,6 +7,7 @@ import { useAuthStore } from '@/lib/store';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { useI18n } from '@/components/i18n-provider';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
+import { PLAN_LABELS, PLAN_PRICES, PLAN_FEATURES, PLAN_AI_RECEPTIONIST_HOURS, PLAN_MAX_TECHS } from '@/lib/plan-pricing';
 
 function capitalizeName(val: string): string {
   return val.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
@@ -21,6 +22,42 @@ function formatPhone(val: string): string {
 function cleanPhone(val: string): string { return val.replace(/\D/g, ''); }
 
 interface FormData { companyName: string; fullName: string; email: string; phone: string; password: string; confirmPassword: string; }
+
+const PLANS = [
+  {
+    id: 'solo',
+    name: 'Solo',
+    price: 349,
+    priceLabel: '$349/mo',
+    description: 'Best for owner-operators and solo plumbers',
+    features: ['Up to 1 technician', '15h AI receptionist', 'AI photo estimates', 'Job scheduling & dispatch', 'Invoicing & payments'],
+    popular: false,
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    price: 799,
+    priceLabel: '$799/mo',
+    description: 'For growing shops with 2-10 techs',
+    features: ['Up to 10 technicians', '60h AI receptionist', 'Route optimization', 'Team management', 'Voice-to-invoice'],
+    popular: true,
+  },
+  {
+    id: 'business',
+    name: 'Business',
+    price: 1499,
+    priceLabel: '$1,499/mo',
+    description: 'For scaling companies with 11-25 techs',
+    features: ['Up to 25 technicians', '150h AI receptionist', 'Inventory tracking', 'Customer portal', 'White-label branding'],
+    popular: false,
+  },
+];
+
+const STRIPE_PRICE_IDS: Record<string, string> = {
+  solo: 'price_1Tt6N8DynIU5fZLWmBY3zi05',
+  pro: 'price_1Tt6N9DynIU5fZLWWYqfTfUc',
+  business: 'price_1Tt6NADynIU5fZLWRymLht9U',
+};
 
 export default function SignupPage() {
   return (
@@ -37,6 +74,8 @@ function SignupForm() {
   const searchParams = useSearchParams();
   const { t } = useI18n();
   const sessionId = searchParams.get('session_id') || '';
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [step, setStep] = useState<'plan' | 'form'>('plan');
   const [form, setForm] = useState<FormData>({ companyName:'', fullName:'', email:'', phone:'', password:'', confirmPassword:'' });
   const [phoneDisplay, setPhoneDisplay] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,9 +115,26 @@ function SignupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({companyName:true,fullName:true,email:true,phone:true,password:true,confirmPassword:true});
-    if (!isValid) return;
+    if (!isValid || !selectedPlan) return;
     setLoading(true); setError('');
     try {
+      // Create Stripe checkout session first
+      const priceId = STRIPE_PRICE_IDS[selectedPlan];
+      if (!priceId) {
+        throw new Error('Invalid plan selected');
+      }
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId, planName: selectedPlan }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Checkout failed');
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      // Fallback: direct signup if checkout fails to redirect
       await useAuthStore.getState().signUp(form.email, form.password, form.fullName, form.companyName, form.phone, sessionId);
       setSuccess(true);
       setTimeout(() => router.push('/dashboard'), 1500);
@@ -98,6 +154,88 @@ function SignupForm() {
       <p className="text-sm text-slate-500">{t('auth.signup.successSubtitle')}</p>
     </div>
   );
+
+  if (step === 'plan') {
+    return (
+      <div className="min-h-screen flex flex-col lg:flex-row">
+        {/* Brand Panel */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-50 via-blue-100 to-cyan-50 text-slate-700 p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_20%_30%,rgba(59,130,246,0.08),transparent),radial-gradient(ellipse_60%_40%_at_80%_70%,rgba(6,182,212,0.06),transparent),radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(99,102,241,0.04),transparent)]" />
+          <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNCI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] bg-repeat" />
+          <div className="relative z-10">
+            <PlumbCoreLogo size="xl" showText={true} />
+            <h2 className="text-3xl font-bold mb-4 leading-tight text-slate-800">{t('auth.signup.brandTitle')}</h2>
+            <p className="text-slate-500 text-sm max-w-md leading-relaxed">{t('auth.signup.brandSubtitle')}</p>
+            <div className="mt-8 space-y-4">
+              {[
+                { icon: '🤖', text: t('auth.signup.brandFeature1') },
+                { icon: '📅', text: t('auth.signup.brandFeature2') },
+                { icon: '💰', text: t('auth.signup.brandFeature3') },
+              ].map((f, i) => (
+                <div key={i} className="flex items-center gap-3"><span className="text-lg">{f.icon}</span><span className="text-sm text-slate-600">{f.text}</span></div>
+              ))}
+            </div>
+          </div>
+          <div className="relative z-10 flex items-center gap-4"><div className="flex -space-x-2">{[...Array(4)].map((_, i) => <div key={i} className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-slate-600">P{i+1}</div>)}</div><div><p className="text-sm font-medium text-slate-700">{t('auth.signup.trusted')}</p><p className="text-xs text-slate-400">{t('auth.signup.rating')}</p></div></div>
+        </div>
+
+        {/* Plan Selection Panel */}
+        <div className="flex-1 flex items-center justify-center bg-white p-6 sm:p-10 min-h-screen lg:min-h-0">
+          <div className="w-full max-w-lg">
+            <div className="flex lg:hidden mb-8"><PlumbCoreLogo size="sm" showText={true} /></div>
+            <div className="mb-6 text-center">
+              <h1 className="text-2xl font-bold text-slate-900">Choose Your Plan</h1>
+              <p className="mt-1 text-sm text-slate-500">Select a plan to get started with PlumbCore AI</p>
+            </div>
+            <div className="space-y-4">
+              {PLANS.map((plan) => (
+                <button
+                  key={plan.id}
+                  type="button"
+                  onClick={() => { setSelectedPlan(plan.id); setStep('form'); }}
+                  className={`w-full text-left rounded-2xl border-2 p-5 transition-all hover:shadow-md ${
+                    selectedPlan === plan.id
+                      ? 'border-blue-500 bg-blue-50/50 shadow-sm'
+                      : 'border-slate-200 bg-white hover:border-slate-300'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold text-slate-900">{plan.name}</h3>
+                        {plan.popular && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">POPULAR</span>
+                        )}
+                      </div>
+                      <p className="text-sm text-slate-500 mt-0.5">{plan.description}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-slate-900">${plan.price}</p>
+                      <p className="text-xs text-slate-400">/month</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-3">
+                    {plan.features.map((f, i) => (
+                      <div key={i} className="flex items-center gap-1.5 text-xs text-slate-600">
+                        <svg className="w-3.5 h-3.5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {f}
+                      </div>
+                    ))}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <p className="mt-6 text-center text-sm text-slate-500">
+              Already have an account?{' '}
+              <a href="/login" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">Sign in</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">

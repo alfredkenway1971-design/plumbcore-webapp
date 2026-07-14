@@ -250,9 +250,9 @@ function PricingSection({ t }: { t: (key: string) => string }) {
   const [loading, setLoading] = useState<string | null>(null);
 
   const plans = [
-    { id: 'solo', name: 'Solo', price: 349, priceId: 'price_1TrEh8D0AAcByeQ9hCRJDqHs', techs: '1 tech', popular: false, features: ['Unlimited AI estimates', '15 hrs AI receptionist', 'Scheduling & invoicing', 'Email support'], cta: 'Start Free Trial' },
-    { id: 'pro', name: 'Pro', price: 799, priceId: 'price_1TrEhCD0AAcByeQ9ERNDiEHS', techs: '2–10 techs', popular: true, features: ['Everything in Solo', 'Route optimization', 'Inventory tracking', 'Maintenance plans', 'Review automation', '60 hrs AI receptionist'], cta: 'Start Free Trial' },
-    { id: 'business', name: 'Business', price: 1499, priceId: 'price_1TrEhED0AAcByeQ9yyeuUONo', techs: '11–25 techs', popular: false, features: ['Everything in Pro', 'Customer financing', 'Truck GPS + alerts', '150 hrs AI receptionist', 'Priority support'], cta: 'Start Free Trial' },
+    { id: 'solo', name: 'Solo', price: 349, priceId: 'price_1Tt6N8DynIU5fZLWmBY3zi05', techs: '1 tech', popular: false, features: ['Unlimited AI estimates', '15 hrs AI receptionist', 'Scheduling & invoicing', 'Email support'], cta: 'Start Free Trial' },
+    { id: 'pro', name: 'Pro', price: 799, priceId: 'price_1Tt6N9DynIU5fZLWWYqfTfUc', techs: '2–10 techs', popular: true, features: ['Everything in Solo', 'Route optimization', 'Inventory tracking', 'Maintenance plans', 'Review automation', '60 hrs AI receptionist'], cta: 'Start Free Trial' },
+    { id: 'business', name: 'Business', price: 1499, priceId: 'price_1Tt6NADynIU5fZLWRymLht9U', techs: '11–25 techs', popular: false, features: ['Everything in Pro', 'Customer financing', 'Truck GPS + alerts', '150 hrs AI receptionist', 'Priority support'], cta: 'Start Free Trial' },
     { id: 'enterprise', name: 'Enterprise', price: 0, priceId: null, techs: '25+ techs', popular: false, features: ['Everything in Business', 'Predictive maintenance', 'White-label portal', 'Dedicated manager', 'Custom integrations'], cta: 'Contact Sales' },
   ];
 

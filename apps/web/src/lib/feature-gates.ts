@@ -164,9 +164,17 @@ export const PLAN_PRICING: Record<string, { label: string; price: number; priceL
 
 export const PLAN_ORDER = ['solo', 'pro', 'business', 'enterprise'] as const;
 
-/** Stripe price IDs for the new 3-tier pricing */
+/** Stripe price IDs for subscription plans */
 export const STRIPE_PRICE_IDS: Record<string, string> = {
-  solo: 'price_1TrEh8D0AAcByeQ9hCRJDqHs',
-  pro: 'price_1TrEhCD0AAcByeQ9ERNDiEHS',
-  business: 'price_1TrEhED0AAcByeQ9yyeuUONo',
+  solo: 'price_1Tt6N8DynIU5fZLWmBY3zi05',
+  pro: 'price_1Tt6N9DynIU5fZLWWYqfTfUc',
+  business: 'price_1Tt6NADynIU5fZLWRymLht9U',
+};
+
+/** Stripe deposit price IDs for one-time charges */
+export const DEPOSIT_PRICE_IDS: Record<string, string> = {
+  small: 'price_1Tt6NCDynIU5fZLWmKmTgIgB',
+  medium: 'price_1Tt6NDDynIU5fZLWz6OfYSi5',
+  large: 'price_1Tt6NEDynIU5fZLWeRe1q3MO',
+  premium: 'price_1Tt6NFDynIU5fZLW2hpgTBst',
 };

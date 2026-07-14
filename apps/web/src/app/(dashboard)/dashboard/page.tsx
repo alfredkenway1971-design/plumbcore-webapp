@@ -7,6 +7,7 @@ import { useI18n } from '@/components/i18n-provider';
 import { jobs, invoices, teamMembers, activities, getStats, loadDataFromSupabase } from '@/lib/mock-data';
 import type { Job } from '@/lib/mock-data';
 import { useDebounce } from '@/hooks/useDebounce';
+import { PLAN_LABELS, PLAN_PRICES, PLAN_MAX_TECHS, PLAN_AI_RECEPTIONIST_HOURS } from '@/lib/plan-pricing';
 
 /* ═══════════════════════════════════════════
    ICONS
@@ -800,6 +801,95 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
 });
 
 /* ═══════════════════════════════════════════
+   PLAN INFO WIDGET
+   ═══════════════════════════════════════════ */
+function PlanInfoWidget() {
+  const [company, setCompany] = useState<any>(null);
+  
+  useEffect(() => {
+    import('@/lib/store').then(mod => {
+      const state = mod.useAuthStore.getState();
+      setCompany(state.company);
+    });
+  }, []);
+
+  const tier: string = company?.subscription_tier || 'solo';
+  const planLabel = PLAN_LABELS[tier] || 'Solo';
+  const planPrice = (PLAN_PRICES[tier] || 34900) / 100;
+  const maxTechs = PLAN_MAX_TECHS[tier] || 1;
+  const aiHours = PLAN_AI_RECEPTIONIST_HOURS[tier] || 15;
+  const status = company?.subscription_status || 'active';
+
+  const openBilling = async () => {
+    if (!company?.stripe_customer_id) return;
+    try {
+      const res = await fetch('/api/create-billing-portal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          customerId: company.stripe_customer_id,
+          returnUrl: window.location.href,
+        }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {}
+  };
+
+  return (
+    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+            <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <h3 className="text-sm font-semibold text-slate-900">Plan Info</h3>
+        </div>
+        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+          status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
+        }`}>
+          {status === 'active' ? 'Active' : status}
+        </span>
+      </div>
+      <div className="flex items-baseline gap-1 mb-1">
+        <h2 className="text-2xl font-bold text-slate-900">{planLabel}</h2>
+        <span className="text-sm text-slate-500">· ${planPrice}/mo</span>
+      </div>
+      <div className="grid grid-cols-3 gap-3 my-4">
+        <div className="bg-slate-50 rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-slate-900">{aiHours}h</p>
+          <p className="text-[10px] text-slate-500">AI Receptionist</p>
+        </div>
+        <div className="bg-slate-50 rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-slate-900">{maxTechs === 999 ? '∞' : maxTechs}</p>
+          <p className="text-[10px] text-slate-500">Max Techs</p>
+        </div>
+        <div className="bg-slate-50 rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-slate-900">${planPrice}</p>
+          <p className="text-[10px] text-slate-500">/mo</p>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={() => window.location.href = '/settings?tab=billing'}
+          className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-all active:scale-[0.97]"
+        >
+          Upgrade
+        </button>
+        <button
+          onClick={openBilling}
+          className="flex-1 h-9 rounded-xl border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-all active:scale-[0.97]"
+        >
+          Manage Billing
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
    MOBILE BOTTOM NAV
    ═══════════════════════════════════════════ */
 const MobileBottomNav = memo(function MobileBottomNav() {
@@ -934,6 +1024,13 @@ export default function DashboardPage() {
 
       {/* ── Revenue Goal Progress Bar ── */}
       <RevenueGoalBar />
+
+      {/* ── Plan Info Widget ── */}
+      {company && (
+        <div className="mb-6">
+          <PlanInfoWidget />
+        </div>
+      )}
 
       {/* ── Row 2: Revenue Chart + Job Donut ── */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">

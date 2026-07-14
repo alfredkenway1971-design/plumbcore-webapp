@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 import { requireAuth } from '@/lib/api-auth'
 import { calcDeposit } from '@/lib/plan-pricing'
+import { DEPOSIT_PRICE_IDS } from '@/lib/feature-gates'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
@@ -118,6 +119,14 @@ function buildResult(parsed: any) {
   const confidence = Math.min(100, Math.max(0, parsed.confidence || 85))
 
   const depositInfo = calcDeposit(totalPrice)
+  const tierKey = depositInfo.tier.toLowerCase().replace(/[^a-z]/g, '')
+  const depositTierMap: Record<string, string> = {
+    small: 'small',
+    medium: 'medium',
+    large: 'large',
+    premium: 'premium',
+  }
+  const depositTierKey = depositTierMap[tierKey] || 'small'
   return {
     diagnosis: parsed.diagnosis || 'Plumbing issue detected',
     severity: parsed.severity || 'moderate',
@@ -130,8 +139,9 @@ function buildResult(parsed: any) {
     taxRate: TAX_RATE,
     totalPrice,
     confidence,
-    depositAmount: depositInfo.deposit,
+    deposit: depositInfo.deposit,
     depositTier: depositInfo.tier,
+    depositPriceId: DEPOSIT_PRICE_IDS[depositTierKey] || DEPOSIT_PRICE_IDS.small,
   }
 }
 

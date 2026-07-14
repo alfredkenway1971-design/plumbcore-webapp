@@ -113,12 +113,12 @@ export function getPlanTierFromPriceId(priceId: string): string {
   return map[priceId] || 'solo';
 }
 
-/* ── Tiered Deposit Model ── */
+/* ── Tiered Deposit Model (used by quote page) ── */
 export const DEPOSIT_TIERS = [
-  { max: 1000, deposit: 4900, label: 'Under $1,000' },
-  { max: 1500, deposit: 9900, label: '$1,000 – $1,499' },
-  { max: 2000, deposit: 14900, label: '$1,500 – $1,999' },
-  { max: Infinity, deposit: 19900, label: '$2,000+' },
+  { max: 1000, deposit: 4900, label: 'Under $1,000', tier: 'small' },
+  { max: 1500, deposit: 9900, label: '$1,000 – $1,499', tier: 'medium' },
+  { max: 2000, deposit: 14900, label: '$1,500 – $1,999', tier: 'large' },
+  { max: Infinity, deposit: 19900, label: '$2,000+', tier: 'premium' },
 ];
 
 export function calcDeposit(estimatedPrice: number): { deposit: number; tier: string } {

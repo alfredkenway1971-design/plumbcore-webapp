@@ -14,6 +14,7 @@ import { teamMembers, getStats } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
 import { supabase } from '@/lib/supabase';
 import { PLAN_LABELS, PLAN_PRICES } from '@/lib/plan-pricing';
+import { STRIPE_PRICE_IDS } from '@/lib/feature-gates';
 
 /* ── Types ── */
 type Tab = 'profile' | 'company' | 'team' | 'notifications' | 'billing';
@@ -1195,23 +1196,40 @@ export default function SettingsPage() {
                 <h2 className="text-base font-semibold text-slate-900">Current Plan</h2>
                 <p className="text-sm text-slate-500 mt-1">
                   You are on the <span className="font-medium text-slate-900">
-                    {SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.name || 'Pro'}
+                    {PLAN_LABELS[currentPlan] || 'Pro'}
                   </span> plan
                 </p>
                 <p className="text-2xl font-bold text-slate-900 mt-2">
                   {currentPlan === 'enterprise' ? (
                     <span>Custom</span>
                   ) : (
-                    <>${SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.price || 349}<span className="text-sm font-normal text-slate-500">/mo</span></>
+                    <>${(PLAN_PRICES[currentPlan] || 34900) / 100}<span className="text-sm font-normal text-slate-500">/mo</span></>
                   )}
                 </p>
+                <p className="text-xs text-slate-400 mt-1">Next billing date: Aug 1, 2026</p>
               </div>
-              <Button variant="outline" size="sm" onClick={() => setChangePlanOpen(true)}>
-                Change Plan
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button variant="outline" size="sm" onClick={() => {
+                  // Upgrade: redirect to pricing via Stripe checkout
+                  const priceId = STRIPE_PRICE_IDS[currentPlan];
+                  if (priceId) {
+                    fetch('/api/create-checkout-session', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ priceId, planName: currentPlan }),
+                    }).then(r => r.json()).then(d => {
+                      if (d.url) window.location.href = d.url;
+                    });
+                  } else {
+                    setChangePlanOpen(true);
+                  }
+                }}>
+                  Upgrade Plan
+                </Button>
+              </div>
             </div>
             <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1.5">
-              {(SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.features || []).map((f, i) => (
+              {(PLAN_FEATURES[currentPlan] || []).slice(0, 8).map((f: string, i: number) => (
                 <div key={i} className="flex items-center gap-1.5 text-xs text-slate-500">
                   <svg className="h-3.5 w-3.5 shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -1220,6 +1238,38 @@ export default function SettingsPage() {
                 </div>
               ))}
             </div>
+          </Card>
+
+          {/* Manage Billing */}
+          <Card variant="default" padding="lg">
+            <h2 className="text-base font-semibold text-slate-900 mb-3">Manage Billing</h2>
+            <p className="text-sm text-slate-500 mb-4">View and update your payment methods, invoices, and subscription details through Stripe's billing portal.</p>
+            <Button
+              onClick={async () => {
+                const state = useAuthStore.getState();
+                const customerId = state.company?.stripe_customer_id;
+                if (!customerId) {
+                  alert('No billing customer ID found. Please contact support.');
+                  return;
+                }
+                try {
+                  const res = await fetch('/api/create-billing-portal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      customerId,
+                      returnUrl: window.location.href,
+                    }),
+                  });
+                  const data = await res.json();
+                  if (data.url) window.location.href = data.url;
+                } catch {
+                  alert('Failed to open billing portal. Please try again.');
+                }
+              }}
+            >
+              Open Billing Portal
+            </Button>
           </Card>
 
           {/* Payment Method */}
@@ -1239,6 +1289,43 @@ export default function SettingsPage() {
                 Update
               </Button>
             </div>
+          </Card>
+
+          {/* Cancel Subscription */}
+          <Card variant="bordered" padding="lg" className="border-red-200">
+            <h2 className="text-base font-semibold text-red-600 mb-2">Cancel Subscription</h2>
+            <p className="text-sm text-slate-500 mb-4">
+              Once cancelled, you'll lose access to premium features at the end of your billing period. Your data will be retained for 30 days.
+            </p>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                const confirmed = window.confirm(
+                  'Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.'
+                );
+                if (!confirmed) return;
+                // Redirect to Stripe billing portal to manage cancellation
+                const state = useAuthStore.getState();
+                const customerId = state.company?.stripe_customer_id;
+                if (customerId) {
+                  try {
+                    const res = await fetch('/api/create-billing-portal', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        customerId,
+                        returnUrl: window.location.href,
+                      }),
+                    });
+                    const data = await res.json();
+                    if (data.url) window.location.href = data.url;
+                  } catch {}
+                }
+              }}
+              className="text-red-600 border-red-200 hover:bg-red-50"
+            >
+              Cancel Subscription
+            </Button>
           </Card>
 
           {/* Billing History */}
@@ -1281,7 +1368,6 @@ export default function SettingsPage() {
                             type="button"
                             onClick={async () => {
                               function downloadPdfFallback() {
-                                // Minimal PDF generator (no external lib needed)
                                 const pdfContent = `PlumbCore AI\n\nInvoice: ${inv.id}\nDate: ${new Date(inv.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}\nAmount: $${inv.amount.toFixed(2)}\nStatus: ${inv.status.toUpperCase()}`;
                                 const blob = new Blob([pdfContent], { type: 'text/plain' });
                                 const url = URL.createObjectURL(blob);
@@ -1295,7 +1381,6 @@ export default function SettingsPage() {
                               }
 
                               try {
-                                // Try dynamic import of jsPDF
                                 const { jsPDF } = await import('jspdf');
                                 const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                                 doc.setFontSize(18);
@@ -1307,7 +1392,6 @@ export default function SettingsPage() {
                                 doc.text(`Status: ${inv.status.toUpperCase()}`, 20, 75);
                                 doc.save(`${inv.id}.pdf`);
                               } catch {
-                                // Fallback: download as text file
                                 downloadPdfFallback();
                               }
                             }}
@@ -1339,7 +1423,19 @@ export default function SettingsPage() {
                 <Button variant="ghost" onClick={() => setChangePlanOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={() => setChangePlanOpen(false)}>
+                <Button onClick={() => {
+                  const priceId = STRIPE_PRICE_IDS[currentPlan];
+                  if (priceId) {
+                    fetch('/api/create-checkout-session', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ priceId, planName: currentPlan }),
+                    }).then(r => r.json()).then(d => {
+                      if (d.url) window.location.href = d.url;
+                    });
+                  }
+                  setChangePlanOpen(false);
+                }}>
                   Confirm Change
                 </Button>
               </div>
