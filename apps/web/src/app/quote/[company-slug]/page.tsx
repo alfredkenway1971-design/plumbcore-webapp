@@ -455,11 +455,11 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </p>
         </div>
         
-        <div className="flex items-center justify-center gap-2">
+        <div className="text-center space-y-1">
           <p className="text-sm text-slate-400">{t('quote.confirmDeposit')}</p>
-          <div className="relative group">
+          <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold text-white">{depositDollars(result.depositAmount)}</span>
-            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-600 text-[10px] text-slate-300 cursor-help ml-1.5 font-bold" 
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-600 text-[10px] text-slate-300 cursor-help font-bold" 
                   title={t('quote.depositTooltip')}>?</span>
           </div>
         </div>
