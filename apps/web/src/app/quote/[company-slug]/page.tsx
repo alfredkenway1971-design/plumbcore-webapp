@@ -202,6 +202,41 @@ function StepLoading({ t }: { t: (key: string) => string }) {
 {/* ── Step 4 — Result ── */}
 function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any) {
   if (!result) return null;
+  
+  // If confidence is too low, show a message instead of pricing
+  if (result.canProvideEstimate === false || result.confidence < 90) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
+          <p className="text-sm text-slate-400">{t('quote.resultValid')}</p>
+        </div>
+        <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-6 text-white text-center shadow-lg">
+          <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">LOW CONFIDENCE</p>
+          <p className="text-xl font-bold mb-2">We couldn't provide an accurate estimate</p>
+          <p className="text-sm text-white/80">Our AI analysis returned a {result.confidence}% confidence match — we require at least 90% to give you a reliable price. Please add clearer photos or contact us directly for a manual quote.</p>
+        </div>
+        <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div className="flex items-start justify-between pb-4 mb-4 border-b border-slate-100">
+            <div className="flex-1">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p>
+              <p className="text-sm font-medium text-slate-900 leading-relaxed">{result.diagnosis}</p>
+            </div>
+            <Badge className="ml-3 text-xs font-medium px-3 py-1 shrink-0 bg-red-50 text-red-700 border-red-200">{result.confidence}% match</Badge>
+          </div>
+        </div>
+        <div className="text-center space-y-3">
+          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-all shadow-sm">
+            <RefreshCcw className="w-4 h-4" /> Try Again with Better Photos
+          </button>
+        </div>
+        <div className="text-center">
+          <button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">{t('quote.startOver')}</button>
+        </div>
+      </div>
+    );
+  }
+  
   const sevColors: Record<string,string> = { low:'bg-emerald-50 text-emerald-700 border-emerald-200', moderate:'bg-amber-50 text-amber-700 border-amber-200', high:'bg-orange-50 text-orange-700 border-orange-200', emergency:'bg-red-50 text-red-700 border-red-200' };
   const f = (n: number) => `$${n.toFixed(2)}`;
   return (
@@ -402,8 +437,8 @@ export default function QuotePage() {
       const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc}) });
       const data = await res.json();
       if (data.success && data.result) setResult(data.result);
-      else setResult({ diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:65, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
-    } catch { setResult({ diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:65, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' }); }
+      else setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
+    } catch { setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' }); }
     setStep(4);
   }, [form, photos]);
 

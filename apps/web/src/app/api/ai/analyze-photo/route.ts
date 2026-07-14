@@ -5,7 +5,6 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { requireAuth } from '@/lib/api-auth'
 import { calcDeposit } from '@/lib/plan-pricing'
 import { DEPOSIT_PRICE_IDS } from '@/lib/feature-gates'
 
@@ -14,6 +13,7 @@ const responseCache = new Map<string, { data: any; expiry: number }>()
 const LABOR_RATE = 120
 const TAX_RATE = 0.085
 const CONFIDENCE_THRESHOLD = 70
+const MIN_CONFIDENCE_FOR_ESTIMATE = 90
 
 const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the photo of the plumbing issue and the customer's description, then provide a detailed professional estimate. Return ONLY valid JSON, no other text.
 
@@ -127,29 +127,28 @@ function buildResult(parsed: any) {
     premium: 'premium',
   }
   const depositTierKey = depositTierMap[tierKey] || 'small'
+  const canProvideEstimate = confidence >= MIN_CONFIDENCE_FOR_ESTIMATE
   return {
+    canProvideEstimate,
     diagnosis: parsed.diagnosis || 'Plumbing issue detected',
     severity: parsed.severity || 'moderate',
-    estimatedHours,
+    estimatedHours: canProvideEstimate ? estimatedHours : 0,
     laborRate: LABOR_RATE,
-    laborCost,
-    parts,
-    partsTotal,
-    tax,
+    laborCost: canProvideEstimate ? laborCost : 0,
+    parts: canProvideEstimate ? parts : [],
+    partsTotal: canProvideEstimate ? partsTotal : 0,
+    tax: canProvideEstimate ? tax : 0,
     taxRate: TAX_RATE,
-    totalPrice,
+    totalPrice: canProvideEstimate ? totalPrice : 0,
     confidence,
-    deposit: depositInfo.deposit,
-    depositAmount: depositInfo.deposit,
-    depositTier: depositInfo.tier,
-    depositPriceId: DEPOSIT_PRICE_IDS[depositTierKey] || DEPOSIT_PRICE_IDS.small,
+    deposit: canProvideEstimate ? depositInfo.deposit : 0,
+    depositAmount: canProvideEstimate ? depositInfo.deposit : 0,
+    depositTier: canProvideEstimate ? depositInfo.tier : '',
+    depositPriceId: canProvideEstimate ? (DEPOSIT_PRICE_IDS[depositTierKey] || DEPOSIT_PRICE_IDS.small) : '',
   }
 }
 
 export async function POST(request: NextRequest) {
-  const auth = requireAuth(request);
-  if (auth instanceof NextResponse) return auth;
-
   try {
     const { photoBase64, customerDescription, customerPhone } = await request.json()
     const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')
