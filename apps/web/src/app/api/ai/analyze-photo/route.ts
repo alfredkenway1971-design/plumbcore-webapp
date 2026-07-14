@@ -11,7 +11,7 @@ const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
 const TAX_RATE = 0.085
 const CONFIDENCE_THRESHOLD = 70
-const MIN_CONFIDENCE_FOR_ESTIMATE = 90
+const MIN_CONFIDENCE_FOR_ESTIMATE = 80
 
 // Severity-based pricing tiers
 const SEVERITY_PRICING: Record<string, { laborRate: number; travelFee: number; validityDays: number; label: string }> = {
