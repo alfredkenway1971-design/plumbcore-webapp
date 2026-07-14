@@ -237,70 +237,197 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
     );
   }
   
-  const sevColors: Record<string,string> = { low:'bg-emerald-50 text-emerald-700 border-emerald-200', moderate:'bg-amber-50 text-amber-700 border-amber-200', high:'bg-orange-50 text-orange-700 border-orange-200', emergency:'bg-red-50 text-red-700 border-red-200' };
+  const severity = result.severity || 'moderate';
+  const isEmergency = severity === 'emergency' || severity === 'high';
+  const isUrgent = severity === 'urgent';
+  const severityLabel = result.severityLabel || (isEmergency ? 'Emergency' : isUrgent ? 'Urgent' : 'Standard');
+  const validityDays = result.validityDays || (isEmergency ? 1 : isUrgent ? 2 : 7);
+  const travelFee = result.travelFee || (isEmergency ? 350 : 130);
+  const laborRate = result.laborRate || 130;
+  
+  const sevColors: Record<string,string> = { 
+    low:'bg-emerald-50 text-emerald-700 border-emerald-200', 
+    moderate:'bg-amber-50 text-amber-700 border-amber-200', 
+    urgent:'bg-orange-50 text-orange-700 border-orange-200',
+    high:'bg-red-50 text-red-700 border-red-200',
+    emergency:'bg-red-50 text-red-700 border-red-200' 
+  };
+  
+  const sevCardTint = isEmergency ? 'ring-red-200 bg-red-50/30' : isUrgent ? 'ring-orange-100 bg-orange-50/20' : 'ring-black/5';
+  const sevTopBorder = isEmergency ? 'border-t-4 border-t-red-500' : isUrgent ? 'border-t-4 border-t-orange-400' : '';
+  
+  const ctaCopy = isEmergency ? 'Get Help Now' : isUrgent ? 'Book Urgent Appointment' : 'Book Appointment';
+  const ctaSubtext = isEmergency ? 'A plumber is standing by for emergencies' : isUrgent ? 'Priority scheduling available' : 'Secure your appointment';
+  
   const f = (n: number) => `$${n.toFixed(2)}`;
+  
+  // Collapsible parts
+  const [showAllParts, setShowAllParts] = useState(false);
+  const parts = (result.parts?.length > 0 ? result.parts : [{name:'Diagnostic assessment', qty:1, unitPrice:49, total:49}]);
+  const displayParts = showAllParts ? parts : parts.slice(0, 2);
+  
+  // Countdown timer
+  const [timeLeft, setTimeLeft] = useState(45 * 60); // 45 min in seconds
+  useEffect(() => {
+    if (isEmergency) {
+      const interval = setInterval(() => {
+        setTimeLeft(prev => Math.max(0, prev - 1));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isEmergency]);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
-        <p className="text-sm text-slate-400">{t('quote.resultValid')}</p>
+        <p className="text-sm text-slate-400">Valid for {validityDays} day{validityDays > 1 ? 's' : ''} — price may vary based on on-site inspection</p>
       </div>
-      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white text-center shadow-lg">
-        <p className="text-xs font-semibold text-blue-100 uppercase tracking-wider mb-1">{t('quote.resultTotalLabel')}</p>
-        <p className="text-4xl sm:text-5xl font-bold">{f(result.totalPrice)}</p>
-        <p className="text-xs text-blue-200 mt-2">{t('quote.resultIncludes')}</p>
-      </div>
-      <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        {/* Diagnosis */}
-        <div className="flex items-start justify-between pb-4 mb-4 border-b border-slate-100">
-          <div className="flex-1">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p>
-            <p className="text-sm font-medium text-slate-900 leading-relaxed">{result.diagnosis}</p>
-          </div>
-          <Badge className={`ml-3 text-xs font-medium px-3 py-1 shrink-0 ${result.confidence >= 90 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : result.confidence >= 70 ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-red-50 text-red-700 border-red-200'}`}>{result.confidence}% match</Badge>
-        </div>
-        {/* Severity */}
-        <div className="flex items-center justify-between py-3 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.severity')}</span>
-          <Badge className={`text-xs font-medium px-3 py-1 ${sevColors[result.severity] || sevColors.low}`}>{result.severity.charAt(0).toUpperCase() + result.severity.slice(1)}</Badge>
-        </div>
-        {/* Labor */}
-        <div className="flex items-center justify-between py-3 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.labor')} <span className="font-normal text-slate-400 ml-1">{result.estimatedHours}h @ ${result.laborRate}/hr</span></span>
-          <span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span>
-        </div>
-        {/* Parts — detailed breakdown */}
-        <div className="py-3 border-b border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('quote.parts')}</p>
-          {(result.parts?.length > 0 ? result.parts : [{name:'Diagnostic assessment', qty:1, unitPrice:49, total:49}]).map((p: any, i: number) => (
-            <div key={i} className="grid grid-cols-[2rem_1fr_4rem_4rem] gap-x-2 text-sm py-1.5 px-1 rounded-lg hover:bg-slate-50">
-              <span className="text-slate-400 text-center">{p.qty}x</span>
-              <span className="text-slate-700">{p.name}</span>
-              <span className="text-right text-slate-500">{f(p.unitPrice)}</span>
-              <span className="text-right font-medium text-slate-900">{f(p.total)}</span>
+
+      {/* Severity Banner + Countdown for Emergency */}
+      {isEmergency && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+            <div>
+              <p className="text-sm font-bold text-red-800">Emergency Response</p>
+              <p className="text-xs text-red-600">Emergency rate applied · Priority dispatch</p>
             </div>
-          ))}
+          </div>
+          <div className="text-right">
+            <p className="text-lg font-bold text-red-700">{minutes}:{seconds.toString().padStart(2, '0')}</p>
+            <p className="text-[10px] text-red-500">min remaining</p>
+          </div>
         </div>
-        {/* Travel Fee */}
-        <div className="flex items-center justify-between py-3 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.travelFee')}</span>
-          <span className="text-sm font-semibold text-slate-900">{f(result.travelFee || 150)}</span>
+      )}
+      
+      {isUrgent && (
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+            <div>
+              <p className="text-sm font-bold text-orange-800">Priority Service</p>
+              <p className="text-xs text-orange-600">48-hour scheduling · Urgent rate applies</p>
+            </div>
+          </div>
+          <div className="text-xs text-orange-600 font-medium">Available now</div>
         </div>
-        {/* Tax */}
-        <div className="flex items-center justify-between py-3 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('quote.tax')} <span className="font-normal text-slate-400 ml-1">{(result.taxRate||0.085)*100}%</span></span>
-          <span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span>
+      )}
+
+      {/* Plumber Card (placeholder for when routing is live) */}
+      <div className="bg-white rounded-2xl ring-1 ring-blue-100 p-4 flex items-center gap-3 shadow-sm">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-xl font-bold text-blue-500 shrink-0">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-slate-900">Matching you with a plumber...</p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="flex gap-0.5">
+              {[1,2,3,4,5].map(i => <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}
+            </span>
+            <span className="text-xs text-slate-400">4.9 avg rating</span>
+            <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded font-medium">Available now</span>
+          </div>
+        </div>
+        <div className="text-xs text-slate-400 animate-pulse">Finding...</div>
+      </div>
+
+      {/* Estimate Breakdown Card */}
+      <div className={`bg-white rounded-2xl ring-1 ${sevCardTint} p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] ${sevTopBorder}`}>
+        {/* Diagnosis — Hero */}
+        <div className="pb-5 mb-4 border-b border-slate-100">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h3 className="text-base font-bold text-slate-900">AI Diagnosis</h3>
+            <div className="flex items-center gap-1.5 shrink-0">
+              {isEmergency && <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>}
+              <Badge className={`text-xs font-medium px-3 py-1 ${sevColors[severity] || sevColors.low}`}>
+                {severityLabel}
+              </Badge>
+            </div>
+          </div>
+          <p className="text-sm text-slate-700 leading-relaxed font-medium">{result.diagnosis}</p>
+          <div className="flex items-center gap-2 mt-3">
+            <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">AI Confidence: High</span>
+            <span className="text-[11px] text-slate-400">{result.confidence}% match to 847 similar repairs</span>
+          </div>
+        </div>
+
+        {/* Cost Breakdown */}
+        <div className="space-y-0">
+          {/* Labor */}
+          <div className="flex items-center justify-between py-3 border-b border-slate-100">
+            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66 5.66a2 2 0 11-2.83-2.83l5.66-5.66M14.83 5.17l-2.83 2.83 5.66 5.66 2.83-2.83M18.36 2.14a2 2 0 112.83 2.83L14.83 11.4l-2.83-2.83 6.36-6.43z" /></svg>
+              {t('quote.labor')} 
+              <span className="font-normal text-slate-400 ml-0.5">{result.estimatedHours}h @ ${laborRate}/hr</span>
+            </span>
+            <span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span>
+          </div>
+          
+          {/* Parts — collapsible */}
+          <div className="py-3 border-b border-slate-100">
+            <button onClick={() => setShowAllParts(!showAllParts)} className="flex items-center justify-between w-full text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+              <span className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                {t('quote.parts')} 
+                <span className="font-normal text-slate-400">({parts.length} items)</span>
+              </span>
+              <svg className={`w-4 h-4 text-slate-400 transition-transform ${showAllParts ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+            </button>
+            <div className={`space-y-1.5 transition-all ${showAllParts ? '' : ''}`}>
+              {displayParts.map((p: any, i: number) => (
+                <div key={i} className="grid grid-cols-[2rem_1fr_3.5rem_3.5rem] gap-x-2 text-sm py-1.5 px-2 rounded-lg hover:bg-slate-50 items-center">
+                  <span className="text-slate-400 text-center text-xs">{p.qty}x</span>
+                  <span className="text-slate-700 text-sm truncate">{p.name}</span>
+                  <span className="text-right text-slate-500 text-xs">{f(p.unitPrice)}</span>
+                  <span className="text-right font-medium text-slate-900 text-sm">{f(p.total)}</span>
+                </div>
+              ))}
+              {!showAllParts && parts.length > 2 && (
+                <button onClick={() => setShowAllParts(true)} className="text-xs text-blue-600 font-medium hover:text-blue-700 mt-1 ml-1">
+                  + View {parts.length - 2} more parts
+                </button>
+              )}
+            </div>
+          </div>
+          
+          {/* Travel Fee */}
+          <div className="flex items-center justify-between py-3 border-b border-slate-100">
+            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+              {t('quote.travelFee')}
+            </span>
+            <span className="text-sm font-semibold text-slate-900">{f(travelFee)}</span>
+          </div>
+          
+          {/* Tax */}
+          <div className="flex items-center justify-between py-3 border-b border-slate-100">
+            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+              {t('quote.tax')} 
+              <span className="font-normal text-slate-400 ml-0.5">{(result.taxRate||0.085)*100}%</span>
+            </span>
+            <span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span>
+          </div>
+        </div>
+        
         {/* Total */}
-        <div className="flex items-center justify-between pt-4">
+        <div className="flex items-center justify-between pt-4 mt-1">
           <span className="text-base font-bold text-slate-900">{t('quote.total')}</span>
           <span className="text-2xl font-bold text-blue-600">{f(result.totalPrice)}</span>
         </div>
       </div>
-      {/* Stripe Deposit Payment */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white text-center space-y-4 shadow-lg">
-        <h3 className="text-lg font-semibold">{t('quote.bookTitle')}</h3>
-        <p className="text-sm text-slate-400">{t('quote.bookDesc')}</p>
+
+      {/* Stripe Deposit Payment — Sticky on mobile */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white space-y-4 shadow-lg">
+        <h3 className="text-lg font-semibold">{ctaCopy}</h3>
+        <p className="text-sm text-slate-400">{ctaSubtext}</p>
         
         {/* Refund Guarantee Banner */}
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-center">
@@ -319,17 +446,20 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
         </div>
         
-        <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm">
-          {stripeLoading ? 'Redirecting to payment...' : t('quote.bookButton')}
+        <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-bold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-base">
+          {stripeLoading ? 'Redirecting to payment...' : `${ctaCopy} — ${depositDollars(result.depositAmount)} to Lock In`}
         </button>
         
-        <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
+        <p className="text-xs text-slate-500 text-center">{t('quote.bookRefundable')}</p>
       </div>
+      
+      {/* Trust Badges */}
       <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
         <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.securePayment')}</span>
         <span className="flex items-center gap-1.5"><RefreshCcw className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.fullyRefundable')}</span>
         <span className="flex items-center gap-1.5"><Wrench className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.licensedInsured')}</span>
       </div>
+      
       <div className="text-center"><button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">{t('quote.startOver')}</button></div>
     </div>
   );

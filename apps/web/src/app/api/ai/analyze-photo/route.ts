@@ -9,11 +9,18 @@ import { DEPOSIT_PRICE_IDS } from '@/lib/feature-gates'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
-const LABOR_RATE = 120
 const TAX_RATE = 0.085
-const TRAVEL_FEE = 150 // flat travel/service fee charged by all plumbers
 const CONFIDENCE_THRESHOLD = 70
 const MIN_CONFIDENCE_FOR_ESTIMATE = 90
+
+// Severity-based pricing tiers
+const SEVERITY_PRICING: Record<string, { laborRate: number; travelFee: number; validityDays: number; label: string }> = {
+  low:      { laborRate: 130, travelFee: 130, validityDays: 7,  label: 'Standard' },
+  moderate: { laborRate: 130, travelFee: 130, validityDays: 7,  label: 'Standard' },
+  urgent:   { laborRate: 180, travelFee: 130, validityDays: 2,  label: 'Urgent' },
+  high:     { laborRate: 180, travelFee: 130, validityDays: 2,  label: 'Urgent' },
+  emergency:{ laborRate: 250, travelFee: 350, validityDays: 1,  label: 'Emergency' },
+}
 
 const AI_SYSTEM_PROMPT = `You are a master plumber with 30 years of experience. Analyze the photo of the plumbing issue and the customer's description, then provide a detailed professional estimate. Return ONLY valid JSON, no other text.
 
@@ -114,7 +121,17 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
   }
 }
 
-function buildResult(parsed: any, travelFee: number = 150) {
+function buildResult(parsed: any, severity: string = 'moderate', urgency: string = 'routine') {
+  // Determine pricing tier from severity (AI diagnosis) or urgency (user selection)
+  const pricingTier = urgency === 'emergency' ? 'emergency' : 
+                       urgency === 'urgent' ? 'urgent' : 
+                       (severity === 'emergency' || severity === 'high') ? 'emergency' :
+                       (severity === 'urgent') ? 'urgent' : 'moderate'
+  const pricing = SEVERITY_PRICING[pricingTier] || SEVERITY_PRICING.moderate
+  const laborRate = pricing.laborRate
+  const travelFee = pricing.travelFee
+  const validityDays = pricing.validityDays
+  const severityLabel = pricing.label
   let parts = (parsed.parts || []).map((p: any) => ({
     name: p.name || 'Part',
     qty: p.qty || 1,
@@ -130,7 +147,7 @@ function buildResult(parsed: any, travelFee: number = 150) {
   }
   const partsTotal = Math.round(parts.reduce((s: number, p: any) => s + p.total, 0) * 100) / 100
   const estimatedHours = parsed.estimatedHours || 1.0
-  const laborCost = Math.round(estimatedHours * LABOR_RATE * 100) / 100
+  const laborCost = Math.round(estimatedHours * laborRate * 100) / 100
   const travelFeeAmount = travelFee
   const subtotal = laborCost + partsTotal + travelFeeAmount
   const tax = Math.round(subtotal * TAX_RATE * 100) / 100
@@ -151,10 +168,12 @@ function buildResult(parsed: any, travelFee: number = 150) {
     canProvideEstimate,
     diagnosis: parsed.diagnosis || 'Plumbing issue detected',
     severity: parsed.severity || 'moderate',
+    severityLabel,
+    validityDays,
     estimatedHours: canProvideEstimate ? estimatedHours : 0,
-    laborRate: LABOR_RATE,
+    laborRate,
     laborCost: canProvideEstimate ? laborCost : 0,
-    travelFee: canProvideEstimate ? travelFee : 0,
+    travelFee: canProvideEstimate ? travelFeeAmount : 0,
     parts: canProvideEstimate ? parts : [],
     partsTotal: canProvideEstimate ? partsTotal : 0,
     tax: canProvideEstimate ? tax : 0,
@@ -171,8 +190,6 @@ function buildResult(parsed: any, travelFee: number = 150) {
 export async function POST(request: NextRequest) {
   try {
     const { photoBase64, customerDescription, customerPhone, urgency } = await request.json()
-    // Travel fee: $350 for urgent/emergency, $150 for routine/default
-    const effectiveTravelFee = (urgency === 'urgent' || urgency === 'emergency') ? 350 : 150
     const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')
 
     const cached = responseCache.get(cacheKey)
@@ -206,7 +223,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Analysis failed' }, { status: 500 })
     }
 
-    const result = buildResult(finalParsed, effectiveTravelFee)
+    const result = buildResult(finalParsed, finalParsed?.severity || 'moderate', urgency || 'routine')
     responseCache.set(cacheKey, { data: result, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
