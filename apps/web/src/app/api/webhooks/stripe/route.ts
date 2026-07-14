@@ -160,7 +160,7 @@ export async function POST(req: Request) {
                     deposit_charged: depositCharged / 100,
                     deposit_tier: depositTier,
                     estimated_job_value: totalEstimate,
-                    status: 'pending',
+                    status: 'matching',
                     created_at: now.toISOString(),
                     expires_at: expiresAt.toISOString(),
                   })
@@ -171,12 +171,13 @@ export async function POST(req: Request) {
                   console.error('  → Failed to create lead:', leadErr.message);
                 } else if (lead) {
                   console.log(`  → Lead created: ${lead.id} — triggering routing`);
-                  // Trigger routing asynchronously
-                  fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/api/leads/route`, {
+                  // Trigger routing asynchronously (non-blocking)
+                  const routingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/api/leads/route`;
+                  fetch(routingUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ leadId: lead.id }),
-                  }).catch(() => {});
+                  }).catch((err: any) => console.error('  → Routing trigger failed:', err.message));
                 }
               } catch (err: any) {
                 console.error('  → Lead creation failed:', err.message);
