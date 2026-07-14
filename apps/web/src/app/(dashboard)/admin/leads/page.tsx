@@ -8,20 +8,23 @@ interface Lead {
   customer: string;
   photo: string;
   estimate: number;
+  depositAmount: number;
+  depositTier: string;
   location: string;
   depositPaid: boolean;
-  status: 'unassigned' | 'assigned' | 'completed' | 'spam';
+  status: 'matching' | 'assigned' | 'en_route' | 'arrived' | 'complete' | 'unfulfilled' | 'refunded';
   assignedPlumber: string;
   date: string;
+  timeToMatch?: string;
+  confidence?: number;
 }
 
 const mockLeads: Lead[] = [
-  { id: 'LD-001', customer: 'John Smith', photo: '📸', estimate: 850, location: 'Austin, TX', depositPaid: true, status: 'unassigned', assignedPlumber: '', date: '2026-07-08' },
-  { id: 'LD-002', customer: 'Maria Garcia', photo: '📸', estimate: 1200, location: 'Round Rock, TX', depositPaid: false, status: 'unassigned', assignedPlumber: '', date: '2026-07-08' },
-  { id: 'LD-003', customer: 'David Chen', photo: '📸', estimate: 450, location: 'Cedar Park, TX', depositPaid: true, status: 'assigned', assignedPlumber: 'James Wilson', date: '2026-07-07' },
-  { id: 'LD-004', customer: 'Sarah Johnson', photo: '📸', estimate: 2200, location: 'Austin, TX', depositPaid: true, status: 'completed', assignedPlumber: 'Mike Torres', date: '2026-07-06' },
-  { id: 'LD-005', customer: 'Robert Davis', photo: '📸', estimate: 600, location: 'Pflugerville, TX', depositPaid: false, status: 'unassigned', assignedPlumber: '', date: '2026-07-05' },
-  { id: 'LD-006', customer: 'Emily Wilson', photo: '📸', estimate: 1500, location: 'Austin, TX', depositPaid: true, status: 'assigned', assignedPlumber: 'Sarah Blake', date: '2026-07-05' },
+  { id: 'LD-001', customer: 'John Smith', photo: '📸', estimate: 850, depositAmount: 49, depositTier: 'small', location: 'Austin, TX', depositPaid: true, status: 'matching', assignedPlumber: '', date: '2026-07-14', confidence: 95 },
+  { id: 'LD-002', customer: 'Maria Garcia', photo: '📸', estimate: 1200, depositAmount: 99, depositTier: 'medium', location: 'Round Rock, TX', depositPaid: true, status: 'assigned', assignedPlumber: 'James Wilson', date: '2026-07-14', timeToMatch: '3m 12s' },
+  { id: 'LD-003', customer: 'David Chen', photo: '📸', estimate: 450, depositAmount: 49, depositTier: 'small', location: 'Cedar Park, TX', depositPaid: true, status: 'assigned', assignedPlumber: 'Sarah Blake', date: '2026-07-13', timeToMatch: '1m 45s' },
+  { id: 'LD-004', customer: 'Sarah Johnson', photo: '📸', estimate: 2200, depositAmount: 199, depositTier: 'premium', location: 'Austin, TX', depositPaid: true, status: 'complete', assignedPlumber: 'Mike Torres', date: '2026-07-12', timeToMatch: '2m 30s' },
+  { id: 'LD-005', customer: 'Robert Davis', photo: '📸', estimate: 600, depositAmount: 49, depositTier: 'small', location: 'Pflugerville, TX', depositPaid: true, status: 'unfulfilled', assignedPlumber: '', date: '2026-07-11' },
 ];
 
 const plumbers = ['James Wilson', 'Mike Torres', 'Sarah Blake'];
@@ -32,8 +35,8 @@ export default function LeadsMarketplacePage() {
   const [error, setError] = useState<string | null>(null);
 
   const filtered = filter === 'all' ? leads : leads.filter(l => l.status === filter);
-  const revenue = leads.filter(l => l.status !== 'spam').reduce((s, l) => s + l.estimate, 0);
-  const unassigned = leads.filter(l => l.status === 'unassigned').length;
+  const revenue = leads.filter(l => l.status !== 'unfulfilled' && l.status !== 'refunded').reduce((s, l) => s + l.estimate, 0);
+  const matching = leads.filter(l => l.status === 'matching').length;
 
   const assignLead = (id: string, plumber: string) => {
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status: 'assigned' as const, assignedPlumber: plumber } : l));
@@ -59,8 +62,8 @@ export default function LeadsMarketplacePage() {
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
-        {['all', 'unassigned', 'assigned', 'completed', 'spam'].map(f => (
-          <button key={f} onClick={() => setFilter(f)} className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${filter === f ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'}`}>{f.charAt(0).toUpperCase() + f.slice(1)}</button>
+        {['all', 'matching', 'assigned', 'en_route', 'arrived', 'complete', 'unfulfilled', 'refunded'].map(f => (
+          <button key={f} onClick={() => setFilter(f)} className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${filter === f ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'}`}>{f.charAt(0).toUpperCase() + f.slice(1).replace('_', ' ')}</button>
         ))}
       </div>
 
@@ -84,19 +87,33 @@ export default function LeadsMarketplacePage() {
                 <td className="px-4 py-3 text-lg">{lead.photo}</td>
                 <td className="px-4 py-3 text-slate-700">${lead.estimate.toLocaleString()}</td>
                 <td className="px-4 py-3 text-slate-500 text-xs">{lead.location}</td>
-                <td className="px-4 py-3">{lead.depositPaid ? <span className="text-emerald-600 font-medium">✅ Paid</span> : <span className="text-slate-600">—</span>}</td>
-                <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${lead.status === 'completed' ? 'bg-green-50 text-green-700' : lead.status === 'assigned' ? 'bg-blue-50 text-blue-600' : lead.status === 'spam' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-600'}`}>{lead.status}</span></td>
+                <td className="px-4 py-3">
+                  <span className="font-medium text-slate-900">${lead.depositAmount}</span>
+                  <span className="text-[10px] text-slate-400 ml-1 uppercase">{lead.depositTier}</span>
+                </td>
+                <td className="px-4 py-3">
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                    lead.status === 'complete' ? 'bg-green-50 text-green-700' : 
+                    lead.status === 'assigned' ? 'bg-blue-50 text-blue-600' : 
+                    lead.status === 'matching' ? 'bg-purple-50 text-purple-600 animate-pulse' : 
+                    lead.status === 'en_route' ? 'bg-cyan-50 text-cyan-600' : 
+                    lead.status === 'arrived' ? 'bg-emerald-50 text-emerald-600' : 
+                    lead.status === 'unfulfilled' ? 'bg-red-50 text-red-700' : 
+                    lead.status === 'refunded' ? 'bg-orange-50 text-orange-600' : 
+                    'bg-amber-50 text-amber-600'
+                  }`}>
+                    {lead.status === 'en_route' ? 'En Route' : lead.status.charAt(0).toUpperCase() + lead.status.slice(1).replace('_', ' ')}
+                  </span>
+                  {lead.timeToMatch && <span className="block text-[10px] text-slate-400 mt-0.5">Matched in {lead.timeToMatch}</span>}
+                </td>
                 <td className="px-4 py-3 text-sm text-slate-400">{lead.assignedPlumber || <span className="text-amber-500">—</span>}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-1.5">
-                    {lead.status === 'unassigned' && (
-                      <select onChange={(e) => { if (e.target.value) assignLead(lead.id, e.target.value); }} value="" className="text-xs rounded border border-slate-200 px-1.5 py-1 outline-none w-28 bg-white text-slate-700">
-                        <option value="">Assign to...</option>
-                        {plumbers.map(p => <option key={p} value={p}>{p}</option>)}
-                      </select>
+                    {lead.status === 'matching' && (
+                      <button className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded hover:bg-blue-50">Assign</button>
                     )}
-                    {lead.status !== 'spam' && lead.status !== 'completed' && (
-                      <button onClick={() => rejectLead(lead.id)} className="text-xs text-red-600 hover:text-red-700 px-1.5 py-1">✕</button>
+                    {lead.status === 'unfulfilled' && (
+                      <span className="text-xs text-red-500 font-medium">⚠️ No plumber found</span>
                     )}
                   </div>
                 </td>

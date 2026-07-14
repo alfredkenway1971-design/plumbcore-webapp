@@ -1,99 +1,137 @@
+import { NextResponse } from 'next/server';
+
 /**
  * POST /api/leads/expire
- * Cron endpoint: marks expired leads as "expired" and auto-refunds via Stripe
- * 
- * Run via cron: curl -X POST https://plumbcore-ai.vercel.app/api/leads/expire
+ *
+ * Called when the accept timer expires (via cron/webhook).
+ * Routes the lead to the next plumber, or initiates expand/refund.
+ *
+ * Body: { leadId: string }
  */
-
-import { NextResponse } from 'next/server';
-import { getAdminClient } from '@/lib/supabase-admin';
-import { sendEmail } from '@/lib/email';
-
-const stripeKey = process.env.STRIPE_SECRET_KEY || '';
-
 export async function POST(req: Request) {
   try {
-    // Protect with cron secret
-    const authHeader = req.headers.get('authorization');
-    const expectedKey = process.env.CRON_SECRET || '';
-    if (authHeader !== `Bearer ${expectedKey}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { leadId } = await req.json();
+
+    if (!leadId) {
+      return NextResponse.json({ error: 'Missing leadId' }, { status: 400 });
     }
 
+    const { handlePlumberDecline, getRoutingSession, findBestPlumbers, notifyPlumber, processRefund } =
+      await import('@/lib/lead-routing');
+
+    const { getAdminClient } = await import('@/lib/supabase-admin');
     const admin = getAdminClient();
-    if (!admin) return NextResponse.json({ message: 'DB not configured' });
 
-    // Find all pending leads that have expired
-    const { data: expiredLeads } = await (admin as any)
-      .from('leads')
-      .select('*')
-      .eq('status', 'pending')
-      .lt('expires_at', new Date().toISOString());
+    // Check routing session
+    const session = getRoutingSession(leadId);
 
-    if (!expiredLeads || expiredLeads.length === 0) {
-      return NextResponse.json({ message: 'No expired leads', expired: 0 });
+    if (!session) {
+      // No active session — check if lead exists in DB
+      if (admin) {
+        const { data: lead } = await (admin as any)
+          .from('leads')
+          .select('status')
+          .eq('id', leadId)
+          .single();
+
+        if (!lead || lead.status === 'refunded' || lead.status === 'assigned') {
+          return NextResponse.json({ status: 'already_resolved', leadStatus: lead?.status });
+        }
+      }
+
+      return NextResponse.json({ error: 'No routing session found for lead' }, { status: 404 });
     }
 
-    const Stripe = (await import('stripe')).default;
-    const stripe = new Stripe(stripeKey, { apiVersion: '2026-06-24.dahlia' as any });
+    if (session.status === 'assigned' || session.status === 'refunded') {
+      return NextResponse.json({ status: session.status, message: 'Already resolved' });
+    }
 
-    let refunded = 0;
+    // Mark the currently notified plumber as "timed out" (treated as decline)
+    const currentPlumber = session.scoredPlumbers[session.currentIndex];
+    if (currentPlumber && !session.declinedPlumbers.includes(currentPlumber.plumberId)) {
+      session.declinedPlumbers.push(currentPlumber.plumberId);
+    }
 
-    for (const lead of expiredLeads) {
-      try {
-        // Mark as expired
-        await (admin as any).from('leads').update({ status: 'expired' }).eq('id', lead.id);
-        console.log(`⏰ Lead ${lead.id} expired`);
+    session.lastActionAt = Date.now();
 
-        // Auto-refund via Stripe
-        if (lead.stripe_session_id && lead.deposit_paid > 0) {
-          try {
-            const session = await stripe.checkout.sessions.retrieve(lead.stripe_session_id);
-            const paymentIntentId = session.payment_intent as string;
+    // Check if we've exhausted all plumbers at current radius
+    const available = session.scoredPlumbers.filter(
+      (p) => !session.declinedPlumbers.includes(p.plumberId),
+    );
 
-            if (paymentIntentId) {
-              await stripe.refunds.create({ payment_intent: paymentIntentId });
-              await (admin as any).from('leads').update({ status: 'refunded' }).eq('id', lead.id);
-              console.log(`💰 Refunded $${lead.deposit_paid} for lead ${lead.id}`);
-              refunded++;
-            }
-          } catch (stripeErr: any) {
-            console.error(`  → Stripe refund failed for ${lead.id}:`, stripeErr.message);
+    if (available.length === 0) {
+      if (session.radiusMiles < 50) {
+        // Expand to 50 miles
+        console.log(`[Expire] Expanding radius for lead ${leadId} to 50 miles`);
+        session.radiusMiles = 50;
+
+        if (admin) {
+          const leadData = {
+            ...session.lead,
+          };
+          const expandedPlumbers = await findBestPlumbers(leadData, admin, 50);
+
+          if (expandedPlumbers.length > 0) {
+            session.scoredPlumbers = expandedPlumbers;
+            session.currentIndex = 0;
+            session.status = 'expanded';
+
+            await notifyPlumber(expandedPlumbers[0], session.lead);
+            session.notifiedPlumbers.push(expandedPlumbers[0].plumberId);
+
+            return NextResponse.json({
+              status: 'expanded',
+              radiusMiles: 50,
+              nextPlumber: expandedPlumbers[0].companyName,
+            });
           }
         }
 
-        // Notify customer
-        if (lead.customer_email) {
-          await sendEmail({
-            to: lead.customer_email,
-            subject: 'Your PlumbCore AI estimate — next steps',
-            html: `
-              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto;">
-                <div style="background: linear-gradient(135deg, #64748B, #475569); padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <h1 style="color: white; margin: 0; font-size: 20px;">Estimate Update</h1>
-                </div>
-                <div style="padding: 24px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
-                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi ${lead.customer_name},</p>
-                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">Unfortunately, no PlumbCore technician was available in your area within the expected timeframe. Your deposit has been refunded and should appear in your account within 5-10 business days.</p>
-                  <p style="color: #334155; font-size: 16px; line-height: 1.6;">We've saved your estimate and will notify you when a technician becomes available. You can also call us at <strong>(555) 123-4567</strong> for immediate assistance.</p>
-                </div>
-              </div>
-            `,
-          });
-          console.log(`  → Notified ${lead.customer_email} of expiry`);
-        }
-      } catch (err: any) {
-        console.error(`Failed to expire lead ${lead.id}:`, err.message);
+        // Still no plumbers — refund
+        console.log(`[Expire] No plumbers at expanded radius for ${leadId} — refunding`);
+        const refundResult = await processRefund(leadId, admin);
+        return NextResponse.json(refundResult);
       }
+
+      // Already at max radius — refund
+      console.log(`[Expire] All plumbers exhausted for ${leadId} — refunding`);
+      const refundResult = await processRefund(leadId, admin);
+      return NextResponse.json(refundResult);
     }
 
+    // Route to next available plumber
+    const nextPlumber = available[0];
+    session.currentIndex = session.scoredPlumbers.indexOf(nextPlumber);
+
+    await notifyPlumber(nextPlumber, session.lead);
+    session.notifiedPlumbers.push(nextPlumber.plumberId);
+
+    // Update lead in DB
+    if (admin) {
+      await (admin as any)
+        .from('leads')
+        .update({
+          last_notified_plumber_id: nextPlumber.plumberId,
+          notification_count: (session.notifiedPlumbers.length || 0),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', leadId);
+    }
+
+    console.log(`[Expire] Routed ${leadId} to next plumber: ${nextPlumber.companyName}`);
+
     return NextResponse.json({
-      message: `Expired ${expiredLeads.length} leads`,
-      expired: expiredLeads.length,
-      refunded,
+      status: 'routing',
+      nextPlumber: {
+        plumberId: nextPlumber.plumberId,
+        companyName: nextPlumber.companyName,
+        score: nextPlumber.score,
+      },
+      notifiedCount: session.notifiedPlumbers.length,
+      remainingCount: available.length - 1,
     });
   } catch (err: any) {
-    console.error('Expire endpoint error:', err);
+    console.error('[/api/leads/expire] Error:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

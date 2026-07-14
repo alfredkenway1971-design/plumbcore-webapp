@@ -231,27 +231,132 @@ interface DepositEmailParams {
   totalEstimate: number;
   amountPaid: number;
   companySlug: string;
+  leadId?: string;
+  customerCity?: string;
+  confidence?: number;
 }
 
-export function depositConfirmationEmail({ customerName, diagnosis, totalEstimate, amountPaid }: DepositEmailParams): { subject: string; html: string } {
+export function depositConfirmationEmail({ customerName, diagnosis, totalEstimate, amountPaid, leadId, customerCity, confidence }: DepositEmailParams): { subject: string; html: string } {
   const balance = totalEstimate - amountPaid;
+  const trackingUrl = leadId
+    ? `https://plumbcore-ai.vercel.app/track/${leadId}`
+    : 'https://plumbcore-ai.vercel.app/track';
+  const city = customerCity || 'your area';
   return {
-    subject: `✅ Deposit confirmed — Your PlumbCore AI estimate`,
+    subject: `Your plumbing estimate is confirmed — we're finding your plumber now`,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #3B82F6, #06B6D4); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
-          <h1 style="color: white; margin: 0; font-size: 22px;">Deposit Confirmed! 🎉</h1>
+          <h1 style="color: white; margin: 0; font-size: 22px;">Estimate Confirmed! 🎉</h1>
+          <p style="color: rgba(255,255,255,0.85); font-size: 14px; margin-top: 8px;">We're finding you the best plumber in your area</p>
         </div>
         <div style="padding: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
           <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi ${customerName},</p>
-          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Your <strong>$${amountPaid.toFixed(2)} deposit</strong> has been received. A PlumbCore technician will contact you shortly to schedule your service.</p>
-          <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin: 16px 0;">
-            <p style="margin: 0 0 8px; color: #475569; font-size: 14px;"><strong>Diagnosis:</strong> ${diagnosis}</p>
-            <p style="margin: 0 0 8px; color: #475569; font-size: 14px;"><strong>Estimate Total:</strong> $${totalEstimate.toFixed(2)}</p>
-            <p style="margin: 0 0 8px; color: #475569; font-size: 14px;"><strong>Deposit Paid:</strong> $${amountPaid.toFixed(2)}</p>
-            <p style="margin: 0; color: #475569; font-size: 14px;"><strong>Remaining Balance:</strong> $${balance.toFixed(2)}</p>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Your <strong>$${amountPaid.toFixed(2)} deposit</strong> has been received. We're now matching you with a licensed plumber in <strong>${city}</strong>.</p>
+
+          <!-- Quote Details -->
+          <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin: 16px 0; border: 1px solid #e2e8f0;">
+            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+              <div style="width: 64px; height: 64px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="font-size: 24px;">📸</span>
+              </div>
+              <div>
+                <p style="margin: 0 0 4px; color: #475569; font-size: 14px;"><strong>Issue:</strong> ${diagnosis}</p>
+                <p style="margin: 0; color: #475569; font-size: 14px;"><strong>Estimated Price:</strong> $${totalEstimate.toFixed(2)}</p>
+                ${confidence ? `<p style="margin: 4px 0 0; color: #475569; font-size: 14px;"><strong>AI Confidence:</strong> ${confidence}%</p>` : ''}
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p style="margin: 0; font-size: 13px; color: #475569;"><strong>Deposit Paid:</strong> $${amountPaid.toFixed(2)}</p>
+                <p style="margin: 2px 0 0; font-size: 13px; color: #475569;"><strong>Balance Due:</strong> $${balance.toFixed(2)}</p>
+              </div>
+              <div style="text-align: right;">
+                <p style="margin: 0; font-size: 11px; color: #94a3b8;">Photo placeholder</p>
+              </div>
+            </div>
           </div>
-          <p style="color: #94a3b8; font-size: 13px;">The deposit is fully refundable and will be deducted from your final bill. If you have any questions, reply to this email.</p>
+
+          <!-- Matching Status -->
+          <div style="background: #eff6ff; border-radius: 12px; padding: 16px; margin: 16px 0; border: 1px solid #bfdbfe; text-align: center;">
+            <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+            <p style="margin: 0 0 4px; color: #1e40af; font-size: 15px; font-weight: 600;">Matching you with a licensed plumber in ${city}...</p>
+            <p style="margin: 0; color: #3b82f6; font-size: 13px;">We'll notify you as soon as we find the right match</p>
+          </div>
+
+          <!-- Refund Policy -->
+          <div style="background: #f0fdf4; border-radius: 8px; padding: 12px; margin: 16px 0; border: 1px solid #bbf7d0;">
+            <p style="margin: 0; color: #166534; font-size: 13px;">🔒 <strong>48-Hour Full Refund Guarantee</strong> — If we can't match you with a licensed plumber within 48 hours, your deposit is fully refundable. No questions asked.</p>
+          </div>
+
+          <!-- Track Button -->
+          <a href="${trackingUrl}" style="display: block; text-align: center; padding: 14px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; margin: 20px 0;">
+            Track Your Plumber →
+          </a>
+
+          <p style="color: #64748b; font-size: 13px; text-align: center;">
+            Need help? Call <a href="tel:+15551234567" style="color: #3B82F6; font-weight: 600; text-decoration: none;">(555) 123-4567</a>
+          </p>
+
+          <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 8px;">
+            Track your plumber live: <a href="${trackingUrl}" style="color: #3B82F6;">${trackingUrl}</a>
+          </p>
+
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">The deposit will be deducted from your final bill. If you have any questions, reply to this email or call our support team.</p>
+        </div>
+      </div>
+    `,
+  };
+}
+
+/* ── Refund Notification Email ── */
+
+interface RefundNotificationParams {
+  customerName: string;
+  diagnosis: string;
+  totalEstimate: number;
+  amountPaid: number;
+  leadId: string;
+  customerEmail?: string;
+}
+
+export function refundNotificationEmail({ customerName, diagnosis, totalEstimate, amountPaid, leadId }: RefundNotificationParams): { subject: string; html: string } {
+  const trackingUrl = `https://plumbcore-ai.vercel.app/track/${leadId}`;
+  return {
+    subject: `Refund processed — We couldn't find a plumber in your area`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #F59E0B, #EF4444); padding: 32px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: white; margin: 0; font-size: 22px;">Refund Processed 💸</h1>
+          <p style="color: rgba(255,255,255,0.85); font-size: 14px; margin-top: 8px;">We were unable to find a matching plumber in your area</p>
+        </div>
+        <div style="padding: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hi ${customerName},</p>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">We're sorry — after searching our network of licensed plumbers, we were unable to find an available match for your plumbing issue in your area.</p>
+
+          <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin: 16px 0; border: 1px solid #e2e8f0;">
+            <p style="margin: 0 0 8px; color: #475569; font-size: 14px;"><strong>Issue:</strong> ${diagnosis}</p>
+            <p style="margin: 0 0 8px; color: #475569; font-size: 14px;"><strong>Estimate Total:</strong> $${totalEstimate.toFixed(2)}</p>
+            <p style="margin: 0; color: #475569; font-size: 14px;"><strong>Deposit Refunded:</strong> $${amountPaid.toFixed(2)}</p>
+          </div>
+
+          <div style="background: #fef2f2; border-radius: 12px; padding: 16px; margin: 16px 0; border: 1px solid #fecaca; text-align: center;">
+            <div style="font-size: 32px; margin-bottom: 8px;">✅</div>
+            <p style="margin: 0 0 4px; color: #991b1b; font-size: 15px; font-weight: 600;">Your deposit of $${amountPaid.toFixed(2)} has been refunded</p>
+            <p style="margin: 0; color: #b91c1c; font-size: 13px;">Please allow 5-10 business days for the refund to appear on your statement.</p>
+          </div>
+
+          <p style="color: #475569; font-size: 14px; line-height: 1.6;">You can try again later or contact us directly for assistance finding a plumber in your area.</p>
+
+          <a href="${trackingUrl}" style="display: block; text-align: center; padding: 14px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; margin: 20px 0;">
+            Check Status
+          </a>
+
+          <p style="color: #64748b; font-size: 13px; text-align: center;">
+            Need help? Call <a href="tel:+15551234567" style="color: #3B82F6; font-weight: 600; text-decoration: none;">(555) 123-4567</a>
+          </p>
+
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">We apologize for the inconvenience. If you have any questions, please reply to this email or call our support team.</p>
         </div>
       </div>
     `,
