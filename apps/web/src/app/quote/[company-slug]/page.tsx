@@ -320,7 +320,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         </div>
         
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm">
-          {stripeLoading ? 'Redirecting to payment...' : `${t('quote.bookButton')} — ${depositDollars(result.depositAmount)} ${t('quote.depositSuffix')}`}
+          {stripeLoading ? 'Redirecting to payment...' : t('quote.bookButton')}
         </button>
         
         <p className="text-xs text-slate-500">{t('quote.bookRefundable')}</p>
@@ -457,11 +457,11 @@ export default function QuotePage() {
           reader.readAsDataURL(photos[0]);
         });
       }
-      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc}) });
+      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency}) });
       const data = await res.json();
       if (data.success && data.result) setResult(data.result);
-      else setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
-    } catch { setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' }); }
+      else setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
+    } catch { setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' }); }
     setStep(4);
   }, [form, photos]);
 

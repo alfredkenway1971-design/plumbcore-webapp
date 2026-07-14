@@ -114,7 +114,7 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
   }
 }
 
-function buildResult(parsed: any) {
+function buildResult(parsed: any, travelFee: number = 150) {
   let parts = (parsed.parts || []).map((p: any) => ({
     name: p.name || 'Part',
     qty: p.qty || 1,
@@ -131,8 +131,8 @@ function buildResult(parsed: any) {
   const partsTotal = Math.round(parts.reduce((s: number, p: any) => s + p.total, 0) * 100) / 100
   const estimatedHours = parsed.estimatedHours || 1.0
   const laborCost = Math.round(estimatedHours * LABOR_RATE * 100) / 100
-  const travelFee = TRAVEL_FEE
-  const subtotal = laborCost + partsTotal + travelFee
+  const travelFeeAmount = travelFee
+  const subtotal = laborCost + partsTotal + travelFeeAmount
   const tax = Math.round(subtotal * TAX_RATE * 100) / 100
   const totalPrice = Math.round((subtotal + tax) * 100) / 100
   const confidence = Math.min(100, Math.max(0, parsed.confidence || 85))
@@ -170,7 +170,9 @@ function buildResult(parsed: any) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { photoBase64, customerDescription, customerPhone } = await request.json()
+    const { photoBase64, customerDescription, customerPhone, urgency } = await request.json()
+    // Travel fee: $350 for urgent/emergency, $150 for routine/default
+    const effectiveTravelFee = (urgency === 'urgent' || urgency === 'emergency') ? 350 : 150
     const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')
 
     const cached = responseCache.get(cacheKey)
@@ -204,7 +206,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Analysis failed' }, { status: 500 })
     }
 
-    const result = buildResult(finalParsed)
+    const result = buildResult(finalParsed, effectiveTravelFee)
     responseCache.set(cacheKey, { data: result, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
