@@ -134,7 +134,24 @@ function Hero() {
               <span className="text-sm text-slate-500"><strong className="text-slate-900">4.8★</strong> average rating</span>
             </div>
 
-            {/* CTAs */}
+            {/* Customer CTA — Get online quote */}
+            <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start mb-8 pb-8 border-b border-slate-100">
+              <a
+                href="/quote/plumbcore"
+                className="h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-base shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2"
+              >
+                <Camera className="w-4 h-4" /> Get a Free Estimate <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="#how-it-works"
+                className="h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-base transition-all active:scale-[0.98] inline-flex items-center gap-2"
+              >
+                See How It Works <ChevronRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Plumber CTAs */}
+            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 text-center lg:text-left">For plumbing businesses</p>
             <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start">
               <a
                 href="/signup"
