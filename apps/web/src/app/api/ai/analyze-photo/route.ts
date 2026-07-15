@@ -70,12 +70,12 @@ Labor rate is $120/hr. Return ONLY the JSON object.`
 
 async function callOpenRouter(model: string, userMessage: string, photoBase64: string | null, openrouterKey: string, locale: string = 'en') {
   // Build message content — with or without image
-  const langInstruction = locale === 'fr' ? '\n\nIMPORTANT: Respond in French. Write the diagnosis, parts names, and all text in French.'
-    : locale === 'es' ? '\n\nIMPORTANTE: Responda en español. Escriba el diagnóstico, nombres de piezas y todo el texto en español.'
-    : locale === 'de' ? '\n\nWICHTIG: Antworten Sie auf Deutsch. Schreiben Sie die Diagnose, Teilebezeichnungen und den gesamten Text auf Deutsch.'
+  const langInstruction = locale === 'fr' ? 'RÉPONDS EN FRANÇAIS. Write the diagnosis, parts names, and all text in French. '
+    : locale === 'es' ? 'RESPONDE EN ESPAÑOL. Write the diagnosis, parts names, and all text in Spanish. '
+    : locale === 'de' ? 'ANTWORTE AUF DEUTSCH. Write the diagnosis, parts names, and all text in German. '
     : '';
   const userContent: any[] = [
-    { type: 'text', text: `${AI_SYSTEM_PROMPT}${langInstruction}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
+    { type: 'text', text: `${langInstruction}${AI_SYSTEM_PROMPT}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
   ];
 
   // If photo provided, include it as a vision input

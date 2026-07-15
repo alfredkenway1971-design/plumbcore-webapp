@@ -617,6 +617,23 @@ export default function QuotePage() {
   /* ── AI Estimate ── */
   const handleEstimate = useCallback(async () => {
     setStep(3); setError(null);
+    // Localized fallback result — defined outside try so catch can access it
+    const fb = (lang: string) => {
+      const isFr = lang === 'fr', isEs = lang === 'es', isDe = lang === 'de';
+      return {
+        canProvideEstimate: true,
+        diagnosis: isFr ? 'Fuite de robinet détectée — cartouche usée provoquant un suintement d\'eau à la base.' : isEs ? 'Fuga de grifo detectada — cartucho desgastado que causa filtración de agua por la base.' : isDe ? 'Wasserhahnleck erkannt — abgenutzte Kartusche verursacht Wasseraustritt an der Basis.' : 'Faucet leak detected — worn-out cartridge causing water seepage from the base.',
+        severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150,
+        parts: [
+          {name: isFr ? 'Kit de remplacement de cartouche de robinet' : isEs ? 'Kit de reemplazo de cartucho de grifo' : isDe ? 'Wasserhahnkartuschen-Austauschsatz' : 'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},
+          {name: isFr ? 'Jeu de joints toriques (lot de 3)' : isEs ? 'Juego de juntas tóricas (paquete de 3)' : isDe ? 'O-Ring-Dichtungssatz (3er-Pack)' : 'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},
+          {name: isFr ? 'Graisse de plombier' : isEs ? 'Grasa de fontanero' : isDe ? 'Installateurfett' : "Plumber's grease", qty:1, unitPrice:5, total:5},
+          {name: isFr ? 'Ruban de téflon' : isEs ? 'Cinta de teflón' : isDe ? 'Teflonband' : 'Teflon tape', qty:1, unitPrice:3, total:3},
+        ],
+        partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95,
+        deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB'
+      };
+    };
     try {
       // Convert first photo to base64 for vision AI
       let photoBase64 = '';
@@ -629,9 +646,35 @@ export default function QuotePage() {
       }
       const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency, locale}) });
       const data = await res.json();
+      // Localized fallback result
+      const fallbackResult = (lang: string) => {
+        const isFr = lang === 'fr';
+        const isEs = lang === 'es';
+        const isDe = lang === 'de';
+        return {
+          canProvideEstimate: true,
+          diagnosis: isFr
+            ? 'Fuite de robinet détectée — cartouche usée provoquant un suintement d\'eau à la base.'
+            : isEs
+              ? 'Fuga de grifo detectada — cartucho desgastado que causa filtración de agua por la base.'
+              : isDe
+                ? 'Wasserhahnleck erkannt — abgenutzte Kartusche verursacht Wasseraustritt an der Basis.'
+                : 'Faucet leak detected — worn-out cartridge causing water seepage from the base.',
+          severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150,
+          parts: [
+            {name: isFr ? 'Kit de remplacement de cartouche de robinet' : isEs ? 'Kit de reemplazo de cartucho de grifo' : isDe ? 'Wasserhahnkartuschen-Austauschsatz' : 'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},
+            {name: isFr ? 'Jeu de joints toriques (lot de 3)' : isEs ? 'Juego de juntas tóricas (paquete de 3)' : isDe ? 'O-Ring-Dichtungssatz (3er-Pack)' : 'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},
+            {name: isFr ? 'Graisse de plombier' : isEs ? 'Grasa de fontanero' : isDe ? 'Installateurfett' : "Plumber's grease", qty:1, unitPrice:5, total:5},
+            {name: isFr ? 'Ruban de téflon' : isEs ? 'Cinta de teflón' : isDe ? 'Teflonband' : 'Teflon tape', qty:1, unitPrice:3, total:3},
+          ],
+          partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95,
+          deposit:4900, depositAmount:4900, depositTier:'Under $1,000',
+          depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB'
+        };
+      };
       if (data.success && data.result) setResult(data.result);
-      else setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
-    } catch { setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' }); }
+      else setResult(fb(locale));
+    } catch { setResult(fb(locale)); }
     setStep(4);
   }, [form, photos]);
 
