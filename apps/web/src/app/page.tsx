@@ -58,12 +58,13 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
       </button>
       </div>
 
-      {/* Mobile side drawer menu */}
-      <div className={`md:hidden fixed inset-0 z-[70] transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      {/* Mobile side drawer menu — hidden when closed, no opacity tricks */}
+      {open && (
+      <div className="md:hidden fixed inset-0 z-[70]">
         {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
+        <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
         {/* Drawer */}
-        <div className={`absolute top-0 right-0 h-full w-[280px] bg-white shadow-2xl transition-transform duration-200 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute top-0 right-0 h-full w-[280px] bg-white shadow-2xl animate-in slide-in-from-right">
           <div className="flex flex-col h-full pt-20 px-6">
             {links.map(l => (
               <a
@@ -91,6 +92,7 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
           </div>
         </div>
       </div>
+      )}
     </header>
   );
 }
