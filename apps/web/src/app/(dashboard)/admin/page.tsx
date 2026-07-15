@@ -12,11 +12,8 @@ import {
 import { useAuthStore } from '@/lib/store';
 import { downloadCSV } from '@/lib/csv-export';
 import {
-  platformKPIs, trialPipeline, atRiskAccounts,
-  featureAdoption, revenueBreakdown, recentActivity,
-  companies, getPlatformSummary,
+  platformKPIs, getPlatformSummary,
 } from '@/lib/admin-data';
-import type { TrialPipelineEntry, ActivityFeedItem, Company } from '@/lib/admin-data';
 
 /* ═══════════════════════════════════════════
    CONSTANTS
@@ -302,88 +299,16 @@ function CustomerFunnel() {
    ROW 3 — TRIAL PIPELINE TABLE
    ═══════════════════════════════════════════ */
 function TrialPipelineTable() {
-  const [sortAsc, setSortAsc] = useState(false);
-  const sorted = useMemo(() => {
-    return [...trialPipeline].sort((a, b) =>
-      sortAsc ? a.daysRemaining - b.daysRemaining : b.daysRemaining - a.daysRemaining
-    );
-  }, [sortAsc]);
-
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Trial Pipeline</h3>
-        <button
-          onClick={() => setSortAsc(!sortAsc)}
-          className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-600"
-        >
-          Sort by days {sortAsc ? '↑' : '↓'}
-        </button>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Company</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Plan</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Days Left</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Score</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Risk</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.map((trial: TrialPipelineEntry) => {
-              const riskCfg = engagementRiskColors[trial.riskLevel];
-              const isUrgent = trial.daysRemaining <= 5 && trial.daysRemaining >= 0;
-              const isOverdue = trial.daysRemaining < 0;
-              return (
-                <tr key={trial.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
-                        {trial.companyName.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-slate-900">{trial.companyName}</p>
-                        <p className="text-[11px] text-slate-600">{trial.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3.5 hidden sm:table-cell">
-                    <span className="text-sm text-slate-600">{planLabels[trial.planTier] || trial.planTier}</span>
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-slate-600" />
-                      <span className={`text-sm font-semibold ${
-                        isOverdue ? 'text-red-600' : isUrgent ? 'text-amber-600' : 'text-slate-900'
-                      }`}>
-                        {isOverdue ? `${Math.abs(trial.daysRemaining)}d overdue` : `${trial.daysRemaining}d`}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3.5 hidden md:table-cell">
-                    <div className="flex items-center gap-2">
-                      <div className="w-14 h-1.5 hover:bg-slate-50 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${trial.engagementScore >= 70 ? 'bg-emerald-500' : trial.engagementScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
-                          style={{ width: `${trial.engagementScore}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-slate-500">{trial.engagementScore}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${riskCfg.bg} ${riskCfg.text}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${riskCfg.dot}`} />
-                      {trial.riskLevel}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="px-5 pb-6">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-3">📋</span>
+          <p className="text-sm text-slate-500">No active trials. When plumbers sign up for free trials, they&apos;ll appear here.</p>
+        </div>
       </div>
     </div>
   );
@@ -397,53 +322,12 @@ function AtRiskCustomers() {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">At-Risk Customers</h3>
-        <span className="flex items-center justify-center min-w-[22px] h-[22px] rounded-full bg-red-500 text-white text-[10px] font-bold px-1.5">
-          {atRiskAccounts.length}
-        </span>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Company</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">MRR</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Churn Prob.</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Rep</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {atRiskAccounts.map((acct) => {
-              const probPct = Math.round(acct.churnProbability * 100);
-              const probColor = probPct >= 70 ? 'text-red-600' : probPct >= 40 ? 'text-amber-600' : 'text-emerald-600';
-              const probBg = probPct >= 70 ? 'bg-red-50' : probPct >= 40 ? 'bg-amber-50' : 'bg-emerald-50';
-              return (
-                <tr key={acct.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3.5">
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">{acct.companyName}</p>
-                      <p className="text-[11px] text-slate-600">{acct.techCount} techs</p>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3.5 hidden sm:table-cell">
-                    <span className="text-sm font-semibold text-slate-900">${acct.mrr.toLocaleString()}</span>
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${probBg} ${probColor}`}>
-                      {probPct}%
-                    </span>
-                  </td>
-                  <td className="px-4 py-3.5 hidden md:table-cell">
-                    <span className="text-sm text-slate-500">{acct.assignedRep}</span>
-                  </td>
-                  <td className="px-4 py-3.5 hidden lg:table-cell">
-                    <span className="text-sm text-slate-500 truncate max-w-[180px] block">{acct.reason}</span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="px-5 pb-6">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-3">⚠️</span>
+          <p className="text-sm text-slate-500">No at-risk accounts.</p>
+        </div>
       </div>
     </div>
   );
@@ -453,71 +337,16 @@ function AtRiskCustomers() {
    ROW 4 — TOP CUSTOMERS BY REVENUE
    ═══════════════════════════════════════════ */
 function TopCustomersTable() {
-  const top = useMemo(() => {
-    return [...companies]
-      .filter(c => c.status === 'active')
-      .sort((a, b) => b.mrr - a.mrr)
-      .slice(0, 6);
-  }, []);
-
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Top Customers by Revenue</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View All →</button>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">#</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Company</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Techs</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">MRR</th>
-              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Plan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {top.map((cust: Company, i: number) => {
-              const initialColor = ['from-violet-400 to-purple-400', 'from-blue-400 to-cyan-400', 'from-emerald-400 to-teal-400', 'from-amber-400 to-orange-400', 'from-rose-400 to-pink-400', 'from-indigo-400 to-blue-400'];
-              return (
-                <tr key={cust.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3.5">
-                    <span className="w-6 h-6 rounded-full hover:bg-slate-50 flex items-center justify-center text-[11px] font-bold text-slate-500">{i + 1}</span>
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${initialColor[i % initialColor.length]} flex items-center justify-center text-[9px] font-bold text-white shrink-0`}>
-                        {cust.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-slate-900 truncate max-w-[160px]">{cust.name}</p>
-                        <p className="text-[11px] text-slate-600">{cust.city}, {cust.state}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3.5 hidden sm:table-cell">
-                    <span className="text-sm text-slate-600">{cust.techCount}</span>
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <span className="text-sm font-semibold text-slate-900">${cust.mrr.toLocaleString()}</span>
-                  </td>
-                  <td className="px-5 py-3.5 text-right">
-                    <span
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold"
-                      style={{
-                        backgroundColor: `${planColors[cust.planTier]}15`,
-                        color: planColors[cust.planTier],
-                      }}
-                    >
-                      {planLabels[cust.planTier] || cust.planTier}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="px-5 pb-6">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-3">🏆</span>
+          <p className="text-sm text-slate-500">No top customers yet. Revenue data will appear once plumbers complete jobs.</p>
+        </div>
       </div>
     </div>
   );
@@ -531,33 +360,12 @@ function ActivityFeed() {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Activity Feed</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View All →</button>
       </div>
-      <div className="divide-y divide-slate-100 max-h-[420px] overflow-y-auto">
-        {recentActivity.map((item: ActivityFeedItem) => {
-          const Icon = activityIconMap[item.type] || Activity;
-          const colorClass = activityColorMap[item.severity] || 'hover:bg-slate-50 text-slate-600';
-          const time = new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-          return (
-            <div key={item.id} className="px-5 py-3 hover:bg-slate-50 transition-colors">
-              <div className="flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-xl ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 mt-0.5`}>
-                  <Icon className="w-4 h-4" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-slate-700 leading-snug">
-                    <span className="font-medium text-slate-900">{item.companyName}</span>
-                    {' '}{item.description}
-                  </p>
-                  <span className="text-[11px] text-slate-600 mt-0.5 block">{time}</span>
-                </div>
-                <button className="text-slate-700 hover:text-slate-500 transition-colors shrink-0">
-                  <MoreHorizontal className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          );
-        })}
+      <div className="px-5 pb-6">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-3">📡</span>
+          <p className="text-sm text-slate-500">No recent activity.</p>
+        </div>
       </div>
     </div>
   );
@@ -567,89 +375,16 @@ function ActivityFeed() {
    ROW 5 — FEATURE USAGE HEATMAP
    ═══════════════════════════════════════════ */
 function FeatureUsageHeatmap() {
-  const maxWau = Math.max(...featureAdoption.map(f => f.weeklyActiveUsers));
-  const maxEnabled = Math.max(...featureAdoption.map(f => f.totalEnabled));
-
-  const getHeatColor = (val: number, max: number) => {
-    const ratio = val / max;
-    if (ratio > 0.75) return 'bg-emerald-500';
-    if (ratio > 0.5) return 'bg-emerald-400';
-    if (ratio > 0.35) return 'bg-amber-400';
-    if (ratio > 0.2) return 'bg-amber-300';
-    return 'bg-red-300';
-  };
-
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-slate-900">Feature Usage Heatmap</h3>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-emerald-500" />
-            <span className="text-[10px] text-slate-600">Enabled</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-blue-500" />
-            <span className="text-[10px] text-slate-600">WAU</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-violet-500" />
-            <span className="text-[10px] text-slate-600">Adoption</span>
-          </div>
-        </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Feature</th>
-              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">Enabled</th>
-              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">WAU</th>
-              <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 py-3">Trend</th>
-              <th className="text-right text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Adoption</th>
-            </tr>
-          </thead>
-          <tbody>
-            {featureAdoption.map((f) => {
-              const adoptionRate = f.adoptionRate;
-              const trendIcon = f.trend === 'up' ? '↑' : f.trend === 'down' ? '↓' : '→';
-              const trendColor = f.trend === 'up' ? 'text-emerald-600' : f.trend === 'down' ? 'text-red-600' : 'text-slate-600';
-              return (
-                <tr key={f.featureKey} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3">
-                    <span className="text-sm font-medium text-slate-900">{f.featureName}</span>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
-                      <div className={`w-2 h-2 rounded-full ${getHeatColor(f.totalEnabled, maxEnabled)}`} />
-                      <span className="text-xs font-semibold text-slate-700">{f.totalEnabled}</span>
-                    </div>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
-                      <div className={`w-2 h-2 rounded-full ${getHeatColor(f.weeklyActiveUsers, maxWau)}`} />
-                      <span className="text-xs font-semibold text-slate-700">{f.weeklyActiveUsers}</span>
-                    </div>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <span className={`text-sm font-semibold ${trendColor}`}>{trendIcon}</span>
-                  </td>
-                  <td className="px-5 py-3 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <div className="w-16 h-2 hover:bg-slate-50 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all"
-                          style={{ width: `${adoptionRate}%` }}
-                        />
-                      </div>
-                      <span className="text-xs font-semibold text-slate-600 w-10 text-right">{adoptionRate.toFixed(1)}%</span>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="px-5 pb-6">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <span className="text-4xl mb-3">📊</span>
+          <p className="text-sm text-slate-500">Feature adoption data will appear once plumbers start using the platform.</p>
+        </div>
       </div>
     </div>
   );
@@ -659,67 +394,14 @@ function FeatureUsageHeatmap() {
    ROW 6 — REVENUE BY PLAN DONUT (SVG)
    ═══════════════════════════════════════════ */
 function RevenueByPlanDonut() {
-  const plans = revenueBreakdown;
-  const total = plans.reduce((s, p) => s + p.totalMrr, 0);
-  const cx = 100, cy = 100, r = 72, sw = 28;
-
-  const segmentColors = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EC4899'];
-
-  let cumulative = 0;
-  const slices = plans.map((seg, idx) => {
-    const startAngle = (cumulative / total) * 360 - 90;
-    cumulative += seg.totalMrr;
-    const endAngle = (cumulative / total) * 360 - 90;
-    const large = (endAngle - startAngle) > 180 ? 1 : 0;
-    const toRad = (d: number) => (d * Math.PI) / 180;
-    const x1 = cx + r * Math.cos(toRad(startAngle));
-    const y1 = cy + r * Math.sin(toRad(startAngle));
-    const x2 = cx + r * Math.cos(toRad(endAngle));
-    const y2 = cy + r * Math.sin(toRad(endAngle));
-    return {
-      label: seg.planTier,
-      value: seg.totalMrr,
-      pct: seg.percentageOfTotal,
-      count: seg.companyCount,
-      color: segmentColors[idx % segmentColors.length],
-      path: `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`,
-    };
-  });
-
   return (
     <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-semibold text-slate-900">Revenue by Plan</h3>
-        <button className="text-slate-600 hover:text-slate-600 transition-colors">
-          <MoreHorizontal className="w-5 h-5" />
-        </button>
       </div>
-      <div className="flex items-start gap-4">
-        <div className="relative shrink-0">
-          <svg width="140" height="140" viewBox="0 0 200 200">
-            {slices.map((s, i) => (
-              <path key={i} d={s.path} fill="none" stroke={s.color} strokeWidth={sw} strokeLinecap="round" />
-            ))}
-            <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="central" fill="#0F172A" fontFamily="system-ui" fontSize="24" fontWeight="700">
-              ${(total / 1000).toFixed(0)}K
-            </text>
-            <text x={cx} y={cy + 16} textAnchor="middle" dominantBaseline="central" fill="#64748B" fontFamily="system-ui" fontSize="11">MRR</text>
-          </svg>
-        </div>
-        <div className="flex-1 space-y-2 pt-2">
-          {slices.map((s, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                <span className="text-xs text-slate-600">{s.label}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-600">{s.count} accts</span>
-                <span className="text-xs font-semibold text-slate-900">{s.pct.toFixed(1)}%</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <span className="text-4xl mb-3">💰</span>
+        <p className="text-sm text-slate-500">Revenue breakdown will appear once subscriptions are active.</p>
       </div>
     </div>
   );
@@ -729,103 +411,14 @@ function RevenueByPlanDonut() {
    ROW 6 — GEOGRAPHIC MAP (CSS/SVG)
    ═══════════════════════════════════════════ */
 function GeographicMap() {
-  // Compute regional distribution from actual company data
-  const regionMap = useMemo(() => {
-    const regions: Record<string, { name: string; cx: number; cy: number; companies: Company[] }> = {
-      northeast: { name: 'Northeast', cx: 220, cy: 120, companies: [] },
-      southeast: { name: 'Southeast', cx: 230, cy: 230, companies: [] },
-      midwest: { name: 'Midwest', cx: 160, cy: 170, companies: [] },
-      southwest: { name: 'Southwest', cx: 120, cy: 240, companies: [] },
-      west: { name: 'West Coast', cx: 70, cy: 160, companies: [] },
-    };
-
-    const stateToRegion: Record<string, string> = {
-      NY: 'northeast', MA: 'northeast', PA: 'northeast', NJ: 'northeast', CT: 'northeast',
-      FL: 'southeast', GA: 'southeast', NC: 'southeast', TN: 'southeast', SC: 'southeast',
-      IL: 'midwest', MI: 'midwest', OH: 'midwest', MN: 'midwest', MO: 'midwest',
-      TX: 'southwest', AZ: 'southwest', CO: 'southwest', UT: 'southwest', MT: 'southwest',
-      CA: 'west', WA: 'west', OR: 'west',
-    };
-
-    companies.forEach(c => {
-      const region = stateToRegion[c.state] || 'midwest';
-      if (regions[region]) regions[region].companies.push(c);
-    });
-
-    return Object.values(regions).map(r => ({
-      ...r,
-      count: r.companies.length,
-      mrr: r.companies.reduce((s, c) => s + c.mrr, 0),
-    }));
-  }, []);
-
-  const maxCount = Math.max(...regionMap.map(r => r.count), 1);
-
   return (
     <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-semibold text-slate-900">Geographic Distribution</h3>
-        <button className="text-xs font-medium text-blue-600 hover:text-blue-600">Details →</button>
       </div>
-      <div className="flex items-center gap-4">
-        <div className="relative shrink-0">
-          <svg width="280" height="280" viewBox="0 0 320 320" className="w-full max-w-[280px]">
-            {/* Simplified USA outline */}
-            <path
-              d="M50,100 Q70,80 100,75 Q130,70 160,72 Q190,74 210,80 Q230,86 240,95
-                 Q250,104 255,115 Q260,126 255,140 Q250,154 240,165 Q230,176 220,185
-                 Q210,194 200,205 Q190,216 180,230 Q170,244 160,250 Q150,256 140,255
-                 Q130,254 120,248 Q110,242 100,235 Q90,228 80,215 Q70,202 62,188
-                 Q54,174 50,160 Q46,146 48,130 Q50,114 50,100 Z"
-              fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="1.5"
-            />
-            {regionMap.map((r, i) => {
-              const radius = 8 + (r.count / maxCount) * 14;
-              const color = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'][i];
-              return (
-                <g key={i}>
-                  <circle cx={r.cx} cy={r.cy} r={radius + 6} fill={color} opacity={0.08} />
-                  <circle cx={r.cx} cy={r.cy} r={radius} fill={color} opacity={0.7} />
-                  <circle cx={r.cx} cy={r.cy} r={radius * 0.5} fill={color} opacity={0.9} />
-                  <text x={r.cx} y={r.cy + 0.5} textAnchor="middle" dominantBaseline="central" fill="white" fontFamily="system-ui" fontSize="10" fontWeight="700">
-                    {r.count}
-                  </text>
-                  <text x={r.cx} y={r.cy - radius - 12} textAnchor="middle" dominantBaseline="central" fill="#64748B" fontFamily="system-ui" fontSize="9">
-                    {r.name}
-                  </text>
-                </g>
-              );
-            })}
-            <text x="160" y="300" textAnchor="middle" fill="#94A3B8" fontFamily="system-ui" fontSize="9">
-              {regionMap.reduce((s, r) => s + r.count, 0)} active accounts
-            </text>
-          </svg>
-        </div>
-        <div className="flex-1 space-y-2.5">
-          {regionMap.map((r, i) => {
-            const color = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'][i];
-            return (
-              <div key={i} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                  <span className="text-xs text-slate-600">{r.name}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-slate-600">{r.count} accts</span>
-                  <span className="text-xs font-semibold text-slate-900">${(r.mrr / 1000).toFixed(0)}K</span>
-                </div>
-              </div>
-            );
-          })}
-          <div className="pt-2 mt-2 border-t border-slate-100">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Total</span>
-              <span className="text-sm font-bold text-slate-900">
-                {regionMap.reduce((s, r) => s + r.count, 0)} accts · ${(regionMap.reduce((s, r) => s + r.mrr, 0) / 1000).toFixed(0)}K MRR
-              </span>
-            </div>
-          </div>
-        </div>
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <span className="text-4xl mb-3">🗺️</span>
+        <p className="text-sm text-slate-500">Geographic data will appear as plumbers sign up across regions.</p>
       </div>
     </div>
   );
@@ -1044,24 +637,7 @@ export default function AdminPage() {
       { Metric: 'Churn Rate', Value: `${displayKPIs.churnRate}%`, Change: displayKPIs.churnTrend === 'down' ? '-0.3%' : '+0.2%' },
     ];
 
-    const trialData = (trialPipeline || []).map((t: any) => ({
-      Company: t.companyName || '',
-      Plan: t.planTier || '',
-      DaysLeft: t.daysRemaining ?? '',
-      RiskLevel: t.riskLevel || '',
-      MRR: t.mrr ? `$${t.mrr}` : '',
-    }));
-
-    const atRiskData = (atRiskAccounts || []).map((a: any) => ({
-      Company: a.companyName || '',
-      MRR: a.mrr ? `$${a.mrr}` : '',
-      RiskLevel: a.riskLevel || '',
-      Reason: a.reason || '',
-    }));
-
     downloadCSV(kpiData, 'platform_kpis');
-    if (trialData.length) downloadCSV(trialData, 'trial_pipeline');
-    if (atRiskData.length) downloadCSV(atRiskData, 'at_risk_accounts');
   };
 
   return (
