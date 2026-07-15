@@ -94,7 +94,7 @@ const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext, t
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustUpfrontPrice')}</span>
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustLicensed')}</span>
       </div>
-      <button onClick={onNext} disabled={photos.length === 0} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center justify-center gap-2">
+      <button onClick={onNext} disabled={photos.length === 0} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center justify-center gap-2">
         {photos.length > 0 ? t('quote.continueBtn') : t('quote.selectPhotos')} <ChevronRight className="w-4 h-4" />
       </button>
     </div>
@@ -169,7 +169,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
       </div>
       <div className="grid grid-cols-2 gap-3">
         <button onClick={onBack} className="h-12 rounded-xl ring-1 ring-black/5 text-slate-700 font-medium active:scale-[0.97] transition-all hover:bg-slate-50 flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> {t('quote.back')}</button>
-        <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+        <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
           {canSubmit ? t('quote.getMyPrice') : t('quote.enterPhone')} <ChevronRight className="w-4 h-4" />
         </button>
       </div>
