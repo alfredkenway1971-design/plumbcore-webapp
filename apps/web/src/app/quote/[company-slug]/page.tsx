@@ -533,7 +533,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
 }
 
 /* ── Step 5 — Payment Success ── */
-function StepSuccess({ result, t }: { result?: any; t: (key: string) => string }) {
+function StepSuccess({ result, t, trackingLeadId }: { result?: any; t: (key: string) => string; trackingLeadId?: string | null }) {
   return (
     <div className="text-center space-y-6 py-8">
       <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
@@ -552,7 +552,7 @@ function StepSuccess({ result, t }: { result?: any; t: (key: string) => string }
         <ul className="space-y-2 text-sm text-slate-600">
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.confirmationEmail')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.matchPlumber')}</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingLeadId || result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track</a></span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.depositRefundable')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
         </ul>
@@ -594,12 +594,34 @@ export default function QuotePage() {
   /* ── Payment result from Stripe redirect ── */
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get('payment') as 'success' | 'cancelled' | null;
+  const sessionId = searchParams.get('session_id') || '';
   const [paymentHandled, setPaymentHandled] = useState(false);
+  const [trackingLeadId, setTrackingLeadId] = useState<string | null>(null);
 
   useEffect(() => {
     if (paymentStatus && !paymentHandled) {
       setPaymentHandled(true);
-      if (paymentStatus === 'success') setStep(5 as any);
+      if (paymentStatus === 'success') {
+        // Restore estimate from sessionStorage
+        const saved = sessionStorage.getItem('plumbcore_last_estimate');
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            setResult(parsed);
+            // Use parsed result for deposit display
+          } catch {}
+        }
+        // Fetch lead ID from Stripe session
+        if (sessionId) {
+          fetch(`/api/leads/by-session?session_id=${encodeURIComponent(sessionId)}`)
+            .then(r => r.json())
+            .then(data => {
+              if (data.leadId) setTrackingLeadId(data.leadId);
+            })
+            .catch(() => {});
+        }
+        setStep(5 as any);
+      }
       if (paymentStatus === 'cancelled') setError(t('quote.paymentCancelled'));
     }
   }, [paymentStatus, paymentHandled]);
@@ -708,6 +730,8 @@ export default function QuotePage() {
   /* ── Stripe checkout — $49 deposit ── */
   const handleStripeCheckout = useCallback(async () => {
     if (!result) return;
+    // Save result to sessionStorage so it survives the Stripe redirect
+    sessionStorage.setItem('plumbcore_last_estimate', JSON.stringify(result));
     setStripeLoading(true);
     try {
       const res = await fetch('/api/create-checkout-session', {
@@ -781,7 +805,7 @@ export default function QuotePage() {
           </div>
           <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading t={t} /></div>
           <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} onStripeCheckout={handleStripeCheckout} stripeLoading={stripeLoading} t={t} /></div>
-          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess result={result} t={t} /></div>
+          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess result={result} t={t} trackingLeadId={trackingLeadId} /></div>
         </div>
       </section>
     </div>

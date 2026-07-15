@@ -44,7 +44,7 @@ export async function POST(req: Request) {
           customer_name: customerName || '',
           customer_phone: customerPhone || '',
         },
-        success_url: `${req.headers.get('origin') || 'https://plumbcore-ai.vercel.app'}/quote/${metadata?.companySlug || 'plumbcore'}?payment=success`,
+        success_url: `${req.headers.get('origin') || 'https://plumbcore-ai.vercel.app'}/quote/${metadata?.companySlug || 'plumbcore'}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.get('origin') || 'https://plumbcore-ai.vercel.app'}/quote/${metadata?.companySlug || 'plumbcore'}?payment=cancelled`,
         allow_promotion_codes: false,
         billing_address_collection: 'auto',
