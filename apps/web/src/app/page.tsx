@@ -14,19 +14,12 @@ import {
 /* ═══════════════════════════════════════════════════════════════
    NAVBAR — fixed, glass, logo + nav + LangSwitcher + Sign In + CTA
    ═══════════════════════════════════════════════════════════════ */
-function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange: (l: string) => void; t: (key: string) => string }) {
+function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale: string; onLocaleChange: (l: string) => void; t: (key: string) => string; menuOpen: boolean; onMenuToggle: (v: boolean) => void }) {
   const r = useRouter();
   const [open, setOpen] = useState(false);
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
+  // Sync local state with parent
+  useEffect(() => { onMenuToggle(open); }, [open, onMenuToggle]);
 
   const links = [
     { label: 'Features', href: '#features' },
@@ -59,40 +52,45 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
           </a>
         </div>
 
-        <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label="Menu">
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile menu button */}
+      <button onClick={() => setOpen(!open)} className="md:hidden relative z-[70] p-2 text-slate-600" aria-label="Menu">
+        {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      </button>
       </div>
 
-      {/* Mobile full overlay menu */}
-      {open && (
-        <div className="md:hidden fixed inset-0 top-14 z-[60] bg-white backdrop-blur-xl">
-          <div className="flex flex-col items-center justify-center h-full gap-6 px-6">
+      {/* Mobile side drawer menu */}
+      <div className={`md:hidden fixed inset-0 z-[70] transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
+        {/* Drawer */}
+        <div className={`absolute top-0 right-0 h-full w-[280px] bg-white shadow-2xl transition-transform duration-200 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="flex flex-col h-full pt-20 px-6">
             {links.map(l => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="text-xl font-semibold text-slate-900 hover:text-blue-600 transition-colors"
+                className="block py-3.5 text-base font-semibold text-slate-900 hover:text-blue-600 transition-colors border-b border-slate-100"
               >
                 {l.label}
               </a>
             ))}
-            <hr className="w-16 ring-1 ring-black/10 my-2" />
-            <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
-            <a href="/login" onClick={() => setOpen(false)} className="text-lg font-medium text-slate-600 hover:text-slate-900 transition-colors">
-              Sign In
-            </a>
-            <a
-              href="/signup"
-              onClick={() => setOpen(false)}
-              className="mt-2 h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 inline-flex items-center gap-2 text-base"
-            >
-              Start Free Trial <ArrowRight className="w-4 h-4" />
-            </a>
+            <div className="mt-6 flex flex-col items-start gap-3">
+              <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
+              <a href="/login" onClick={() => setOpen(false)} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                Sign In
+              </a>
+              <a
+                href="/signup"
+                onClick={() => setOpen(false)}
+                className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 inline-flex items-center justify-center gap-2 text-sm"
+              >
+                Start Free Trial <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
@@ -943,7 +941,8 @@ function Footer() {
 /* ═══════════════════════════════════════════════════════════════
    FLOATING CTA — fixed bottom mobile CTA
    ═══════════════════════════════════════════════════════════════ */
-function FloatingCta() {
+function FloatingCta({ hidden }: { hidden?: boolean }) {
+  if (hidden) return null;
   return (
     <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-lg ring-1 ring-black/5 px-4 py-3">
       <a
@@ -961,9 +960,10 @@ function FloatingCta() {
    ═══════════════════════════════════════════════════════════════ */
 export default function LandingPage() {
   const { locale, changeLocale, t } = useI18n();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <main className="min-h-screen bg-white pb-16 md:pb-0">
-      <Navbar locale={locale} onLocaleChange={(l) => changeLocale(l as 'en' | 'fr' | 'es' | 'de')} t={t} />
+    <main className={`min-h-screen bg-white ${menuOpen ? 'overflow-hidden' : ''} pb-16 md:pb-0`}>
+      <Navbar locale={locale} onLocaleChange={(l) => changeLocale(l as 'en' | 'fr' | 'es' | 'de')} t={t} menuOpen={menuOpen} onMenuToggle={setMenuOpen} />
       <Hero />
       <HowPlumbCoreMakesYouMoney />
       <FeaturesSection />
@@ -973,7 +973,7 @@ export default function LandingPage() {
       <FaqSection />
       <CtaSection />
       <Footer />
-      <FloatingCta />
+      <FloatingCta hidden={menuOpen} />
     </main>
   );
 }
