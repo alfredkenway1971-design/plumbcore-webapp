@@ -35,74 +35,7 @@ interface FeatureRequest {
 
 /* ── Mock Data ── */
 
-const mockRequests: FeatureRequest[] = [
-  {
-    id: 'FR-001',
-    name: 'Mike Johnson',
-    email: 'mike@johnsonplumbing.com',
-    title: 'Mobile app offline mode for estimates',
-    description: 'When working in basements with no signal, we need to be able to create estimates offline and sync when we reconnect.',
-    category: 'Mobile App',
-    status: 'planned',
-    votes: 24,
-    createdAt: '2026-07-08',
-  },
-  {
-    id: 'FR-002',
-    name: 'Sarah Chen',
-    email: 'sarah@apexpipe.com',
-    title: 'Bulk SMS send to customers',
-    description: 'Ability to send bulk SMS notifications to all customers with open jobs for appointment reminders and promotions.',
-    category: 'Communications',
-    status: 'in-progress',
-    votes: 18,
-    createdAt: '2026-07-07',
-  },
-  {
-    id: 'FR-003',
-    name: 'James Rodriguez',
-    email: 'james@metromechanical.com',
-    title: 'QuickBooks Online direct integration',
-    description: 'Native syncing with QuickBooks Online for invoices, payments, and customer data without third-party middleware.',
-    category: 'Integrations',
-    status: 'under-review',
-    votes: 31,
-    createdAt: '2026-07-06',
-  },
-  {
-    id: 'FR-004',
-    name: 'Emily Waters',
-    email: 'emily@bluewaterplumbing.com',
-    title: 'Customer portal for job tracking',
-    description: 'Allow homeowners to log in and see job status, upcoming appointments, and invoice history without calling the office.',
-    category: 'Customer Portal',
-    status: 'completed',
-    votes: 15,
-    createdAt: '2026-07-05',
-  },
-  {
-    id: 'FR-005',
-    name: 'Steve Mitchell',
-    email: 'steve@pinnaclepipe.com',
-    title: 'Photo annotation on job reports',
-    description: 'Ability to draw arrows, circles, and text annotations on photos taken during jobs to highlight issues for customers.',
-    category: 'Mobile App',
-    status: 'declined',
-    votes: 7,
-    createdAt: '2026-07-04',
-  },
-  {
-    id: 'FR-006',
-    name: 'Amanda Lee',
-    email: 'amanda@flowrightplumbing.com',
-    title: 'Recurring maintenance plan automations',
-    description: 'Auto-schedule recurring maintenance visits and send reminders without manual entry each month.',
-    category: 'Scheduling',
-    status: 'under-review',
-    votes: 22,
-    createdAt: '2026-07-03',
-  },
-];
+const mockRequests: FeatureRequest[] = [];
 
 /* ── Status Config ── */
 

@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { Search, Clock, AlertTriangle, CheckCircle, TrendingUp, Filter, ChevronDown, MoreHorizontal, Download, Building2 } from 'lucide-react';
-import { trialPipeline } from '@/lib/admin-data';
 import { downloadCSV } from '@/lib/csv-export';
 
 
@@ -22,14 +21,14 @@ export default function AdminTrialPipelinePage() {
   const [sortField, setSortField] = useState<'daysRemaining' | 'engagementScore'>('daysRemaining');
 
   const filtered = useMemo(() => {
-    let data = [...trialPipeline];
-    if (search) data = data.filter(t => t.companyName.toLowerCase().includes(search.toLowerCase()) || t.email.toLowerCase().includes(search.toLowerCase()));
-    if (riskFilter !== 'all') data = data.filter(t => t.riskLevel === riskFilter);
-    data.sort((a, b) => sortField === 'daysRemaining' ? a.daysRemaining - b.daysRemaining : b.engagementScore - a.engagementScore);
+    let data: any[] = [];
+    if (search) data = data.filter((t: any) => t.companyName?.toLowerCase().includes(search.toLowerCase()) || t.email?.toLowerCase().includes(search.toLowerCase()));
+    if (riskFilter !== 'all') data = data.filter((t: any) => t.riskLevel === riskFilter);
+    data.sort((a: any, b: any) => sortField === 'daysRemaining' ? a.daysRemaining - b.daysRemaining : b.engagementScore - a.engagementScore);
     return data;
   }, [search, riskFilter, sortField]);
 
-  const stats = { total: trialPipeline.length, highRisk: trialPipeline.filter(t => t.riskLevel === 'high').length, expired: trialPipeline.filter(t => t.daysRemaining <= 0).length, avgEngagement: Math.round(trialPipeline.reduce((s, t) => s + t.engagementScore, 0) / trialPipeline.length) };
+  const stats = { total: 0, highRisk: 0, expired: 0, avgEngagement: 0 };
 
   const handleExport = () => {
     const data: Record<string, any>[] = [];

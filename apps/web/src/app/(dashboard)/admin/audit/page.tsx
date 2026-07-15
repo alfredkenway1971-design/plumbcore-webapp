@@ -2,10 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Search, Filter, Download, Clock, CheckCircle, AlertTriangle, XCircle, Info, Building2 } from 'lucide-react';
-import { recentActivity } from '@/lib/admin-data';
 import { downloadCSV } from '@/lib/csv-export';
-
-
 
 const severityStyles: Record<string, { bg: string; text: string; icon: any; dot: string }> = {
   success: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle, dot: 'bg-emerald-500' },
@@ -29,8 +26,8 @@ export default function AdminAuditLogPage() {
   const [severityFilter, setSeverityFilter] = useState('all');
 
   const filtered = useMemo(() => {
-    let data = [...recentActivity];
-    if (search) data = data.filter(a => a.companyName.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase()));
+    let data: any[] = [];
+    if (search) data = data.filter(a => a.companyName?.toLowerCase().includes(search.toLowerCase()) || a.description?.toLowerCase().includes(search.toLowerCase()));
     if (severityFilter !== 'all') data = data.filter(a => a.severity === severityFilter);
     return data;
   }, [search, severityFilter]);
@@ -51,7 +48,7 @@ export default function AdminAuditLogPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Total Events', value: recentActivity.length, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Success', value: recentActivity.filter(a => a.severity === 'success').length, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Warnings', value: recentActivity.filter(a => a.severity === 'warning').length, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Errors', value: recentActivity.filter(a => a.severity === 'error').length, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
+        {[ { label: 'Total Events', value: 0, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Success', value: 0, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Warnings', value: 0, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Errors', value: 0, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
           <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-4 shadow-sm ring-1 ring-black/5 text-center">
             <p className="text-2xl font-bold text-slate-900">{s.value}</p>
             <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>

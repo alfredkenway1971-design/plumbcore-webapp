@@ -20,8 +20,6 @@ import {
   AlertTriangle,
   XCircle,
 } from 'lucide-react';
-import { companies } from '@/lib/admin-data';
-import type { Company } from '@/lib/admin-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -191,8 +189,8 @@ export default function CompanyDetailPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        const found = companies.find((c) => c.id === companyId);
-        if (!found) setNotFound(true);
+        // Will fetch from real API when available
+        setNotFound(true);
       } catch {
         setError('Failed to load company details');
       }
@@ -205,17 +203,15 @@ export default function CompanyDetailPage() {
     setError(null);
     setLoading(true);
     setTimeout(() => {
-      const found = companies.find((c) => c.id === companyId);
-      if (!found) setNotFound(true);
+      // Will fetch from real API when available
+      setNotFound(true);
       setLoading(false);
     }, 300);
   };
 
-  const company = useMemo(() => companies.find((c) => c.id === companyId), [companyId]);
+  const company = useMemo(() => null as any, [companyId]);
 
-  const acceptedPercent = company
-    ? Math.round((company.acceptedCount / company.aiEstimatesCount) * 100)
-    : 0;
+  const acceptedPercent = 0;
 
   /* ── Error State ── */
   if (error) {
@@ -434,7 +430,7 @@ export default function CompanyDetailPage() {
           <p className="text-sm text-slate-600 py-4 text-center">No recent activity</p>
         ) : (
           <div className="space-y-0">
-            {company.recentActivity.map((act, idx) => (
+            {company?.recentActivity?.map((act: any, idx: number) => (
               <div
                 key={act.id}
                 className={cn(
