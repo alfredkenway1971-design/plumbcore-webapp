@@ -5,7 +5,7 @@ import { useAuthStore } from '@/lib/store';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
 import { PROFILE_TABS } from '@/lib/plumber-profiles';
 import type { PlumberProfile, ProfileTab, PlanTier, PayoutSchedule, BackgroundCheckStatus, PlumberStatus } from '@/lib/plumber-profiles';
-import { PLAN_LABELS_PRETTY, PLAN_LEAD_FEES } from '@/lib/plan-pricing';
+import { PLAN_LABELS_PRETTY, PLAN_LEAD_FEES, PLAN_AI_RECEPTIONIST_HOURS } from '@/lib/plan-pricing';
 
 /* ── Icons (inline SVG to avoid deps) ── */
 const I = {
@@ -128,6 +128,7 @@ export default function PlumberProfilePage() {
         {activeTab === 'compliance' && (
           <ComplianceTab plumber={plumber} onUpdate={saveProfile} />
         )}
+        {activeTab === 'receptionist' && <ReceptionistTab plumber={plumber} />}
       </div>
     </div>
   );
@@ -346,6 +347,123 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
           <Button size="sm" onClick={() => onUpdate({ license_number: license, insurance_info: insurance })}>Save Changes</Button>
         </div>
       </Card>
+    </>
+  );
+}
+
+/* ══════════════════════ RECEPTIONIST TAB ══════════════════════ */
+function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
+  const maxHours = PLAN_AI_RECEPTIONIST_HOURS[plumber.plan_tier] || 0;
+  const usedHours = 8; // mock usage
+  const remaining = maxHours - usedHours;
+  const pct = maxHours > 0 ? (usedHours / maxHours) * 100 : 0;
+
+  return (
+    <>
+      {/* Usage Card */}
+      <Card variant="bordered" padding="md">
+        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-4">
+          <svg className="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 3.75v4.5m0-4.5h-4.5m4.5 0l-6 6m3 12c-8.284 0-15-6.716-15-15V18m9-6.75V15m0 0v.75m0-6.75h.008v.008H12V8.25z" />
+          </svg>
+          AI Receptionist — {plumber.company_name}
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+          <div>
+            <p className="text-xs text-slate-500">Plan Allocation</p>
+            <p className="text-lg font-bold text-slate-900">{maxHours} hrs/mo</p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500">Used This Month</p>
+            <p className="text-lg font-bold text-blue-600">{usedHours}h {pct > 0 ? `(${Math.round(pct)}%)` : ''}</p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500">Remaining</p>
+            <p className={`text-lg font-bold ${remaining > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              {remaining}h
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500">Status</p>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 mt-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Active
+            </span>
+          </div>
+        </div>
+        {/* Usage bar */}
+        <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
+        </div>
+      </Card>
+
+      {/* Greeting Preview */}
+      <Card variant="bordered" padding="md">
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Greeting & Settings</h3>
+        <div className="space-y-3">
+          <div>
+            <p className="text-xs text-slate-500 mb-1">Greeting Message</p>
+            <div className="rounded-xl bg-slate-50 p-3 text-sm text-slate-600 italic">
+              &ldquo;Thank you for calling {plumber.company_name}! I&apos;m your AI receptionist. How can I help you today?&rdquo;
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-xs text-slate-500 mb-1">Booking Hours</p>
+              <p className="text-sm font-medium text-slate-900">8:00 AM — 5:00 PM</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 mb-1">After Hours</p>
+              <p className="text-sm font-medium text-slate-900">Emergency transfers only</p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Recent Calls */}
+      <Card variant="bordered" padding="md">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-slate-900">Recent Calls</h3>
+          <a href="/voice-receptionist" className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+            View All →
+          </a>
+        </div>
+        <div className="space-y-2">
+          {[
+            { caller: 'James Wilson', time: '8:32 AM', issue: 'Kitchen sink leak — scheduled', outcome: 'Booked' },
+            { caller: 'Sarah Mitchell', time: '9:15 AM', issue: 'Water heater troubleshooting', outcome: 'Resolved' },
+            { caller: 'Oak Springs Apts', time: '10:00 AM', issue: 'Multiple toilet leaks — logged', outcome: 'Lead' },
+          ].map((call, i) => (
+            <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
+                {call.caller.split(' ').map(w => w[0]).slice(0, 2).join('')}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate">{call.caller}</p>
+                <p className="text-xs text-slate-500 truncate">{call.issue}</p>
+              </div>
+              <span className="text-[10px] text-slate-400">{call.time}</span>
+              <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                call.outcome === 'Booked' ? 'bg-emerald-50 text-emerald-700' :
+                call.outcome === 'Resolved' ? 'bg-amber-50 text-amber-700' :
+                'bg-blue-50 text-blue-700'
+              }`}>{call.outcome}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Full Settings Link */}
+      <div className="flex justify-center">
+        <a href="/voice-receptionist"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Manage AI Receptionist Settings
+        </a>
+      </div>
     </>
   );
 }

@@ -50,13 +50,14 @@ export interface PlumberProfile {
 }
 
 /* ── Tab Config ── */
-export type ProfileTab = 'overview' | 'financial' | 'performance' | 'compliance';
+export type ProfileTab = 'overview' | 'financial' | 'performance' | 'compliance' | 'receptionist';
 
 export const PROFILE_TABS: { key: ProfileTab; label: string }[] = [
   { key: 'overview', label: 'Overview' },
   { key: 'financial', label: 'Financial' },
   { key: 'performance', label: 'Performance' },
   { key: 'compliance', label: 'Compliance' },
+  { key: 'receptionist', label: 'AI Receptionist' },
 ];
 
 /* ── Mock Plumber Profiles ── */
