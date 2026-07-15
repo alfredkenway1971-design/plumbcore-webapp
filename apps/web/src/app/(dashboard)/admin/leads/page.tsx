@@ -64,6 +64,7 @@ export default function LeadsMarketplacePage() {
   const [filter, setFilter] = useState('all');
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dispatchMode, setDispatchMode] = useState<DispatchMode>('manual');
   const [selectedLead, setSelectedLead] = useState<string | null>(null);
@@ -369,128 +370,112 @@ export default function LeadsMarketplacePage() {
         </div>
       </div>
 
-      {/* ── Filter Bar ── */}
+      {/* ── Filter Bar — horizontal scroll + filter popover ── */}
       <Card padding="md" variant="bordered">
-        <div className="space-y-3">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search by name, ID, phone, location, or diagnosis..."
-              className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
-            />
-            {searchQuery && (
+        <div className="space-y-2.5">
+          {/* Search + Filters toggle */}
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search by name, ID, phone, location..."
+                className="w-full pl-9 pr-2.5 py-2 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <div className="relative">
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                onClick={() => setShowStatusFilter(!showStatusFilter)}
+                className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all ${
+                  filter !== 'all' ? 'bg-blue-50 border-blue-200 text-blue-600' : 'border-slate-200 text-slate-400 hover:border-slate-300'
+                }`}
+                title="Status filters"
               >
-                <X className="w-4 h-4" />
+                <Filter className="w-4 h-4" />
               </button>
-            )}
+              {showStatusFilter && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowStatusFilter(false)} />
+                  <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-white rounded-xl shadow-lg ring-1 ring-black/5 p-1.5">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-2 py-1.5">Status</p>
+                    {['matching', 'assigned', 'en_route', 'arrived', 'complete', 'unfulfilled', 'refunded'].map(f => (
+                      <button
+                        key={f}
+                        onClick={() => setFilter(filter === f ? 'all' : f)}
+                        className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-medium transition-all ${
+                          filter === f ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {f === 'en_route' ? 'En Route' : f.charAt(0).toUpperCase() + f.slice(1)}
+                      </button>
+                    ))}
+                    {filter !== 'all' && (
+                      <button onClick={() => setFilter('all')} className="w-full text-left px-2.5 py-2 text-xs text-blue-600 font-medium hover:bg-blue-50 rounded-lg">
+                        Clear filter
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Quick Filter Chips */}
-          <div className="flex flex-wrap gap-1.5">
-            {([
-              { key: 'all' as QuickFilter, label: 'All Leads', icon: null },
-              { key: 'today' as QuickFilter, label: 'Today', icon: null },
-              { key: 'us' as QuickFilter, label: 'US', icon: null },
-              { key: 'canada' as QuickFilter, label: 'Canada', icon: null },
-              { key: '49' as QuickFilter, label: '$49', icon: null },
-              { key: '99' as QuickFilter, label: '$99', icon: null },
-              { key: '149+' as QuickFilter, label: '$149+', icon: null },
-            ] as const).map(qf => (
+          {/* Quick Filter Chips — horizontal scroll */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide">
+            {([...['all', 'today', 'us', 'canada', '49', '99', '149+'] as QuickFilter[]]).map(qf => (
               <button
-                key={qf.key}
-                onClick={() => setQuickFilter(qf.key)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                  quickFilter === qf.key
+                key={qf}
+                onClick={() => setQuickFilter(qf)}
+                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                  quickFilter === qf
                     ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                     : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-slate-700'
                 }`}
               >
-                {qf.label}
-              </button>
-            ))}
-
-            {/* Status filter dropdown-style */}
-            <div className="w-px h-6 bg-slate-200 self-center mx-1" />
-
-            {['matching', 'assigned', 'en_route', 'arrived', 'complete', 'unfulfilled', 'refunded'].map(f => (
-              <button
-                key={f}
-                onClick={() => setFilter(filter === f ? 'all' : f)}
-                className={`px-2.5 py-1.5 rounded-lg text-[10px] font-medium border transition-all ${
-                  filter === f
-                    ? 'bg-slate-800 text-white border-slate-800 shadow-sm'
-                    : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                {f.charAt(0).toUpperCase() + f.slice(1).replace('_', ' ')}
+                {qf === 'all' ? 'All Leads' : qf === 'us' ? 'US' : qf === 'canada' ? 'Canada' : qf === '149+' ? '$149+' : qf === '49' ? '$49' : qf === '99' ? '$99' : qf}
               </button>
             ))}
           </div>
         </div>
       </Card>
 
-      {/* ── Dispatch Mode Selector ── */}
-      <Card padding="md" variant="bordered">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="flex gap-1.5">
-            {[
-              { key: 'manual' as const, label: 'Manual Assign', icon: '👆' },
-              { key: 'round-robin' as const, label: 'Auto Round-Robin', icon: '🔄' },
-              { key: 'pool' as const, label: 'Lead Pool', icon: '📡' },
-            ].map(mode => (
-              <button
-                key={mode.key}
-                onClick={() => setDispatchMode(mode.key)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  dispatchMode === mode.key
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
-                }`}
-              >
-                <span>{mode.icon}</span>
-                <span>{mode.label}</span>
-              </button>
-            ))}
-          </div>
+      {/* ── Dispatch Mode — Segmented Bar ── */}
+      <div className="flex items-stretch gap-1 bg-white rounded-xl ring-1 ring-black/5 p-1 shadow-sm">
+        {([
+          { key: 'manual' as const, label: 'Manual', icon: '✋' },
+          { key: 'round-robin' as const, label: 'Round-Robin', icon: '🔄' },
+          { key: 'pool' as const, label: 'Lead Pool', icon: '📡' },
+        ] as const).map(mode => (
+          <button
+            key={mode.key}
+            onClick={() => setDispatchMode(mode.key)}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all ${
+              dispatchMode === mode.key
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <span className="text-sm">{mode.icon}</span>
+            <span>{mode.label}</span>
+          </button>
+        ))}
+      </div>
 
-          <div className="flex-1" />
-
-          {/* Mode-specific controls */}
-          {dispatchMode === 'round-robin' && (
-            <div className="flex items-center gap-2">
-              <Button size="sm" onClick={autoRoundRobin} disabled={matching === 0}>
-                🚀 Auto-Assign {matching} Lead{matching !== 1 ? 's' : ''}
-              </Button>
-              <button
-                onClick={() => setShowRRConfig(!showRRConfig)}
-                className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded hover:bg-blue-50 flex items-center gap-1"
-              >
-                <Settings className="w-3 h-3" />
-                {showRRConfig ? 'Hide Config' : 'Config'}
-              </button>
-            </div>
-          )}
-
-          {dispatchMode === 'pool' && (
-            <Button size="sm" onClick={broadcastToPool} disabled={poolActive || matching === 0} loading={poolActive}>
-              📡 Broadcast to {plumbers.filter(p => p.available).length} Available Plumbers
-            </Button>
-          )}
-
-          {dispatchMode === 'manual' && (
-            <span className="text-xs text-slate-400">
-              Click a matching lead, then select a plumber to assign
-            </span>
-          )}
-        </div>
-      </Card>
+      {/* Mode instruction */}
+      <div className="text-center">
+        <span className="text-xs text-slate-400">
+          {dispatchMode === 'manual' ? 'Select a matching lead, then choose a plumber to assign' :
+           dispatchMode === 'round-robin' ? 'Leads auto-assign to next plumber in rotation order by ZIP prefix' :
+           'Leads broadcast to all available plumbers — first to accept gets the job'}
+        </span>
+      </div>
 
       {/* ── Stats ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
