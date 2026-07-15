@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
 import { DEPOSIT_TIERS } from '@/lib/plan-pricing';
 import {
@@ -87,6 +87,57 @@ export default function LeadsMarketplacePage() {
 
   // Pool mode
   const [poolActive, setPoolActive] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<{ matching: number; assigned: number; complete: number; en_route: number; arrived: number; unfulfilled: number; refunded: number } | null>(null);
+
+  // Fetch leads and stats from API on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchData() {
+      try {
+        const [leadsRes, statsRes] = await Promise.all([
+          fetch('/api/admin/data?endpoint=leads'),
+          fetch('/api/admin/data?endpoint=leads-stats'),
+        ]);
+
+        if (!cancelled) {
+          if (leadsRes.ok) {
+            const leadsData = await leadsRes.json();
+            const mapped: Lead[] = (leadsData.leads || []).map((item: any) => ({
+              id: item.id,
+              customer: item.customer_name || '',
+              photo: '',
+              estimate: item.total_estimate || 0,
+              depositAmount: item.deposit_paid || 0,
+              depositTier: item.deposit_tier || 'basic',
+              location: [item.customer_city, item.customer_address].filter(Boolean).join(', '),
+              zip: '',
+              depositPaid: (item.deposit_paid || 0) > 0,
+              status: item.status || 'matching',
+              assignedPlumber: item.assigned_plumber_id || '',
+              date: item.created_at || '',
+              diagnosis: item.diagnosis || '',
+              address: item.customer_address || '',
+            }));
+            setLeads(mapped);
+          }
+
+          if (statsRes.ok) {
+            const statsData = await statsRes.json();
+            setStats(statsData.stats);
+          }
+        }
+      } catch {
+        // Keep empty array on failure — no mock fallback
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchData();
+    return () => { cancelled = true; };
+  }, []);
 
   /* ── Derived Data ── */
   const today = new Date().toISOString().slice(0, 10);
@@ -449,21 +500,31 @@ export default function LeadsMarketplacePage() {
         </div>
         <div className="rounded-lg bg-purple-50 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-slate-500">Matching</p>
-          <p className="text-lg font-bold text-purple-600">{matching}</p>
+          <p className="text-lg font-bold text-purple-600">{stats?.matching ?? matching}</p>
         </div>
         <div className="rounded-lg bg-green-50 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-slate-500">Assigned</p>
-          <p className="text-lg font-bold text-emerald-600">{leads.filter(l => l.status === 'assigned').length}</p>
+          <p className="text-lg font-bold text-emerald-600">{stats?.assigned ?? leads.filter(l => l.status === 'assigned').length}</p>
         </div>
         <div className="rounded-lg hover:bg-slate-50 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-slate-500">Completed</p>
-          <p className="text-lg font-bold text-slate-400">{leads.filter(l => l.status === 'complete').length}</p>
+          <p className="text-lg font-bold text-slate-400">{stats?.complete ?? leads.filter(l => l.status === 'complete').length}</p>
         </div>
       </div>
 
       {/* ── Lead Cards ── */}
       <div className="space-y-3">
-        {leads.length === 0 ? (
+        {loading ? (
+          <Card padding="lg" variant="bordered" className="text-center py-16">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div>
+                <h3 className="text-base font-semibold text-slate-900">Loading leads...</h3>
+                <p className="text-sm text-slate-500 mt-1">Fetching from database</p>
+              </div>
+            </div>
+          </Card>
+        ) : leads.length === 0 ? (
           <Card padding="lg" variant="bordered" className="text-center py-16">
             <div className="flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl border border-slate-200">

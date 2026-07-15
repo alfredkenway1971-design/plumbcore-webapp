@@ -1015,15 +1015,26 @@ export default function AdminPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Merge real KPIs with mock defaults for display
   const displayKPIs = realKPIs ? {
     ...platformKPIs,
-    totalMRR: (realKPIs as any).mrr || platformKPIs.totalMRR,
-    activePlumbers: (realKPIs as any).activePlumbers ?? platformKPIs.activePlumbers,
-    activeTrials: (realKPIs as any).freeTrials ?? platformKPIs.activeTrials,
-    churnRate: parseFloat(String((realKPIs as any).churnRate || platformKPIs.churnRate)),
+    totalMRR: (realKPIs as any).mrr || 0,
+    activePlumbers: (realKPIs as any).activePlumbers ?? 0,
+    activeTrials: (realKPIs as any).freeTrials ?? 0,
+    churnRate: parseFloat(String((realKPIs as any).churnRate || '0')),
     churnTrend: (parseFloat(String((realKPIs as any).churnRate || '0')) < 2.5 ? 'down' : 'up') as 'down' | 'up',
-  } : platformKPIs;
+  } : {
+    ...platformKPIs,
+    totalMRR: 0,
+    activePlumbers: 0,
+    activeTrials: 0,
+    churnRate: 0,
+    mrrGrowth: 0,
+    plumberGrowth: 0,
+    trialConversionRate: 0,
+    churnTrend: 'down' as const,
+    leadsToday: 0,
+    unfulfilledLeads: 0,
+  };
 
   const handleExport = () => {
     const kpiData = [

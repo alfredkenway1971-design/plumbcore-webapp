@@ -105,6 +105,29 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ trials: companies || [] });
       }
 
+      case 'leads': {
+        const { data } = await sb
+          .from('leads')
+          .select('*')
+          .order('created_at', { ascending: false });
+        return NextResponse.json({ leads: data || [] });
+      }
+
+      case 'leads-stats': {
+        const { data: leads } = await sb.from('leads').select('status');
+        const all = leads || [];
+        const matching = all.filter((l: any) => l.status === 'matching').length;
+        const assigned = all.filter((l: any) => l.status === 'assigned').length;
+        const complete = all.filter((l: any) => l.status === 'complete').length;
+        const enRoute = all.filter((l: any) => l.status === 'en_route').length;
+        const arrived = all.filter((l: any) => l.status === 'arrived').length;
+        const unfulfilled = all.filter((l: any) => l.status === 'unfulfilled').length;
+        const refunded = all.filter((l: any) => l.status === 'refunded').length;
+        return NextResponse.json({
+          stats: { matching, assigned, complete, en_route: enRoute, arrived, unfulfilled, refunded },
+        });
+      }
+
       default:
         return NextResponse.json({ error: 'Unknown endpoint' }, { status: 400 });
     }
