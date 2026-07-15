@@ -45,7 +45,7 @@ function compressImage(file: File, maxW: number = 512): Promise<File> {
 
 /* ── Step Indicator ── */
 function StepIndicator({ current, total, t }: { current: number; total: number; t: (key: string) => string }) {
-  const labels = [t('quote.stepUpload'), t('quote.stepInfo'), t('quote.stepAnalyze'), t('quote.stepEstimate'), 'Done'];
+  const labels = [t('quote.stepUpload'), t('quote.stepInfo'), t('quote.stepAnalyze'), t('quote.stepEstimate'), t('quote.done')];
   return (
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
@@ -115,14 +115,14 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         
         {/* Phone — US/CA format */}
         <div className="relative">
-          <Input type="tel" inputMode="numeric" placeholder="+1 (555) 555-5555" value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
+          <Input type="tel" inputMode="numeric" placeholder={t('quote.phonePlaceholder')} value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
           {phoneDisplay.length > 0 && !phoneValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.validPhone')}</p>}
         </div>
 
         {/* Email — REQUIRED */}
         <div className="relative">
-          <Input type="email" inputMode="email" placeholder="Email address *" value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
-          {form.email.length > 0 && !emailValid && <p className="text-xs text-red-500 mt-1.5 ml-1">Enter a valid email address</p>}
+          <Input type="email" inputMode="email" placeholder={t('quote.emailPlaceholder')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
+          {form.email.length > 0 && !emailValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.emailValidation')}</p>}
         </div>
 
         {/* Address */}
@@ -130,10 +130,10 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         
         {/* City / State / Zip */}
         <div className="grid grid-cols-2 gap-3">
-          <Input type="text" placeholder="City" value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" />
+          <Input type="text" placeholder={t('quote.cityPlaceholder')} value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" />
           <div className="grid grid-cols-2 gap-2">
-            <Input type="text" placeholder="State" value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={20} />
-            <Input type="text" placeholder="ZIP" value={form.zip} onChange={(e: any) => {
+            <Input type="text" placeholder={t('quote.statePlaceholder')} value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={20} />
+            <Input type="text" placeholder={t('quote.zipPlaceholder')} value={form.zip} onChange={(e: any) => {
               let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
               // Canadian postal: auto-space after 3rd char
               if (val.length > 3 && form.country === 'CA') val = val.slice(0,3) + ' ' + val.slice(3,6);
@@ -146,8 +146,8 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         
         {/* Country */}
         <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
+          <option value="US">{t('quote.countryUS')}</option>
+          <option value="CA">{t('quote.countryCA')}</option>
         </select>
 
         {/* Description — with mic voice input + AI enhance */}
@@ -155,7 +155,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
           <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 resize-none pr-20" />
           <div className="absolute right-2 bottom-2 flex items-center gap-1">
             {/* Voice mic button */}
-            <button type="button" onClick={onToggleVoice} title={isListening ? 'Stop listening' : 'Voice input'} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 hover:bg-slate-200 text-slate-500'}`}>
+            <button type="button" onClick={onToggleVoice} title={isListening ? t('quote.stopListening') : t('quote.voiceInput')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 hover:bg-slate-200 text-slate-500'}`}>
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
             </button>
             {/* AI enhance button */}
@@ -169,11 +169,11 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
                 if (data.reply) setForm((p: any) => ({ ...p, desc: data.reply.trim(), _enhancing: false }));
                 else setForm((p: any) => ({ ...p, _enhancing: false }));
               } catch { setForm((p: any) => ({ ...p, _enhancing: false })); }
-            }} disabled={form._enhancing} title="Enhance with AI" className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${form._enhancing ? 'bg-blue-100 text-blue-400' : 'bg-blue-50 hover:bg-blue-100 text-blue-500'}`}>
+            }} disabled={form._enhancing} title={t('quote.enhanceWithAI')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${form._enhancing ? 'bg-blue-100 text-blue-400' : 'bg-blue-50 hover:bg-blue-100 text-blue-500'}`}>
               <Sparkles className="w-3.5 h-3.5" />
             </button>
           </div>
-          {isListening && <p className="text-xs text-red-500 mt-1.5 ml-1 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" /> Listening... speak now</p>}
+          {isListening && <p className="text-xs text-red-500 mt-1.5 ml-1 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" /> {t('quote.listening')}</p>}
         </div>
 
         {/* Urgency */}
@@ -234,9 +234,9 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <p className="text-sm text-slate-400">{t('quote.resultValid')}</p>
         </div>
         <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-6 text-white text-center shadow-lg">
-          <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">LOW CONFIDENCE</p>
-          <p className="text-xl font-bold mb-2">We couldn't provide an accurate estimate</p>
-          <p className="text-sm text-white/80">Our AI analysis returned a {result.confidence}% confidence match — we require at least 90% to give you a reliable price. Please add clearer photos or contact us directly for a manual quote.</p>
+          <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">{t('quote.lowConfidence')}</p>
+          <p className="text-xl font-bold mb-2">{t('quote.noAccurateEstimate')}</p>
+          <p className="text-sm text-white/80">{t('quote.aiAnalysisPrefix')} {result.confidence}% {t('quote.aiAnalysisSuffix')}</p>
         </div>
         <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
           <div className="flex items-start justify-between pb-4 mb-4 border-b border-slate-100">
@@ -244,12 +244,12 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p>
               <p className="text-sm font-medium text-slate-900 leading-relaxed">{result.diagnosis}</p>
             </div>
-            <Badge className="ml-3 text-xs font-medium px-3 py-1 shrink-0 bg-red-50 text-red-700 border-red-200">{result.confidence}% match</Badge>
+            <Badge className="ml-3 text-xs font-medium px-3 py-1 shrink-0 bg-red-50 text-red-700 border-red-200">{result.confidence}% {t('quote.match')}</Badge>
           </div>
         </div>
         <div className="text-center space-y-3">
           <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-all shadow-sm">
-            <RefreshCcw className="w-4 h-4" /> Try Again with Better Photos
+            <RefreshCcw className="w-4 h-4" /> {t('quote.tryAgain')}
           </button>
         </div>
         <div className="text-center">
@@ -262,7 +262,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
   const severity = result.severity || 'moderate';
   const isEmergency = severity === 'emergency' || severity === 'high';
   const isUrgent = severity === 'urgent';
-  const severityLabel = result.severityLabel || (isEmergency ? 'Emergency' : isUrgent ? 'Urgent' : 'Standard');
+  const severityLabel = result.severityLabel || (isEmergency ? t('quote.severityEmergency') : isUrgent ? t('quote.severityUrgent') : t('quote.severityStandard'));
   const validityDays = result.validityDays || (isEmergency ? 1 : isUrgent ? 2 : 7);
   const travelFee = result.travelFee || (isEmergency ? 350 : 130);
   const laborRate = result.laborRate || 130;
@@ -278,8 +278,8 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
   const sevCardTint = isEmergency ? 'ring-red-200 bg-red-50/30' : isUrgent ? 'ring-orange-100 bg-orange-50/20' : 'ring-black/5';
   const sevTopBorder = isEmergency ? 'border-t-4 border-t-red-500' : isUrgent ? 'border-t-4 border-t-orange-400' : '';
   
-  const ctaCopy = isEmergency ? 'Get Help Now' : isUrgent ? 'Book Urgent Appointment' : 'Book Appointment';
-  const ctaSubtext = isEmergency ? 'A plumber is standing by for emergencies' : isUrgent ? 'Priority scheduling available' : 'Secure your appointment';
+  const ctaCopy = isEmergency ? t('quote.getHelpNow') : isUrgent ? t('quote.bookUrgentAppointment') : t('quote.bookAppointment');
+  const ctaSubtext = isEmergency ? t('quote.emergencyStandby') : isUrgent ? t('quote.priorityScheduling') : t('quote.secureAppointment');
   
   const f = (n: number) => `$${n.toFixed(2)}`;
   
@@ -306,23 +306,23 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
       {/* Header */}
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
-        <p className="text-sm text-slate-400">Valid for {validityDays} day{validityDays > 1 ? 's' : ''} — price may vary based on on-site inspection</p>
+        <p className="text-sm text-slate-400">{t('quote.validFor')} {validityDays} {validityDays > 1 ? t('quote.days') : t('quote.day')} — {t('quote.priceMayVary')}</p>
         
         {/* Social Proof Counter */}
         <div className="flex items-center justify-center gap-4 text-xs text-slate-400 bg-slate-50 rounded-xl py-2.5 px-4">
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span className="font-medium text-slate-500">{result.confidence}% AI confidence</span>
+            <span className="font-medium text-slate-500">{result.confidence}% {t('quote.aiConfidence')}</span>
           </span>
           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
-            <span>12,400+ repairs priced this week</span>
+            <span>12,400+ {t('quote.repairsThisWeek')}</span>
           </span>
           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-            <span>4.9 avg rating (2,300+ reviews)</span>
+            <span>4.9 {t('quote.avgRating')} (2,300+ {t('quote.withReviews')})</span>
           </span>
         </div>
       </div>
@@ -336,13 +336,13 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
               <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
             </span>
             <div>
-              <p className="text-sm font-bold text-red-800">Emergency Response</p>
-              <p className="text-xs text-red-600">Emergency rate applied · Priority dispatch</p>
+              <p className="text-sm font-bold text-red-800">{t('quote.emergencyResponse')}</p>
+              <p className="text-xs text-red-600">{t('quote.emergencyRateApplied')}</p>
             </div>
           </div>
           <div className="text-right">
             <p className="text-lg font-bold text-red-700">{minutes}:{seconds.toString().padStart(2, '0')}</p>
-            <p className="text-[10px] text-red-500">min remaining</p>
+            <p className="text-[10px] text-red-500">{t('quote.minRemaining')}</p>
           </div>
         </div>
       )}
@@ -352,11 +352,11 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <div className="flex items-center gap-3">
             <svg className="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
             <div>
-              <p className="text-sm font-bold text-orange-800">Priority Service</p>
-              <p className="text-xs text-orange-600">48-hour scheduling · Urgent rate applies</p>
+              <p className="text-sm font-bold text-orange-800">{t('quote.priorityService')}</p>
+              <p className="text-xs text-orange-600">{t('quote.urgentScheduling')}</p>
             </div>
           </div>
-          <div className="text-xs text-orange-600 font-medium">Available now</div>
+          <div className="text-xs text-orange-600 font-medium">{t('quote.availableNow')}</div>
         </div>
       )}
 
@@ -366,16 +366,16 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold text-slate-900">Matching you with a plumber...</p>
+          <p className="text-sm font-semibold text-slate-900">{t('quote.matchingPlumber')}</p>
           <div className="flex items-center gap-2 mt-0.5">
             <span className="flex gap-0.5">
               {[1,2,3,4,5].map(i => <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}
             </span>
-            <span className="text-xs text-slate-400">4.9 avg rating</span>
-            <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded font-medium">Available now</span>
+            <span className="text-xs text-slate-400">{t('quote.avgRating')}</span>
+            <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded font-medium">{t('quote.availableNow')}</span>
           </div>
         </div>
-        <div className="text-xs text-slate-400 animate-pulse">Finding...</div>
+        <div className="text-xs text-slate-400 animate-pulse">{t('quote.finding')}</div>
       </div>
 
       {/* Estimate Breakdown Card */}
@@ -383,7 +383,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         {/* Diagnosis — Hero */}
         <div className="pb-5 mb-4 border-b border-slate-100">
           <div className="flex items-start justify-between gap-3 mb-2">
-            <h3 className="text-base font-bold text-slate-900">AI Diagnosis</h3>
+            <h3 className="text-base font-bold text-slate-900">{t('quote.aiDiagnosis')}</h3>
             <div className="flex items-center gap-1.5 shrink-0">
               {isEmergency && <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>}
               <Badge className={`text-xs font-medium px-3 py-1 ${sevColors[severity] || sevColors.low}`}>
@@ -393,8 +393,8 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
           <p className="text-sm text-slate-700 leading-relaxed font-medium">{result.diagnosis}</p>
           <div className="flex items-center gap-2 mt-3">
-            <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">AI Confidence: High</span>
-            <span className="text-[11px] text-slate-400">{result.confidence}% match to 847 similar repairs</span>
+            <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">{t('quote.aiConfidenceHigh')}</span>
+            <span className="text-[11px] text-slate-400">{result.confidence}% {t('quote.matchTo')} 847 {t('quote.similarRepairs')}</span>
           </div>
         </div>
 
@@ -431,7 +431,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
               ))}
               {!showAllParts && parts.length > 2 && (
                 <button onClick={() => setShowAllParts(true)} className="text-xs text-blue-600 font-medium hover:text-blue-700 mt-1 ml-1">
-                  + View {parts.length - 2} more parts
+                  {t('quote.viewMoreParts')} {parts.length - 2} {t('quote.moreParts')}
                 </button>
               )}
             </div>
@@ -487,7 +487,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         </div>
         
         <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-bold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-base">
-          {stripeLoading ? 'Redirecting...' : `${ctaCopy} →`}
+          {stripeLoading ? t('quote.redirecting') : `${ctaCopy} →`}
         </button>
         
         <p className="text-xs text-slate-500 text-center">{t('quote.bookRefundable')}</p>
@@ -515,19 +515,19 @@ function StepSuccess({ result, t }: { result?: any; t: (key: string) => string }
         </svg>
       </div>
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Payment Successful! 🎉</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('quote.paymentSuccessful')}</h2>
         <p className="text-slate-500 max-w-md mx-auto">
-          Your <strong>{depositDollars(result?.depositAmount || 4900)} deposit</strong> has been received. We're finding a licensed plumber in your area now.
+          {t('quote.depositReceived')} <strong>{depositDollars(result?.depositAmount || 4900)}</strong> {t('quote.depositReceivedMid')}
         </p>
       </div>
       <div className="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto text-left space-y-3">
-        <h3 className="font-semibold text-slate-900">What happens next?</h3>
+        <h3 className="font-semibold text-slate-900">{t('quote.whatHappensNext')}</h3>
         <ul className="space-y-2 text-sm text-slate-600">
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>You'll receive a confirmation email with your tracking link</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>We'll match you with the best plumber in your area</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>Track your plumber live: <a href={`/track/${result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track</a></span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>The deposit is fully refundable if no plumber is available</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>Need help? Call <a href="tel:+15551234567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.confirmationEmail')}</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.matchPlumber')}</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.depositRefundable')}</span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
         </ul>
       </div>
     </div>
@@ -573,7 +573,7 @@ export default function QuotePage() {
     if (paymentStatus && !paymentHandled) {
       setPaymentHandled(true);
       if (paymentStatus === 'success') setStep(5 as any);
-      if (paymentStatus === 'cancelled') setError('Payment was cancelled. Your estimate is still saved — you can try again.');
+      if (paymentStatus === 'cancelled') setError(t('quote.paymentCancelled'));
     }
   }, [paymentStatus, paymentHandled]);
 
@@ -585,7 +585,7 @@ export default function QuotePage() {
       return;
     }
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) { setError('Voice input not supported on this browser.'); return; }
+    if (!SpeechRecognition) { setError(t('quote.voiceNotSupported')); return; }
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
@@ -666,9 +666,9 @@ export default function QuotePage() {
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-      else setError(data.error || 'Payment setup failed. Please try again.');
+      else setError(data.error || t('quote.paymentSetupFailed'));
     } catch {
-      setError('Payment setup failed. Please try again.');
+      setError(t('quote.paymentSetupFailed'));
     } finally {
       setStripeLoading(false);
     }
@@ -683,9 +683,9 @@ export default function QuotePage() {
           <a href="/" className="flex items-center gap-2.5">
             <PlumbCoreLogo size="sm" showText={false} />
             {isWhiteLabel && wlBrand ? (
-              <div><p className="text-sm font-bold text-slate-900">{wlBrand.name || companySlug}</p><p className="text-[11px] text-slate-400">Plumbing Services</p></div>
+              <div><p className="text-sm font-bold text-slate-900">{wlBrand.name || companySlug}</p><p className="text-[11px] text-slate-400">{t('quote.plumbingServices')}</p></div>
             ) : (
-              <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">Premium Plumbing Services</p></div>
+              <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">{t('quote.premiumPlumbingServices')}</p></div>
             )}
           </a>
           <div className="flex items-center gap-2">
