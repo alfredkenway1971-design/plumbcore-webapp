@@ -553,7 +553,7 @@ function StepSuccess({ result, t, trackingLeadId, trackingToken }: { result?: an
         <ul className="space-y-2 text-sm text-slate-600">
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.confirmationEmail')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.matchPlumber')}</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingToken || trackingLeadId || result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track/{trackingToken || '...'}</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingToken || trackingLeadId || result?.leadId || ''}?estimate=${result?.totalPrice || 0}&deposit=${result?.depositAmount || 0}`} className="text-blue-600 font-medium underline">plumbcore.ai/track/{trackingToken || '...'}</a></span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.depositRefundable')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
         </ul>

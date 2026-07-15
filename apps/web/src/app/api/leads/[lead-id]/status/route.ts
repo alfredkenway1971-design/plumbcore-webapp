@@ -102,14 +102,17 @@ export async function GET(
       return NextResponse.json(data);
     }
 
-    // Return a generic mock response for any lead
+    // Return a generic mock response for any lead — use query params overrides
+    const searchParams = { estimate: '0', deposit: '0', ...Object.fromEntries(new URL(req.url).searchParams) };
+    const est = parseFloat(searchParams.estimate) || 251.18;
+    const dep = parseFloat(searchParams.deposit) || 49;
     return NextResponse.json({
       id: leadId,
       status: 'matching',
-      diagnosis: 'Leaky faucet — worn cartridge',
+      diagnosis: 'Plumbing issue detected',
       severity: 'moderate',
-      totalEstimate: 251.18,
-      depositPaid: 49,
+      totalEstimate: est,
+      depositPaid: dep,
       customerCity: 'Austin',
       customerName: 'Customer',
       createdAt: new Date().toISOString(),

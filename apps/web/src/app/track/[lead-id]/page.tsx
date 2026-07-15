@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 
 /* ── Types ── */
@@ -384,6 +384,7 @@ function ProgressBar({ status }: { status: LeadStatus }) {
 /* ── Main Page ── */
 export default function TrackPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const leadId = params?.['lead-id'] as string;
   const [data, setData] = useState<LeadStatusResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -392,7 +393,11 @@ export default function TrackPage() {
   const fetchStatus = useCallback(async () => {
     if (!leadId) return;
     try {
-      const res = await fetch(`/api/leads/${leadId}/status`);
+      // Pass estimate/deposit from URL query params so the API returns real data
+      const est = searchParams.get('estimate');
+      const dep = searchParams.get('deposit');
+      const qs = est || dep ? `?estimate=${est || ''}&deposit=${dep || ''}` : '';
+      const res = await fetch(`/api/leads/${leadId}/status${qs}`);
       if (!res.ok) {
         if (res.status === 404) { setError('Tracking page not found. Please check your tracking link.'); setLoading(false); return; }
         throw new Error(`HTTP ${res.status}`);
@@ -403,7 +408,7 @@ export default function TrackPage() {
       console.error('[Track] Poll error:', err.message);
       if (!data) setError('Unable to load tracking information. Please try again.');
     } finally { setLoading(false); }
-  }, [leadId, data]);
+  }, [leadId, data, searchParams]);
 
   useEffect(() => {
     if (!leadId) return;
