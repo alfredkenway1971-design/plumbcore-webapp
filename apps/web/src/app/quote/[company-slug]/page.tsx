@@ -478,7 +478,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
             <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
               <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
               {t('quote.tax')} 
-              <span className="font-normal text-slate-400 ml-0.5">{(result.taxRate||0.085)*100}%</span>
+              <span className="font-normal text-slate-400 ml-0.5">{result.taxLabel || (result.taxRate ? `${(result.taxRate*100).toFixed(1)}%` : '8.5%')}</span>
             </span>
             <span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span>
           </div>
@@ -671,7 +671,7 @@ export default function QuotePage() {
           reader.readAsDataURL(photos[0]);
         });
       }
-      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency, locale}) });
+      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency, locale, state:form.state, country:form.country}) });
       const data = await res.json();
       // Localized fallback result
       const fallbackResult = (lang: string) => {
@@ -694,7 +694,7 @@ export default function QuotePage() {
             {name: isFr ? 'Graisse de plombier' : isEs ? 'Grasa de fontanero' : isDe ? 'Installateurfett' : "Plumber's grease", qty:1, unitPrice:5, total:5},
             {name: isFr ? 'Ruban de téflon' : isEs ? 'Cinta de teflón' : isDe ? 'Teflonband' : 'Teflon tape', qty:1, unitPrice:3, total:3},
           ],
-          partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95,
+          partsTotal:51.50, tax:19.68, taxRate:0.085, taxLabel:'Tax 8.5%', totalPrice:251.18, confidence:95,
           deposit:4900, depositAmount:4900, depositTier:'Under $1,000',
           depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB'
         };

@@ -6,10 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 import { calcDeposit } from '@/lib/plan-pricing'
 import { DEPOSIT_PRICE_IDS } from '@/lib/feature-gates'
+import { getTaxRate } from '@/lib/tax-rates'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
-const TAX_RATE = 0.085
 const CONFIDENCE_THRESHOLD = 70
 const MIN_CONFIDENCE_FOR_ESTIMATE = 80
 
@@ -125,7 +125,7 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
   }
 }
 
-function buildResult(parsed: any, severity: string = 'moderate', urgency: string = 'routine') {
+function buildResult(parsed: any, severity: string = 'moderate', urgency: string = 'routine', customerState?: string, customerCountry?: string) {
   // Determine pricing tier from urgency (user selection) — COMPLETELY overrides severity
   // Routine → always standard pricing regardless of what AI says
   const pricingTier = urgency === 'emergency' ? 'emergency' : 
@@ -156,7 +156,11 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
   const laborCost = Math.round(estimatedHours * laborRate * 100) / 100
   const travelFeeAmount = travelFee
   const subtotal = laborCost + partsTotal + travelFeeAmount
-  const tax = Math.round(subtotal * TAX_RATE * 100) / 100
+  // Dynamic tax rate based on customer's state/province
+  const taxInfo = getTaxRate(customerState || '', customerCountry || 'US')
+  const taxRate = taxInfo.rate
+  const taxLabel = taxInfo.label
+  const tax = Math.round(subtotal * taxRate * 100) / 100
   const totalPrice = Math.round((subtotal + tax) * 100) / 100
   const confidence = Math.min(100, Math.max(0, parsed.confidence || 85))
 
@@ -183,7 +187,8 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
     parts: canProvideEstimate ? parts : [],
     partsTotal: canProvideEstimate ? partsTotal : 0,
     tax: canProvideEstimate ? tax : 0,
-    taxRate: TAX_RATE,
+    taxRate,
+    taxLabel,
     totalPrice: canProvideEstimate ? totalPrice : 0,
     confidence,
     deposit: canProvideEstimate ? depositInfo.deposit : 0,
@@ -195,8 +200,8 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
 
 export async function POST(request: NextRequest) {
   try {
-    const { photoBase64, customerDescription, customerPhone, urgency, locale } = await request.json()
-    const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default') + (locale || 'en')).digest('hex')
+    const { photoBase64, customerDescription, customerPhone, urgency, locale, state: customerState, country: customerCountry } = await request.json()
+    const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default') + (locale || 'en') + (customerState || '')).digest('hex')
 
     const cached = responseCache.get(cacheKey)
     if (cached && cached.expiry > Date.now()) {
@@ -229,7 +234,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Analysis failed' }, { status: 500 })
     }
 
-    const result = buildResult(finalParsed, finalParsed?.severity || 'moderate', urgency || 'routine')
+    const result = buildResult(finalParsed, finalParsed?.severity || 'moderate', urgency || 'routine', customerState, customerCountry)
     responseCache.set(cacheKey, { data: result, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
