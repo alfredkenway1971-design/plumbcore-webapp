@@ -312,7 +312,7 @@ const defaultTranslations: Translations = {
     lowConfidence: "LOW CONFIDENCE",
     noAccurateEstimate: "We couldn't provide an accurate estimate",
     aiAnalysisPrefix: "Our AI analysis returned a",
-    aiAnalysisSuffix: "confidence match — we require at least 90% to give you a reliable price. Please add clearer photos or contact us directly for a manual quote.",
+    aiAnalysisSuffix: "confidence match — we require at least 80% to give you a reliable price. Please add clearer photos or contact us directly for a manual quote.",
     tryAgain: "Try Again with Better Photos",
     getHelpNow: "Get Help Now",
     bookUrgentAppointment: "Book Urgent Appointment",

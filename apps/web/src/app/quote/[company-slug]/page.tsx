@@ -226,7 +226,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
   if (!result) return null;
   
   // If confidence is too low, show a message instead of pricing
-  if (result.canProvideEstimate === false || result.confidence < 90) {
+  if (result.canProvideEstimate === false) {
     return (
       <div className="space-y-6">
         <div className="text-center">
