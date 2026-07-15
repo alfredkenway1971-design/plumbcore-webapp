@@ -53,45 +53,39 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
         </div>
 
         {/* Mobile menu button */}
-      <button onClick={() => setOpen(!open)} className="md:hidden relative z-[70] p-2 text-slate-600" aria-label="Menu">
+      <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label="Menu">
         {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
       </div>
 
-      {/* Mobile side drawer menu — hidden when closed, no opacity tricks */}
+      {/* Mobile simple dropdown — NO z-index, NO overlay, just pushes content down */}
       {open && (
-      <div className="md:hidden fixed inset-0 z-[70]">
-        {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-        {/* Drawer */}
-        <div className="absolute top-0 right-0 h-full w-[280px] bg-white shadow-2xl animate-in slide-in-from-right">
-          <div className="flex flex-col h-full pt-20 px-6">
-            {links.map(l => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block py-3.5 text-base font-semibold text-slate-900 hover:text-blue-600 transition-colors border-b border-slate-100"
-              >
-                {l.label}
-              </a>
-            ))}
-            <div className="mt-6 flex flex-col items-start gap-3">
-              <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
-              <a href="/login" onClick={() => setOpen(false)} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                Sign In
-              </a>
-              <a
-                href="/signup"
-                onClick={() => setOpen(false)}
-                className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 inline-flex items-center justify-center gap-2 text-sm"
-              >
-                Start Free Trial <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
+        <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-1">
+          {links.map(l => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors text-center"
+            >
+              {l.label}
+            </a>
+          ))}
+          <hr className="my-2 border-slate-100" />
+          <div className="flex flex-col items-center gap-2 pt-1">
+            <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
+            <a href="/login" onClick={() => setOpen(false)} className="block w-full text-center px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">
+              Sign In
+            </a>
+            <a
+              href="/signup"
+              onClick={() => setOpen(false)}
+              className="block w-full text-center h-10 leading-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25"
+            >
+              Start Free Trial
+            </a>
           </div>
         </div>
-      </div>
       )}
     </header>
   );
