@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
+import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 
 /* ── Types ── */
 type LeadStatus = 'pending' | 'routing' | 'matching' | 'assigned' | 'en_route' | 'arrived' | 'complete' | 'refunded';
@@ -455,13 +456,7 @@ export default function TrackPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <header className="bg-white/80 backdrop-blur-xl ring-1 ring-black/5 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-[10px] font-bold">AI</div>
-            <div>
-              <span className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></span>
-              <p className="text-[9px] text-slate-400 -mt-0.5">Plumbing Services</p>
-            </div>
-          </div>
+          <PlumbCoreLogo size="sm" showText={true} />
           <a href="tel:+155****4567" className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-all active:scale-95">
             <I.Phone /> Call
           </a>
