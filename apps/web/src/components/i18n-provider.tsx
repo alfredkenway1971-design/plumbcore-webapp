@@ -450,6 +450,18 @@ interface I18nContextType {
   changeLocale: (newLocale: Locale) => void;
 }
 
+function deepMerge(target: any, source: any): any {
+  const result = { ...target };
+  for (const key of Object.keys(source)) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = deepMerge(result[key] || {}, source[key]);
+    } else if (source[key] !== undefined) {
+      result[key] = source[key];
+    }
+  }
+  return result;
+}
+
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
@@ -475,8 +487,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       try {
         const response = await fetch(`/api/translations?locale=${locale}`);
         const data = await response.json();
-        // Merge with defaults so missing keys fall back to English
-        setTranslations({ ...defaultTranslations, ...data });
+        // Deep merge so missing keys fall back to English defaults
+        setTranslations(deepMerge(defaultTranslations, data));
       } catch (error) {
         console.error('Failed to load translations:', error);
         setTranslations(defaultTranslations); // Fallback to English
