@@ -68,10 +68,14 @@ Parts pricing reference:
 
 Labor rate is $120/hr. Return ONLY the JSON object.`
 
-async function callOpenRouter(model: string, userMessage: string, photoBase64: string | null, openrouterKey: string) {
+async function callOpenRouter(model: string, userMessage: string, photoBase64: string | null, openrouterKey: string, locale: string = 'en') {
   // Build message content — with or without image
+  const langInstruction = locale === 'fr' ? '\n\nIMPORTANT: Respond in French. Write the diagnosis, parts names, and all text in French.'
+    : locale === 'es' ? '\n\nIMPORTANTE: Responda en español. Escriba el diagnóstico, nombres de piezas y todo el texto en español.'
+    : locale === 'de' ? '\n\nWICHTIG: Antworten Sie auf Deutsch. Schreiben Sie die Diagnose, Teilebezeichnungen und den gesamten Text auf Deutsch.'
+    : '';
   const userContent: any[] = [
-    { type: 'text', text: `${AI_SYSTEM_PROMPT}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
+    { type: 'text', text: `${AI_SYSTEM_PROMPT}${langInstruction}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
   ];
 
   // If photo provided, include it as a vision input
@@ -189,8 +193,8 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
 
 export async function POST(request: NextRequest) {
   try {
-    const { photoBase64, customerDescription, customerPhone, urgency } = await request.json()
-    const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default')).digest('hex')
+    const { photoBase64, customerDescription, customerPhone, urgency, locale } = await request.json()
+    const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default') + (locale || 'en')).digest('hex')
 
     const cached = responseCache.get(cacheKey)
     if (cached && cached.expiry > Date.now()) {
@@ -204,7 +208,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ── PRIMARY: GPT-4o Mini (more accurate pricing) ──
-    const primaryResult = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey)
+    const primaryResult = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey, locale)
     
     let finalParsed = primaryResult
     let modelUsed = 'openai/gpt-4o-mini'
@@ -212,7 +216,7 @@ export async function POST(request: NextRequest) {
     // ── FALLBACK: Qwen3 VL 8B (if GPT-4o Mini fails) ──
     if (!primaryResult) {
       console.log('GPT-4o Mini failed — trying Qwen3 VL 8B as fallback')
-      const fallbackResult = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey)
+      const fallbackResult = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey, locale)
       if (fallbackResult) {
         finalParsed = fallbackResult
         modelUsed = 'qwen/qwen3-vl-8b-instruct'

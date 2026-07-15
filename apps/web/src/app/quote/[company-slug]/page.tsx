@@ -627,7 +627,7 @@ export default function QuotePage() {
           reader.readAsDataURL(photos[0]);
         });
       }
-      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency}) });
+      const res = await fetch('/api/ai/analyze-photo', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({photoBase64, photoCount:photos.length, customerPhone:form.phone, customerDescription:form.desc, urgency:form.urgency, locale}) });
       const data = await res.json();
       if (data.success && data.result) setResult(data.result);
       else setResult({ canProvideEstimate: true, diagnosis:'Faucet leak detected — worn-out cartridge causing water seepage from the base.', severity:'moderate', estimatedHours:1.5, laborRate:120, laborCost:180, travelFee:150, parts:[{name:'Faucet cartridge replacement kit', qty:1, unitPrice:35, total:35},{name:'O-ring seal set (pack of 3)', qty:1, unitPrice:8.50, total:8.50},{name:'Plumber\'s grease', qty:1, unitPrice:5, total:5},{name:'Teflon tape', qty:1, unitPrice:3, total:3}], partsTotal:51.50, tax:19.68, taxRate:0.085, totalPrice:251.18, confidence:95, deposit:4900, depositAmount:4900, depositTier:'Under $1,000', depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB' });
