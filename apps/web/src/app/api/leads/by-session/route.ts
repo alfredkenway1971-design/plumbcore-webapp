@@ -24,7 +24,7 @@ export async function GET(req: Request) {
           .from('leads')
           .select('id')
           .eq('stripe_session_id', sessionId)
-          .single();
+          .maybeSingle();
         if (lead) {
           return NextResponse.json({ leadId: lead.id });
         }
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
           .from('jobs')
           .select('id')
           .eq('deposit_stripe_id', sessionId)
-          .single();
+          .maybeSingle();
         if (job) {
           return NextResponse.json({ leadId: job.id });
         }

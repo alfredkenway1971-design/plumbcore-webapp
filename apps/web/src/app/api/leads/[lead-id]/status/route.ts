@@ -26,7 +26,7 @@ export async function GET(
           .from('leads')
           .select('*')
           .eq('id', leadId)
-          .single();
+          .maybeSingle();
 
         if (error) {
           // Table might not exist — fall through to mock
