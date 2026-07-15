@@ -8,19 +8,21 @@ interface Suggestion {
   lat: string;
   lon: string;
   address?: {
+    house_number?: string;
     road?: string;
     city?: string;
     town?: string;
     village?: string;
     state?: string;
     postcode?: string;
+    country_code?: string;  // 'us' or 'ca'
   };
 }
 
 interface AddressAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
-  onSelect?: (addr: string, city: string, state: string, zip: string) => void;
+  onSelect?: (addr: string, city: string, state: string, zip: string, country: string) => void;
   placeholder?: string;
   className?: string;
   id?: string;
@@ -102,12 +104,18 @@ export default function AddressAutocomplete({
   };
 
   const handleSelect = (suggestion: Suggestion) => {
-    const addr = suggestion.address?.road || suggestion.display_name.split(',')[0];
+    // Combine house number + street for full address (e.g. "123 Main St")
+    const houseNum = suggestion.address?.house_number || '';
+    const street = suggestion.address?.road || '';
+    const addr = houseNum ? `${houseNum} ${street}` : (street || suggestion.display_name.split(',')[0]);
     const city = suggestion.address?.city || suggestion.address?.town || suggestion.address?.village || '';
     const state = suggestion.address?.state || '';
     const zip = suggestion.address?.postcode || '';
+    // Auto-detect country from Nominatim country_code ('us' or 'ca')
+    const countryCode = suggestion.address?.country_code || '';
+    const country = countryCode === 'ca' ? 'CA' : 'US';
     onChange(suggestion.display_name);
-    onSelect?.(addr, city, state, zip);
+    onSelect?.(addr, city, state, zip, country);
     setSuggestions([]);
     setOpen(false);
     setSelected(true);
