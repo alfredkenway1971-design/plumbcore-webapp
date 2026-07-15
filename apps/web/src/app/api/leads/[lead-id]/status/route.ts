@@ -21,59 +21,66 @@ export async function GET(
     const admin = getAdminClient();
 
     if (admin) {
-      const { data: lead, error } = await (admin as any)
-        .from('leads')
-        .select('*')
-        .eq('id', leadId)
-        .single();
-
-      if (error) {
-        return NextResponse.json({ error: 'Lead not found', details: error.message }, { status: 404 });
-      }
-
-      if (!lead) {
-        return NextResponse.json({ error: 'Lead not found' }, { status: 404 });
-      }
-
-      // If assigned, also fetch plumber info
-      let plumberInfo = null;
-      if (lead.status === 'assigned' && lead.assigned_plumber_id) {
-        const { data: plumber } = await (admin as any)
-          .from('plumber_profiles')
+      try {
+        const { data: lead, error } = await (admin as any)
+          .from('leads')
           .select('*')
-          .eq('id', lead.assigned_plumber_id)
+          .eq('id', leadId)
           .single();
 
-        if (plumber) {
-          plumberInfo = {
-            id: plumber.id,
-            companyId: plumber.company_id,
-            companyName: plumber.company_name,
-            phone: plumber.phone || '',
-            avgRating: plumber.avg_rating,
-            totalReviews: plumber.total_reviews,
-            licenseNumber: plumber.license_number,
-            logoUrl: plumber.logo_url,
-          };
-        }
-      }
+        if (error) {
+          // Table might not exist — fall through to mock
+          if (error.message?.includes('Could not find the table') || error.message?.includes('relation') || error.message?.includes('does not exist')) {
+            console.warn(`[/api/leads/${leadId}/status] Leads table not found, using mock data`);
+            // Fall through to mock below
+          } else {
+            return NextResponse.json({ error: 'Lead not found', details: error.message }, { status: 404 });
+          }
+        } else if (lead) {
+          // If assigned, also fetch plumber info
+          let plumberInfo = null;
+          if (lead.status === 'assigned' && lead.assigned_plumber_id) {
+            const { data: plumber } = await (admin as any)
+              .from('plumber_profiles')
+              .select('*')
+              .eq('id', lead.assigned_plumber_id)
+              .single();
 
-      return NextResponse.json({
-        id: lead.id,
-        status: lead.status,
-        diagnosis: lead.diagnosis,
-        severity: lead.severity,
-        totalEstimate: lead.total_estimate || lead.estimated_job_value,
-        depositPaid: lead.deposit_paid,
-        customerCity: lead.customer_city,
-        customerName: lead.customer_name,
-        createdAt: lead.created_at,
-        estimatedJobValue: lead.estimated_job_value,
-        plumber: plumberInfo,
-      });
+            if (plumber) {
+              plumberInfo = {
+                id: plumber.id,
+                companyId: plumber.company_id,
+                companyName: plumber.company_name,
+                phone: plumber.phone || '',
+                avgRating: plumber.avg_rating,
+                totalReviews: plumber.total_reviews,
+                licenseNumber: plumber.license_number,
+                logoUrl: plumber.logo_url,
+              };
+            }
+          }
+
+          return NextResponse.json({
+            id: lead.id,
+            status: lead.status,
+            diagnosis: lead.diagnosis,
+            severity: lead.severity,
+            totalEstimate: lead.total_estimate || lead.estimated_job_value,
+            depositPaid: lead.deposit_paid,
+            customerCity: lead.customer_city,
+            customerName: lead.customer_name,
+            createdAt: lead.created_at,
+            estimatedJobValue: lead.estimated_job_value,
+            plumber: plumberInfo,
+          });
+        }
+      } catch (dbErr: any) {
+        console.warn(`[/api/leads/${leadId}/status] DB error, using mock: ${dbErr.message}`);
+        // Fall through to mock
+      }
     }
 
-    // No admin — return mock data
+    // No admin or table doesn't exist — return mock data
     const mockData: Record<string, any> = {
       'demo-lead-001': {
         id: 'demo-lead-001',
