@@ -116,6 +116,55 @@ export default function AdminPlumbersPage() {
         </div>
       </div>
 
+      {/* Mobile cards */}
+      <div className="sm:hidden space-y-3">
+        {filtered.map(p => (
+          <div key={p.id} className="rounded-xl bg-white border border-slate-200 p-4 cursor-pointer hover:border-blue-300 transition-colors"
+            onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold text-white shrink-0"
+                  style={{ background: `linear-gradient(135deg, ${p.primary_color}, ${p.primary_color}aa)` }}>
+                  {p.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">{p.company_name}</p>
+                  <p className="text-[11px] text-slate-500">{p.specialties.slice(0, 2).join(', ')}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1">
+                <I.Star className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-sm font-semibold text-slate-900">{p.avg_rating}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 text-xs text-slate-600 mb-2">
+              <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold border ${planColors[p.plan_tier] || planColors.solo}`}>
+                {PLAN_LABELS_PRETTY[p.plan_tier]}
+              </span>
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusColors[p.status]}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  p.status === 'active' ? 'bg-emerald-600' :
+                  p.status === 'paused' ? 'bg-amber-600' :
+                  'bg-red-600'
+                }`} />
+                {p.status === 'active' ? 'Active' : p.status === 'paused' ? 'At Risk' : 'Suspended'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-3 text-slate-600">
+                <span className="font-medium">{p.total_jobs_completed.toLocaleString()} jobs</span>
+                <span className="font-semibold text-emerald-600">{planRevenueDisplay[p.plan_tier]}/mo</span>
+              </div>
+              <button onClick={(e) => { e.stopPropagation(); router.push(`/admin/plumbers/${p.id}`); }}
+                className="text-xs text-blue-600 hover:text-blue-600 font-medium">View →</button>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</div>
+        )}
+      </div>
+
       {/* Table */}
       <Card variant="bordered" padding="none">
         <div className="overflow-x-auto">
@@ -136,7 +185,7 @@ export default function AdminPlumbersPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.map(p => (
-                <tr key={p.id} className="hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
+                <tr key={p.id} className="hidden sm:table-row hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold text-white shrink-0"

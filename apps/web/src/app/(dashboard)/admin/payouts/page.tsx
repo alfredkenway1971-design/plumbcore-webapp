@@ -126,7 +126,9 @@ export default function PayoutsPage() {
           <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
           <Button size="sm" variant="secondary">Process Weekly ↓</Button>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* ── Desktop table: hidden below sm ── */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
             <thead>
               <tr className="bg-slate-100 border-b border-slate-200">
@@ -168,6 +170,47 @@ export default function PayoutsPage() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* ── Mobile cards: shown below sm ── */}
+        <div className="sm:hidden space-y-3 p-4">
+          {payouts.map(p => {
+            const initials = p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('') || '—';
+            const statusClass =
+              p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
+              p.status === 'processing' ? 'bg-blue-50 text-blue-600' :
+              p.status === 'failed' ? 'bg-red-50 text-red-600' :
+              'bg-amber-50 text-amber-600';
+            return (
+              <div key={p.id} className="bg-white rounded-xl ring-1 ring-black/5 shadow-sm p-4 space-y-2">
+                {/* Row 1: Avatar + Name + Status */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
+                      {initials}
+                    </div>
+                    <span className="text-sm font-semibold text-slate-900 truncate">{p.plumber_name || '—'}</span>
+                  </div>
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 ${statusClass}`}>
+                    {p.status === 'pending' ? '⏳ ' : ''}{p.status}
+                  </span>
+                </div>
+                {/* Row 2: Period */}
+                <p className="text-xs text-slate-400">{p.period_start} to {p.period_end}</p>
+                {/* Row 3: Gross · Fee · Net */}
+                <div className="flex items-center gap-3 text-xs">
+                  <span className="text-slate-700">Gross: <strong>${(p.gross_amount / 100).toFixed(2)}</strong></span>
+                  <span className="text-amber-600">Fee: <strong>-${(p.platform_fee / 100).toFixed(2)}</strong></span>
+                  <span className="text-emerald-600 font-semibold">Net: <strong>${(p.net_amount / 100).toFixed(2)}</strong></span>
+                </div>
+                {/* Row 4: Jobs + Date */}
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span>Jobs: {p.fee_count}</span>
+                  <span>{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Card>
     </div>
