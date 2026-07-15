@@ -61,3 +61,11 @@ export function leadAcceptedSmsTemplate(opts: { customerName: string; phone: str
   return `✅ Lead accepted! ${opts.customerName} · ${opts.phone}
 Job created in your schedule. Login to view details.`;
 }
+
+export function customerDepositSmsTemplate(customerName: string, depositAmount: number, trackingToken: string) {
+  return `Your $${depositAmount} deposit is confirmed. It will be deducted from your final bill. Track: plumbcore.ai/track/${trackingToken}`;
+}
+
+export function weeklyPayoutSmsTemplate(plumberName: string, totalDeposits: number, jobCount: number) {
+  return `This week's deposits: $${totalDeposits} transferred to your bank for ${jobCount} jobs.`;
+}

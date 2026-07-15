@@ -47,6 +47,7 @@ export interface Invoice {
   paymentMethod?: PaymentMethod;
   lineItems: { description: string; quantity: number; unitPrice: number; total: number }[];
   notes?: string;
+  depositPaid?: number; // cents — deposit paid by customer via PlumbCore
 }
 
 export interface InventoryItem {
@@ -109,7 +110,7 @@ const fallbackJobs: Job[] = [
 // ── Fallback demo invoices ──
 const fallbackInvoices: Invoice[] = [
   { id: 'INV-001', clientId: 'CLT-003', clientName: 'Maria Wilson', jobId: 'JOB-003', jobTitle: 'Pipe Replacement', status: 'paid', amount: 2100, paidAmount: 2100, dueDate: new Date(Date.now() + 14*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), paidDate: new Date().toISOString(), paymentMethod: 'credit_card', lineItems: [{ description: 'Pipe Replacement - Labor', quantity: 1, unitPrice: 1500, total: 1500 }, { description: 'Materials', quantity: 1, unitPrice: 600, total: 600 }], notes: '' },
-  { id: 'INV-002', clientId: 'CLT-001', clientName: 'James & Sarah Johnson', jobId: 'JOB-001', jobTitle: 'Water Heater Repair', status: 'sent', amount: 850, paidAmount: 0, dueDate: new Date(Date.now() + 30*24*60*60*1000).toISOString(), issueDate: new Date().toISOString(), lineItems: [{ description: 'Water Heater Repair Service', quantity: 1, unitPrice: 850, total: 850 }], notes: '' },
+  { id: 'INV-002', clientId: 'CLT-001', clientName: 'James & Sarah Johnson', jobId: 'JOB-001', jobTitle: 'Water Heater Repair', status: 'sent', amount: 850, paidAmount: 0, dueDate: new Date(Date.now() + 30*24*60*60*1000).toISOString(), issueDate: new Date().toISOString(), lineItems: [{ description: 'Water Heater Repair Service', quantity: 1, unitPrice: 850, total: 850 }], notes: '', depositPaid: 4900 },
   { id: 'INV-003', clientId: 'CLT-002', clientName: 'Robert Davis', jobId: 'JOB-008', jobTitle: 'Gas Line Test', status: 'paid', amount: 275, paidAmount: 275, dueDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 2*24*60*60*1000).toISOString(), paidDate: new Date(Date.now() - 1*24*60*60*1000).toISOString(), paymentMethod: 'check', lineItems: [{ description: 'Gas Line Test Service', quantity: 1, unitPrice: 275, total: 275 }], notes: '' },
   { id: 'INV-004', clientId: 'CLT-011', clientName: 'Oak Springs Apartments', jobId: 'JOB-006', jobTitle: 'Sewer Line Inspection', status: 'overdue', amount: 1500, paidAmount: 0, dueDate: new Date(Date.now() - 3*24*60*60*1000).toISOString(), issueDate: new Date(Date.now() - 30*24*60*60*1000).toISOString(), lineItems: [{ description: 'Annual Sewer Line Inspection', quantity: 1, unitPrice: 1500, total: 1500 }], notes: 'Payment overdue - 2nd notice sent' },
 ];

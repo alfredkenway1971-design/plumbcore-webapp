@@ -22,6 +22,11 @@ export interface InvoiceCalculation {
   total: number;
 }
 
+export interface InvoiceWithDeposit extends InvoiceCalculation {
+  depositCreditApplied: boolean;
+  customerBalanceDue: number;
+}
+
 export interface JobInvoiceInput {
   jobTitle: string;
   description: string;
@@ -115,6 +120,34 @@ export function generateInvoice(input: JobInvoiceInput): InvoiceCalculation {
     taxRate,
     serviceFee,
     total,
+  };
+}
+
+/**
+ * Add a deposit credit to an invoice calculation.
+ * Inserts a deposit credit line item and adjusts the total.
+ */
+export function addDepositCredit(
+  invoice: InvoiceCalculation,
+  depositCents: number
+): InvoiceWithDeposit {
+  const depositLine: InvoiceLineItem = {
+    description: 'Deposit (paid via PlumbCore)',
+    quantity: 1,
+    unitPrice: -depositCents,
+    total: -depositCents,
+    type: 'fee',
+  };
+
+  const lineItems = [...invoice.lineItems, depositLine];
+  const total = invoice.subtotal + invoice.tax + invoice.serviceFee - depositCents;
+
+  return {
+    ...invoice,
+    lineItems,
+    total,
+    depositCreditApplied: true,
+    customerBalanceDue: Math.max(total, 0),
   };
 }
 

@@ -143,7 +143,8 @@ export default function InvoiceDetailPage() {
   );
   const taxRate = 0.08;
   const tax = subtotal * taxRate;
-  const grandTotal = subtotal + tax;
+  const depositCredit = invoice?.depositPaid || 0; // cents, deposit paid by customer
+  const grandTotal = subtotal + tax - depositCredit;
 
   // Current position in the status flow
   const currentStepIndex = useMemo(() => {
@@ -633,6 +634,12 @@ export default function InvoiceDetailPage() {
             <span className="text-slate-400">Tax ({editing ? editTaxRate : 8}%)</span>
             <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
           </div>
+          {depositCredit > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Deposit (paid via PlumbCore)</span>
+              <span className="text-emerald-600">-{formatCurrency(depositCredit)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-base font-bold border-t border-slate-200 pt-2">
             <span className="text-slate-900">Total</span>
             <span className="text-blue-600">{formatCurrency(
