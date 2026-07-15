@@ -612,41 +612,6 @@ function PricingSection() {
           </p>
         </div>
 
-        {/* Promo Code Section */}
-        <div className="max-w-md mx-auto mt-8 text-center">
-          <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3">Have a promo code?</p>
-          <div className="flex items-center gap-2 max-w-xs mx-auto">
-            <input
-              id="promo-code"
-              type="text"
-              placeholder="Enter code"
-              className="flex-1 h-11 px-4 rounded-xl border border-slate-200 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
-            />
-            <button
-              className="h-11 px-5 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] shrink-0"
-              onClick={() => {
-                const input = document.getElementById('promo-code') as HTMLInputElement;
-                if (input) {
-                  const val = input.value.trim().toUpperCase();
-                  if (val === 'PLUMBER50') {
-                    alert('🎉 Promo applied! Get 50% off your first month.');
-                  } else if (val === 'EARLYBIRD') {
-                    alert('🎉 Promo applied! First 3 months at $199/mo.');
-                  } else if (val === 'TRYFREE') {
-                    alert('🎉 Promo applied! Extended 60-day free trial.');
-                  } else {
-                    alert('Invalid code. Try: PLUMBER50, EARLYBIRD, or TRYFREE');
-                  }
-                  input.value = '';
-                }
-              }}
-            >
-              Apply
-            </button>
-          </div>
-          <p className="text-xs text-slate-400 mt-2">Try: PLUMBER50, EARLYBIRD, TRYFREE</p>
-        </div>
-
         <div className="text-center mt-6">
           <a
             href="/signup"
