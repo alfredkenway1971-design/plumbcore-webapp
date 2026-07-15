@@ -57,6 +57,8 @@ export async function GET(req: Request) {
           nextPayoutDate: 'Sunday, July 13, 2026',
           avgPerJob: 32500,
           jobsThisMonth: 0,
+          jobsThisWeek: 0,
+          depositsThisWeek: 0,
           leadFeesCharged: thisMonthTotal,
           platformFeesPaid: thisMonthTotal * 0.1,
         },
