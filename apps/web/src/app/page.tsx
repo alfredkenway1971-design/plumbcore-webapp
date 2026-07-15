@@ -96,46 +96,89 @@ function Hero() {
       {/* Subtle gradient background accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-6 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-            Trusted by 500+ plumbing businesses
-          </span>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* ─── Left column: text content ─── */}
+          <div className="text-center lg:text-left">
+            {/* Badge */}
+            <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-6 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              Trusted by 500+ plumbing businesses
+            </span>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05] mb-5 text-slate-900">
-            The Plumbing OS That<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Early Adopters</span> Already Trust
-          </h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05] mb-5 text-slate-900">
+              The Plumbing OS That<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Early Adopters</span> Already Trust
+            </h1>
 
-          <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto mb-6 leading-relaxed">
-            Stop paying per lead. Get pre-paid customers who already verified their job photos, 
-            paid a deposit, and are ready to book — all included in your monthly subscription.
-          </p>
+            <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mb-6 leading-relaxed">
+              Stop paying per lead. Get pre-paid customers who already verified their job photos, 
+              paid a deposit, and are ready to book — all included in your monthly subscription.
+            </p>
 
-          {/* Proof bar */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-8">
-            <span className="text-sm text-slate-500">Join <strong className="text-slate-900">500+</strong> plumbers</span>
-            <span className="w-1 h-1 rounded-full bg-slate-300" />
-            <span className="text-sm text-slate-500"><strong className="text-slate-900">12,000+</strong> jobs completed</span>
-            <span className="w-1 h-1 rounded-full bg-slate-300" />
-            <span className="text-sm text-slate-500"><strong className="text-slate-900">4.8★</strong> average rating</span>
+            {/* Proof bar */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
+              <span className="text-sm text-slate-500">Join <strong className="text-slate-900">500+</strong> plumbers</span>
+              <span className="w-1 h-1 rounded-full bg-slate-300" />
+              <span className="text-sm text-slate-500"><strong className="text-slate-900">12,000+</strong> jobs completed</span>
+              <span className="w-1 h-1 rounded-full bg-slate-300" />
+              <span className="text-sm text-slate-500"><strong className="text-slate-900">4.8★</strong> average rating</span>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start">
+              <a
+                href="/signup"
+                className="h-12 sm:h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
+              >
+                Get Your First Pre-Paid Lead This Week <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="#how-it-works"
+                className="h-12 sm:h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-all active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
+              >
+                See How It Works <ChevronRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
-            <a
-              href="/signup"
-              className="h-12 sm:h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
-            >
-              Get Your First Pre-Paid Lead This Week <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href="#how-it-works"
-              className="h-12 sm:h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-all active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
-            >
-              See How It Works <ChevronRight className="w-4 h-4" />
-            </a>
+          {/* ─── Right column: hero image ─── */}
+          <div className="relative">
+            {/* Main hero image */}
+            <div className="relative">
+              <img
+                src="/images/hero-plumber.jpg"
+                alt="Plumber working on sink installation"
+                className="w-full h-auto rounded-2xl ring-1 ring-black/5 shadow-lg object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              {/* Floating "AI Analyzing..." badge */}
+              <div className="absolute -top-3 -right-3 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-sm rounded-full px-3.5 py-2 shadow-lg ring-1 ring-black/5 flex items-center gap-2 animate-[fadeIn_0.6s_ease-out]">
+                <Camera className="w-4 h-4 text-blue-500" />
+                <span className="text-xs font-semibold text-slate-700 whitespace-nowrap">
+                  AI Analyzing...
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              </div>
+            </div>
+
+            {/* "How It Works" device frame mockup */}
+            <div className="mt-6 sm:mt-8 relative">
+              <div className="relative mx-auto max-w-xs rounded-[2rem] ring-2 ring-black/10 shadow-2xl bg-gradient-to-b from-blue-600/10 to-cyan-500/10 p-2">
+                <div className="rounded-[1.75rem] overflow-hidden ring-1 ring-black/5 bg-white">
+                  <img
+                    src="/images/hero-plumber.jpg"
+                    alt="PlumbCore AI app interface preview"
+                    className="w-full h-auto object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+                {/* Phone notch */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-black/10 rounded-full" />
+              </div>
+              <p className="text-center text-xs text-slate-400 mt-3 font-medium">
+                Tap. Snap. Get paid. — See how it works
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -152,18 +195,21 @@ function HowPlumbCoreMakesYouMoney() {
       num: '1',
       title: 'Customer Uploads Photo',
       desc: 'Customer snaps a photo of the issue through our AI-powered intake. No phone tag, no truck roll to quote.',
+      img: '/images/hero-work.jpg',
       icon: '📸',
     },
     {
       num: '2',
       title: 'Customer Pays $49 Deposit',
       desc: 'The customer pays a refundable $49–$199 deposit upfront. This filters looky-loos and confirms they\'re serious.',
+      img: '/images/feature-estimate.jpg',
       icon: '💵',
     },
     {
       num: '3',
       title: 'You Get Pre-Paid Lead',
       desc: 'You receive the verified lead with photo, deposit credited to your invoice, and AI estimate. Show up and get paid.',
+      img: '/images/feature-route.jpg',
       icon: '✅',
     },
   ];
@@ -195,8 +241,13 @@ function HowPlumbCoreMakesYouMoney() {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
           {steps.map((s, i) => (
             <div key={i} className="relative text-center">
-              <div className="w-20 h-20 rounded-2xl bg-white ring-1 ring-black/5 shadow-sm flex items-center justify-center mx-auto mb-5 text-4xl">
-                {s.icon}
+              <div className="w-20 h-20 rounded-2xl bg-white ring-1 ring-black/5 shadow-sm flex items-center justify-center mx-auto mb-5 overflow-hidden">
+                <img
+                  src={s.img}
+                  alt={s.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
               </div>
               {/* Connector line (desktop only) */}
               {i < 2 && (
@@ -320,6 +371,27 @@ function FeaturesSection() {
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-lg shadow-black/10 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
                 <f.icon className="w-6 h-6 text-white" />
               </div>
+              {/* Image thumbnail for featured cards */}
+              {i === 0 && (
+                <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+                  <img
+                    src="/images/feature-estimate.jpg"
+                    alt="AI Photo Estimate preview"
+                    className="w-full h-24 object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
+              {i === 2 && (
+                <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+                  <img
+                    src="/images/feature-route.jpg"
+                    alt="Route Optimization preview"
+                    className="w-full h-24 object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
               <h3 className="text-lg font-semibold text-slate-900 mb-2 transition-colors duration-300 group-hover:text-blue-600">
                 {f.title}
               </h3>
@@ -590,6 +662,7 @@ function TestimonialsSection() {
     {
       name: 'Mike Torres',
       role: 'Owner, Torres Plumbing',
+      image: '/images/testimonial-1.jpg',
       avatar: 'MT',
       rating: 5,
       text: 'PlumbCore AI cut our estimate time from 30 minutes to 10 seconds. Our close rate went up 40% in the first month.',
@@ -597,6 +670,7 @@ function TestimonialsSection() {
     {
       name: 'Sarah Chen',
       role: 'Operations Manager, Fast Flow Inc.',
+      image: '/images/testimonial-2.jpg',
       avatar: 'SC',
       rating: 5,
       text: 'The voice-to-invoice feature alone saves my techs 2 hours a day. Best investment we\'ve made.',
@@ -604,6 +678,7 @@ function TestimonialsSection() {
     {
       name: 'Robert Davis',
       role: 'CEO, Davis Plumbing Co.',
+      image: '/images/testimonial-3.jpg',
       avatar: 'RD',
       rating: 5,
       text: 'We doubled our service area with route optimization. AI scheduling is a game-changer for multi-tech shops.',
@@ -649,8 +724,17 @@ function TestimonialsSection() {
                 &ldquo;{tItem.text}&rdquo;
               </p>
               <div className="flex items-center gap-3 justify-center md:justify-start">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-[10px] font-bold text-white">
-                  {tItem.avatar}
+                <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-white shadow-md shrink-0">
+                  <img
+                    src={tItem.image}
+                    alt={tItem.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      (target.parentElement as HTMLElement).classList.add('bg-gradient-to-br', 'from-blue-500', 'to-cyan-500');
+                    }}
+                  />
                 </div>
                 <div className="text-center md:text-left">
                   <p className="text-sm font-semibold text-slate-900">{tItem.name}</p>
