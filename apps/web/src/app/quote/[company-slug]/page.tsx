@@ -616,9 +616,25 @@ export default function QuotePage() {
             // Use parsed result for deposit display
           } catch {}
         }
-        // Fetch lead ID from Stripe session
+        // Fetch lead ID from Stripe session + create lead directly
         if (sessionId) {
-          fetch(`/api/leads/by-session?session_id=${encodeURIComponent(sessionId)}`)
+          // Immediately create the lead via our API (bypasses webhook)
+          fetch('/api/leads/create-from-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId,
+              estimate: saved ? JSON.parse(saved).totalPrice : result?.totalPrice || 0,
+              deposit: saved ? JSON.parse(saved).depositAmount : result?.depositAmount || 0,
+              diagnosis: saved ? JSON.parse(saved).diagnosis : result?.diagnosis || '',
+              customerName: form.name,
+              customerPhone: form.phone,
+              customerEmail: form.email,
+              customerCity: form.city || '',
+              customerAddress: form.address || '',
+              trackingToken: tid || '',
+            }),
+          })
             .then(r => r.json())
             .then(data => {
               if (data.leadId) setTrackingLeadId(data.leadId);
@@ -627,7 +643,19 @@ export default function QuotePage() {
                 setTrackingToken(data.trackingToken);
               }
             })
-            .catch(() => {});
+            .catch(() => {
+              // Fallback to session lookup
+              fetch(`/api/leads/by-session?session_id=${encodeURIComponent(sessionId)}`)
+                .then(r => r.json())
+                .then(data => {
+                  if (data.leadId) setTrackingLeadId(data.leadId);
+                  if (data.trackingToken) {
+                    sessionStorage.setItem('plumbcore_tracking_id', data.trackingToken);
+                    setTrackingToken(data.trackingToken);
+                  }
+                })
+                .catch(() => {});
+            });
         }
         setStep(5 as any);
       }
