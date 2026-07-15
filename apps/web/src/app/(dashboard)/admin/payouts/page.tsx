@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
-import { mockPayoutHistory } from '@/lib/payouts';
-import { mockPlumberProfiles } from '@/lib/plumber-profiles';
 import type { PayoutRecord } from '@/lib/payouts';
 import { Download } from 'lucide-react';
 
@@ -11,13 +9,14 @@ import { Download } from 'lucide-react';
 const format$ = (cents: number) => `$${(cents / 100).toLocaleString()}`;
 
 export default function PayoutsPage() {
-  const [payouts] = useState(mockPayoutHistory);
+  const [payouts] = useState<PayoutRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const pending = payouts.filter(p => p.status === 'pending');
   const pendingTotal = pending.reduce((s, p) => s + p.net_amount, 0);
   const totalPaid = payouts.filter(p => p.status === 'paid').reduce((s, p) => s + p.net_amount, 0);
-  const connectedPlumbers = mockPlumberProfiles.filter(p => p.stripe_onboarding_complete).length;
+  const connectedPlumbers = 0;
+  const totalPlumbers = 0;
 
   // Revenue summary data
   const revenueSummary = [
@@ -73,7 +72,7 @@ export default function PayoutsPage() {
         </div>
         <div className="rounded-xl bg-violet-50 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-600">Connected Plumbers</p>
-          <p className="text-lg font-bold text-slate-900 mt-1">{connectedPlumbers}/{mockPlumberProfiles.length}</p>
+          <p className="text-lg font-bold text-slate-900 mt-1">{connectedPlumbers}/{totalPlumbers}</p>
         </div>
       </div>
 
@@ -84,7 +83,7 @@ export default function PayoutsPage() {
         </div>
         <div className="px-5 py-3 divide-y divide-slate-100">
           {pending.length === 0 ? (
-            <p className="text-sm text-slate-500 py-3">No pending payouts</p>
+            <p className="text-sm text-slate-500 py-3">💰 No pending payouts</p>
           ) : (
             pending.map(p => (
               <div key={p.id} className="flex items-center py-3">
@@ -143,7 +142,14 @@ export default function PayoutsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {payouts.map(p => (
+              {payouts.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="px-4 py-12 text-center">
+                    <p className="text-sm text-slate-500">📋 No payout history yet. Weekly payouts run every Sunday.</p>
+                  </td>
+                </tr>
+              ) : (
+                payouts.map(p => (
                 <tr key={p.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3">
                     <span className="text-sm font-medium text-slate-900">{p.plumber_name || '—'}</span>
@@ -167,50 +173,56 @@ export default function PayoutsPage() {
                   </td>
                   <td className="px-4 py-3 text-xs text-slate-500">{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
                 </tr>
-              ))}
+              )))}
             </tbody>
           </table>
         </div>
 
         {/* ── Mobile cards: shown below sm ── */}
         <div className="sm:hidden space-y-3 p-4">
-          {payouts.map(p => {
-            const initials = p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('') || '—';
-            const statusClass =
-              p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
-              p.status === 'processing' ? 'bg-blue-50 text-blue-600' :
-              p.status === 'failed' ? 'bg-red-50 text-red-600' :
-              'bg-amber-50 text-amber-600';
-            return (
-              <div key={p.id} className="bg-white rounded-xl ring-1 ring-black/5 shadow-sm p-4 space-y-2">
-                {/* Row 1: Avatar + Name + Status */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
-                      {initials}
+          {payouts.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-sm text-slate-500">📋 No payout history yet. Weekly payouts run every Sunday.</p>
+            </div>
+          ) : (
+            payouts.map(p => {
+              const initials = p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('') || '—';
+              const statusClass =
+                p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
+                p.status === 'processing' ? 'bg-blue-50 text-blue-600' :
+                p.status === 'failed' ? 'bg-red-50 text-red-600' :
+                'bg-amber-50 text-amber-600';
+              return (
+                <div key={p.id} className="bg-white rounded-xl ring-1 ring-black/5 shadow-sm p-4 space-y-2">
+                  {/* Row 1: Avatar + Name + Status */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
+                        {initials}
+                      </div>
+                      <span className="text-sm font-semibold text-slate-900 truncate">{p.plumber_name || '—'}</span>
                     </div>
-                    <span className="text-sm font-semibold text-slate-900 truncate">{p.plumber_name || '—'}</span>
+                    <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 ${statusClass}`}>
+                      {p.status === 'pending' ? '⏳ ' : ''}{p.status}
+                    </span>
                   </div>
-                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 ${statusClass}`}>
-                    {p.status === 'pending' ? '⏳ ' : ''}{p.status}
-                  </span>
+                  {/* Row 2: Period */}
+                  <p className="text-xs text-slate-400">{p.period_start} to {p.period_end}</p>
+                  {/* Row 3: Gross · Fee · Net */}
+                  <div className="flex items-center gap-3 text-xs">
+                    <span className="text-slate-700">Gross: <strong>${(p.gross_amount / 100).toFixed(2)}</strong></span>
+                    <span className="text-amber-600">Fee: <strong>-${(p.platform_fee / 100).toFixed(2)}</strong></span>
+                    <span className="text-emerald-600 font-semibold">Net: <strong>${(p.net_amount / 100).toFixed(2)}</strong></span>
+                  </div>
+                  {/* Row 4: Jobs + Date */}
+                  <div className="flex items-center justify-between text-xs text-slate-500">
+                    <span>Jobs: {p.fee_count}</span>
+                    <span>{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</span>
+                  </div>
                 </div>
-                {/* Row 2: Period */}
-                <p className="text-xs text-slate-400">{p.period_start} to {p.period_end}</p>
-                {/* Row 3: Gross · Fee · Net */}
-                <div className="flex items-center gap-3 text-xs">
-                  <span className="text-slate-700">Gross: <strong>${(p.gross_amount / 100).toFixed(2)}</strong></span>
-                  <span className="text-amber-600">Fee: <strong>-${(p.platform_fee / 100).toFixed(2)}</strong></span>
-                  <span className="text-emerald-600 font-semibold">Net: <strong>${(p.net_amount / 100).toFixed(2)}</strong></span>
-                </div>
-                {/* Row 4: Jobs + Date */}
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span>Jobs: {p.fee_count}</span>
-                  <span>{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
       </Card>
     </div>

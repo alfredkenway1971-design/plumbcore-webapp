@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
-import { mockPlumberProfiles } from '@/lib/plumber-profiles';
 import { PLAN_LABELS_PRETTY } from '@/lib/plan-pricing';
 import type { PlumberProfile, PlanTier, PlumberStatus } from '@/lib/plumber-profiles';
 
@@ -17,6 +16,21 @@ const I = {
   Search: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>,
   Filter: (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"/></svg>,
 };
+
+/* ── Empty State ── */
+function EmptyPlumberState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-8 text-center">
+      <div className="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mb-4">
+        <svg className="w-7 h-7 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+      </div>
+      <h3 className="text-base font-semibold text-slate-900 mb-1">No plumbers registered yet</h3>
+      <p className="text-sm text-slate-500 max-w-xs">Plumbers will appear here after they sign up and complete onboarding.</p>
+    </div>
+  );
+}
 
 const planColors: Record<string, string> = {
   solo: 'bg-amber-50 text-amber-600 border-amber-500/20',
@@ -43,19 +57,20 @@ export default function AdminPlumbersPage() {
   const [search, setSearch] = useState('');
   const [filterTier, setFilterTier] = useState<string>('all');
   const [error, setError] = useState<string | null>(null);
+  const [plumbers] = useState<PlumberProfile[]>([]);
 
-  const filtered = mockPlumberProfiles.filter(p => {
+  const filtered = plumbers.filter(p => {
     if (filterTier !== 'all' && p.plan_tier !== filterTier) return false;
     if (search && !p.company_name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
   // Stats
-  const total = mockPlumberProfiles.length;
-  const totalActive = mockPlumberProfiles.filter(p => p.status === 'active').length;
-  const totalAtRisk = mockPlumberProfiles.filter(p => p.status === 'paused').length;
-  const totalCompleted = mockPlumberProfiles.reduce((s, p) => s + p.total_jobs_completed, 0);
-  const totalAvgRating = total > 0 ? (mockPlumberProfiles.reduce((s, p) => s + p.avg_rating, 0) / total).toFixed(1) : '0';
+  const total = plumbers.length;
+  const totalActive = plumbers.filter(p => p.status === 'active').length;
+  const totalAtRisk = plumbers.filter(p => p.status === 'paused').length;
+  const totalCompleted = plumbers.reduce((s, p) => s + p.total_jobs_completed, 0);
+  const totalAvgRating = total > 0 ? (plumbers.reduce((s, p) => s + p.avg_rating, 0) / total).toFixed(1) : '0';
 
   if (error) return <div className="p-6"><ErrorState title="Failed to load" message={error} onRetry={() => setError(null)} /></div>;
 
@@ -160,8 +175,11 @@ export default function AdminPlumbersPage() {
             </div>
           </div>
         ))}
-        {filtered.length === 0 && (
+        {filtered.length === 0 && total > 0 && (
           <div className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</div>
+        )}
+        {total === 0 && (
+          <EmptyPlumberState />
         )}
       </div>
 
@@ -235,8 +253,11 @@ export default function AdminPlumbersPage() {
                   </td>
                 </tr>
               ))}
-              {filtered.length === 0 && (
+              {filtered.length === 0 && total > 0 && (
                 <tr><td colSpan={10} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
+              )}
+              {total === 0 && (
+                <tr><td colSpan={10} className="px-4 py-16"><EmptyPlumberState /></td></tr>
               )}
             </tbody>
           </table>

@@ -354,7 +354,7 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
 /* ══════════════════════ RECEPTIONIST TAB ══════════════════════ */
 function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
   const maxHours = PLAN_AI_RECEPTIONIST_HOURS[plumber.plan_tier] || 0;
-  const usedHours = 8; // mock usage
+  const usedHours = 0; // will be populated from real API data
   const remaining = maxHours - usedHours;
   const pct = maxHours > 0 ? (usedHours / maxHours) * 100 : 0;
 

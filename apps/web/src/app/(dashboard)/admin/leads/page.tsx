@@ -48,98 +48,6 @@ interface Plumber {
   jobsToday?: number;
 }
 
-/* ── Mock Data ── */
-const mockLeads: Lead[] = [
-  {
-    id: 'LD-001', customer: 'John Smith', photo: '📸', estimate: 850,
-    depositAmount: 49, depositTier: 'small', location: 'Austin, TX 78701',
-    zip: '78701', depositPaid: true, status: 'matching', assignedPlumber: '',
-    date: '2026-07-14', confidence: 95,
-    phone: '(512) 555-0101', diagnosis: 'Kitchen sink clogged — requires drain snake and full inspection',
-    address: '1200 Elm St, Austin, TX 78701',
-  },
-  {
-    id: 'LD-002', customer: 'Maria Garcia', photo: '📸', estimate: 1200,
-    depositAmount: 99, depositTier: 'medium', location: 'Round Rock, TX 78664',
-    zip: '78664', depositPaid: true, status: 'assigned', assignedPlumber: 'James Wilson',
-    date: '2026-07-14', timeToMatch: '3m 12s',
-    phone: '(512) 555-0202', diagnosis: 'Water heater leaking — needs replacement estimate',
-    address: '4500 Lake Creek Dr, Round Rock, TX 78664',
-  },
-  {
-    id: 'LD-003', customer: 'David Chen', photo: '📸', estimate: 450,
-    depositAmount: 49, depositTier: 'small', location: 'Cedar Park, TX 78613',
-    zip: '78613', depositPaid: true, status: 'assigned', assignedPlumber: 'Sarah Blake',
-    date: '2026-07-13', timeToMatch: '1m 45s',
-    phone: '(512) 555-0303', diagnosis: 'Toilet running constantly — replace flapper assembly',
-    address: '890 Park View Blvd, Cedar Park, TX 78613',
-  },
-  {
-    id: 'LD-004', customer: 'Sarah Johnson', photo: '📸', estimate: 2200,
-    depositAmount: 199, depositTier: 'premium', location: 'Austin, TX 78702',
-    zip: '78702', depositPaid: true, status: 'complete', assignedPlumber: 'Mike Torres',
-    date: '2026-07-12', timeToMatch: '2m 30s',
-    phone: '(737) 555-0404', diagnosis: 'Sewer line backup — full hydro-jetting and camera inspection',
-    address: '3200 Manor Rd, Austin, TX 78702',
-  },
-  {
-    id: 'LD-005', customer: 'Robert Davis', photo: '📸', estimate: 600,
-    depositAmount: 49, depositTier: 'small', location: 'Pflugerville, TX 78660',
-    zip: '78660', depositPaid: true, status: 'unfulfilled', assignedPlumber: '',
-    date: '2026-07-11',
-    phone: '(512) 555-0505', diagnosis: 'Outdoor faucet burst — pipe replacement needed',
-    address: '5500 Pecan St, Pflugerville, TX 78660',
-  },
-  {
-    id: 'LD-006', customer: 'Emily White', photo: '📸', estimate: 1800,
-    depositAmount: 149, depositTier: 'large', location: 'Austin, TX 78704',
-    zip: '78704', depositPaid: true, status: 'matching', assignedPlumber: '',
-    date: '2026-07-15', confidence: 88,
-    phone: '(512) 555-0606', diagnosis: 'Gas line odor detected — emergency shut-off and inspection',
-    address: '2100 S Congress Ave, Austin, TX 78704',
-  },
-  {
-    id: 'LD-007', customer: 'Tom Brown', photo: '📸', estimate: 350,
-    depositAmount: 49, depositTier: 'small', location: 'Round Rock, TX 78665',
-    zip: '78665', depositPaid: true, status: 'matching', assignedPlumber: '',
-    date: '2026-07-15', confidence: 92,
-    phone: '(512) 555-0707', diagnosis: 'Shower low pressure — valve cartridge replacement',
-    address: '7800 Sam Bass Rd, Round Rock, TX 78665',
-  },
-];
-
-const mockPlumbers: Plumber[] = [
-  {
-    id: 'P-001', name: 'James Wilson', specialties: ['Drain Cleaning', 'Water Heaters'],
-    rating: 4.8, jobsCompleted: 342, available: true, serviceZips: ['787', '786'],
-    rotationOrder: 1, distance: '2.3 mi', plan: 'Premium', acceptanceRate: '98%',
-    responseTime: '<3 min', jobsToday: 3,
-  },
-  {
-    id: 'P-002', name: 'Mike Torres', specialties: ['Sewer Lines', 'Gas Lines'],
-    rating: 4.9, jobsCompleted: 521, available: true, serviceZips: ['787', '786'],
-    rotationOrder: 2, distance: '4.1 mi', plan: 'Premium', acceptanceRate: '96%',
-    responseTime: '<5 min', jobsToday: 2,
-  },
-  {
-    id: 'P-003', name: 'Sarah Blake', specialties: ['Kitchen Plumbing', 'Water Heaters'],
-    rating: 4.7, jobsCompleted: 198, available: true, serviceZips: ['786'],
-    rotationOrder: 3, distance: '1.8 mi', plan: 'Standard', acceptanceRate: '92%',
-    responseTime: '<4 min', jobsToday: 1,
-  },
-  {
-    id: 'P-004', name: 'Alex Rivera', specialties: ['General Plumbing', 'Gas Lines'],
-    rating: 4.5, jobsCompleted: 76, available: false, serviceZips: ['787'],
-    rotationOrder: 4, distance: '5.6 mi', plan: 'Standard', acceptanceRate: '85%',
-    responseTime: '<10 min', jobsToday: 0,
-  },
-  {
-    id: 'P-005', name: 'Jenny Park', specialties: ['Drain Cleaning', 'Water Heaters', 'Sewer'],
-    rating: 4.9, jobsCompleted: 267, available: true, serviceZips: ['787', '786'],
-    rotationOrder: 5, distance: '3.5 mi', plan: 'Premium', acceptanceRate: '97%',
-    responseTime: '<3 min', jobsToday: 4,
-  },
-];
 
 /* ── Round-Robin Config ── */
 interface RoundRobinConfig {
@@ -151,8 +59,8 @@ type QuickFilter = 'all' | 'today' | 'us' | 'canada' | '49' | '99' | '149+';
 
 /* ── Component ── */
 export default function LeadsMarketplacePage() {
-  const [leads, setLeads] = useState(mockLeads);
-  const [plumbers] = useState(mockPlumbers);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [plumbers] = useState<Plumber[]>([]);
   const [filter, setFilter] = useState('all');
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -555,7 +463,21 @@ export default function LeadsMarketplacePage() {
 
       {/* ── Lead Cards ── */}
       <div className="space-y-3">
-        {filteredLeads.length === 0 ? (
+        {leads.length === 0 ? (
+          <Card padding="lg" variant="bordered" className="text-center py-16">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl border border-slate-200">
+                📋
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900">No leads yet</h3>
+                <p className="text-sm text-slate-500 mt-1 max-w-sm">
+                  When customers pay deposits, they&apos;ll appear here for dispatch.
+                </p>
+              </div>
+            </div>
+          </Card>
+        ) : filteredLeads.length === 0 ? (
           <div className="text-center py-12">
             <Search className="w-10 h-10 text-slate-300 mx-auto mb-3" />
             <p className="text-sm text-slate-400 font-medium">No leads match your filters</p>
@@ -691,11 +613,27 @@ export default function LeadsMarketplacePage() {
               <Settings className="w-4 h-4 text-slate-500" />
               Round-Robin Configuration
             </h2>
-            <span className="text-[10px] text-slate-400 font-medium">
-              {rrConfig.reduce((sum, c) => sum + c.rotationOrder.length, 0)} plumbers across {rrConfig.length} zones
-            </span>
+            {plumbers.length > 0 && (
+              <span className="text-[10px] text-slate-400 font-medium">
+                {rrConfig.reduce((sum, c) => sum + c.rotationOrder.length, 0)} plumbers across {rrConfig.length} zones
+              </span>
+            )}
           </div>
 
+          {plumbers.length === 0 ? (
+            <Card padding="lg" variant="bordered" className="text-center py-12">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-2xl border border-slate-200">
+                  👷
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-700">Add plumbers to zones first</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Plumbers must be added to the system before configuring round-robin dispatch</p>
+                </div>
+              </div>
+            </Card>
+          ) : (
+          <>
           {/* Zone Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {rrConfig.map((config, ci) => (
@@ -863,7 +801,9 @@ export default function LeadsMarketplacePage() {
               </label>
             </div>
           </Card>
-        </div>
+          </>
+        )}
+      </div>
       )}
 
       {/* ── Assign Modal ── */}

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
-import { mockPlumberProfiles } from '@/lib/plumber-profiles';
 import { PLAN_LABELS_PRETTY, PLAN_LEAD_FEES, PLAN_PRICES } from '@/lib/plan-pricing';
 import type { PlumberProfile } from '@/lib/plumber-profiles';
 
@@ -29,11 +28,19 @@ export default function AdminPlumberDetailPage() {
     const id = params?.id as string;
     if (!id) { setLoading(false); setError('No plumber ID'); return; }
 
-    const found = mockPlumberProfiles.find(p => p.id === id);
-    if (found) {
-      setPlumber(found);
-    }
-    setLoading(false);
+    // Try real API first, fall back to not found
+    fetch(`/api/plumber/profile?plumberId=${encodeURIComponent(id)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.id) {
+          setPlumber(data);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        // No mock data fallback — show "not found" if no real data
+      });
   }, [params?.id]);
 
   if (loading) return (
