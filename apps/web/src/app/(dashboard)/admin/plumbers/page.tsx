@@ -25,10 +25,17 @@ const planColors: Record<string, string> = {
   enterprise: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
 };
 
+const planRevenueDisplay: Record<string, string> = {
+  solo: '$349',
+  pro: '$799',
+  business: '$1,499',
+  enterprise: '$2,500',
+};
+
 const statusColors: Record<string, string> = {
-  active: 'bg-emerald-50 text-emerald-600',
-  paused: 'bg-amber-50 text-amber-600',
-  suspended: 'bg-red-50 text-red-600',
+  active: 'bg-emerald-50 text-emerald-700 border-emerald-500/30',
+  paused: 'bg-amber-50 text-amber-700 border-amber-500/30',
+  suspended: 'bg-red-50 text-red-700 border-red-500/30',
 };
 
 export default function AdminPlumbersPage() {
@@ -46,6 +53,7 @@ export default function AdminPlumbersPage() {
   // Stats
   const total = mockPlumberProfiles.length;
   const totalActive = mockPlumberProfiles.filter(p => p.status === 'active').length;
+  const totalAtRisk = mockPlumberProfiles.filter(p => p.status === 'paused').length;
   const totalCompleted = mockPlumberProfiles.reduce((s, p) => s + p.total_jobs_completed, 0);
   const totalAvgRating = total > 0 ? (mockPlumberProfiles.reduce((s, p) => s + p.avg_rating, 0) / total).toFixed(1) : '0';
 
@@ -53,17 +61,29 @@ export default function AdminPlumbersPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
+      <div className="flex items-center justify-between">
+        <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
+        <div className="flex items-center gap-2">
+          <button className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+            Export
+          </button>
+          <button className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            Invite Plumber
+          </button>
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-blue-50 border border-blue-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-blue-600">Total Plumbers</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">{total}</p>
-        </div>
         <div className="rounded-xl bg-emerald-50 border border-emerald-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-emerald-600">Active</p>
+          <p className="text-[10px] font-semibold uppercase text-emerald-600">Active Plumbers</p>
           <p className="text-xl font-bold text-slate-900 mt-1">{totalActive}</p>
+        </div>
+        <div className="rounded-xl bg-amber-50 border border-amber-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-amber-600">At Risk</p>
+          <p className="text-xl font-bold text-slate-900 mt-1">{totalAtRisk}</p>
         </div>
         <div className="rounded-xl bg-violet-50 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-600">Jobs Completed</p>
@@ -108,6 +128,7 @@ export default function AdminPlumbersPage() {
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Jobs</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Acceptance</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Leads (mo)</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Revenue/mo</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Connect</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Status</th>
                 <th className="text-right px-4 py-3 font-semibold text-slate-500 text-xs">Actions</th>
@@ -142,6 +163,7 @@ export default function AdminPlumbersPage() {
                   <td className="px-4 py-3 text-sm text-slate-700">{p.total_jobs_completed.toLocaleString()}</td>
                   <td className="px-4 py-3 text-sm text-slate-700">{p.acceptance_rate}%</td>
                   <td className="px-4 py-3 text-sm text-slate-700">{p.current_month_leads}/{p.monthly_lead_limit}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-emerald-600">{planRevenueDisplay[p.plan_tier]}</td>
                   <td className="px-4 py-3">
                     {p.stripe_onboarding_complete
                       ? <I.Check className="w-4 h-4 text-emerald-600" />
@@ -149,8 +171,13 @@ export default function AdminPlumbersPage() {
                     }
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[p.status]}`}>
-                      {p.status}
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusColors[p.status]}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        p.status === 'active' ? 'bg-emerald-600' :
+                        p.status === 'paused' ? 'bg-amber-600' :
+                        'bg-red-600'
+                      }`} />
+                      {p.status === 'active' ? 'Active' : p.status === 'paused' ? 'At Risk' : 'Suspended'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -160,7 +187,7 @@ export default function AdminPlumbersPage() {
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={9} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
+                <tr><td colSpan={10} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
               )}
             </tbody>
           </table>

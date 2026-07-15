@@ -7,6 +7,7 @@ import {
   Download, Clock, AlertTriangle, Building2,
   UserPlus, CreditCard, LogOut, Activity,
   MapPin, CheckCircle, XCircle,
+  RotateCcw, Maximize2, RefreshCw, Search,
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
 import { downloadCSV } from '@/lib/csv-export';
@@ -831,6 +832,170 @@ function GeographicMap() {
 }
 
 /* ═══════════════════════════════════════════
+   ROW 3b — UNFULFILLED LEADS
+   ═══════════════════════════════════════════ */
+function UnfulfilledLeads() {
+  const leads = [
+    {
+      id: 1,
+      name: 'Oakwood Plumbing',
+      contact: 'jason@oakwoodplumbing.com',
+      location: 'Austin, TX',
+      service: 'Emergency pipe burst repair',
+      leadScore: 92,
+      status: 'Contacted — no response',
+      daysOpen: 5,
+    },
+    {
+      id: 2,
+      name: 'Blue Ridge Services',
+      contact: 'dispatcher@blueridge.com',
+      location: 'Denver, CO',
+      service: 'Water heater installation',
+      leadScore: 78,
+      status: 'Quote sent — pending',
+      daysOpen: 3,
+    },
+  ];
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+      <div className="flex items-center justify-between p-5 pb-3">
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold text-slate-900">⚠️ Unfulfilled Leads — Action Required</h3>
+          <span className="flex items-center justify-center min-w-[22px] h-[22px] rounded-full bg-amber-500 text-white text-[10px] font-bold px-1.5">
+            {leads.length}
+          </span>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 pt-2">
+        {leads.map((lead) => (
+          <div key={lead.id} className="border border-slate-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <h4 className="text-sm font-semibold text-slate-900">{lead.name}</h4>
+                <p className="text-[11px] text-slate-500">{lead.contact}</p>
+              </div>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600">
+                Score {lead.leadScore}
+              </span>
+            </div>
+            <p className="text-xs text-slate-600 mb-1">
+              <MapPin className="w-3 h-3 inline mr-1" />
+              {lead.location}
+            </p>
+            <p className="text-xs text-slate-600 mb-2">{lead.service}</p>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">
+                {lead.status}
+              </span>
+              <span className="text-[10px] text-slate-400">{lead.daysOpen}d open</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-3 py-1.5 rounded-lg">
+                <RotateCcw className="w-3 h-3" /> Refund
+              </button>
+              <button className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-700 bg-slate-50 hover:bg-slate-100 transition-colors px-3 py-1.5 rounded-lg">
+                <Maximize2 className="w-3 h-3" /> Expand
+              </button>
+              <button className="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors px-3 py-1.5 rounded-lg">
+                <RefreshCw className="w-3 h-3" /> Re-offer
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   ROW 4b — MARKETING & GROWTH
+   ═══════════════════════════════════════════ */
+function MarketingGrowth() {
+  const leadSources = [
+    { name: 'Google Ads', pct: 45, color: '#3b82f6', spent: '$2.1K', revenue: '$4.8K' },
+    { name: 'Facebook', pct: 30, color: '#8b5cf6', spent: '$1.4K', revenue: '$3.2K' },
+    { name: 'Organic/SEO', pct: 15, color: '#059669', spent: '$0', revenue: '$1.6K' },
+    { name: 'Referrals', pct: 10, color: '#06b6d4', spent: '$0', revenue: '$1.1K' },
+  ];
+
+  const lowCoverageCities = [
+    { city: 'San Diego, CA', leads: 12, plumbers: 1, urgent: false },
+    { city: 'Calgary, AB', leads: 8, plumbers: 0, urgent: true },
+    { city: 'Miami, FL', leads: 15, plumbers: 2, urgent: false },
+  ];
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+      <div className="flex items-center justify-between p-5 pb-3">
+        <h3 className="text-base font-semibold text-slate-900">📈 Marketing & Growth</h3>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-5 pt-2">
+        {/* Lead Sources — left 2/3 */}
+        <div className="lg:col-span-2">
+          <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Lead Sources</h4>
+          <div className="space-y-3">
+            {leadSources.map((source) => (
+              <div key={source.name}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-slate-700">{source.name}</span>
+                  <span className="text-xs text-slate-500">{source.pct}%</span>
+                </div>
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{ width: `${source.pct}%`, backgroundColor: source.color }}
+                  />
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">{source.spent} spent → {source.revenue} deposit revenue</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Cities with Low Coverage — right 1/3 */}
+        <div>
+          <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Cities with Low Coverage</h4>
+          <div className="space-y-3">
+            {lowCoverageCities.map((city) => (
+              <div key={city.city} className="border border-slate-100 rounded-xl p-3">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">{city.city}</p>
+                    <p className="text-[11px] text-slate-500">{city.leads} leads · {city.plumbers} plumber{city.plumbers !== 1 ? 's' : ''}</p>
+                  </div>
+                  <span className={city.urgent ? 'text-red-500' : 'text-amber-500'}>
+                    {city.urgent ? '🔴' : '⚠️'}
+                  </span>
+                </div>
+                <button className="w-full text-xs font-medium text-blue-600 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors px-3 py-1.5 rounded-lg">
+                  <Search className="w-3 h-3 inline mr-1" />
+                  {city.urgent ? 'Urgent: Recruit' : 'Recruit Plumbers'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-wrap items-center gap-3 px-5 pb-5 pt-2 border-t border-slate-100">
+        <button className="flex items-center gap-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors px-4 py-2 rounded-xl">
+          🎯 Launch Ad Campaign
+        </button>
+        <button className="flex items-center gap-1.5 text-xs font-semibold text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors px-4 py-2 rounded-xl">
+          🎟️ Create Promo Code
+        </button>
+        <button className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 transition-colors px-4 py-2 rounded-xl">
+          📧 Send Email Blast
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
    MAIN ADMIN PAGE
    ═══════════════════════════════════════════ */
 export default function AdminPage() {
@@ -923,11 +1088,17 @@ export default function AdminPage() {
         <AtRiskCustomers />
       </div>
 
+      {/* Row 3b — Unfulfilled Leads */}
+      <div className="mb-6"><UnfulfilledLeads /></div>
+
       {/* Row 4 — Top Customers + Activity Feed (50/50) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <TopCustomersTable />
         <ActivityFeed />
       </div>
+
+      {/* Row 4b — Marketing & Growth */}
+      <div className="mb-6"><MarketingGrowth /></div>
 
       {/* Row 5 — Feature Usage Heatmap */}
       <div className="mb-6"><FeatureUsageHeatmap /></div>
