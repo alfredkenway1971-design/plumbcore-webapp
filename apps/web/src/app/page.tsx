@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -17,6 +17,16 @@ import {
 function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange: (l: string) => void; t: (key: string) => string }) {
   const r = useRouter();
   const [open, setOpen] = useState(false);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
   const links = [
     { label: 'Features', href: '#features' },
@@ -56,7 +66,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
 
       {/* Mobile full overlay menu */}
       {open && (
-        <div className="md:hidden fixed inset-0 top-14 z-40 bg-white/95 backdrop-blur-lg">
+        <div className="md:hidden fixed inset-0 top-14 z-[60] bg-white backdrop-blur-xl">
           <div className="flex flex-col items-center justify-center h-full gap-6 px-6">
             {links.map(l => (
               <a
