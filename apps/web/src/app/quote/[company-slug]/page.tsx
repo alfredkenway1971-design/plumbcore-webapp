@@ -126,7 +126,29 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         </div>
 
         {/* Address */}
-        <AddressAutocomplete value={form.address} onChange={(val: string) => setForm((p: any) => ({ ...p, address: val }))} placeholder={t('quote.address')} />
+        <AddressAutocomplete value={form.address} onChange={(val: string) => setForm((p: any) => ({ ...p, address: val }))} onSelect={(addr, city, state, zip) => setForm((p: any) => ({ ...p, address: addr, city, state, zip }))} placeholder={t('quote.address')} />
+        
+        {/* City / State / Zip */}
+        <div className="grid grid-cols-2 gap-3">
+          <Input type="text" placeholder="City" value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" />
+          <div className="grid grid-cols-2 gap-2">
+            <Input type="text" placeholder="State" value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={20} />
+            <Input type="text" placeholder="ZIP" value={form.zip} onChange={(e: any) => {
+              let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+              // Canadian postal: auto-space after 3rd char
+              if (val.length > 3 && form.country === 'CA') val = val.slice(0,3) + ' ' + val.slice(3,6);
+              // US ZIP: max 10 chars (5+4 with dash)
+              if (form.country === 'US' && val.length > 5 && !val.includes('-') && val.length <= 10) val = val.slice(0,5) + '-' + val.slice(5,9);
+              setForm((p: any) => ({ ...p, zip: val.slice(0, form.country === 'CA' ? 7 : 10) }));
+            }} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={form.country === 'CA' ? 7 : 10} />
+          </div>
+        </div>
+        
+        {/* Country */}
+        <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+        </select>
 
         {/* Description — with mic voice input + AI enhance */}
         <div className="relative">
@@ -519,7 +541,7 @@ export default function QuotePage() {
   const { locale, changeLocale, t } = useI18n();
   const [step, setStep] = useState<1|2|3|4|5>(1);
   const [photos, setPhotos] = useState<File[]>([]);
-  const [form, setForm] = useState({ name:'', phone:'', email:'', address:'', desc:'', urgency:'routine', _enhancing: false });
+  const [form, setForm] = useState({ name:'', phone:'', email:'', address:'', city:'', state:'', zip:'', country:'US', desc:'', urgency:'routine', _enhancing: false });
   const [phoneDisplay, setPhoneDisplay] = useState('');
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string|null>(null);
@@ -652,7 +674,7 @@ export default function QuotePage() {
     }
   }, [result, form, companySlug]);
 
-  const resetFlow = useCallback(() => { setStep(1); setPaymentHandled(false); setPhotos([]); setForm({name:'',phone:'',email:'',address:'',desc:'',urgency:'routine',_enhancing:false}); setPhoneDisplay(''); setResult(null); setError(null); }, []);
+  const resetFlow = useCallback(() => { setStep(1); setPaymentHandled(false); setPhotos([]); setForm({name:'',phone:'',email:'',address:'',city:'',state:'',zip:'',country:'US',desc:'',urgency:'routine',_enhancing:false}); setPhoneDisplay(''); setResult(null); setError(null); }, []);
 
   return (
     <div className="min-h-screen bg-white" style={isWhiteLabel && wlBrand?.primary_color ? { '--pl-accent': wlBrand.primary_color } as any : undefined}>

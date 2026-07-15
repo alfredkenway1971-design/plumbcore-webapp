@@ -31,6 +31,8 @@ export interface EarningSummary {
   nextPayoutDate: string;
   avgPerJob: number;    // cents
   jobsThisMonth: number;
+  jobsThisWeek: number;      // jobs completed this week
+  depositsThisWeek: number;  // cents — deposits collected this week
   leadFeesCharged: number;   // cents (PlumbCore collected)
   platformFeesPaid: number;  // cents (your share)
 }
@@ -52,6 +54,8 @@ export const mockEarningSummary: EarningSummary = {
   nextPayoutDate: 'Sunday, July 13, 2026',
   avgPerJob: 32500,       // $325
   jobsThisMonth: 19,
+  jobsThisWeek: 4,
+  depositsThisWeek: 34500,  // $345 collected in deposits this week
   leadFeesCharged: 93100,   // PlumbCore collected $931
   platformFeesPaid: 18900,  // Plumber paid $189 in platform fees
 };

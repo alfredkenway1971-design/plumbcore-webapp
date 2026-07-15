@@ -60,7 +60,7 @@ export default function EarningsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-blue-600">This Week</p>
           <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
@@ -76,6 +76,14 @@ export default function EarningsPage() {
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-amber-600">Pending</p>
           <p className="text-xl font-bold text-amber-600 mt-1">${(summary.pendingPayouts / 100).toFixed(2)}</p>
+        </div>
+        <div className="rounded-xl bg-cyan-500/10 border border-cyan-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-cyan-600">Deposits This Week</p>
+          <p className="text-xl font-bold text-cyan-700 mt-1">${(summary.depositsThisWeek / 100).toFixed(0)}</p>
+        </div>
+        <div className="rounded-xl bg-indigo-500/10 border border-indigo-500/20 px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase text-indigo-600">Jobs This Week</p>
+          <p className="text-xl font-bold text-indigo-700 mt-1">{summary.jobsThisWeek}</p>
         </div>
       </div>
 
