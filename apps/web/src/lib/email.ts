@@ -302,7 +302,8 @@ export function depositConfirmationEmail({ customerName, diagnosis, totalEstimat
             Track your plumber live: <a href="${trackingUrl}" style="color: #3B82F6;">${trackingUrl}</a>
           </p>
 
-          <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">The deposit will be deducted from your final bill. If you have any questions, reply to this email or call our support team.</p>
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;"><strong>Deposit credit:</strong> Your deposit will be deducted from your final bill. You only pay the plumber the remaining balance after the job is complete.</p>
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">If you have any questions, reply to this email or call our support team.</p>
         </div>
       </div>
     `,

@@ -66,7 +66,11 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
           </div>
           <div className="flex justify-between">
             <span>Deposit Paid</span>
-            <span className="text-emerald-600 font-medium">${data.depositPaid?.toFixed(2)}</span>
+            <span className="text-emerald-600 font-medium">-${data.depositPaid?.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between border-t border-slate-100 pt-2 mt-2">
+            <span className="font-semibold">Remaining Balance</span>
+            <span className="font-bold text-blue-600">${((data.totalEstimate || 0) - (data.depositPaid || 0)).toFixed(2)}</span>
           </div>
         </div>
       </div>
