@@ -22,10 +22,10 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
   useEffect(() => { onMenuToggle(open); }, [open, onMenuToggle]);
 
   const links = [
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Compare', href: '#compare' },
-    { label: 'Testimonials', href: '#testimonials' },
+    { label: t('home.navFeatures'), href: '#features' },
+    { label: t('home.navPricing'), href: '#pricing' },
+    { label: t('home.navCompare'), href: '#compare' },
+    { label: t('home.navTestimonials'), href: '#testimonials' },
   ];
 
   return (
@@ -43,17 +43,17 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
 
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
-          <a href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign In</a>
+          <a href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">{t('home.navSignIn')}</a>
           <a
             href="/signup"
             className="h-10 px-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center"
           >
-            Start Free Trial
+            {t('home.startFreeTrial')}
           </a>
         </div>
 
         {/* Mobile menu button */}
-      <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label="Menu">
+      <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-slate-600" aria-label={t('home.navMenu')}>
         {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
       </div>
@@ -75,14 +75,14 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
           <div className="flex flex-col items-center gap-2 pt-1">
             <LanguageSwitcher locale={locale} onLocaleChange={(l) => { onLocaleChange(l); setOpen(false); }} />
             <a href="/login" onClick={() => setOpen(false)} className="block w-full text-center px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">
-              Sign In
+              {t('home.navSignIn')}
             </a>
             <a
               href="/signup"
               onClick={() => setOpen(false)}
               className="block w-full text-center h-10 leading-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25"
             >
-              Start Free Trial
+              {t('home.startFreeTrial')}
             </a>
           </div>
         </div>
@@ -94,7 +94,7 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
 /* ═══════════════════════════════════════════════════════════════
    HERO — "The Plumbing OS That Early Adopters Already Trust"
    ═══════════════════════════════════════════════════════════════ */
-function Hero() {
+function Hero({ t }: { t: (key: string) => string }) {
   return (
     <section className="pt-28 pb-20 bg-white overflow-hidden relative">
       {/* Subtle gradient background accent */}
@@ -106,26 +106,25 @@ function Hero() {
             {/* Badge */}
             <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-6 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-              Trusted by 500+ plumbing businesses
+              {t('home.heroTrustedBadge')}
             </span>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05] mb-5 text-slate-900">
-              The Plumbing OS That<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Early Adopters</span> Already Trust
+              {t('home.heroHeadline1')}<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">{t('home.heroHeadlineHighlight')}</span>{t('home.heroHeadline2')}
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mb-6 leading-relaxed">
-              Stop paying per lead. Get pre-paid customers who already verified their job photos, 
-              paid a deposit, and are ready to book — all included in your monthly subscription.
+              {t('home.heroSubheadline')}
             </p>
 
             {/* Proof bar */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
-              <span className="text-sm text-slate-500">Join <strong className="text-slate-900">500+</strong> plumbers</span>
+              <span className="text-sm text-slate-500">{t('home.heroJoinPlumbers')}</span>
               <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <span className="text-sm text-slate-500"><strong className="text-slate-900">12,000+</strong> jobs completed</span>
+              <span className="text-sm text-slate-500">{t('home.heroJobsCompleted')}</span>
               <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <span className="text-sm text-slate-500"><strong className="text-slate-900">4.8★</strong> average rating</span>
+              <span className="text-sm text-slate-500">{t('home.heroAvgRating')}</span>
             </div>
 
             {/* Customer CTA — Get online quote */}
@@ -134,30 +133,30 @@ function Hero() {
                 href="/quote/plumbcore"
                 className="h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-base shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2"
               >
-                <Camera className="w-4 h-4" /> Get a Free Estimate <ArrowRight className="w-4 h-4" />
+                <Camera className="w-4 h-4" /> {t('home.heroGetEstimate')} <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#how-it-works"
                 className="h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-base transition-all active:scale-[0.98] inline-flex items-center gap-2"
               >
-                See How It Works <ChevronRight className="w-4 h-4" />
+                {t('home.heroSeeHow')} <ChevronRight className="w-4 h-4" />
               </a>
             </div>
 
             {/* Plumber CTAs */}
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 text-center lg:text-left">For plumbing businesses</p>
+            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 text-center lg:text-left">{t('home.heroForBusinesses')}</p>
             <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start">
               <a
                 href="/signup"
                 className="h-12 sm:h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
               >
-                Get Your First Pre-Paid Lead This Week <ArrowRight className="w-4 h-4" />
+                {t('home.heroGetLead')} <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#how-it-works"
                 className="h-12 sm:h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-all active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
               >
-                See How It Works <ChevronRight className="w-4 h-4" />
+                {t('home.heroSeeHow')} <ChevronRight className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -168,7 +167,7 @@ function Hero() {
             <div className="relative">
               <img
                 src="/images/hero-plumber.jpg"
-                alt="Plumber working on sink installation"
+                alt={t('home.heroImgAlt')}
                 className="w-full h-auto rounded-2xl ring-1 ring-black/5 shadow-lg object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
@@ -176,7 +175,7 @@ function Hero() {
               <div className="absolute -top-3 -right-3 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-sm rounded-full px-3.5 py-2 shadow-lg ring-1 ring-black/5 flex items-center gap-2 animate-[fadeIn_0.6s_ease-out]">
                 <Camera className="w-4 h-4 text-blue-500" />
                 <span className="text-xs font-semibold text-slate-700 whitespace-nowrap">
-                  AI Analyzing...
+                  {t('home.heroAIAnalyzing')}
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               </div>
@@ -188,7 +187,7 @@ function Hero() {
                 <div className="rounded-[1.75rem] overflow-hidden ring-1 ring-black/5 bg-white">
                   <img
                     src="/images/hero-plumber.jpg"
-                    alt="PlumbCore AI app interface preview"
+                    alt={t('home.heroAppImgAlt')}
                     className="w-full h-auto object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
@@ -197,7 +196,7 @@ function Hero() {
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-black/10 rounded-full" />
               </div>
               <p className="text-center text-xs text-slate-400 mt-3 font-medium">
-                Tap. Snap. Get paid. — See how it works
+                {t('home.heroHowItWorksCaption')}
               </p>
             </div>
           </div>
@@ -210,37 +209,37 @@ function Hero() {
 /* ═══════════════════════════════════════════════════════════════
    HOW PLUMBCORE MAKES YOU MONEY — 3-step + cost comparison
    ═══════════════════════════════════════════════════════════════ */
-function HowPlumbCoreMakesYouMoney() {
+function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
   const steps = [
     {
       num: '1',
-      title: 'Customer Uploads Photo',
-      desc: 'Customer snaps a photo of the issue through our AI-powered intake. No phone tag, no truck roll to quote.',
+      title: t('home.howStep1Title'),
+      desc: t('home.howStep1Desc'),
       img: '/images/hero-work.jpg',
       icon: '📸',
     },
     {
       num: '2',
-      title: 'Customer Pays $49 Deposit',
-      desc: 'The customer pays a refundable $49–$199 deposit upfront. This filters looky-loos and confirms they\'re serious.',
+      title: t('home.howStep2Title'),
+      desc: t('home.howStep2Desc'),
       img: '/images/feature-estimate.jpg',
       icon: '💵',
     },
     {
       num: '3',
-      title: 'You Get Pre-Paid Lead',
-      desc: 'You receive the verified lead with photo, deposit credited to your invoice, and AI estimate. Show up and get paid.',
+      title: t('home.howStep3Title'),
+      desc: t('home.howStep3Desc'),
       img: '/images/feature-route.jpg',
       icon: '✅',
     },
   ];
 
   const comparisonRows = [
-    { feature: 'Monthly Cost', plumbcore: '$349', homeadvisor: '$75/lead', servicetitan: '$398+' },
-    { feature: 'Leads Included', plumbcore: 'Unlimited', homeadvisor: 'Pay per lead', servicetitan: 'None' },
-    { feature: 'Customer Pre-Pays', plumbcore: '✓ Yes', homeadvisor: '✗ No', servicetitan: '✗ No' },
-    { feature: 'Deposit Is Yours', plumbcore: '✓ Credited', homeadvisor: '✗ Kept by them', servicetitan: '✗ No' },
-    { feature: 'AI Estimates', plumbcore: '✓ Included', homeadvisor: '✗ No', servicetitan: '$200 add-on' },
+    { feature: t('home.compMonthlyCost'), plumbcore: t('home.compPlumbcore349'), homeadvisor: t('home.compHomeadvisor75'), servicetitan: t('home.compServicetitan398') },
+    { feature: t('home.compLeadsIncluded'), plumbcore: t('home.compUnlimited'), homeadvisor: t('home.compPayPerLead'), servicetitan: t('home.compNone') },
+    { feature: t('home.compCustomerPrePays'), plumbcore: t('home.compYes'), homeadvisor: t('home.compNo'), servicetitan: t('home.compNo') },
+    { feature: t('home.compDepositIsYours'), plumbcore: t('home.compCredited'), homeadvisor: t('home.compKeptByThem'), servicetitan: t('home.compNo') },
+    { feature: t('home.compAIEstimates'), plumbcore: t('home.compIncluded'), homeadvisor: t('home.compNo'), servicetitan: t('home.comp200Addon') },
   ];
 
   return (
@@ -248,13 +247,12 @@ function HowPlumbCoreMakesYouMoney() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-14">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">How You Win</span>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.howBadge')}</span>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
-            How PlumbCore Makes You Money
+            {t('home.howTitle')}
           </h2>
           <p className="text-base text-slate-500 max-w-2xl mx-auto">
-            While HomeAdvisor charges you <strong>$75 per lead</strong>, PlumbCore gives you unlimited pre-paid leads 
-            for <strong>$349/month</strong>. The math is simple.
+            {t('home.howSubtitle')}
           </p>
         </div>
 
@@ -286,28 +284,27 @@ function HowPlumbCoreMakesYouMoney() {
         {/* ROI callout */}
         <div className="max-w-3xl mx-auto mb-14 bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 sm:p-8 text-center">
           <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
-            <strong className="text-slate-900">Average plumber:</strong> 8 jobs/month × $400 = <strong className="text-slate-900">$3,200 revenue</strong>.
-            Your cost: <strong className="text-blue-600">$349</strong>.
+            {t('home.roiText')}
           </p>
           <div className="mt-4 inline-flex items-center gap-3 bg-emerald-50 rounded-full px-5 py-2 ring-1 ring-emerald-200">
             <span className="text-2xl font-bold text-emerald-600">9:1</span>
-            <span className="text-sm font-semibold text-emerald-700">That&rsquo;s a 9:1 ROI</span>
+            <span className="text-sm font-semibold text-emerald-700">{t('home.roiLabel')}</span>
           </div>
         </div>
 
         {/* Comparison table */}
         <div className="max-w-3xl mx-auto">
           <h3 className="text-xl font-semibold text-slate-900 text-center mb-6">
-            PlumbCore vs. The Old Way
+            {t('home.comparisonVS')}
           </h3>
           <div className="overflow-hidden rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50">
-                  <th className="text-left px-5 py-3.5 font-semibold text-slate-700">Feature</th>
-                  <th className="text-center px-4 py-3.5 font-bold text-blue-600">PlumbCore</th>
-                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">HomeAdvisor</th>
-                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">ServiceTitan</th>
+                  <th className="text-left px-5 py-3.5 font-semibold text-slate-700">{t('home.compFeatureHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-bold text-blue-600">{t('home.compPlumbcoreHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">{t('home.compHomeadvisorHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">{t('home.compServicetitanHeader')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -331,42 +328,42 @@ function HowPlumbCoreMakesYouMoney() {
 /* ═══════════════════════════════════════════════════════════════
    FEATURES — 6 features with revenue outcome headlines
    ═══════════════════════════════════════════════════════════════ */
-function FeaturesSection() {
+function FeaturesSection({ t }: { t: (key: string) => string }) {
   const features = [
     {
       icon: Camera,
-      title: 'Close 43% More Jobs',
-      desc: 'AI Photo Estimates — customers snap a photo, get an instant AI estimate. Speed wins trust and closes deals faster than waiting for a manual quote.',
+      title: t('home.featureCloseRateTitle'),
+      desc: t('home.featureCloseRateDesc'),
       gradient: 'from-blue-500 to-cyan-500',
     },
     {
       icon: MessageCircle,
-      title: 'Never Miss a $400 Call',
-      desc: 'AI Receptionist — answers every call 24/7, books appointments, and qualifies leads. No more missed calls that turn into lost revenue.',
+      title: t('home.featureNeverMissTitle'),
+      desc: t('home.featureNeverMissDesc'),
       gradient: 'from-emerald-500 to-teal-500',
     },
     {
       icon: MapPin,
-      title: 'Fit 2 Extra Jobs Per Day',
-      desc: 'Route Optimization — AI plans the most efficient routes between calls, cutting drive time and letting you fit more revenue into every day.',
+      title: t('home.featureFitExtraTitle'),
+      desc: t('home.featureFitExtraDesc'),
       gradient: 'from-amber-500 to-orange-500',
     },
     {
       icon: Mic,
-      title: 'Save 18 Hours Per Week',
-      desc: 'Voice-to-Invoice — dictate job notes on-site and AI generates an invoice instantly. No back-office data entry, no end-of-day paperwork.',
+      title: t('home.featureSaveHoursTitle'),
+      desc: t('home.featureSaveHoursDesc'),
       gradient: 'from-pink-500 to-rose-500',
     },
     {
       icon: Package,
-      title: 'Zero "Left the Part at the Shop"',
-      desc: 'Inventory Tracking — know exactly what\'s on each truck and in the warehouse. AI predicts what parts you\'ll need before every job.',
+      title: t('home.featureZeroPartsTitle'),
+      desc: t('home.featureZeroPartsDesc'),
       gradient: 'from-purple-500 to-violet-500',
     },
     {
       icon: Calendar,
-      title: 'Stop Overbooking. Start Earning.',
-      desc: 'Smart Scheduling — auto-balances your calendar based on job duration, drive time, and skill match. Maximize every hour of daylight.',
+      title: t('home.featureStopOverbookTitle'),
+      desc: t('home.featureStopOverbookDesc'),
       gradient: 'from-cyan-500 to-blue-500',
     },
   ];
@@ -375,12 +372,12 @@ function FeaturesSection() {
     <section id="features" className="py-16 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">Features</span>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.featuresBadge')}</span>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
-            Everything You Need to Grow
+            {t('home.featuresTitle')}
           </h2>
           <p className="text-base text-slate-500 max-w-xl mx-auto">
-            Each feature is built to put more money in your pocket. Not buzzwords — outcomes.
+            {t('home.featuresSubtitle')}
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -397,7 +394,7 @@ function FeaturesSection() {
                 <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
                   <img
                     src="/images/feature-estimate.jpg"
-                    alt="AI Photo Estimate preview"
+                    alt={t('home.featureImgEstimateAlt')}
                     className="w-full h-24 object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
@@ -407,7 +404,7 @@ function FeaturesSection() {
                 <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
                   <img
                     src="/images/feature-route.jpg"
-                    alt="Route Optimization preview"
+                    alt={t('home.featureImgRouteAlt')}
                     className="w-full h-24 object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
@@ -428,67 +425,90 @@ function FeaturesSection() {
 /* ═══════════════════════════════════════════════════════════════
    PRICING — 4 plans with deposit mention and risk reversal
    ═══════════════════════════════════════════════════════════════ */
-function PricingSection() {
+function PricingSection({ t }: { t: (key: string) => string }) {
   const r = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
 
   const plans = [
     {
       id: 'solo',
-      name: 'Solo',
+      name: t('home.planSolo'),
       price: 349,
       priceId: 'price_1Tt6N8DynIU5fZLWmBY3zi05',
-      techs: '1 tech',
+      techs: t('home.planSoloTechs'),
       popular: false,
-      leads: '10/mo',
+      leads: t('home.planSoloLeads'),
       priority: 'Standard',
-      aiHours: '15 hrs',
-      features: ['Unlimited AI estimates', 'Scheduling & invoicing', 'Lead intake with deposits', 'Email support'],
-      cta: 'Start Free Trial',
+      aiHours: t('home.planSoloAI'),
+      features: [
+        t('home.planSoloFeature1'),
+        t('home.planSoloFeature2'),
+        t('home.planSoloFeature3'),
+        t('home.planSoloFeature4'),
+      ],
+      cta: t('home.startFreeTrial'),
     },
     {
       id: 'pro',
-      name: 'Pro',
+      name: t('home.planPro'),
       price: 799,
       priceId: 'price_1Tt6N9DynIU5fZLWWYqfTfUc',
-      techs: '2–10 techs',
+      techs: t('home.planProTechs'),
       popular: true,
-      leads: 'Unlimited',
+      leads: t('home.planProLeads'),
       priority: 'High',
-      aiHours: '60 hrs',
-      features: ['Everything in Solo', 'Route optimization', 'Inventory tracking', 'Maintenance plans', 'Review automation', 'AI receptionist'],
-      cta: 'Start Free Trial',
+      aiHours: t('home.planProAI'),
+      features: [
+        t('home.planProFeature1'),
+        t('home.planProFeature2'),
+        t('home.planProFeature3'),
+        t('home.planProFeature4'),
+        t('home.planProFeature5'),
+        t('home.planProFeature6'),
+      ],
+      cta: t('home.startFreeTrial'),
     },
     {
       id: 'business',
-      name: 'Business',
+      name: t('home.planBusiness'),
       price: 1499,
       priceId: 'price_1Tt6NADynIU5fZLWRymLht9U',
-      techs: '11–25 techs',
+      techs: t('home.planBusinessTechs'),
       popular: false,
-      leads: 'Unlimited',
+      leads: t('home.planBusinessLeads'),
       priority: 'Highest',
-      aiHours: '150 hrs',
-      features: ['Everything in Pro', 'Customer financing', 'Truck GPS + alerts', 'Priority support'],
-      cta: 'Start Free Trial',
+      aiHours: t('home.planBusinessAI'),
+      features: [
+        t('home.planBusinessFeature1'),
+        t('home.planBusinessFeature2'),
+        t('home.planBusinessFeature3'),
+        t('home.planBusinessFeature4'),
+      ],
+      cta: t('home.startFreeTrial'),
     },
     {
       id: 'enterprise',
-      name: 'Enterprise',
+      name: t('home.planEnterprise'),
       price: 0,
       priceId: null,
-      techs: '25+ techs',
+      techs: t('home.planEnterpriseTechs'),
       popular: false,
-      leads: 'Unlimited',
+      leads: t('home.planEnterpriseLeads'),
       priority: 'Custom',
-      aiHours: 'Unlimited',
-      features: ['Everything in Business', 'Predictive maintenance', 'White-label portal', 'Dedicated manager', 'Custom integrations'],
-      cta: 'Contact Sales',
+      aiHours: t('home.planEnterpriseAI'),
+      features: [
+        t('home.planEnterpriseFeature1'),
+        t('home.planEnterpriseFeature2'),
+        t('home.planEnterpriseFeature3'),
+        t('home.planEnterpriseFeature4'),
+        t('home.planEnterpriseFeature5'),
+      ],
+      cta: t('home.contactUs'),
     },
   ];
 
   const handleCheckout = async (plan: typeof plans[0]) => {
-    if (plan.cta === 'Contact Sales') {
+    if (plan.cta === t('home.contactUs')) {
       window.location.href = 'mailto:sales@plumbcore.ai';
       return;
     }
@@ -519,13 +539,12 @@ function PricingSection() {
     <section id="pricing" className="py-16 sm:py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">Pricing</span>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.pricingBadge')}</span>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
-            One Flat Price. Unlimited Pre-Paid Leads.
+            {t('home.pricingTitle')}
           </h2>
           <p className="text-base text-slate-500 max-w-2xl mx-auto">
-            No surprise fees. No per-lead charges. Every plan includes deposits from customers that 
-            are credited to your invoice.
+            {t('home.pricingSubtitle')}
           </p>
         </div>
 
@@ -541,7 +560,7 @@ function PricingSection() {
             >
               {p.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/25 z-20">
-                  Most Popular
+                  {t('home.pricingMostPopular')}
                 </div>
               )}
               <div className="p-6 text-center flex flex-col h-full">
@@ -551,17 +570,17 @@ function PricingSection() {
                   {p.price > 0 ? (
                     <>
                       <span className="text-3xl font-bold tracking-tight text-slate-900">${p.price}</span>
-                      <span className="text-sm text-slate-400">/mo</span>
+                      <span className="text-sm text-slate-400">{t('home.pricingPerMonth')}</span>
                     </>
                   ) : (
-                    <span className="text-2xl font-bold tracking-tight text-slate-900">Contact Us</span>
+                    <span className="text-2xl font-bold tracking-tight text-slate-900">{t('home.contactUs')}</span>
                   )}
                 </div>
 
                 {/* Quick specs */}
                 <div className="flex justify-center gap-4 mb-4 text-xs text-slate-500">
-                  <span><strong className="text-slate-700">{p.leads}</strong> leads</span>
-                  <span><strong className="text-slate-700">{p.aiHours}</strong> AI</span>
+                  <span><strong className="text-slate-700">{p.leads}</strong> {t('home.pricingLeadsLabel')}</span>
+                  <span><strong className="text-slate-700">{p.aiHours}</strong> {t('home.pricingAILabel')}</span>
                 </div>
 
                 <ul className="space-y-2.5 text-left max-w-[200px] mx-auto min-h-[160px]">
@@ -577,16 +596,16 @@ function PricingSection() {
 
                 {/* Deposit mention */}
                 <p className="text-[11px] text-slate-400 mt-3 leading-tight">
-                  Every lead comes with a customer deposit ($49–$199) credited to your invoice.
+                  {t('home.depositNote')}
                 </p>
 
                 <div className="mt-auto pt-5">
-                  {p.cta === 'Contact Sales' ? (
+                  {p.cta === t('home.contactUs') ? (
                     <button
                       onClick={() => window.location.href = 'mailto:sales@plumbcore.ai'}
                       className="w-full h-11 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition-all active:scale-[0.98]"
                     >
-                      {loading === p.id ? 'Redirecting...' : p.cta}
+                      {loading === p.id ? t('home.redirecting') : p.cta}
                     </button>
                   ) : p.popular ? (
                     <button
@@ -594,7 +613,7 @@ function PricingSection() {
                       disabled={disabled}
                       className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm disabled:opacity-50"
                     >
-                      {loading === p.id ? 'Redirecting...' : 'Start Free Trial →'}
+                      {loading === p.id ? t('home.redirecting') : t('home.startFreeTrialArrow')}
                     </button>
                   ) : (
                     <button
@@ -602,7 +621,7 @@ function PricingSection() {
                       disabled={disabled}
                       className="w-full h-11 rounded-full bg-white text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50 text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-50"
                     >
-                      {loading === p.id ? 'Redirecting...' : 'Start Free Trial →'}
+                      {loading === p.id ? t('home.redirecting') : t('home.startFreeTrialArrow')}
                     </button>
                   )}
                 </div>
@@ -615,11 +634,10 @@ function PricingSection() {
         <div className="max-w-3xl mx-auto mt-10 bg-blue-50 rounded-2xl ring-1 ring-blue-200 p-5 sm:p-6 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Shield className="w-5 h-5 text-blue-600" />
-            <span className="font-semibold text-slate-900">30-Day Money-Back Guarantee</span>
+            <span className="font-semibold text-slate-900">{t('home.guaranteeTitle')}</span>
           </div>
           <p className="text-sm text-slate-600 leading-relaxed">
-            If you don&rsquo;t get at least 2 qualified leads in your first 30 days, we&rsquo;ll refund your first month. 
-            No questions asked.
+            {t('home.guaranteeText')}
           </p>
         </div>
 
@@ -628,10 +646,10 @@ function PricingSection() {
             href="/signup"
             className="inline-flex items-center gap-2 h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm"
           >
-            Start Free Trial — No Card Needed <ArrowRight className="w-4 h-4" />
+            {t('home.startFreeTrialNoCard')} <ArrowRight className="w-4 h-4" />
           </a>
           <p className="text-sm text-slate-400 mt-3">
-            14-day free trial · Full access · Cancel in one click
+            {t('home.freeTrialSub')}
           </p>
         </div>
       </div>
@@ -642,32 +660,31 @@ function PricingSection() {
 /* ═══════════════════════════════════════════════════════════════
    YOUR COMPETITION ALREADY HAS THIS — stats bar
    ═══════════════════════════════════════════════════════════════ */
-function CompetitionSection() {
+function CompetitionSection({ t }: { t: (key: string) => string }) {
   return (
     <section className="py-16 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mb-3">
-            The Gap Between Growing Shops and Struggling Ones Is One Decision
+            {t('home.compHeadline')}
           </h2>
           <p className="text-base text-slate-500 max-w-2xl mx-auto">
-            Your competitors are already using AI to book more jobs, work fewer hours, and earn more. 
-            The question isn&rsquo;t if you should — it&rsquo;s how long you can afford to wait.
+            {t('home.compSubheadline')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">+340%</p>
-            <p className="text-sm text-slate-500 mt-1">Lead Volume</p>
+            <p className="text-sm text-slate-500 mt-1">{t('home.compLeadVolume')}</p>
           </div>
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">18 Hrs</p>
-            <p className="text-sm text-slate-500 mt-1">Saved / Week</p>
+            <p className="text-sm text-slate-500 mt-1">{t('home.compHoursSaved')}</p>
           </div>
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">43%</p>
-            <p className="text-sm text-slate-500 mt-1">Close Rate Increase</p>
+            <p className="text-sm text-slate-500 mt-1">{t('home.compCloseRate')}</p>
           </div>
         </div>
       </div>
@@ -678,31 +695,31 @@ function CompetitionSection() {
 /* ═══════════════════════════════════════════════════════════════
    TESTIMONIALS — Real Plumbers. Real Results.
    ═══════════════════════════════════════════════════════════════ */
-function TestimonialsSection() {
+function TestimonialsSection({ t }: { t: (key: string) => string }) {
   const testimonials = [
     {
-      name: 'Mike Torres',
-      role: 'Owner, Torres Plumbing',
+      name: t('home.testimonial1Name'),
+      role: t('home.testimonial1Company'),
       image: '/images/testimonial-1.jpg',
       avatar: 'MT',
       rating: 5,
-      text: 'PlumbCore AI cut our estimate time from 30 minutes to 10 seconds. Our close rate went up 40% in the first month.',
+      text: t('home.testimonial1Text'),
     },
     {
-      name: 'Sarah Chen',
-      role: 'Operations Manager, Fast Flow Inc.',
+      name: t('home.testimonial2Name'),
+      role: t('home.testimonial2Company'),
       image: '/images/testimonial-2.jpg',
       avatar: 'SC',
       rating: 5,
-      text: 'The voice-to-invoice feature alone saves my techs 2 hours a day. Best investment we\'ve made.',
+      text: t('home.testimonial2Text'),
     },
     {
-      name: 'Robert Davis',
-      role: 'CEO, Davis Plumbing Co.',
+      name: t('home.testimonial3Name'),
+      role: t('home.testimonial3Company'),
       image: '/images/testimonial-3.jpg',
       avatar: 'RD',
       rating: 5,
-      text: 'We doubled our service area with route optimization. AI scheduling is a game-changer for multi-tech shops.',
+      text: t('home.testimonial3Text'),
     },
   ];
 
@@ -710,19 +727,19 @@ function TestimonialsSection() {
     <section id="testimonials" className="py-16 sm:py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">Testimonials</span>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.testimonialsBadge')}</span>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
-            Real Plumbers. Real Results.
+            {t('home.testimonialTitle')}
           </h2>
         </div>
 
         {/* Aggregate stats */}
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-10 text-sm text-slate-500">
-          <span><strong className="text-slate-900">500+</strong> plumbers</span>
+          <span>{t('home.testimonialAggregate1')}</span>
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <span><strong className="text-slate-900">12,000+</strong> jobs</span>
+          <span>{t('home.testimonialAggregate2')}</span>
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <span><strong className="text-slate-900">$4.8M</strong> in customer deposits processed</span>
+          <span>{t('home.testimonialAggregate3')}</span>
         </div>
 
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -773,27 +790,27 @@ function TestimonialsSection() {
 /* ═══════════════════════════════════════════════════════════════
    FAQ — Accordion with comprehensive answers
    ═══════════════════════════════════════════════════════════════ */
-function FaqSection() {
+function FaqSection({ t }: { t: (key: string) => string }) {
   const faqs = [
     {
-      q: 'How do deposits work?',
-      a: 'When a customer submits a job through PlumbCore, they pay a refundable deposit ($49–$199 depending on job scope). This deposit is credited directly to your invoice when you complete the job. If the customer cancels, the deposit is refunded to them. You never have to chase payments — the money is already collected.',
+      q: t('home.faqDepositQ'),
+      a: t('home.faqDepositA'),
     },
     {
-      q: 'Do I pay extra for leads?',
-      a: 'No. Unlike HomeAdvisor or Angi, PlumbCore does not charge per lead. Every lead generated through our platform is included in your monthly subscription. Whether you get 5 or 50 leads in a month, the price stays the same. The deposit from the customer is separate and goes toward your invoice.',
+      q: t('home.faqLeadCostQ'),
+      a: t('home.faqLeadCostA'),
     },
     {
-      q: 'What if a Pro plumber is near my lead?',
-      a: 'We use geo-matching to assign leads to the nearest qualified pro. If another PlumbCore plumber is closer to a lead than you are, they get priority. This ensures customers get the fastest service possible and you only get leads that make sense for your service area. You can set your coverage radius in settings.',
+      q: t('home.faqProPriorityQ'),
+      a: t('home.faqProPriorityA'),
     },
     {
-      q: 'What if I don\'t get leads?',
-      a: 'We guarantee you\'ll receive at least 2 qualified leads in your first 30 days. If you don\'t, we\'ll refund your first month — no questions asked. After that, lead volume grows with your reputation and rating on the platform. Top-rated plumbers in high-demand areas typically receive 15–25+ leads per week.',
+      q: t('home.faqNoLeadsQ'),
+      a: t('home.faqNoLeadsA'),
     },
     {
-      q: 'Can I upgrade mid-month?',
-      a: 'Absolutely. You can upgrade or downgrade your plan at any time. Upgrades take effect immediately with a prorated charge for the remainder of the month. Downgrades take effect at the next billing cycle. There are no long-term contracts — you can cancel anytime.',
+      q: t('home.faqUpgradeQ'),
+      a: t('home.faqUpgradeA'),
     },
   ];
 
@@ -803,9 +820,9 @@ function FaqSection() {
     <section id="faq" className="py-16 sm:py-20 bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">FAQ</span>
+          <span className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase">{t('home.faqBadge')}</span>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
-            Questions? We&rsquo;ve Got Answers.
+            {t('home.faqTitle')}
           </h2>
         </div>
         <div className="space-y-3">
@@ -838,20 +855,20 @@ function FaqSection() {
 /* ═══════════════════════════════════════════════════════════════
    CTA SECTION — Scarcity + final push
    ═══════════════════════════════════════════════════════════════ */
-function CtaSection() {
+function CtaSection({ t }: { t: (key: string) => string }) {
   return (
     <section className="py-20 bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.3),transparent)]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4">
-          Get Your First Pre-Paid Lead This Week
+          {t('home.ctaTitle')}
         </h2>
 
         {/* Scarcity badge */}
         <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-2 mb-7 ring-1 ring-white/20">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
           <span className="text-sm font-semibold text-white">
-            Only 50 spots per city. <strong>12 left in Austin.</strong>
+            {t('home.ctaScarcity')}
           </span>
         </div>
 
@@ -859,10 +876,10 @@ function CtaSection() {
           href="/signup"
           className="inline-flex items-center gap-2 h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-semibold shadow-lg shadow-blue-900/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
         >
-          Start Free Trial — No Card Needed <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+          {t('home.ctaButton')} <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
         </a>
         <p className="text-sm text-blue-200 mt-4">
-          14-day free trial · Full access · Cancel in one click
+          {t('home.ctaSubtext')}
         </p>
       </div>
     </section>
@@ -872,7 +889,7 @@ function CtaSection() {
 /* ═══════════════════════════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════════════════════════ */
-function Footer() {
+function Footer({ t }: { t: (key: string) => string }) {
   return (
     <footer className="bg-slate-50 text-slate-500 py-10 sm:py-14 ring-1 ring-inset ring-black/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -881,7 +898,7 @@ function Footer() {
           <div>
             <PlumbCoreLogo size="md" showText={true} />
             <p className="text-sm text-slate-500 leading-relaxed mt-4">
-              The plumbing OS built by plumbers. Zero regrets.
+              {t('home.footerTagline')}
             </p>
             <div className="flex gap-3 mt-6 justify-center sm:justify-start">
               <a href="https://x.com/plumbcoreai" target="_blank" rel="noopener noreferrer"
@@ -905,30 +922,30 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">Quick Links</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerQuickLinks')}</h4>
             <div className="space-y-2.5 text-sm">
-              <a href="#features" className="block hover:text-slate-700 transition-colors">Features</a>
-              <a href="#pricing" className="block hover:text-slate-700 transition-colors">Pricing</a>
-              <a href="#compare" className="block hover:text-slate-700 transition-colors">Compare</a>
-              <a href="#testimonials" className="block hover:text-slate-700 transition-colors">Testimonials</a>
-              <a href="/signup" className="block hover:text-slate-700 transition-colors">Get Started</a>
+              <a href="#features" className="block hover:text-slate-700 transition-colors">{t('home.navFeatures')}</a>
+              <a href="#pricing" className="block hover:text-slate-700 transition-colors">{t('home.navPricing')}</a>
+              <a href="#compare" className="block hover:text-slate-700 transition-colors">{t('home.navCompare')}</a>
+              <a href="#testimonials" className="block hover:text-slate-700 transition-colors">{t('home.navTestimonials')}</a>
+              <a href="/signup" className="block hover:text-slate-700 transition-colors">{t('home.footerGetStarted')}</a>
             </div>
           </div>
 
           {/* Plans */}
           <div>
-            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">Plans</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerPlans')}</h4>
             <div className="space-y-2.5 text-sm">
-              <span className="block">Solo — $349/mo</span>
-              <span className="block">Pro — $799/mo</span>
-              <span className="block">Business — $1,499/mo</span>
-              <span className="block">Enterprise — Contact Us</span>
+              <span className="block">{t('home.footerPlanSolo')}</span>
+              <span className="block">{t('home.footerPlanPro')}</span>
+              <span className="block">{t('home.footerPlanBusiness')}</span>
+              <span className="block">{t('home.footerPlanEnterprise')}</span>
             </div>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">Contact</h4>
+            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4">{t('home.footerContact')}</h4>
             <div className="space-y-2.5 text-sm">
               <span className="flex items-center gap-2 justify-center sm:justify-start">
                 <Phone className="w-4 h-4 text-blue-500" /> (555) 123-4567
@@ -937,14 +954,14 @@ function Footer() {
                 <span className="text-blue-500 text-base">✉</span> hello@plumbcore.ai
               </span>
               <span className="flex items-start gap-2 justify-center sm:justify-start">
-                <MapPin className="w-4 h-4 text-blue-500 mt-0.5" /> 123 Main St, Austin, TX
+                <MapPin className="w-4 h-4 text-blue-500 mt-0.5" /> {t('home.footerAddress')}
               </span>
             </div>
           </div>
         </div>
 
         <div className="mt-10 pt-8 ring-1 ring-inset ring-slate-200 text-center text-xs text-slate-400">
-          <p>&copy; {new Date().getFullYear()} PlumbCore AI. All rights reserved.</p>
+          <p>{t('home.footerRights')}</p>
         </div>
       </div>
     </footer>
@@ -954,7 +971,7 @@ function Footer() {
 /* ═══════════════════════════════════════════════════════════════
    FLOATING CTA — fixed bottom mobile CTA
    ═══════════════════════════════════════════════════════════════ */
-function FloatingCta({ hidden }: { hidden?: boolean }) {
+function FloatingCta({ t, hidden }: { t: (key: string) => string; hidden?: boolean }) {
   if (hidden) return null;
   return (
     <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-lg ring-1 ring-black/5 px-4 py-3">
@@ -962,7 +979,7 @@ function FloatingCta({ hidden }: { hidden?: boolean }) {
         href="/signup"
         className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 text-sm"
       >
-        Start Free Trial <ArrowRight className="w-4 h-4" />
+        {t('home.startFreeTrial')} <ArrowRight className="w-4 h-4" />
       </a>
     </div>
   );
@@ -977,16 +994,16 @@ export default function LandingPage() {
   return (
     <main className={`min-h-screen bg-white ${menuOpen ? 'overflow-hidden' : ''} pb-16 md:pb-0`}>
       <Navbar locale={locale} onLocaleChange={(l) => changeLocale(l as 'en' | 'fr' | 'es' | 'de')} t={t} menuOpen={menuOpen} onMenuToggle={setMenuOpen} />
-      <Hero />
-      <HowPlumbCoreMakesYouMoney />
-      <FeaturesSection />
-      <PricingSection />
-      <CompetitionSection />
-      <TestimonialsSection />
-      <FaqSection />
-      <CtaSection />
-      <Footer />
-      <FloatingCta hidden={menuOpen} />
+      <Hero t={t} />
+      <HowPlumbCoreMakesYouMoney t={t} />
+      <FeaturesSection t={t} />
+      <PricingSection t={t} />
+      <CompetitionSection t={t} />
+      <TestimonialsSection t={t} />
+      <FaqSection t={t} />
+      <CtaSection t={t} />
+      <Footer t={t} />
+      <FloatingCta t={t} hidden={menuOpen} />
     </main>
   );
 }
