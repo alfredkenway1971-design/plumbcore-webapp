@@ -1,5 +1,5 @@
 /**
- * PATCH /api/leads/[id]
+ * PATCH /api/leads/[lead-id]
  * Accept or decline a lead
  */
 
@@ -8,12 +8,15 @@ import { requireAuth } from '@/lib/api-auth';
 import { getAdminClient } from '@/lib/supabase-admin';
 import { sendEmail } from '@/lib/email';
 
-export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ 'lead-id': string }> },
+) {
   const auth = requireAuth(req);
   if (auth instanceof NextResponse) return auth;
 
   try {
-    const { id } = await params;
+    const { 'lead-id': leadId } = await params;
     const { action, companyId, reason } = await req.json();
 
     if (!['accept', 'decline'].includes(action)) {
@@ -27,7 +30,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const { data: lead } = await (admin as any)
       .from('leads')
       .select('*')
-      .eq('id', id)
+      .eq('id', leadId)
       .single();
 
     if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 });
@@ -49,7 +52,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         status: 'accepted',
         accepted_by: companyId,
         accepted_at: new Date().toISOString(),
-      }).eq('id', id);
+      }).eq('id', leadId);
 
       // Create the job
       await (admin as any).from('jobs').insert({
@@ -69,9 +72,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       // Notify all other notified plumbers that lead was taken
       await (admin as any).from('lead_notifications').update({
         status: 'taken',
-      }).eq('lead_id', id).neq('company_id', companyId);
+      }).eq('lead_id', leadId).neq('company_id', companyId);
 
-      console.log(`✅ Lead ${id} accepted by ${company.name}`);
+      console.log(`✅ Lead ${leadId} accepted by ${company.name}`);
 
       return NextResponse.json({ success: true, message: `Lead accepted by ${company.name}` });
     }
@@ -79,13 +82,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     if (action === 'decline') {
       // Record the decline
       await (admin as any).from('lead_notifications').insert({
-        lead_id: id,
+        lead_id: leadId,
         company_id: companyId,
         status: 'declined',
         decline_reason: reason || 'Not specified',
       });
 
-      console.log(`❌ Lead ${id} declined by company ${companyId}: ${reason || 'No reason'}`);
+      console.log(`❌ Lead ${leadId} declined by company ${companyId}: ${reason || 'No reason'}`);
 
       return NextResponse.json({ success: true, message: 'Decline recorded' });
     }
