@@ -95,6 +95,7 @@ export async function POST(req: Request) {
           const companySlug = metadata.companySlug || '';
           const depositCharged = parseInt(metadata.depositCharged || '4900');
           const depositTier = metadata.depositTier || '';
+          const trackingToken = metadata.trackingToken || '';
           const customerAddress = metadata.customerAddress || '';
           const customerCity = metadata.customerCity || '';
           const amountPaid = (session.amount_total || 4900) / 100;
@@ -159,6 +160,7 @@ export async function POST(req: Request) {
                     deposit_paid: amountPaid,
                     deposit_charged: depositCharged / 100,
                     deposit_tier: depositTier,
+                    tracking_token: trackingToken || null,
                     estimated_job_value: totalEstimate,
                     status: 'matching',
                     created_at: now.toISOString(),

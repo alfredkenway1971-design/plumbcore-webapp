@@ -22,11 +22,11 @@ export async function GET(req: Request) {
       try {
         const { data: lead } = await (admin as any)
           .from('leads')
-          .select('id')
+          .select('id, tracking_token')
           .eq('stripe_session_id', sessionId)
           .maybeSingle();
         if (lead) {
-          return NextResponse.json({ leadId: lead.id });
+          return NextResponse.json({ leadId: lead.id, trackingToken: lead.tracking_token || null });
         }
       } catch {
         // Table might not exist, fall through

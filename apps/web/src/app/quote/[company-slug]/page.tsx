@@ -15,6 +15,7 @@ import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { Camera, Check, Clock, Shield, RefreshCcw, Wrench, AlertTriangle, Phone, ChevronLeft, ChevronRight, Star, Mic, MicOff, Sparkles } from 'lucide-react';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
 import { calcDeposit, depositDollars } from '@/lib/plan-pricing';
+import { generateTrackingToken } from '@/lib/tracking';
 
 /* ── Helpers ── */
 const formatName = (v: string) => v.replace(/^\s+/, '').slice(0, 50).replace(/[a-zA-Z\s'-]+/g, m => /^[a-z\s'-]+$/i.test(m) ? m.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/['-][a-z]/g, c => c.toUpperCase()) : m);
@@ -533,7 +534,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
 }
 
 /* ── Step 5 — Payment Success ── */
-function StepSuccess({ result, t, trackingLeadId }: { result?: any; t: (key: string) => string; trackingLeadId?: string | null }) {
+function StepSuccess({ result, t, trackingLeadId, trackingToken }: { result?: any; t: (key: string) => string; trackingLeadId?: string | null; trackingToken?: string | null }) {
   return (
     <div className="text-center space-y-6 py-8">
       <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
@@ -552,7 +553,7 @@ function StepSuccess({ result, t, trackingLeadId }: { result?: any; t: (key: str
         <ul className="space-y-2 text-sm text-slate-600">
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.confirmationEmail')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.matchPlumber')}</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingLeadId || result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingToken || trackingLeadId || result?.leadId || ''}`} className="text-blue-600 font-medium underline">plumbcore.ai/track/{trackingToken || '...'}</a></span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.depositRefundable')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
         </ul>
@@ -597,11 +598,15 @@ export default function QuotePage() {
   const sessionId = searchParams.get('session_id') || '';
   const [paymentHandled, setPaymentHandled] = useState(false);
   const [trackingLeadId, setTrackingLeadId] = useState<string | null>(null);
+  const [trackingToken, setTrackingToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (paymentStatus && !paymentHandled) {
       setPaymentHandled(true);
       if (paymentStatus === 'success') {
+        // Restore tracking number from sessionStorage (generated before Stripe)
+        const tid = sessionStorage.getItem('plumbcore_tracking_id');
+        if (tid) setTrackingToken(tid);
         // Restore estimate from sessionStorage
         const saved = sessionStorage.getItem('plumbcore_last_estimate');
         if (saved) {
@@ -617,6 +622,10 @@ export default function QuotePage() {
             .then(r => r.json())
             .then(data => {
               if (data.leadId) setTrackingLeadId(data.leadId);
+              if (data.trackingToken) {
+                sessionStorage.setItem('plumbcore_tracking_id', data.trackingToken);
+                setTrackingToken(data.trackingToken);
+              }
             })
             .catch(() => {});
         }
@@ -730,6 +739,9 @@ export default function QuotePage() {
   /* ── Stripe checkout — $49 deposit ── */
   const handleStripeCheckout = useCallback(async () => {
     if (!result) return;
+    // Generate tracking number before Stripe so it's ready immediately after payment
+    const trackingId = generateTrackingToken();
+    sessionStorage.setItem('plumbcore_tracking_id', trackingId);
     // Save result to sessionStorage so it survives the Stripe redirect
     sessionStorage.setItem('plumbcore_last_estimate', JSON.stringify(result));
     setStripeLoading(true);
@@ -754,6 +766,7 @@ export default function QuotePage() {
             estimateLabor: result.laborCost || 0,
             depositCharged: String(result.depositAmount || 4900),
             depositTier: result.depositTier || '',
+            trackingToken: trackingId,
             quoteType: 'deposit',
           }
         }),
@@ -805,7 +818,7 @@ export default function QuotePage() {
           </div>
           <div style={{ display: step === 3 ? 'block' : 'none' }}><StepLoading t={t} /></div>
           <div style={{ display: step === 4 ? 'block' : 'none' }}><StepResult result={result} onReset={resetFlow} onStripeCheckout={handleStripeCheckout} stripeLoading={stripeLoading} t={t} /></div>
-          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess result={result} t={t} trackingLeadId={trackingLeadId} /></div>
+          <div style={{ display: step === 5 ? 'block' : 'none' }}><StepSuccess result={result} t={t} trackingLeadId={trackingLeadId} trackingToken={trackingToken} /></div>
         </div>
       </section>
     </div>
