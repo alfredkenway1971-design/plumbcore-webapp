@@ -126,9 +126,11 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
 }
 
 function buildResult(parsed: any, severity: string = 'moderate', urgency: string = 'routine') {
-  // Determine pricing tier from severity (AI diagnosis) or urgency (user selection)
+  // Determine pricing tier from urgency (user selection) — COMPLETELY overrides severity
+  // Routine → always standard pricing regardless of what AI says
   const pricingTier = urgency === 'emergency' ? 'emergency' : 
                        urgency === 'urgent' ? 'urgent' : 
+                       urgency === 'routine' ? 'moderate' :
                        (severity === 'emergency' || severity === 'high') ? 'emergency' :
                        (severity === 'urgent') ? 'urgent' : 'moderate'
   const pricing = SEVERITY_PRICING[pricingTier] || SEVERITY_PRICING.moderate
