@@ -122,6 +122,10 @@ export default function LeadsMarketplacePage() {
               address: item.customer_address || '',
             }));
             setLeads(mapped);
+          } else {
+            // API returned error — show it
+            const errData = await leadsRes.json().catch(() => ({ error: `HTTP ${leadsRes.status}` }));
+            setError(errData.error || `Request failed (${leadsRes.status})`);
           }
 
           if (statsRes.ok) {
@@ -129,8 +133,8 @@ export default function LeadsMarketplacePage() {
             setStats(statsData.stats);
           }
         }
-      } catch {
-        // Keep empty array on failure — no mock fallback
+      } catch (e: any) {
+        if (!cancelled) setError(e?.message || 'Network error');
       } finally {
         if (!cancelled) setLoading(false);
       }

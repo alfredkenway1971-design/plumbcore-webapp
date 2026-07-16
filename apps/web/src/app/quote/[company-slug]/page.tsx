@@ -789,6 +789,7 @@ export default function QuotePage() {
             severity: result.severity,
             totalEstimate: result.totalPrice,
             companySlug,
+            customerCity: form.city,
             customerAddress: form.address,
             estimateParts: JSON.stringify(result.parts || []),
             estimateLabor: result.laborCost || 0,
