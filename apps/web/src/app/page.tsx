@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useI18n } from '@/components/i18n-provider';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import PlumbCoreLogo from '@/components/PlumbCoreLogo';
+import HTMLText from '@/components/HTMLText';
 import {
   Camera, Mic, MapPin, Package, Calendar, MessageCircle,
   ChevronRight, Menu, Star, Check, ArrowRight, Phone, Clock,
@@ -120,7 +121,7 @@ function Hero({ t }: { t: (key: string) => string }) {
 
             {/* Proof bar */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
-              <span className="text-sm text-slate-500">{t('home.heroJoinPlumbers')}</span>
+              <HTMLText html={t('home.heroJoinPlumbers')} className="text-sm text-slate-500" />
               <span className="w-1 h-1 rounded-full bg-slate-300" />
               <span className="text-sm text-slate-500">{t('home.heroJobsCompleted')}</span>
               <span className="w-1 h-1 rounded-full bg-slate-300" />
@@ -735,7 +736,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
 
         {/* Aggregate stats */}
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-10 text-sm text-slate-500">
-          <span>{t('home.testimonialAggregate1')}</span>
+          <HTMLText html={t('home.testimonialAggregate1')} className="text-sm text-slate-500" />
           <span className="w-1 h-1 rounded-full bg-slate-300" />
           <span>{t('home.testimonialAggregate2')}</span>
           <span className="w-1 h-1 rounded-full bg-slate-300" />

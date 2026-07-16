@@ -1,15 +1,9 @@
 import { NextResponse } from 'next/server';
 
-/**
- * POST /api/leads/create-from-session
- * Creates a lead from a successful Stripe checkout session.
- * This bypasses the Stripe webhook and creates the lead immediately
- * when the customer is redirected back to the success page.
- */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { sessionId, estimate, deposit, diagnosis, customerName, customerPhone, customerEmail, customerCity, customerAddress, trackingToken } = body;
+    const { sessionId } = body;
 
     if (!sessionId) {
       return NextResponse.json({ error: 'Missing sessionId' }, { status: 400 });
@@ -18,82 +12,99 @@ export async function POST(req: Request) {
     const { getAdminClient } = await import('@/lib/supabase-admin');
     const admin = getAdminClient();
 
-    if (!admin) {
-      // No DB available — return the tracking data anyway
-      return NextResponse.json({
-        leadId: null,
-        trackingToken: trackingToken || null,
-        message: 'Database not available. Lead will be created when webhook processes.',
-      });
-    }
-
-    // Check if lead already exists for this session
-    try {
+    // Check if lead exists
+    if (admin) {
       const { data: existing } = await (admin as any)
         .from('leads')
-        .select('id, tracking_token')
+        .select('id')
         .eq('stripe_session_id', sessionId)
         .maybeSingle();
 
       if (existing) {
-        return NextResponse.json({ leadId: existing.id, trackingToken: existing.tracking_token || trackingToken });
+        return NextResponse.json({ 
+          leadId: existing.id,
+          message: 'Lead already exists'
+        });
       }
-    } catch {
-      // Table might not exist — continue
     }
 
-    // Create the lead
-    const now = new Date();
-    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+    // Fetch session from Stripe to get metadata
+    const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+    if (!stripeKey) {
+      console.error('STRIPE_SECRET_KEY not configured');
+      return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
+    }
 
-    try {
+    const Stripe = (await import('stripe')).default;
+    const stripe = new Stripe(stripeKey, { apiVersion: '2026-06-24.dahlia' as any });
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (!session) {
+      return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    }
+
+    const metadata = session.metadata || {};
+    const isDeposit = session.mode === 'payment';
+
+    if (!isDeposit) {
+      return NextResponse.json({ error: 'Not a deposit payment' }, { status: 400 });
+    }
+
+    const amountPaid = (session.amount_total || 4900) / 100;
+    const depositCharged = parseInt(metadata.depositCharged || '4900');
+    
+    // Create lead in marketplace
+    if (admin) {
+      const now = new Date();
+      const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      
       const { data: lead, error } = await (admin as any)
         .from('leads')
         .insert({
           stripe_session_id: sessionId,
-          customer_name: customerName || '',
-          customer_email: customerEmail || '',
-          customer_phone: customerPhone || '',
-          customer_city: customerCity || '',
-          customer_address: customerAddress || '',
-          diagnosis: diagnosis || '',
-          severity: 'moderate',
-          total_estimate: estimate || 0,
-          deposit_paid: (deposit || 0) / 100, // Convert cents to dollars
+          customer_name: metadata.customer_name || session.customer_details?.name || 'Unknown',
+          customer_email: session.customer_details?.email || '',
+          customer_phone: metadata.customer_phone || '',
+          customer_address: metadata.customerAddress || '',
+          customer_city: metadata.customerCity || '',
+          diagnosis: metadata.diagnosis || '',
+          severity: metadata.severity || 'moderate',
+          total_estimate: parseFloat(metadata.totalEstimate || '0'),
+          deposit_paid: amountPaid,
+          deposit_charged: depositCharged / 100,
+          deposit_tier: metadata.depositTier || '',
+          tracking_token: metadata.trackingToken || null,
+          estimated_job_value: parseFloat(metadata.totalEstimate || '0'),
           status: 'matching',
-          tracking_token: trackingToken || null,
           created_at: now.toISOString(),
           expires_at: expiresAt.toISOString(),
         })
-        .select('id, tracking_token')
+        .select('id')
         .single();
 
       if (error) {
-        console.error('[/api/leads/create-from-session] Insert error:', error.message);
+        console.error('Lead creation error:', error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
 
-      console.log(`✅ Lead created directly: ${lead.id} (tracking: ${lead.tracking_token})`);
+      if (lead) {
+        console.log(`✅ Lead created: ${lead.id}`);
+        
+        // Trigger routing
+        const routingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/api/leads/route`;
+        fetch(routingUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ leadId: lead.id }),
+        }).catch(err => console.error('Routing error:', err.message));
 
-      // Trigger routing asynchronously
-      const routingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/api/leads/route`;
-      fetch(routingUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leadId: lead.id }),
-      }).catch(() => {});
-
-      return NextResponse.json({ leadId: lead.id, trackingToken: lead.tracking_token || trackingToken });
-    } catch (dbErr: any) {
-      console.error('[/api/leads/create-from-session] DB error:', dbErr.message);
-      return NextResponse.json({
-        leadId: null,
-        trackingToken: trackingToken || null,
-        message: 'Lead queued for creation',
-      });
+        return NextResponse.json({ leadId: lead.id });
+      }
     }
+
+    return NextResponse.json({ error: 'No database available' }, { status: 500 });
   } catch (err: any) {
-    console.error('[/api/leads/create-from-session] Error:', err.message);
+    console.error('/api/leads/create-from-session error:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
