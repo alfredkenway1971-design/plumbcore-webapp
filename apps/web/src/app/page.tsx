@@ -123,9 +123,9 @@ function Hero({ t }: { t: (key: string) => string }) {
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
               <HTMLText html={t('home.heroJoinPlumbers')} className="text-sm text-slate-500" />
               <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <span className="text-sm text-slate-500">{t('home.heroJobsCompleted')}</span>
+              <HTMLText html={t('home.heroJobsCompleted')} className="text-sm text-slate-500" />
               <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <span className="text-sm text-slate-500">{t('home.heroAvgRating')}</span>
+              <HTMLText html={t('home.heroAvgRating')} className="text-sm text-slate-500" />
             </div>
 
             {/* Customer CTA — Get online quote */}
@@ -252,9 +252,7 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
             {t('home.howTitle')}
           </h2>
-          <p className="text-base text-slate-500 max-w-2xl mx-auto">
-            {t('home.howSubtitle')}
-          </p>
+          <HTMLText html={t('home.howSubtitle')} className="text-base text-slate-500 max-w-2xl mx-auto" />
         </div>
 
         {/* 3-step visual */}
@@ -284,9 +282,7 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
 
         {/* ROI callout */}
         <div className="max-w-3xl mx-auto mb-14 bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 sm:p-8 text-center">
-          <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
-            {t('home.roiText')}
-          </p>
+          <HTMLText html={t('home.roiText')} className="text-base sm:text-lg text-slate-700 leading-relaxed" />
           <div className="mt-4 inline-flex items-center gap-3 bg-emerald-50 rounded-full px-5 py-2 ring-1 ring-emerald-200">
             <span className="text-2xl font-bold text-emerald-600">9:1</span>
             <span className="text-sm font-semibold text-emerald-700">{t('home.roiLabel')}</span>
@@ -738,9 +734,9 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-10 text-sm text-slate-500">
           <HTMLText html={t('home.testimonialAggregate1')} className="text-sm text-slate-500" />
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <span>{t('home.testimonialAggregate2')}</span>
+          <HTMLText html={t('home.testimonialAggregate2')} className="text-sm text-slate-500" />
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <span>{t('home.testimonialAggregate3')}</span>
+          <HTMLText html={t('home.testimonialAggregate3')} className="text-sm text-slate-500" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -868,9 +864,7 @@ function CtaSection({ t }: { t: (key: string) => string }) {
         {/* Scarcity badge */}
         <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-2 mb-7 ring-1 ring-white/20">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-          <span className="text-sm font-semibold text-white">
-            {t('home.ctaScarcity')}
-          </span>
+          <HTMLText html={t('home.ctaScarcity')} className="text-sm font-semibold text-white" />
         </div>
 
         <a

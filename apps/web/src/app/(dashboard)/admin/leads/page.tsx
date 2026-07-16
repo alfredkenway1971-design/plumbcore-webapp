@@ -63,71 +63,16 @@ export default function LeadsMarketplacePage() {
   const [plumbers, setPlumbers] = useState<Plumber[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Fetch plumbers from Supabase
-  useEffect(() => {
-    async function fetchPlumbers() {
-      try {
-        setLoading(true);
-        const { data: profiles, error: profilesError } = await sb
-          .from('profiles')
-          .select(`
-            id,
-            user_id,
-            full_name,
-            email,
-            phone,
-            company_id,
-            role,
-            is_active,
-            created_at,
-            updated_at,
-            companies!company_id(full_name, subscription_tier, subscription_status)
-          `)
-          .eq('role', 'tech')
-          .eq('is_active', true);
-
-        if (profilesError) {
-          console.error('❌ Error fetching plumbers:', profilesError);
-          setError('Failed to load plumbers');
-          setLoading(false);
-          return;
-        }
-
-        // Map to Plumber interface
-        const mappedPlumbers: Plumber[] = (profiles || []).map((p: any) => ({
-          id: p.id,
-          name: p.full_name || 'Plumber',
-          specialties: [], // Will be fetched separately if needed
-          rating: 4.5, // Default, can be enhanced later
-          jobsCompleted: 0, // Fetch from jobs table if needed
-          available: true,
-          serviceZips: [], // Will be fetched from service_areas table
-          rotationOrder: 0,
-        }));
-
-        setPlumbers(mappedPlumbers);
-        console.log(`✅ Fetched ${mappedPlumbers.length} plumbers from database`);
-        setLoading(false);
-      } catch (e: any) {
-        console.error('❌ Unexpected error fetching plumbers:', e.message);
-        setError(e.message);
-        setLoading(false);
-      }
-    }
-
-    fetchPlumbers();
-  }, []);
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showStatusFilter, setShowStatusFilter] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [dispatchMode, setDispatchMode] = useState<DispatchMode>('manual');
   const [selectedLead, setSelectedLead] = useState<string | null>(null);
   const [assigningTo, setAssigningTo] = useState<string | null>(null);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [modalLeadId, setModalLeadId] = useState<string | null>(null);
   const [selectedPlumberId, setSelectedPlumberId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string>('all');
 
   // Round-Robin Config State
   const [showRRConfig, setShowRRConfig] = useState(false);
@@ -144,7 +89,6 @@ export default function LeadsMarketplacePage() {
 
   // Pool mode
   const [poolActive, setPoolActive] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<{ matching: number; assigned: number; complete: number; en_route: number; arrived: number; unfulfilled: number; refunded: number } | null>(null);
 
   // Fetch leads and stats from API on mount
