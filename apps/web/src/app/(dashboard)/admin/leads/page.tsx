@@ -60,8 +60,64 @@ type QuickFilter = 'all' | 'today' | 'us' | 'canada' | '49' | '99' | '149+';
 /* ── Component ── */
 export default function LeadsMarketplacePage() {
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [plumbers] = useState<Plumber[]>([]);
-  const [filter, setFilter] = useState('all');
+  const [plumbers, setPlumbers] = useState<Plumber[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch plumbers from Supabase
+  useEffect(() => {
+    async function fetchPlumbers() {
+      try {
+        setLoading(true);
+        const { data: profiles, error: profilesError } = await sb
+          .from('profiles')
+          .select(`
+            id,
+            user_id,
+            full_name,
+            email,
+            phone,
+            company_id,
+            role,
+            is_active,
+            created_at,
+            updated_at,
+            companies!company_id(full_name, subscription_tier, subscription_status)
+          `)
+          .eq('role', 'tech')
+          .eq('is_active', true);
+
+        if (profilesError) {
+          console.error('❌ Error fetching plumbers:', profilesError);
+          setError('Failed to load plumbers');
+          setLoading(false);
+          return;
+        }
+
+        // Map to Plumber interface
+        const mappedPlumbers: Plumber[] = (profiles || []).map((p: any) => ({
+          id: p.id,
+          name: p.full_name || 'Plumber',
+          specialties: [], // Will be fetched separately if needed
+          rating: 4.5, // Default, can be enhanced later
+          jobsCompleted: 0, // Fetch from jobs table if needed
+          available: true,
+          serviceZips: [], // Will be fetched from service_areas table
+          rotationOrder: 0,
+        }));
+
+        setPlumbers(mappedPlumbers);
+        console.log(`✅ Fetched ${mappedPlumbers.length} plumbers from database`);
+        setLoading(false);
+      } catch (e: any) {
+        console.error('❌ Unexpected error fetching plumbers:', e.message);
+        setError(e.message);
+        setLoading(false);
+      }
+    }
+
+    fetchPlumbers();
+  }, []);
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showStatusFilter, setShowStatusFilter] = useState(false);

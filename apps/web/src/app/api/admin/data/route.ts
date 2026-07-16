@@ -9,38 +9,50 @@ import { hasAdminClient } from '@/lib/supabase-admin';
 
 export async function GET(request: Request) {
   try {
-    // Get auth from session
-    const { headers } = request;
-    const token = headers.get('authorization')?.replace('Bearer ', '') || 
-                  headers.get('cookie')?.match(/auth_token=([^;]+)/)?.[1];
+    // 1. Fix Auth - Add comprehensive logging and proper token handling
+    const authHeader = request.headers.get('Authorization');
+    const authMatch = authHeader?.match(/Bearer\s+(.+)/);
+    const cookieToken = request.headers.get('cookie')?.match(/auth_token=([^;]+)/)?.[1];
+    const token = authMatch?.[1] || cookieToken;
 
     if (!token) {
-      console.log('🔍 Admin Data Request: No auth token found');
+      console.log('🚨 401: No auth token found in header or cookie');
       return NextResponse.json({ 
-        error: 'No authentication',
-        debug: { token: !!token, cookie: !!request.headers.get('cookie') }
+        error: 'Authentication required',
+        debug: { 
+          hasAuthHeader: !!authHeader,
+          hasCookieAuth: !!cookieToken,
+          authHeader: authHeader?.slice(0, 20) + '...' 
+        }
       }, { status: 401 });
     }
 
-    // Decode session (check custom-auth exports)
+    console.log('✅ Auth token found, attempting to decode...');
+    
+    // 2. Decode session token safely
     let session: any = null;
     try {
       const { decodeSessionToken } = await import('@/lib/custom-auth');
       session = decodeSessionToken(token);
     } catch (e: any) {
-      console.error('❌ Session decode error:', e.message);
-      return NextResponse.json({ error: 'Session decode failed', details: e.message }, { status: 500 });
+      console.error('❌ Session decode failed:', e.message);
+      return NextResponse.json({ 
+        error: 'Invalid session token',
+        details: e.message 
+      }, { status: 401 });
     }
 
-    if (!session) {
-      console.log('🔍 Auth failed - session invalid');
-      return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+    if (!session?.user?.id) {
+      console.log('🚨 401: Invalid session - no user ID');
+      return NextResponse.json({ 
+        error: 'Invalid session',
+        session: session ? { user: session.user?.id } : null
+      }, { status: 401 });
     }
 
-    const userId = session.user?.id;
+    const userId = session.user.id;
     const userRole = session.profile?.role;
-
-    console.log(`✅ Auth passed - User: ${session.user?.email}, Role: ${userRole || 'unknown'}`);
+    console.log(`✅ Auth successful: ${session.user?.email} (Role: ${userRole || 'unknown'})`);
 
     // Fetch leads
     const admin = getAdminClient();
@@ -60,7 +72,7 @@ export async function GET(request: Request) {
     console.log('🔍 Fetching leads...');
     const { data: leads, error: leadsError } = await sb
       .from('leads')
-      .select('*')
+      .select('id,customer_name,customer_email,customer_phone,customer_address,customer_city,diagnosis,severity,total_estimate,deposit_paid,deposit_charged,deposit_tier,estimated_job_value,status,tracking_token,assigned_plumber_id,assigned_plumber_name,created_at,updated_at')
       .order('created_at', { ascending: false });
 
     if (leadsError) {

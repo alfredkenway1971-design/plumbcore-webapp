@@ -100,7 +100,7 @@ function Hero({ t }: { t: (key: string) => string }) {
     <section className="pt-28 pb-20 bg-white overflow-hidden relative">
       {/* Subtle gradient background accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* ─── Left column: text content ─── */}
           <div className="text-center lg:text-left">
