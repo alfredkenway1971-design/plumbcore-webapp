@@ -50,3 +50,56 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+/**
+ * POST — Create a test lead (bypasses Stripe, for debugging only)
+ */
+export async function POST(request: Request) {
+  try {
+    const { getAdminClient } = await import('@/lib/supabase-admin');
+    const admin = getAdminClient();
+    if (!admin) {
+      return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 });
+    }
+
+    const sb = admin as any;
+    const now = new Date().toISOString();
+    const trackingToken = 'PC-TEST-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    const { data: lead, error } = await sb
+      .from('leads')
+      .insert({
+        customer_name: 'Test Customer',
+        customer_email: 'test@example.com',
+        customer_phone: '(555) 000-0000',
+        customer_city: 'Austin',
+        customer_address: '123 Test St',
+        diagnosis: 'Test lead — water heater issue',
+        severity: 'moderate',
+        total_estimate: 450,
+        deposit_paid: 49,
+        deposit_charged: 49,
+        deposit_tier: 'basic',
+        status: 'matching',
+        tracking_token: trackingToken,
+        created_at: now,
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    console.log(`✅ TEST LEAD CREATED: ${lead?.id} (tracking: ${trackingToken})`);
+
+    return NextResponse.json({
+      success: true,
+      leadId: lead?.id,
+      trackingToken,
+      message: 'Test lead created! Check /admin/leads'
+    });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
