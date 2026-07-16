@@ -6,10 +6,14 @@ import { PLAN_PRICES } from '@/lib/plan-pricing';
 
 export async function GET(request: NextRequest) {
   const auth = requireAuth(request);
-  if (auth instanceof NextResponse) return auth;
+  if (auth instanceof NextResponse) {
+    console.log('Admin API: Auth failed, returning:', auth.status);
+    return auth;
+  }
 
   // Only super_admin and admin can access
   if (auth.role !== 'super_admin' && auth.role !== 'admin') {
+    console.log('Admin API: Forbidden - role:', auth.role, 'user_id:', auth.user_id);
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -106,10 +110,18 @@ export async function GET(request: NextRequest) {
       }
 
       case 'leads': {
-        const { data } = await sb
+        console.log('Admin API /leads: Fetching leads...');
+        const { data, error } = await sb
           .from('leads')
           .select('*')
           .order('created_at', { ascending: false });
+        
+        if (error) {
+          console.error('Admin API /leads: Error fetching leads:', error);
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+        
+        console.log('Admin API /leads: Retrieved', data?.length || 0, 'leads');
         return NextResponse.json({ leads: data || [] });
       }
 
