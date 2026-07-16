@@ -1,10 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * PUBLIC LEADS LIST - For testing if leads exist
- * Returns ALL leads (bypasses auth for debugging)
+ * PUBLIC LEADS TEST - Fetches all leads without auth
  */
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const { getAdminClient } = await import('@/lib/supabase-admin');
     const admin = getAdminClient();
@@ -29,7 +28,7 @@ export async function GET(request: Request) {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('❌ Error:', error.message);
+      console.error('❌ Query error:', error.message);
       return NextResponse.json({ 
         error: error.message,
         details: error
@@ -42,8 +41,8 @@ export async function GET(request: Request) {
       success: true,
       count: data?.length || 0,
       leads: data || [],
-      message: data?.length ? '✅ Leads found in database!' : '❌ No leads in database'
-    }, { status: data?.length ? 200 : 200 });
+      message: data?.length ? '✅ Leads found: ' + data.length : '❌ No leads in database'
+    });
     
   } catch (error: any) {
     console.error('❌ Error:', error.message);
@@ -52,4 +51,10 @@ export async function GET(request: Request) {
       details: error.message 
     }, { status: 500 });
   }
+}
+
+// Allow POST too
+export async function POST(request: NextRequest) {
+  // Just redirect GET, POST not needed for test
+  return NextResponse.json({ error: 'Use GET method' }, { status: 405 });
 }
