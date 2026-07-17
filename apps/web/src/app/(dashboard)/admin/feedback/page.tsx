@@ -62,7 +62,7 @@ export default function AdminFeedbackReviewsPage() {
             <input readOnly placeholder="Search reviews..." className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2">
-            {['all', 'published', 'flagged'].map(s => (
+            {['all', 'published', 'flagged'].map((s: any) => (
               <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{s}</button>
             ))}
           </div>

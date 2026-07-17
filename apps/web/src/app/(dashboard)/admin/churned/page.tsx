@@ -10,7 +10,7 @@ export default function AdminChurnedAccountsPage() {
 
   const filtered = useMemo(() => {
     let data = [...churnedData];
-    if (search) data = data.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
+    if (search) data = data.filter((c: any) => c.name.toLowerCase().includes(search.toLowerCase()));
     return data;
   }, [search]);
 

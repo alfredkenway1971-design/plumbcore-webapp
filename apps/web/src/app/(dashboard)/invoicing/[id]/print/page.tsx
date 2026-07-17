@@ -85,7 +85,7 @@ export default function InvoicePrintPage() {
   );
 
   const subtotal = useMemo(
-    () => (invoice ? invoice.lineItems.reduce((sum, li) => sum + li.total, 0) : 0),
+    () => (invoice ? invoice.lineItems.reduce((sum: number, li: any) => sum + li.total, 0) : 0),
     [invoice]
   );
   const taxRate = 0.08;
@@ -235,7 +235,7 @@ export default function InvoicePrintPage() {
             </tr>
           </thead>
           <tbody>
-            {invoice.lineItems.map((item, idx) => (
+            {invoice.lineItems.map((item: any, idx: number) => (
               <tr key={idx} className="border-b border-slate-200">
                 <td className="py-4 pr-4 text-sm text-slate-900">{item.description}</td>
                 <td className="py-4 px-4 text-sm text-slate-700 text-right">{item.quantity}</td>

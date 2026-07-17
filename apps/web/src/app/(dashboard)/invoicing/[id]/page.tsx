@@ -138,7 +138,7 @@ export default function InvoiceDetailPage() {
 
   // Computed totals
   const subtotal = useMemo(
-    () => (invoice ? invoice.lineItems.reduce((sum, li) => sum + li.total, 0) : 0),
+    () => (invoice ? invoice.lineItems.reduce((sum: number, li: any) => sum + li.total, 0) : 0),
     [invoice]
   );
   const taxRate = 0.08;
@@ -282,7 +282,7 @@ export default function InvoiceDetailPage() {
       doc.setFontSize(9);
       doc.setTextColor(0);
 
-      invoice.lineItems.forEach((item) => {
+      invoice.lineItems.forEach((item: any) => {
         y += 8;
         if (y > 270) {
           doc.addPage();
@@ -517,7 +517,7 @@ export default function InvoiceDetailPage() {
               </tr>
             </thead>
             <tbody>
-              {(editing ? editLineItems : invoice.lineItems).map((item, idx) => (
+              {(editing ? editLineItems : invoice.lineItems).map((item: any, idx: number) => (
                 <tr key={idx} className="border-b border-slate-200/50 last:border-b-0">
                   {editing ? (
                     <>
@@ -616,7 +616,7 @@ export default function InvoiceDetailPage() {
               </Button>
               <Button variant="outline" size="sm" onClick={() => {
                 setEditing(false);
-                if (invoice) setEditLineItems(invoice.lineItems.map(li => ({ ...li })));
+                if (invoice) setEditLineItems(invoice.lineItems.map((li: any) => ({ ...li })));
               }}>
                 Cancel
               </Button>
@@ -628,11 +628,11 @@ export default function InvoiceDetailPage() {
         <div className="mt-4 border-t border-slate-200 pt-3 space-y-1.5">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Subtotal</span>
-            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0))}</span>
+            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0))}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Tax ({editing ? editTaxRate : 8}%)</span>
-            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
+            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
           </div>
           {depositCredit > 0 && (
             <div className="flex justify-between text-sm">
@@ -643,7 +643,7 @@ export default function InvoiceDetailPage() {
           <div className="flex justify-between text-base font-bold border-t border-slate-200 pt-2">
             <span className="text-slate-900">Total</span>
             <span className="text-blue-600">{formatCurrency(
-              (editing ? editLineItems : invoice.lineItems).reduce((s, li) => s + li.total, 0) * (1 + (editing ? editTaxRate : 8) / 100)
+              (editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0) * (1 + (editing ? editTaxRate : 8) / 100)
             )}</span>
           </div>
         </div>

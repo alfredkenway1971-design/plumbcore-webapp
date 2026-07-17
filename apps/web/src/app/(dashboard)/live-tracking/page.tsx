@@ -27,7 +27,7 @@ function Skeleton() {
       <div className="h-9 w-48 rounded-xl bg-slate-50" />
       <div className="h-[400px] rounded-xl bg-slate-100" />
       <div className="grid grid-cols-3 gap-3">
-        {[1,2,3].map(i => <div key={i} className="h-20 rounded-xl bg-slate-50" />)}
+        {[1,2,3].map((i: any) => <div key={i} className="h-20 rounded-xl bg-slate-50" />)}
       </div>
     </div>
   );
@@ -118,7 +118,7 @@ export default function LiveTrackingPage() {
           { label: 'En Route', value: techLocs.filter(l => l.status === 'en_route').length, color: 'text-blue-600', bg: 'bg-blue-50' },
           { label: 'On Job', value: techLocs.filter(l => l.status === 'on_job').length, color: 'text-red-600', bg: 'bg-red-50' },
           { label: 'Notifications', value: notifs.length, color: 'text-slate-600', bg: 'bg-slate-50' },
-        ].map(s => (
+        ].map((s: any) => (
           <div key={s.label} className={`rounded-xl ${s.bg} px-4 py-3`}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{s.label}</p>
             <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>

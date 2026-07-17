@@ -254,7 +254,7 @@ export default function ClientsPage() {
   };
 
   const handleDelete = (id: string) => {
-    setList(prev => prev.filter(c => c.id !== id)); setShowDelete(null);
+    setList(prev => prev.filter((c: any) => c.id !== id)); setShowDelete(null);
   };
 
   const toggleSort = (f: SortField) => {
@@ -265,7 +265,7 @@ export default function ClientsPage() {
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     if (!q) return [...list];
-    return list.filter(c => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.phone.includes(q) || c.city.toLowerCase().includes(q) || (c.company ?? '').toLowerCase().includes(q));
+    return list.filter((c: any) => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.phone.includes(q) || c.city.toLowerCase().includes(q) || (c.company ?? '').toLowerCase().includes(q));
   }, [search, list]);
 
   const sorted = useMemo(() => {

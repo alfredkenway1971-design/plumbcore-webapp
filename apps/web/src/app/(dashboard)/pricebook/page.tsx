@@ -22,11 +22,11 @@ function formatCurrency(n: number) {
 function generateId(isRepair: boolean): string {
   const existing = pricebook;
   if (isRepair) {
-    const nums = existing.filter(i => i.isRepairType).map(i => parseInt(i.id.replace('RT-', ''), 10)).sort((a, b) => a - b);
+    const nums = existing.filter((i: any) => i.isRepairType).map((i: any) => parseInt(i.id.replace('RT-', ''), 10)).sort((a, b) => a - b);
     const next = nums.length > 0 ? nums[nums.length - 1] + 1 : 1;
     return `RT-${String(next).padStart(3, '0')}`;
   }
-  const nums = existing.filter(i => !i.isRepairType).map(i => parseInt(i.id.replace('PB-', ''), 10)).sort((a, b) => a - b);
+  const nums = existing.filter((i: any) => !i.isRepairType).map((i: any) => parseInt(i.id.replace('PB-', ''), 10)).sort((a, b) => a - b);
   const next = nums.length > 0 ? nums[nums.length - 1] + 1 : 1;
   return `PB-${String(next).padStart(3, '0')}`;
 }
@@ -106,14 +106,14 @@ export default function PricebookPage() {
 
     // Tab filter
     if (activeTab === 'Parts') {
-      result = result.filter(i => !i.isRepairType);
+      result = result.filter((i: any) => !i.isRepairType);
     } else if (activeTab === 'Repair Types') {
-      result = result.filter(i => i.isRepairType);
+      result = result.filter((i: any) => i.isRepairType);
     }
 
     // Category filter
     if (categoryFilter) {
-      result = result.filter(i => i.category === categoryFilter);
+      result = result.filter((i: any) => i.category === categoryFilter);
     }
 
     // Search
@@ -178,7 +178,7 @@ export default function PricebookPage() {
     setSaving(true);
     setTimeout(() => {
       setItems(prev =>
-        prev.map(i =>
+        prev.map((i: any) =>
           i.id === editingItem.id
             ? {
                 ...i,
@@ -202,7 +202,7 @@ export default function PricebookPage() {
   /* ── Delete item ── */
   const handleDeleteConfirm = () => {
     if (!deletingItem) return;
-    setItems(prev => prev.filter(i => i.id !== deletingItem.id));
+    setItems(prev => prev.filter((i: any) => i.id !== deletingItem.id));
     setDeleteModalOpen(false);
     setDeletingItem(null);
   };
@@ -290,8 +290,8 @@ export default function PricebookPage() {
             tab === 'All'
               ? items.length
               : tab === 'Parts'
-              ? items.filter(i => !i.isRepairType).length
-              : items.filter(i => i.isRepairType).length;
+              ? items.filter((i: any) => !i.isRepairType).length
+              : items.filter((i: any) => i.isRepairType).length;
           return (
             <button
               key={tab}
@@ -797,7 +797,7 @@ function CsvImportModal({
           const existingNames = new Set(pricebook.map(p => p.name.toLowerCase()));
           if (existingNames.has(name.toLowerCase())) return; // skip duplicates silently
 
-          const nums = pricebook.filter(i => !i.isRepairType).map(i => parseInt(i.id.replace('PB-', ''), 10)).sort((a, b) => a - b);
+          const nums = pricebook.filter((i: any) => !i.isRepairType).map((i: any) => parseInt(i.id.replace('PB-', ''), 10)).sort((a, b) => a - b);
           const nextNum = nums.length > 0 ? nums[nums.length - 1] + 1 + idx : 1 + idx;
 
           newItems.push({

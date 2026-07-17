@@ -156,7 +156,7 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
           <I.Wrench className="w-4 h-4 text-slate-500" /> Specialties
         </h3>
         <div className="flex flex-wrap gap-1.5">
-          {plumber.specialties.map(s => (
+          {plumber.specialties.map((s: any) => (
             <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-100 text-xs font-medium text-slate-700">{s}</span>
           ))}
         </div>
@@ -281,7 +281,7 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
             {/* Star rating display */}
             <div className="flex items-center gap-2">
               <div className="flex">
-                {[1, 2, 3, 4, 5].map(s => (
+                {[1, 2, 3, 4, 5].map((s: any) => (
                   <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-600 fill-amber-400' : 'text-slate-300'}`} />
                 ))}
               </div>

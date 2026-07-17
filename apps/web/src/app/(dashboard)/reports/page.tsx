@@ -170,7 +170,7 @@ export default function ReportsPage() {
 
     const completedJobs = jobs.filter((j) => j.status === 'completed' && j.actualCost);
     completedJobs.forEach((j) => {
-      j.assignedTo.forEach((techId) => {
+      j.assignedTo.forEach((techId: string) => {
         const tech = teamMembers.find((t) => t.id === techId);
         if (tech) {
           revenueByTech[tech.name] = (revenueByTech[tech.name] || 0) + (j.actualCost || j.estimatedCost);
@@ -283,12 +283,12 @@ export default function ReportsPage() {
     });
 
     // === NEW: Customer Acquisition ===
-    const newThisMonth = clients.filter(c => {
+    const newThisMonth = clients.filter((c: any) => {
       const d = new Date(c.createdAt);
       return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
     }).length;
 
-    const repeatClients = clients.filter(c => c.totalJobs > 1).length;
+    const repeatClients = clients.filter((c: any) => c.totalJobs > 1).length;
     const repeatRate = clients.length > 0 ? Math.round((repeatClients / clients.length) * 100) : 0;
 
     // Acquisition trend (last 6 months)
@@ -296,7 +296,7 @@ export default function ReportsPage() {
     for (let i = 5; i >= 0; i--) {
       const m = (currentMonth - i + 12) % 12;
       const y = currentYear - (currentMonth - i < 0 ? 1 : 0);
-      const count = clients.filter(c => {
+      const count = clients.filter((c: any) => {
         const d = new Date(c.createdAt);
         return d.getMonth() === m && d.getFullYear() === y;
       }).length;
@@ -315,7 +315,7 @@ export default function ReportsPage() {
     const leastUsedPart = sortedByUsage[sortedByUsage.length - 1]?.name || 'N/A';
 
     // Top 5 most used
-    const top5Parts = sortedByUsage.slice(0, 5).map(item => ({
+    const top5Parts = sortedByUsage.slice(0, 5).map((item: any) => ({
       name: item.name,
       uses: Math.round(item.quantity * 0.7 + Math.random() * 10),
     }));
@@ -594,7 +594,7 @@ export default function ReportsPage() {
           <div className="w-full h-48">
             <svg viewBox="0 0 600 160" className="w-full h-full" preserveAspectRatio="none">
               {/* Grid lines */}
-              {[0, 1, 2, 3].map(i => (
+              {[0, 1, 2, 3].map((i: any) => (
                 <line key={`grid-${i}`} x1="0" y1={40 + i * 30} x2="600" y2={40 + i * 30} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
               ))}
               {/* Line */}

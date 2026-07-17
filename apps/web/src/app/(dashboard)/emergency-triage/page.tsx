@@ -65,7 +65,7 @@ export default function EmergencyTriagePage() {
   const [triageResult, setTriageResult] = useState<AITriageResult | null>(null);
   const [triageLoading, setTriageLoading] = useState(false);
 
-  const activeCalls = calls.filter(c => c.status === 'Waiting').length;
+  const activeCalls = calls.filter((c: any) => c.status === 'Waiting').length;
 
   /* ── Handlers ── */
   const handleDispatch = (id: string) => {
@@ -152,7 +152,7 @@ export default function EmergencyTriagePage() {
       </div>
 
       {/* Empty State */}
-      {calls.filter(c => c.status !== 'Resolved').length === 0 && (
+      {calls.filter((c: any) => c.status !== 'Resolved').length === 0 && (
         <Card variant="bordered" padding="lg">
           <EmptyState
             icon={
@@ -167,9 +167,9 @@ export default function EmergencyTriagePage() {
       )}
 
       {/* Call Cards */}
-      {calls.filter(c => c.status !== 'Resolved').length > 0 && (
+      {calls.filter((c: any) => c.status !== 'Resolved').length > 0 && (
         <div className="space-y-4">
-          {calls.filter(c => c.status !== 'Resolved').map((call) => (
+          {calls.filter((c: any) => c.status !== 'Resolved').map((call) => (
             <Card key={call.id} variant="bordered" padding="md">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                 {/* Left Info */}

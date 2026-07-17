@@ -18,9 +18,9 @@ function formatCurrency(n: number) {
 
 function generateMockPrices() {
   return pricebook
-    .filter(i => !i.isRepairType && i.unitPrice > 0)
+    .filter((i: any) => !i.isRepairType && i.unitPrice > 0)
     .slice(0, 80)
-    .map(item => {
+    .map((item: any) => {
       const reduction = 3 + Math.random() * 12; // 3-15% random reduction
       const lastPrice = parseFloat((item.unitPrice / (1 + reduction / 100)).toFixed(2));
       return {
@@ -32,7 +32,7 @@ function generateMockPrices() {
         changePercent: parseFloat((((item.unitPrice - lastPrice) / lastPrice) * 100).toFixed(1)),
       };
     })
-    .filter(i => i.changePercent > 2);
+    .filter((i: any) => i.changePercent > 2);
 }
 
 type PriceChangeStatus = 'pending' | 'approved' | 'rejected';
@@ -228,10 +228,10 @@ export default function PriceIncreasesPage() {
 
   /* ── Derived stats ── */
   const stats = useMemo(() => {
-    const flagged = changes.filter(c => c.changePercent > 5).length;
+    const flagged = changes.filter((c: any) => c.changePercent > 5).length;
     const totalIncrease = changes.reduce((sum, c) => sum + (c.newPrice - c.oldPrice), 0);
-    const approved = changes.filter(c => c.status === 'approved').length;
-    const rejected = changes.filter(c => c.status === 'rejected').length;
+    const approved = changes.filter((c: any) => c.status === 'approved').length;
+    const rejected = changes.filter((c: any) => c.status === 'rejected').length;
     return { flagged, totalIncrease, approved, rejected, total: changes.length };
   }, [changes]);
 

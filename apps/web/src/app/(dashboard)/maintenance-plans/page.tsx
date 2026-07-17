@@ -350,7 +350,7 @@ export default function MaintenancePlansPage() {
   const plans = useMemo(() => mockPlans.filter(p => p.is_active), [mounted]);
   const subscribers = useMemo(() => {
     // Return enriched subscriptions with customerName and planName
-    return mockSubscriptions.map(s => {
+    return mockSubscriptions.map((s: any) => {
       const plan = mockPlans.find(p => p.id === s.plan_id);
       return {
         ...s,

@@ -103,7 +103,7 @@ export default function PurchaseOrdersPage() {
   const selectedSupplier = suppliers.find((s) => s.id === form.supplierId);
   const supplierInventory = useMemo(() => {
     if (!selectedSupplier) return [];
-    const catLower = selectedSupplier.categories.map((c) => c.toLowerCase());
+    const catLower = selectedSupplier.categories.map((c: string) => c.toLowerCase());
     return inventory.filter((item) => catLower.includes(item.category));
   }, [form.supplierId]);
 
@@ -244,7 +244,7 @@ export default function PurchaseOrdersPage() {
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)}>← Back</Button>
             <h1 className="text-2xl font-bold text-slate-900">{po.poNumber}</h1>
-            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>{po.status}</span>
+            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status as POStatus]}`}>{po.status}</span>
           </div>
           <div className="flex gap-2">
             {po.status === 'Draft' && (
@@ -333,7 +333,7 @@ export default function PurchaseOrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {po.items.map((item) => (
+              {po.items.map((item: any) => (
                 <tr key={item.itemId} className="border-b border-slate-200">
                   <td className="px-4 py-3 text-slate-900 font-medium">{item.itemName}</td>
                   <td className="px-4 py-3 text-right text-slate-900">{item.quantity}</td>
@@ -438,7 +438,7 @@ export default function PurchaseOrdersPage() {
                   <td className="px-4 py-3 text-right text-slate-900">{po.itemsCount}</td>
                   <td className="px-4 py-3 text-right text-slate-900 font-medium">${po.total.toFixed(2)}</td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status]}`}>
+                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status as POStatus]}`}>
                       {po.status}
                     </span>
                   </td>
@@ -529,7 +529,7 @@ export default function PurchaseOrdersPage() {
                 onChange={(e) => { addItemToForm(e.target.value); e.target.value = ''; }}
               >
                 <option value="">Add an item...</option>
-                {supplierInventory.map((item) => (
+                {supplierInventory.map((item: any) => (
                   <option key={item.id} value={item.id} disabled={form.items.some((i) => i.itemId === item.id)}>
                     {item.name} (${item.unitPrice.toFixed(2)})
                   </option>
@@ -552,7 +552,7 @@ export default function PurchaseOrdersPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {form.items.map((item) => (
+                  {form.items.map((item: any) => (
                     <tr key={item.itemId} className="border-b border-slate-200">
                       <td className="px-3 py-2 text-slate-900 text-xs">{item.itemName}</td>
                       <td className="px-3 py-2">

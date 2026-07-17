@@ -124,7 +124,7 @@ export default function CampaignsPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Segment</label>
                   <select value={form.segment} onChange={(e: any) => setForm(f => ({...f, segment: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
-                    {segments.map(s => <option key={s} value={s}>{s}</option>)}
+                    {segments.map((s: any) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
                 <div><label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Schedule Date (optional)</label><input type="date" value={form.scheduledDate} onChange={(e: any) => setForm(f => ({...f, scheduledDate: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>

@@ -140,7 +140,7 @@ export default function AdminPlumberDetailPage() {
             <I.Wrench className="w-4 h-4 text-slate-500" /> Specialties
           </h3>
           <div className="flex flex-wrap gap-1.5">
-            {plumber.specialties.map(s => (
+            {plumber.specialties.map((s: any) => (
               <span key={s} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-700">{s}</span>
             ))}
           </div>

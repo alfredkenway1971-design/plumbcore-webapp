@@ -19,8 +19,8 @@ export default function AdminInvoicesPage() {
 
   const filtered = useMemo(() => {
     let data = [...allInvoices];
-    if (search) data = data.filter(i => i.companyName.toLowerCase().includes(search.toLowerCase()) || i.id.toLowerCase().includes(search.toLowerCase()));
-    if (statusFilter !== 'all') data = data.filter(i => i.status === statusFilter);
+    if (search) data = data.filter((i: any) => i.companyName.toLowerCase().includes(search.toLowerCase()) || i.id.toLowerCase().includes(search.toLowerCase()));
+    if (statusFilter !== 'all') data = data.filter((i: any) => i.status === statusFilter);
     return data;
   }, [search, statusFilter]);
 
@@ -57,7 +57,7 @@ export default function AdminInvoicesPage() {
             <input readOnly placeholder="Search invoices or companies..." className="w-full h-10 pl-10 pr-4 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/20 bg-white" />
           </div>
           <div className="flex gap-2">
-            {['all', 'paid', 'pending', 'overdue', 'cancelled'].map(s => (
+            {['all', 'paid', 'pending', 'overdue', 'cancelled'].map((s: any) => (
               <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}>{s}</button>
             ))}
           </div>

@@ -20,7 +20,7 @@ function Skeleton() {
     <div className="space-y-4 animate-pulse">
       <div className="h-9 w-56 rounded-xl bg-slate-50" />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[1,2,3,4].map(i => <div key={i} className="h-20 rounded-xl bg-slate-50" />)}
+        {[1,2,3,4].map((i: any) => <div key={i} className="h-20 rounded-xl bg-slate-50" />)}
       </div>
       <div className="h-64 rounded-xl bg-slate-100" />
     </div>

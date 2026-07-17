@@ -207,7 +207,7 @@ export default function LeadsPage() {
           { label: 'Accepted', value: acceptedLeads.length, color: 'text-emerald-600', bg: 'bg-emerald-50' },
           { label: 'Avg Est.', value: leads.length ? `$${Math.round(leads.reduce((s,l) => s + l.total_estimate, 0) / leads.length)}` : '—', color: 'text-blue-600', bg: 'bg-blue-50' },
           { label: 'Deposits Collected', value: `$${(leads.reduce((s,l) => s + l.deposit_paid, 0) / 100).toFixed(0)}`, color: 'text-violet-600', bg: 'bg-violet-50' },
-        ].map(s => (
+        ].map((s: any) => (
           <div key={s.label} className={`${s.bg} rounded-2xl p-3 md:p-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">{s.label}</p>
             <p className={`text-xl md:text-2xl font-bold mt-1 ${s.color}`}>{s.value}</p>

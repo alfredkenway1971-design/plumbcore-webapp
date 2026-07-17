@@ -468,7 +468,7 @@ export default function TeamPage() {
                 <div className="flex justify-between pb-2">
                   <span className="text-steel">Specialties</span>
                   <div className="flex flex-wrap gap-1 justify-end">
-                    {selectedMember.specialties.map(s => (
+                    {selectedMember.specialties.map((s: any) => (
                       <span key={s} className="inline-flex rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-slate-400">{s}</span>
                     ))}
                   </div>

@@ -178,7 +178,7 @@ export default function SMSPage() {
   };
 
   // Filter conversations
-  const filteredConvs = conversations.filter(c =>
+  const filteredConvs = conversations.filter((c: any) =>
     c.contactName.toLowerCase().includes(search.toLowerCase()) ||
     c.phoneNumber.includes(search)
   );

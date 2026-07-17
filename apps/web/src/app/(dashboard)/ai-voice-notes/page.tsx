@@ -40,7 +40,7 @@ function EditLineItemsModal({
   onClose: () => void;
   onSave: (items: LineItem[]) => void;
 }) {
-  const [editable, setEditable] = useState<LineItem[]>(items.map(i => ({ ...i })));
+  const [editable, setEditable] = useState<LineItem[]>(items.map((i: any) => ({ ...i })));
 
   const updateItem = (index: number, field: keyof LineItem, value: string | number) => {
     setEditable(prev => {

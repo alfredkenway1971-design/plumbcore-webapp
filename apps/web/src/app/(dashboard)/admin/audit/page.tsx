@@ -63,7 +63,7 @@ export default function AdminAuditLogPage() {
             <input placeholder="Search events..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div className="flex gap-2">
-            {['all', 'success', 'warning', 'error', 'info'].map(s => (
+            {['all', 'success', 'warning', 'error', 'info'].map((s: any) => (
               <button key={s} onClick={() => setSeverityFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${severityFilter === s ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{s}</button>
             ))}
           </div>
