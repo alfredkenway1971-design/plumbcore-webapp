@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PLAN_PRICING, STRIPE_PRICE_IDS, PLAN_ORDER, getPlanFeatures } from '@/lib/feature-gates';
+import { useAuthStore } from '@/lib/store';
 
 const FEATURE_LABELS: Record<string, { label: string; solo?: boolean; pro?: boolean; business?: boolean; enterprise?: boolean }> = {
   schedulingInvoicing: { label: 'Scheduling & Invoicing', solo: true, pro: true, business: true, enterprise: true },
@@ -37,21 +38,23 @@ const TECH_COUNTS: Record<string, string> = {
 export default function PricingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
+  const user = useAuthStore((s) => s.user);
+  const profile = useAuthStore((s) => s.profile);
+  const userEmail = user?.email || profile?.email || '';
 
   const handleSelectPlan = async (tier: string) => {
-    const priceId = STRIPE_PRICE_IDS[tier];
-    if (!priceId) {
-      // Enterprise — scroll to contact section
-      document.getElementById('enterprise-cta')?.scrollIntoView({ behavior: 'smooth' });
-      return;
-    }
+      const priceId = STRIPE_PRICE_IDS[tier];
+      if (!priceId) {
+        document.getElementById('enterprise-cta')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
 
-    setLoading(tier);
-    try {
+      setLoading(tier);
+      try {
       const res = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId, planName: tier }),
+        body: JSON.stringify({ priceId, planName: tier, customerEmail: userEmail }),
       });
       const data = await res.json();
       if (data.url) {

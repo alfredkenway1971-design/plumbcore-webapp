@@ -429,27 +429,13 @@ function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
           </a>
         </div>
         <div className="space-y-2">
-          {[
-            { caller: 'James Wilson', time: '8:32 AM', issue: 'Kitchen sink leak — scheduled', outcome: 'Booked' },
-            { caller: 'Sarah Mitchell', time: '9:15 AM', issue: 'Water heater troubleshooting', outcome: 'Resolved' },
-            { caller: 'Oak Springs Apts', time: '10:00 AM', issue: 'Multiple toilet leaks — logged', outcome: 'Lead' },
-          ].map((call, i) => (
-            <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
-                {call.caller.split(' ').map(w => w[0]).slice(0, 2).join('')}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{call.caller}</p>
-                <p className="text-xs text-slate-500 truncate">{call.issue}</p>
-              </div>
-              <span className="text-[10px] text-slate-400">{call.time}</span>
-              <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                call.outcome === 'Booked' ? 'bg-emerald-50 text-emerald-700' :
-                call.outcome === 'Resolved' ? 'bg-amber-50 text-amber-700' :
-                'bg-blue-50 text-blue-700'
-              }`}>{call.outcome}</span>
-            </div>
-          ))}
+          <div className="text-center py-8">
+            <svg className="w-10 h-10 text-slate-300 mx-auto mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 3.75v4.5m0-4.5h-4.5m4.5 0l-6 6m3 12c-8.284 0-15-6.716-15-15V18m9-6.75V15m0 0v.75m0-6.75h.008v.008H12V8.25z" />
+            </svg>
+            <p className="text-sm text-slate-500">No recent calls yet.</p>
+            <p className="text-xs text-slate-400 mt-1">Calls will appear here once your AI receptionist starts taking calls.</p>
+          </div>
         </div>
       </Card>
 

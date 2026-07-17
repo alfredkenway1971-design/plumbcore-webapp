@@ -74,6 +74,10 @@ export default function LeadsMarketplacePage() {
   const [selectedPlumberId, setSelectedPlumberId] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
+  // Lead Detail Modal
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [detailLead, setDetailLead] = useState<Lead | null>(null);
+
   // Round-Robin Config State
   const [showRRConfig, setShowRRConfig] = useState(false);
   const [rrConfig, setRrConfig] = useState<RoundRobinConfig[]>([
@@ -223,6 +227,30 @@ export default function LeadsMarketplacePage() {
     setSelectedLead(null);
     setShowAssignModal(false);
     setModalLeadId(null);
+  };
+
+  const roundRobinSingle = (leadId: string) => {
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+    const zipPrefix = lead.zip.substring(0, 3) || '787';
+    const config = rrConfig.find(c => c.zipGroupPrefix === zipPrefix);
+    if (!config || config.rotationOrder.length === 0) return;
+
+    const idx = rrRotationIndex[zipPrefix] || 0;
+    const plumberId = config.rotationOrder[idx % config.rotationOrder.length];
+    const plumber = plumbers.find(p => p.id === plumberId);
+
+    if (plumber && plumber.available) {
+      setLeads(prev => prev.map(l =>
+        l.id === leadId ? { ...l, status: 'assigned' as const, assignedPlumber: plumber.name, timeToMatch: 'RR' } : l
+      ));
+      setRrRotationIndex(prev => ({ ...prev, [zipPrefix]: (prev[zipPrefix] || 0) + 1 }));
+    }
+  };
+
+  const openDetailModal = (lead: Lead) => {
+    setDetailLead(lead);
+    setShowDetailModal(true);
   };
 
   const autoFindBestMatch = () => {
@@ -540,7 +568,7 @@ export default function LeadsMarketplacePage() {
           </div>
         ) : (
           filteredLeads.map(lead => (
-            <Card key={lead.id} padding="md" variant="bordered" className={`hover:shadow-sm transition-shadow ${selectedLead === lead.id ? 'ring-2 ring-blue-300' : ''}`}>
+            <Card key={lead.id} padding="md" variant="bordered" className={`hover:shadow-sm transition-shadow cursor-pointer ${selectedLead === lead.id ? 'ring-2 ring-blue-300' : ''}`} onClick={() => openDetailModal(lead)}>
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Photo */}
                 <div className="flex-shrink-0">
@@ -600,7 +628,7 @@ export default function LeadsMarketplacePage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex sm:flex-col items-center sm:items-stretch gap-2 sm:min-w-[140px]">
+                <div className="flex sm:flex-col items-center sm:items-stretch gap-2 sm:min-w-[140px]" onClick={e => e.stopPropagation()}>
                   {lead.status === 'matching' && (
                     <>
                       <button
@@ -611,12 +639,14 @@ export default function LeadsMarketplacePage() {
                         Assign
                       </button>
                       <button
+                        onClick={() => openDetailModal(lead)}
                         className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         Details
                       </button>
                       <button
+                        onClick={() => roundRobinSingle(lead.id)}
                         className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
                       >
                         <ListOrdered className="w-3.5 h-3.5" />
@@ -985,6 +1015,121 @@ export default function LeadsMarketplacePage() {
                   Assign Selected
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Lead Detail Modal ── */}
+      {showDetailModal && detailLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => { setShowDetailModal(false); setDetailLead(null); }}>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl">
+                  {detailLead.photo || '📸'}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">{detailLead.customer}</h3>
+                  <p className="text-xs text-slate-500">{detailLead.id}</p>
+                </div>
+              </div>
+              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 py-4 space-y-5 max-h-[65vh] overflow-y-auto">
+              {/* Status + Payment */}
+              <div className="flex flex-wrap gap-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
+                  {statusBadge(detailLead.status)}
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200">
+                  {depositBadge(detailLead.depositAmount)}
+                </div>
+                {detailLead.assignedPlumber && (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-xs font-medium text-blue-700">
+                    <User className="w-3 h-3" />
+                    {detailLead.assignedPlumber}
+                  </div>
+                )}
+              </div>
+
+              {/* Customer Info Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Location</p>
+                    <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                      {detailLead.location}
+                    </p>
+                    {detailLead.address && (
+                      <p className="text-xs text-slate-500 mt-0.5 ml-5">{detailLead.address}</p>
+                    )}
+                  </div>
+                  {detailLead.phone && (
+                    <div>
+                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Phone</p>
+                      <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
+                        <Phone className="w-3.5 h-3.5 text-slate-400" />
+                        {detailLead.phone}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Estimate</p>
+                    <p className="text-lg font-bold text-blue-600 mt-0.5">${detailLead.estimate.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Date Received</p>
+                    <p className="text-sm text-slate-800 mt-0.5">{detailLead.date ? new Date(detailLead.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Diagnosis */}
+              <div>
+                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">AI Diagnosis</p>
+                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                  <p className="text-sm text-slate-700 leading-relaxed">{detailLead.diagnosis || 'No AI diagnosis available'}</p>
+                </div>
+              </div>
+
+              {/* Photo */}
+              {detailLead.photo && detailLead.photo !== '📸' && (
+                <div>
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Photo</p>
+                  <img src={detailLead.photo} alt="Lead" className="w-full max-h-64 object-cover rounded-lg border border-slate-200" />
+                </div>
+              )}
+            </div>
+
+            {/* Footer Actions */}
+            <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
+              <div className="flex items-center gap-2">
+                {detailLead.status === 'matching' && (
+                  <>
+                    <button onClick={() => { setShowDetailModal(false); openAssignModal(detailLead.id); }} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                      <User className="w-3.5 h-3.5" />
+                      Assign
+                    </button>
+                    <button onClick={() => { roundRobinSingle(detailLead.id); setShowDetailModal(false); }} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors">
+                      <ListOrdered className="w-3.5 h-3.5" />
+                      Round-Robin
+                    </button>
+                  </>
+                )}
+              </div>
+              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-colors">
+                Close
+              </button>
             </div>
           </div>
         </div>

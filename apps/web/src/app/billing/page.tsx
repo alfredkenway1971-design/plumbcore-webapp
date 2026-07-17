@@ -1,13 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowRight, CreditCard, Settings, FileText, Shield } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowRight, CreditCard, Settings, FileText, Shield, Sparkles } from 'lucide-react';
+import { useAuthStore } from '@/lib/store';
 
 export default function BillingPage() {
-  const [email, setEmail] = useState('');
+  const user = useAuthStore((s) => s.user);
+  const profile = useAuthStore((s) => s.profile);
+  const userEmail = user?.email || profile?.email || '';
+
+  const [email, setEmail] = useState(userEmail);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Pre-fill email from auth
+  useEffect(() => {
+    if (userEmail && !email) setEmail(userEmail);
+  }, [userEmail]);
 
   const openPortal = async () => {
     if (!email) { setError('Please enter your email'); return; }
@@ -15,12 +25,11 @@ export default function BillingPage() {
     setError('');
     setSuccess('');
     try {
-      // First try to find the customer by email
       const searchRes = await fetch(`/api/find-stripe-customer?email=${encodeURIComponent(email)}`);
       const searchData = await searchRes.json();
-      
+
       if (!searchData.customerId) {
-        setError('No subscription found for this email. Make sure you used this email during checkout.');
+        setError('No subscription found. Click "Subscribe Now" to get started.');
         setLoading(false);
         return;
       }
@@ -81,7 +90,18 @@ export default function BillingPage() {
             placeholder="you@example.com"
             className="w-full h-11 px-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-3"
           />
-          {error && <p className="text-sm text-red-500 mb-3">{error}</p>}
+          {error && (
+            <div className="text-sm text-red-500 mb-3">
+              <p>{error}</p>
+              <a
+                href="/#pricing"
+                className="inline-flex items-center gap-1.5 mt-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                Subscribe Now
+              </a>
+            </div>
+          )}
           {success && <p className="text-sm text-emerald-600 mb-3">{success}</p>}
           <button
             onClick={openPortal}
@@ -96,6 +116,17 @@ export default function BillingPage() {
         <p className="text-xs text-slate-400 text-center mt-6">
           You'll be redirected to Stripe's secure billing portal to manage your subscription.
         </p>
+
+        <div className="text-center mt-8">
+          <p className="text-xs text-slate-400 mb-2">Don't have a subscription yet?</p>
+          <a
+            href="/#pricing"
+            className="inline-flex items-center gap-1.5 text-sm text-blue-600 font-semibold hover:text-blue-700"
+          >
+            View plans and pricing
+            <ArrowRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
       </div>
     </main>
   );
