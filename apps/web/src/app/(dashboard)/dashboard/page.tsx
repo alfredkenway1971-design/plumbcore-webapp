@@ -935,40 +935,6 @@ function PlanInfoWidget() {
   );
 }
 
-/* ═══════════════════════════════════════════
-   MOBILE BOTTOM NAV
-   ═══════════════════════════════════════════ */
-const MobileBottomNav = memo(function MobileBottomNav() {
-  const items = [
-    { icon: I.Eye, label: 'Home', href: '/dashboard', active: true },
-    { icon: I.Dots, label: 'Jobs', href: '/jobs', active: false },
-    { icon: I.Users, label: 'Add', href: '/jobs/new', active: false, highlight: true },
-    { icon: I.Cursor, label: 'Leads', href: '/leads', active: false },
-    { icon: I.Cart, label: 'Profile', href: '/settings', active: false },
-  ];
-
-  return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-slate-200 px-2 pb-safe-area">
-      <div className="flex items-center justify-around h-16">
-        {items.map((item) => (
-          <a key={item.label} href={item.href}
-            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] py-1 rounded-xl transition-colors ${
-              item.highlight ? 'relative -top-3' : item.active ? 'text-blue-500' : 'text-slate-400'
-            }`}>
-            {item.highlight ? (
-              <div className="w-12 h-12 rounded-2xl bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-200">
-                <item.icon className="w-6 h-6 text-slate-900" />
-              </div>
-            ) : (
-              <item.icon className={`w-5 h-5 ${item.active ? 'text-blue-500' : ''}`} />
-            )}
-            <span className={`text-[10px] font-medium ${item.highlight ? 'text-blue-600' : ''}`}>{item.label}</span>
-          </a>
-        ))}
-      </div>
-    </nav>
-  );
-});
 
 /* ═══════════════════════════════════════════
    MAIN DASHBOARD PAGE
@@ -1105,9 +1071,7 @@ export default function DashboardPage() {
         </div>
         <div className="lg:col-span-2"><AIAssistantWidget /></div>
       </div>
-
-      {/* ── Mobile Bottom Nav ── */}
-      <MobileBottomNav />
+      <div className="h-4 md:hidden" />
     </div>
   );
 }
