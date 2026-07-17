@@ -7,18 +7,13 @@ interface HTMLTextProps {
 }
 
 export default function HTMLText({ html, className }: HTMLTextProps) {
-  const [renderedContent, setRenderedContent] = React.useState<React.ReactNode>(html);
-
-  React.useEffect(() => {
-    if (!html.includes('<')) {
-      setRenderedContent(html);
-      return;
-    }
+  const renderedContent = React.useMemo(() => {
+    if (!html || !html.includes('<')) return html;
 
     const result: React.ReactNode[] = [];
     const cleaned = html.replace(/\s+/g, ' ').trim();
     let lastEnd = 0;
-    
+
     for (const match of cleaned.matchAll(/<strong>([^<]+)<\/strong>/gi)) {
       if (match.index && match.index > lastEnd) {
         const preText = cleaned.slice(lastEnd, match.index!).trim();
@@ -37,7 +32,7 @@ export default function HTMLText({ html, className }: HTMLTextProps) {
       if (postText) result.push(postText);
     }
 
-    setRenderedContent(result.length > 0 ? result : html);
+    return result.length > 0 ? result : html;
   }, [html]);
 
   return <span className={className}>{renderedContent}</span>;

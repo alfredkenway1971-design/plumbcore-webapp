@@ -401,6 +401,43 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   CONSUMER CTA — "Get a Free Estimate" (camera, middle of page)
+   ═══════════════════════════════════════════════════════════════ */
+function ConsumerCtaSection({ t }: { t: (key: string) => string }) {
+  return (
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-white to-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl ring-1 ring-black/5 shadow-sm p-8 sm:p-12 text-center">
+          {/* Camera icon */}
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mx-auto mb-6 shadow-md shadow-blue-500/15">
+            <Camera className="w-8 h-8 text-white" />
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mb-4">
+            Need a Plumbing Estimate?
+          </h2>
+
+          <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto mb-8 leading-relaxed">
+            Snap a photo of the issue and get an AI estimate in seconds. No phone calls, no waiting — just upload and go.
+          </p>
+
+          <a
+            href="/quote/plumbcore"
+            className="inline-flex items-center gap-2 h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-base shadow-md shadow-blue-500/15 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Camera className="w-4 h-4" /> Get a Free Estimate <ArrowRight className="w-4 h-4" />
+          </a>
+
+          <p className="text-xs text-slate-400 mt-4">
+            No sign-up required · 30-second upload · Instant AI estimate
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
    PRICING — 4 plans with deposit mention and risk reversal
    ═══════════════════════════════════════════════════════════════ */
 function PricingSection({ t }: { t: (key: string) => string }) {
@@ -973,6 +1010,7 @@ export default function LandingPage() {
       <Hero t={t} />
       <HowPlumbCoreMakesYouMoney t={t} />
       <FeaturesSection t={t} />
+      <ConsumerCtaSection t={t} />
       <PricingSection t={t} />
       <CompetitionSection t={t} />
       <TestimonialsSection t={t} />
