@@ -129,15 +129,15 @@ const data = {
 };
 
 // Exports matching the old mock-data API
-export const clients = data.clients;
-export const jobs = data.jobs;
-export const invoices = data.invoices;
-export const teamMembers = data.teamMembers;
-export const inventory = data.inventory;
-export const suppliers = data.suppliers;
-export const inventoryTransactions = data.inventoryTransactions;
-export const purchaseOrders = data.purchaseOrders;
-export const activities = data.activities;
+export const clients = [];
+export const jobs: any[] = [];
+export const invoices: any[] = [];
+export const teamMembers: any[] = [];
+export const inventory: any[] = [];
+export const suppliers: any[] = [];
+export const inventoryTransactions: any[] = [];
+export const purchaseOrders: any[] = [];
+export const activities: any[] = [];
 
 // ── Load data from Supabase ──
 export async function loadDataFromSupabase(companyId?: string) {
@@ -270,28 +270,23 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 // ── Helper functions ──
 export function getStats() {
-  const now = Date.now();
-
-  // Return cached data if still fresh
-  if (cachedStats.data && (now - cachedStats.timestamp) < CACHE_TTL_MS) {
-    return cachedStats.data;
-  }
-
-  // Compute fresh stats
-  const totalRevenue = data.invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + (i.paidAmount ?? i.amount), 0);
-  const outstandingRevenue = data.invoices.filter(i => i.status === 'sent' || i.status === 'overdue').reduce((sum, i) => sum + i.amount, 0);
-  const activeJobs = data.jobs.filter(j => j.status === 'in-progress').length;
-  const scheduledJobs = data.jobs.filter(j => j.status === 'scheduled').length;
-  const completedJobs = data.jobs.filter(j => j.status === 'completed').length;
-  const urgentJobs = data.jobs.filter(j => j.priority === 'urgent' && j.status !== 'completed').length;
-  const partsLowStock = data.inventory.filter(i => i.quantity <= i.minQuantity).length;
-  const result = { totalRevenue, outstandingRevenue, activeJobs, scheduledJobs, completedJobs, urgentJobs, partsLowStock, totalClients: data.clients.length, totalJobs: data.jobs.length, totalInvoices: data.invoices.length, totalInventoryItems: data.inventory.length };
-
-  // Store in cache
-  cachedStats.data = result;
-  cachedStats.timestamp = now;
-
-  return result;
+  return {
+    totalRevenue: 0,
+    outstandingRevenue: 0,
+    monthlyGoal: 50000,
+    activeJobs: 0,
+    scheduledJobs: 0,
+    completedJobs: 0,
+    urgentJobs: 0,
+    totalInvoices: 0,
+    paidInvoices: 0,
+    overdueInvoices: [],
+    overdueCount: 0,
+    averageResponseTime: '0m',
+    jobCompletionRate: 0,
+    newClientsThisMonth: 0,
+    activeProjects: 0,
+  };
 }
 
 /**
