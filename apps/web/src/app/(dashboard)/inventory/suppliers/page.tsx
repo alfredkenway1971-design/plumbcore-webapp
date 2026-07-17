@@ -240,7 +240,7 @@ export default function SuppliersPage() {
                   <td className="px-4 py-3 text-slate-400">{supplier.email}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
-                      {supplier.categories.map((cat) => (
+                      {supplier.categories.map((cat: string) => (
                         <span
                           key={cat}
                           className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-slate-400"
