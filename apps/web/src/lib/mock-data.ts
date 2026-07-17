@@ -286,6 +286,7 @@ export function getStats() {
     jobCompletionRate: 0,
     newClientsThisMonth: 0,
     activeProjects: 0,
+    totalJobs: 0,
   };
 }
 
