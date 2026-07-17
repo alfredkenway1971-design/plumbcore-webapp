@@ -668,7 +668,7 @@ const UpgradeCard = memo(function UpgradeCard() {
           <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm"><I.Zap className="w-4 h-4 text-white" /></div>
           <h3 className="text-base font-bold text-slate-900 mb-1.5">Start Your Free Trial!</h3>
           <p className="text-xs text-blue-100 leading-relaxed mb-4">Unlock AI photo estimates, voice receptionist, and advanced analytics.</p>
-          <button onClick={() => router.push('/#pricing')} className="h-9 px-4 rounded-xl bg-white text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
+          <button onClick={() => router.push('/pricing')} className="h-9 px-4 rounded-xl bg-white text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
         </div>
       </div>
     );
@@ -993,7 +993,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <a href="/billing" className="h-8 px-4 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors flex items-center active:scale-[0.97]">{status === 'cancelled' ? 'Reactivate' : 'View Plans'}</a>
+            <a href="/pricing" className="h-8 px-4 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors flex items-center active:scale-[0.97]">{status === 'cancelled' ? 'Reactivate' : 'View Plans'}</a>
             <button onClick={handleDismiss} className="text-red-400 hover:text-red-600 transition-colors" aria-label="Dismiss">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
