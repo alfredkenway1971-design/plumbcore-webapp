@@ -113,12 +113,12 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
         return (
           <div
             key={kpi.label}
-            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5"
           >
             <div className="flex items-start justify-between mb-3">
               <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{kpi.value}</p>
+            <p className="text-3xl font-semibold tracking-tight text-slate-900 mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
               <span
                 className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${

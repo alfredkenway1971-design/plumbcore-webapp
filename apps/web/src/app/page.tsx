@@ -105,7 +105,7 @@ function Hero({ t }: { t: (key: string) => string }) {
           {/* ─── Left column: text content ─── */}
           <div className="text-center lg:text-left">
             {/* Badge */}
-            <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-6 shadow-sm">
+            <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-700 mb-6 shadow-md shadow-blue-500/10">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
               {t('home.heroTrustedBadge')}
             </span>

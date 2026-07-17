@@ -196,7 +196,7 @@ input, select, textarea { font-size: 16px !important; }
   display: flex; align-items: flex-start; justify-content: space-between;
   margin-bottom: 24px; gap: 12px; flex-wrap: wrap;
 }
-.page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: #0F172A; }
+.page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; color: #0F172A; }
 .page-header p { font-size: 13px; color: #64748B; margin-top: 2px; }
 .page-actions { display: flex; gap: 8px; flex-shrink: 0; }
 @media (max-width: 640px) { .page-actions { width: 100%; } .page-actions a { flex: 1; justify-content: center; } }

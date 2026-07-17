@@ -56,11 +56,11 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
       <div className="flex items-start justify-between mb-3">
         <p className="text-sm font-medium text-slate-500">{label}</p>
-        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center`}>
+        <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center`}>
           <Icon className="w-5 h-5 text-slate-900" />
         </div>
       </div>
-      <p className="text-3xl font-bold text-slate-900 mb-1.5">{value}</p>
+      <p className="text-3xl font-semibold tracking-tight text-slate-900 mb-1.5">{value}</p>
       <div className="flex items-center gap-2">
         <span className={`inline-flex items-center gap-0.5 text-xs font-semibold ${trend.color} bg-opacity-10 px-1.5 py-0.5 rounded-full ${trend.direction === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
           <I.ArrowUp className={`w-3 h-3 ${trend.direction === 'down' ? 'rotate-180' : ''}`} />
@@ -1062,10 +1062,10 @@ export default function DashboardPage() {
 
       {/* ── Row 1: Stats — Field-Service KPIs ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-blue-500" />
-        <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-violet-500" />
-        <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-amber-500" />
-        <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-cyan-500" />
+        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-blue-500 to-cyan-400" />
+        <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-gradient-to-br from-violet-500 to-purple-400" />
+        <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-gradient-to-br from-amber-500 to-orange-400" />
+        <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-gradient-to-br from-cyan-500 to-teal-400" />
       </div>
 
       {/* ── Revenue Goal Progress Bar ── */}
