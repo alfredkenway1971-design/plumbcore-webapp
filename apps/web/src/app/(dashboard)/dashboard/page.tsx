@@ -370,20 +370,14 @@ function WeeklyTechChart() {
         const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#06B6D4', '#EF4444'];
         return {
           name: tm.name,
-          initials: tm.name.split(' ').map(n => n[0]).join('').slice(0, 2),
+          initials: (tm.name || '').split(' ').map((n: string) => n[0]).join('').slice(0, 2),
           jobs: assignedJobs.length,
           revenue: totalRevenue,
           color: colors[idx % colors.length],
         };
       }).sort((a, b) => b.jobs - a.jobs)
-    : [
-        { name: 'Mike Torres', initials: 'MT', jobs: 12, revenue: 4800, color: '#3B82F6' },
-        { name: 'Alex Chen', initials: 'AC', jobs: 9, revenue: 3600, color: '#10B981' },
-        { name: 'Carlos Ruiz', initials: 'CR', jobs: 7, revenue: 2800, color: '#F59E0B' },
+    : []
         { name: 'Sarah Blake', initials: 'SB', jobs: 5, revenue: 2100, color: '#8B5CF6' },
-        { name: 'David Kim', initials: 'DK', jobs: 3, revenue: 1200, color: '#06B6D4' },
-      ];
-  const maxJobs = Math.max(...techs.map(t => t.jobs), 1);
   const maxRev = Math.max(...techs.map(t => t.revenue), 1);
 
   return (
