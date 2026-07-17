@@ -226,8 +226,8 @@ function RevenueChart() {
 
   // Ensure we have some data to display
   const hasData = thisMonth.some(v => v > 0) || prevMonth.some(v => v > 0);
-  const chartThis = hasData ? thisMonth : [12, 19, 15, 22, 18, 25, 20, 28, 24, 30, 27, 35, 32, 38, 34, 40, 36, 42, 38, 45, 41, 48, 44, 50, 46, 52, 48, 55, 51, 58];
-  const chartPrev = hasData ? prevMonth : [10, 16, 13, 18, 15, 21, 17, 22, 20, 25, 22, 28, 26, 30, 28, 33, 30, 35, 32, 37, 34, 39, 36, 41, 38, 43, 40, 45, 42, 47];
+  const chartThis = hasData ? thisMonth : [];
+  const chartPrev = hasData ? prevMonth : [];
   const max = Math.max(...chartThis, ...chartPrev);
   const width = 600, height = 200;
   const toPoint = (v: number, i: number) => `${(i / (chartThis.length - 1)) * width},${height - (v / max) * height * 0.85 - 10}`;
@@ -420,14 +420,7 @@ function WeeklyTechChart() {
 /* ═══════════════════════════════════════════
    UPCOMING JOBS TABLE (with Time)
    ═══════════════════════════════════════════ */
-const demoJobs = [
-  { id: 'JOB-1001', time: '8:00 AM', customer: 'John Smith', address: '123 Oak St, Austin, TX', service: 'Water Heater Repair', tech: 'Mike Torres', status: 'scheduled' as const },
-  { id: 'JOB-1002', time: '9:30 AM', customer: 'Sarah Johnson', address: '456 Pine Ave, Austin, TX', service: 'Drain Cleaning', tech: 'Alex Chen', status: 'in-progress' as const },
-  { id: 'JOB-1003', time: '11:00 AM', customer: 'Robert Davis', address: '789 Elm Blvd, Austin, TX', service: 'Pipe Replacement', tech: 'Carlos Ruiz', status: 'scheduled' as const },
-  { id: 'JOB-1004', time: '1:00 PM', customer: 'Emily Wilson', address: '321 Maple Dr, Austin, TX', service: 'Faucet Installation', tech: 'Mike Torres', status: 'scheduled' as const },
-  { id: 'JOB-1005', time: '2:30 PM', customer: 'David Brown', address: '654 Cedar Ln, Austin, TX', service: 'Sewer Line Inspection', tech: 'Alex Chen', status: 'in-progress' as const },
-  { id: 'JOB-1006', time: '4:00 PM', customer: 'Maria Garcia', address: '987 Walnut St, Austin, TX', service: 'Emergency Leak Repair', tech: 'David Kim', status: 'urgent' as const },
-];
+const demoJobs: any[] = [];
 
 const UpcomingJobsTable = memo(function UpcomingJobsTable() {
   const { t } = useI18n();
@@ -476,7 +469,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
-                        {job.tech.split(' ').map(n => n[0]).join('')}
+                        {job.tech.split(' ').map((n: string) => n[0]).join('')}
                       </div>
                       <span className="text-sm text-slate-600">{job.tech}</span>
                     </div>
@@ -502,14 +495,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
 /* ═══════════════════════════════════════════
    TECH STATUS TABLE
    ═══════════════════════════════════════════ */
-const techStatusData = [
-  { name: 'Mike Torres', initials: 'MT', job: 'Water Heater - 123 Oak', location: '78701', status: 'busy' as const, jobsToday: 4, color: 'from-blue-400 to-cyan-400' },
-  { name: 'Alex Chen', initials: 'AC', job: 'Drain Cleaning - 456 Pine', location: '78702', status: 'busy' as const, jobsToday: 3, color: 'from-emerald-400 to-teal-400' },
-  { name: 'Carlos Ruiz', initials: 'CR', job: 'Pipe Replacement - 789 Elm', location: '78703', status: 'online' as const, jobsToday: 2, color: 'from-amber-400 to-orange-400' },
-  { name: 'Sarah Blake', initials: 'SB', job: 'No current job', location: 'Shop', status: 'online' as const, jobsToday: 2, color: 'from-purple-400 to-violet-400' },
-  { name: 'David Kim', initials: 'DK', job: 'Emergency Leak - 987 Walnut', location: '78704', status: 'busy' as const, jobsToday: 1, color: 'from-cyan-400 to-blue-400' },
-  { name: 'James Wilson', initials: 'JW', job: 'Roto-Rooter - 555 Main', location: '78705', status: 'busy' as const, jobsToday: 5, color: 'from-rose-400 to-pink-400' },
-];
+const techStatusData: any[] = [];
 
 const statusDotColors: Record<string, string> = {
   online: 'bg-emerald-400',
@@ -553,12 +539,7 @@ const TechStatusTable = memo(function TechStatusTable() {
 /* ═══════════════════════════════════════════
    ALERTS PANEL
    ═══════════════════════════════════════════ */
-const alerts = [
-  { icon: I.Alert, iconBg: 'bg-amber-100', iconColor: 'text-amber-600', message: '3 inventory items below minimum stock', time: '2h ago', action: 'View Inventory', href: '/inventory' },
-  { icon: I.File, iconBg: 'bg-red-100', iconColor: 'text-red-600', message: '2 invoices overdue totaling $3,420', time: '1h ago', action: 'View Invoices', href: '/invoicing' },
-  { icon: I.Cursor, iconBg: 'bg-blue-100', iconColor: 'text-blue-600', message: '1 new lead from website form', time: '30m ago', action: 'View Lead', href: '/leads' },
-  { icon: I.Phone, iconBg: 'bg-purple-100', iconColor: 'text-purple-600', message: 'Emergency call: burst pipe at 742 Evergreen', time: '5m ago', action: 'Dispatch', href: '/emergency-triage' },
-];
+const alerts: any[] = [];
 
 const AlertsPanel = memo(function AlertsPanel() {
   const router = useRouter();
