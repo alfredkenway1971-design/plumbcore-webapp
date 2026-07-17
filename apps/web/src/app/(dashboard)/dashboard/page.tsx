@@ -377,6 +377,7 @@ function WeeklyTechChart() {
         };
       }).sort((a, b) => b.jobs - a.jobs)
     : []
+  const maxJobs = Math.max(...techs.map(t => t.jobs), 1);
   const maxRev = Math.max(...techs.map(t => t.revenue), 1);
 
   return (
