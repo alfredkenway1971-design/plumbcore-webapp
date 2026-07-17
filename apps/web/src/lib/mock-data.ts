@@ -129,7 +129,7 @@ const data = {
 };
 
 // Exports matching the old mock-data API
-export const clients = [];
+export const clients: any[] = [];
 export const jobs: any[] = [];
 export const invoices: any[] = [];
 export const teamMembers: any[] = [];
