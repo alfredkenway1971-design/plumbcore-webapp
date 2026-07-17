@@ -104,7 +104,7 @@ export default function InvoiceDetailPage() {
       else {
         setInvoiceNotes(found.notes || '');
         setPaymentAmount(found.amount);
-        setEditLineItems(found.lineItems.map(li => ({ ...li })));
+        setEditLineItems(found.lineItems.map((li: any) => ({ ...li })));
       }
       // Load company logo from Zustand
       const state = useAuthStore.getState();
