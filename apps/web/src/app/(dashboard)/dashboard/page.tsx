@@ -377,7 +377,6 @@ function WeeklyTechChart() {
         };
       }).sort((a, b) => b.jobs - a.jobs)
     : []
-        { name: 'Sarah Blake', initials: 'SB', jobs: 5, revenue: 2100, color: '#8B5CF6' },
   const maxRev = Math.max(...techs.map(t => t.revenue), 1);
 
   return (
