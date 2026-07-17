@@ -36,7 +36,7 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
 
         <nav className="hidden md:flex items-center gap-8">
           {links.map(l => (
-            <a key={l.href} href={l.href} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+            <a key={l.href} href={l.href} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
               {l.label}
             </a>
           ))}
@@ -47,7 +47,7 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
           <a href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">{t('home.navSignIn')}</a>
           <a
             href="/signup"
-            className="h-10 px-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center"
+            className="h-10 px-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-md shadow-blue-500/15 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center"
           >
             {t('home.startFreeTrial')}
           </a>
@@ -81,7 +81,7 @@ function Navbar({ locale, onLocaleChange, t, menuOpen, onMenuToggle }: { locale:
             <a
               href="/signup"
               onClick={() => setOpen(false)}
-              className="block w-full text-center h-10 leading-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-lg shadow-blue-500/25"
+              className="block w-full text-center h-10 leading-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-semibold shadow-md shadow-blue-500/15"
             >
               {t('home.startFreeTrial')}
             </a>
@@ -110,52 +110,35 @@ function Hero({ t }: { t: (key: string) => string }) {
               {t('home.heroTrustedBadge')}
             </span>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.05] mb-5 text-slate-900">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.1] sm:leading-[1.05] mb-5 text-slate-900">
               {t('home.heroHeadline1')}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">{t('home.heroHeadlineHighlight')}</span>{t('home.heroHeadline2')}
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mb-6 leading-relaxed">
+            <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mb-6 leading-relaxed">
               {t('home.heroSubheadline')}
             </p>
 
-            {/* Proof bar */}
+            {/* Proof bar — larger, higher contrast */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
-              <HTMLText html={t('home.heroJoinPlumbers')} className="text-sm text-slate-500" />
-              <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <HTMLText html={t('home.heroJobsCompleted')} className="text-sm text-slate-500" />
-              <span className="w-1 h-1 rounded-full bg-slate-300" />
-              <HTMLText html={t('home.heroAvgRating')} className="text-sm text-slate-500" />
+              <HTMLText html={t('home.heroJoinPlumbers')} className="text-base font-medium text-slate-600" />
+              <span className="w-1 h-1 rounded-full bg-slate-400" />
+              <HTMLText html={t('home.heroJobsCompleted')} className="text-base font-medium text-slate-600" />
+              <span className="w-1 h-1 rounded-full bg-slate-400" />
+              <HTMLText html={t('home.heroAvgRating')} className="text-base font-medium text-slate-600" />
             </div>
 
-            {/* Customer CTA — Get online quote */}
-            <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start mb-8 pb-8 border-b border-slate-100">
-              <a
-                href="/quote/plumbcore"
-                className="h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-base shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2"
-              >
-                <Camera className="w-4 h-4" /> {t('home.heroGetEstimate')} <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
-                href="#how-it-works"
-                className="h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-base transition-all active:scale-[0.98] inline-flex items-center gap-2"
-              >
-                {t('home.heroSeeHow')} <ChevronRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Plumber CTAs */}
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 text-center lg:text-left">{t('home.heroForBusinesses')}</p>
+            {/* Primary CTA — one clean row, no duplicates */}
             <div className="flex flex-col sm:flex-row gap-3 items-center lg:justify-start">
               <a
                 href="/signup"
-                className="h-12 sm:h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
+                className="h-14 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-base shadow-md shadow-blue-500/15 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] inline-flex items-center gap-2"
               >
                 {t('home.heroGetLead')} <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#how-it-works"
-                className="h-12 sm:h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-all active:scale-[0.98] inline-flex items-center gap-2 text-sm sm:text-base"
+                className="h-14 px-8 rounded-full bg-white ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-base transition-all active:scale-[0.98] inline-flex items-center gap-2"
               >
                 {t('home.heroSeeHow')} <ChevronRight className="w-4 h-4" />
               </a>
@@ -182,10 +165,10 @@ function Hero({ t }: { t: (key: string) => string }) {
               </div>
             </div>
 
-            {/* "How It Works" device frame mockup */}
-            <div className="mt-6 sm:mt-8 relative">
-              <div className="relative mx-auto max-w-xs rounded-[2rem] ring-2 ring-black/10 shadow-2xl bg-gradient-to-b from-blue-600/10 to-cyan-500/10 p-2">
-                <div className="rounded-[1.75rem] overflow-hidden ring-1 ring-black/5 bg-white">
+            {/* "How It Works" device frame mockup — cleaned up */}
+            <div className="mt-6 relative">
+              <div className="relative mx-auto max-w-[240px] rounded-2xl ring-1 ring-black/10 shadow-md bg-gradient-to-b from-blue-600/5 to-cyan-500/5 p-2">
+                <div className="rounded-xl overflow-hidden bg-white">
                   <img
                     src="/images/hero-plumber.jpg"
                     alt={t('home.heroAppImgAlt')}
@@ -193,10 +176,8 @@ function Hero({ t }: { t: (key: string) => string }) {
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
-                {/* Phone notch */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-black/10 rounded-full" />
               </div>
-              <p className="text-center text-xs text-slate-400 mt-3 font-medium">
+              <p className="text-center text-xs text-slate-400 mt-2 font-medium">
                 {t('home.heroHowItWorksCaption')}
               </p>
             </div>
@@ -252,7 +233,7 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
             {t('home.howTitle')}
           </h2>
-          <HTMLText html={t('home.howSubtitle')} className="text-base text-slate-500 max-w-2xl mx-auto" />
+          <HTMLText html={t('home.howSubtitle')} className="text-base text-slate-600 max-w-2xl mx-auto" />
         </div>
 
         {/* 3-step visual */}
@@ -271,11 +252,11 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
               {i < 2 && (
                 <div className="absolute top-10 left-[calc(50%+2.5rem)] w-[calc(100%-5rem)] border-t border-dashed border-blue-200 hidden md:block" />
               )}
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-white font-semibold text-sm flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-500/25 -mt-14 relative z-10">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-white font-semibold text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-blue-500/15 -mt-14 relative z-10">
                 {s.num}
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">{s.title}</h3>
-              <p className="text-sm text-slate-500 max-w-xs mx-auto">{s.desc}</p>
+              <p className="text-sm text-slate-600 max-w-xs mx-auto">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -294,8 +275,8 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
           <h3 className="text-xl font-semibold text-slate-900 text-center mb-6">
             {t('home.comparisonVS')}
           </h3>
-          <div className="overflow-hidden rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
+            <table className="w-full text-sm min-w-[500px]">
               <thead>
                 <tr className="bg-slate-50">
                   <th className="text-left px-5 py-3.5 font-semibold text-slate-700">{t('home.compFeatureHeader')}</th>
@@ -309,8 +290,8 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
                   <tr key={i} className="border-t border-slate-100">
                     <td className="px-5 py-3.5 font-medium text-slate-700">{row.feature}</td>
                     <td className="px-4 py-3.5 text-center text-emerald-600 font-semibold">{row.plumbcore}</td>
-                    <td className="px-4 py-3.5 text-center text-slate-500">{row.homeadvisor}</td>
-                    <td className="px-4 py-3.5 text-center text-slate-500">{row.servicetitan}</td>
+                    <td className="px-4 py-3.5 text-center text-slate-600">{row.homeadvisor}</td>
+                    <td className="px-4 py-3.5 text-center text-slate-600">{row.servicetitan}</td>
                   </tr>
                 ))}
               </tbody>
@@ -373,7 +354,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
             {t('home.featuresTitle')}
           </h2>
-          <p className="text-base text-slate-500 max-w-xl mx-auto">
+          <p className="text-base text-slate-600 max-w-xl mx-auto">
             {t('home.featuresSubtitle')}
           </p>
         </div>
@@ -383,7 +364,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
               key={i}
               className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left relative overflow-hidden"
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-lg shadow-black/10 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-md shadow-black/5 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
                 <f.icon className="w-6 h-6 text-white" />
               </div>
               {/* Image thumbnail for featured cards */}
@@ -410,7 +391,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
               <h3 className="text-lg font-semibold text-slate-900 mb-2 transition-colors duration-300 group-hover:text-blue-600">
                 {f.title}
               </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
+              <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -540,7 +521,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">
             {t('home.pricingTitle')}
           </h2>
-          <p className="text-base text-slate-500 max-w-2xl mx-auto">
+          <p className="text-base text-slate-600 max-w-2xl mx-auto">
             {t('home.pricingSubtitle')}
           </p>
         </div>
@@ -556,13 +537,13 @@ function PricingSection({ t }: { t: (key: string) => string }) {
               }`}
             >
               {p.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/25 z-20">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-md shadow-blue-500/15 z-20">
                   {t('home.pricingMostPopular')}
                 </div>
               )}
               <div className="p-6 text-center flex flex-col h-full">
                 <h3 className="text-lg font-semibold text-slate-900">{p.name}</h3>
-                <p className="text-xs mt-1 text-slate-500">{p.techs}</p>
+                <p className="text-xs mt-1 text-slate-600">{p.techs}</p>
                 <div className="flex items-baseline justify-center gap-1 mt-4 mb-2">
                   {p.price > 0 ? (
                     <>
@@ -575,12 +556,12 @@ function PricingSection({ t }: { t: (key: string) => string }) {
                 </div>
 
                 {/* Quick specs */}
-                <div className="flex justify-center gap-4 mb-4 text-xs text-slate-500">
+                <div className="flex justify-center gap-4 mb-4 text-xs text-slate-600">
                   <span><strong className="text-slate-700">{p.leads}</strong> {t('home.pricingLeadsLabel')}</span>
                   <span><strong className="text-slate-700">{p.aiHours}</strong> {t('home.pricingAILabel')}</span>
                 </div>
 
-                <ul className="space-y-2.5 text-left max-w-[200px] mx-auto min-h-[160px]">
+                <ul className="space-y-2.5 text-left max-w-[200px] mx-auto">
                   {p.features.map((f, j) => (
                     <li key={j} className="flex items-start gap-2.5 text-sm leading-relaxed">
                       <svg className="w-4 h-4 mt-0.5 shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -608,7 +589,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
                     <button
                       onClick={() => handleCheckout(p)}
                       disabled={disabled}
-                      className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm disabled:opacity-50"
+                      className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-md shadow-blue-500/15 hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm disabled:opacity-50"
                     >
                       {loading === p.id ? t('home.redirecting') : t('home.startFreeTrialArrow')}
                     </button>
@@ -641,7 +622,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
         <div className="text-center mt-6">
           <a
             href="/signup"
-            className="inline-flex items-center gap-2 h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm"
+            className="inline-flex items-center gap-2 h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-md shadow-blue-500/15 hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all text-sm"
           >
             {t('home.startFreeTrialNoCard')} <ArrowRight className="w-4 h-4" />
           </a>
@@ -665,7 +646,7 @@ function CompetitionSection({ t }: { t: (key: string) => string }) {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mb-3">
             {t('home.compHeadline')}
           </h2>
-          <p className="text-base text-slate-500 max-w-2xl mx-auto">
+          <p className="text-base text-slate-600 max-w-2xl mx-auto">
             {t('home.compSubheadline')}
           </p>
         </div>
@@ -673,15 +654,15 @@ function CompetitionSection({ t }: { t: (key: string) => string }) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">+340%</p>
-            <p className="text-sm text-slate-500 mt-1">{t('home.compLeadVolume')}</p>
+            <p className="text-sm text-slate-600 mt-1">{t('home.compLeadVolume')}</p>
           </div>
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">18 Hrs</p>
-            <p className="text-sm text-slate-500 mt-1">{t('home.compHoursSaved')}</p>
+            <p className="text-sm text-slate-600 mt-1">{t('home.compHoursSaved')}</p>
           </div>
           <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 text-center hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-200">
             <p className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">43%</p>
-            <p className="text-sm text-slate-500 mt-1">{t('home.compCloseRate')}</p>
+            <p className="text-sm text-slate-600 mt-1">{t('home.compCloseRate')}</p>
           </div>
         </div>
       </div>
@@ -731,12 +712,12 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
         </div>
 
         {/* Aggregate stats */}
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-10 text-sm text-slate-500">
-          <HTMLText html={t('home.testimonialAggregate1')} className="text-sm text-slate-500" />
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-10 text-sm text-slate-600">
+          <HTMLText html={t('home.testimonialAggregate1')} className="text-sm text-slate-600" />
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <HTMLText html={t('home.testimonialAggregate2')} className="text-sm text-slate-500" />
+          <HTMLText html={t('home.testimonialAggregate2')} className="text-sm text-slate-600" />
           <span className="w-1 h-1 rounded-full bg-slate-300" />
-          <HTMLText html={t('home.testimonialAggregate3')} className="text-sm text-slate-500" />
+          <HTMLText html={t('home.testimonialAggregate3')} className="text-sm text-slate-600" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -839,7 +820,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
                   openIdx === i ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="px-5 pb-4 text-sm text-slate-500 leading-relaxed">{f.a}</div>
+                <div className="px-5 pb-4 text-sm text-slate-600 leading-relaxed">{f.a}</div>
               </div>
             </div>
           ))}
@@ -869,7 +850,7 @@ function CtaSection({ t }: { t: (key: string) => string }) {
 
         <a
           href="/signup"
-          className="inline-flex items-center gap-2 h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-semibold shadow-lg shadow-blue-900/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+          className="inline-flex items-center gap-2 h-14 px-10 rounded-full bg-white hover:bg-blue-50 text-blue-600 text-base font-semibold shadow-md shadow-blue-900/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
         >
           {t('home.ctaButton')} <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
         </a>
@@ -886,30 +867,30 @@ function CtaSection({ t }: { t: (key: string) => string }) {
    ═══════════════════════════════════════════════════════════════ */
 function Footer({ t }: { t: (key: string) => string }) {
   return (
-    <footer className="bg-slate-50 text-slate-500 py-10 sm:py-14 ring-1 ring-inset ring-black/5">
+    <footer className="bg-slate-50 text-slate-600 py-10 sm:py-14 ring-1 ring-inset ring-black/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           {/* Brand */}
           <div>
             <PlumbCoreLogo size="md" showText={true} />
-            <p className="text-sm text-slate-500 leading-relaxed mt-4">
+            <p className="text-sm text-slate-600 leading-relaxed mt-4">
               {t('home.footerTagline')}
             </p>
             <div className="flex gap-3 mt-6 justify-center sm:justify-start">
               <a href="https://x.com/plumbcoreai" target="_blank" rel="noopener noreferrer"
-                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-500 hover:text-slate-700 text-sm font-bold">
+                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-600 hover:text-slate-700 text-sm font-bold">
                 X
               </a>
               <a href="https://linkedin.com/company/plumbcoreai" target="_blank" rel="noopener noreferrer"
-                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-500 hover:text-slate-700 text-sm font-bold">
+                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-600 hover:text-slate-700 text-sm font-bold">
                 in
               </a>
               <a href="https://facebook.com/plumbcoreai" target="_blank" rel="noopener noreferrer"
-                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-500 hover:text-slate-700 text-sm font-bold">
+                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-600 hover:text-slate-700 text-sm font-bold">
                 f
               </a>
               <a href="https://instagram.com/plumbcoreai" target="_blank" rel="noopener noreferrer"
-                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-500 hover:text-slate-700 text-sm font-bold">
+                 className="w-8 h-8 rounded-xl bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors text-slate-600 hover:text-slate-700 text-sm font-bold">
                 ig
               </a>
             </div>
@@ -972,7 +953,7 @@ function FloatingCta({ t, hidden }: { t: (key: string) => string; hidden?: boole
     <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-lg ring-1 ring-black/5 px-4 py-3">
       <a
         href="/signup"
-        className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 text-sm"
+        className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-md shadow-blue-500/15 flex items-center justify-center gap-2 text-sm"
       >
         {t('home.startFreeTrial')} <ArrowRight className="w-4 h-4" />
       </a>
