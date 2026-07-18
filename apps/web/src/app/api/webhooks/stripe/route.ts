@@ -27,7 +27,11 @@ export async function POST(req: Request) {
     const { getAdminClient } = await import('@/lib/supabase-admin');
 
     const priceMap: Record<string, string> = {
-      'price_1TuQUYDynIU5fZLW6MxilPV8': 'solo',  // Solo $349/mo
+      'price_1TuR9DD0AAcByeQ9OFOXelG3': 'solo',   // Solo $349/mo TEST
+      'price_1TuR9ED0AAcByeQ96N9PVI6O': 'pro',      // Pro $799/mo TEST
+      'price_1TuR9ED0AAcByeQ9iR09rQYE': 'business', // Business $1,499/mo TEST
+      // Live prices
+      'price_1TuQUYDynIU5fZLW6MxilPV8': 'solo',
       'price_1TuQUeDynIU5fZLW1JsCNK1f': 'pro',      // Pro $799/mo
       'price_1TuQUjDynIU5fZLWGVfhiHQg': 'business', // Business $1,499/mo
       // Legacy prices (keep for existing subscribers)
