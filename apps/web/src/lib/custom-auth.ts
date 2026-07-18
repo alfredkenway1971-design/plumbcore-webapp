@@ -293,7 +293,19 @@ async function dbUpdateSubscription(email: string, updates: {
   if (updates.stripeSubscriptionId !== undefined) companyUpdates.stripe_subscription_id = updates.stripeSubscriptionId;
   if (updates.subscriptionTier !== undefined) companyUpdates.subscription_tier = updates.subscriptionTier;
   if (Object.keys(companyUpdates).length > 0) {
-    await sb.from('companies').update(companyUpdates).eq('id', authUser.company_id);
+    const { error: updateErr, count } = await sb.from('companies').update(companyUpdates).eq('id', authUser.company_id).select('id', { count: 'exact', head: true });
+    // If no rows updated, company doesn't exist — create it
+    if (updateErr || (count === 0)) {
+      await sb.from('companies').insert({
+        id: authUser.company_id,
+        email: email.toLowerCase(),
+        stripe_customer_id: companyUpdates.stripe_customer_id || '',
+        stripe_subscription_id: companyUpdates.stripe_subscription_id || '',
+        subscription_tier: companyUpdates.subscription_tier || 'solo',
+        created_at: new Date().toISOString(),
+      }).select('id');
+      console.log(`  → Created missing company record for ${email}`);
+    }
   }
 }
 
