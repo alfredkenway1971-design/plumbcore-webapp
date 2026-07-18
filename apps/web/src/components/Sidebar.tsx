@@ -50,9 +50,6 @@ const adminNav = [
   ]},
   { sectionKey: 'companies', items: [
     { labelKey: 'allCompanies', label: 'All Companies', icon: 'Users', href: '/admin/customers' },
-    { labelKey: 'trialPipeline', label: 'Trial Pipeline', icon: 'Chart', href: '/admin/trials' },
-    { labelKey: 'atRisk', label: 'At-Risk Accounts', icon: 'Bell', href: '/admin/at-risk' },
-    { labelKey: 'churned', label: 'Churned Accounts', icon: 'Shield', href: '/admin/churned' },
     { labelKey: 'plumbers', label: 'Plumber Profiles', icon: 'Team', href: '/admin/plumbers' },
   ]},
   { sectionKey: 'leads', items: [
@@ -65,18 +62,13 @@ const adminNav = [
     { labelKey: 'pricingPlans', label: 'Pricing Plans', icon: 'PriceTag', href: '/admin/pricing' },
   ]},
   { sectionKey: 'usage', items: [
-    { labelKey: 'featureAdoption', label: 'Feature Adoption', icon: 'Chart', href: '/admin/usage' },
-    { labelKey: 'aiUsage', label: 'AI Usage Stats', icon: 'Chat', href: '/admin/ai-usage' },
-    { labelKey: 'apiLogs', label: 'API Logs', icon: 'Clipboard', href: '/admin/api-logs' },
+    { labelKey: 'analytics', label: 'Analytics', icon: 'Chart', href: '/admin/usage' },
   ]},
   { sectionKey: 'support', items: [
-    { labelKey: 'tickets', label: 'Tickets', icon: 'Headphones', href: '/admin/support' },
-    { labelKey: 'feedback', label: 'Feedback & Reviews', icon: 'Star', href: '/admin/feedback' },
-    { labelKey: 'featureRequests', label: 'Feature Requests', icon: 'ChatBubble', href: '/admin/feature-requests' },
+    { labelKey: 'supportCenter', label: 'Support Center', icon: 'Headphones', href: '/admin/support' },
   ]},
   { sectionKey: 'marketing', items: [
-    { labelKey: 'emailCampaigns', label: 'Email Campaigns', icon: 'Mail', href: '/admin/campaigns' },
-    { labelKey: 'promoCodes', label: 'Promo Codes', icon: 'Tag', href: '/admin/promos' },
+    { labelKey: 'marketing', label: 'Marketing', icon: 'Mail', href: '/admin/campaigns' },
   ]},
   { sectionKey: 'system', items: [
     { labelKey: 'featureFlags', label: 'Feature Flags', icon: 'Flag', href: '/admin/feature-flags' },
