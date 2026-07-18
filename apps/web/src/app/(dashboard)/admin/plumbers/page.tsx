@@ -20,9 +20,9 @@ const I = {
 /* ── Empty State ── */
 function EmptyPlumberState() {
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mb-4">
-        <svg className="w-7 h-7 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <div className="flex flex-col items-center justify-center py-12 text-center">
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center mb-4 shadow-sm">
+        <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
         </svg>
       </div>
@@ -76,54 +76,54 @@ export default function AdminPlumbersPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
-        <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm flex-1 sm:flex-none">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
             Export
           </button>
-          <button className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors">
+          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-all shadow-sm shadow-blue-200 flex-1 sm:flex-none">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
             Invite Plumber
           </button>
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-emerald-50 border border-emerald-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-emerald-600">Active Plumbers</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">{totalActive}</p>
+        <div className="rounded-2xl bg-white border border-emerald-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600">Active Plumbers</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{totalActive}</p>
         </div>
-        <div className="rounded-xl bg-amber-50 border border-amber-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-amber-600">At Risk</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">{totalAtRisk}</p>
+        <div className="rounded-2xl bg-white border border-amber-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">At Risk</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{totalAtRisk}</p>
         </div>
-        <div className="rounded-xl bg-violet-50 border border-violet-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-violet-600">Jobs Completed</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">{totalCompleted.toLocaleString()}</p>
+        <div className="rounded-2xl bg-white border border-violet-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-violet-600">Jobs Completed</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{totalCompleted.toLocaleString()}</p>
         </div>
-        <div className="rounded-xl bg-amber-50 border border-amber-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-amber-600">Avg Rating</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">{totalAvgRating} ⭐</p>
+        <div className="rounded-2xl bg-white border border-amber-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">Avg Rating</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{totalAvgRating} <span className="text-amber-400 text-lg">★</span></p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 max-w-xs">
-          <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div className="relative w-full sm:max-w-xs">
+          <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search plumbers..."
-            className="w-full rounded-xl bg-white border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500" />
+            className="w-full rounded-xl bg-white border border-slate-200 pl-9 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all" />
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 w-full sm:w-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {['all', 'solo', 'pro', 'business', 'enterprise'].map(t => (
             <button key={t} onClick={() => setFilterTier(t)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
+              className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium border transition-all ${
                 filterTier === t
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
               }`}>
               {t === 'all' ? 'All' : PLAN_LABELS_PRETTY[t] || t}
             </button>
