@@ -35,6 +35,20 @@ const TECH_COUNTS: Record<string, string> = {
   enterprise: '25+ techs',
 };
 
+const LEADS_LABELS: Record<string, string> = {
+  solo: 'Up to 10 leads/mo',
+  pro: 'Up to 25 leads/mo',
+  business: 'Unlimited leads',
+  enterprise: 'Unlimited + dedicated territory',
+};
+
+const LEAD_PRIORITY: Record<string, string> = {
+  solo: 'Standard queue',
+  pro: 'Priority (+15 score boost)',
+  business: 'First dibs on $2K+ jobs (+30 score boost)',
+  enterprise: 'Exclusive zone rights',
+};
+
 export default function PricingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
@@ -119,6 +133,8 @@ export default function PricingPage() {
                 </div>
                 <p className="mt-1 text-sm text-gray-500">{techCount}</p>
                 <p className="text-sm text-gray-500">{aiHours} AI receptionist</p>
+                <p className="text-sm text-gray-500">{LEADS_LABELS[tier]}</p>
+                <p className="text-xs text-gray-400 mt-1">{LEAD_PRIORITY[tier]}</p>
               </div>
 
               {/* Feature List */}
@@ -238,6 +254,20 @@ export default function PricingPage() {
                   <td key={t} className="px-4 py-2.5 text-center text-gray-500 text-xs">{TECH_COUNTS[t]}</td>
                 ))}
                 <td className="px-4 py-2.5 text-center text-gray-500 text-xs">25+</td>
+              </tr>
+              <tr className="hover:bg-gray-50/50">
+                <td className="px-4 py-2.5 text-gray-700">Leads / Month</td>
+                {(['solo', 'pro', 'business'] as const).map(t => (
+                  <td key={t} className="px-4 py-2.5 text-center text-gray-500 text-xs">{LEADS_LABELS[t]}</td>
+                ))}
+                <td className="px-4 py-2.5 text-center text-gray-500 text-xs">Unlimited + dedicated territory</td>
+              </tr>
+              <tr className="hover:bg-gray-50/50">
+                <td className="px-4 py-2.5 text-gray-700">Lead Priority</td>
+                {(['solo', 'pro', 'business'] as const).map(t => (
+                  <td key={t} className="px-4 py-2.5 text-center text-gray-500 text-xs">{LEAD_PRIORITY[t]}</td>
+                ))}
+                <td className="px-4 py-2.5 text-center text-gray-500 text-xs">Exclusive zone rights</td>
               </tr>
               <tr className="hover:bg-gray-50/50">
                 <td className="px-4 py-2.5 text-gray-700">Price</td>
