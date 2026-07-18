@@ -166,9 +166,9 @@ export const PLAN_ORDER = ['solo', 'pro', 'business', 'enterprise'] as const;
 
 /** Stripe price IDs for subscription plans */
 export const STRIPE_PRICE_IDS: Record<string, string> = {
-  solo: 'price_1Tt6N8DynIU5fZLWmBY3zi05',
-  pro: 'price_1Tt6N9DynIU5fZLWWYqfTfUc',
-  business: 'price_1Tt6NADynIU5fZLWRymLht9U',
+  solo: 'price_1TuQUYDynIU5fZLW6MxilPV8',
+  pro: 'price_1TuQUeDynIU5fZLW1JsCNK1f',
+  business: 'price_1TuQUjDynIU5fZLWGVfhiHQg',
 };
 
 /** Stripe deposit price IDs for one-time charges */
