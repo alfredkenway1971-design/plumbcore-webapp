@@ -80,6 +80,27 @@ export async function GET(request: Request) {
       };
     }
 
+    // Summary endpoint for admin overview page
+    if (endpoint === 'summary') {
+      const { data: allUsers } = await sb.from('auth_users').select('stripe_customer_id,subscription_tier,role').limit(100);
+      const users = allUsers || [];
+      const activePlumbers = users.filter((u: any) => u.subscription_tier && u.subscription_tier !== '').length;
+      const totalUsers = users.filter((u: any) => u.role !== 'super_admin').length;
+      result = {
+        mrr: activePlumbers * 799, // avg MRR estimate
+        activePlumbers,
+        totalCompanies: totalUsers,
+        freeTrials: 0,
+        churnRate: 0,
+        mrrGrowth: 0,
+        plumberGrowth: 0,
+        trialConversionRate: 0,
+        churnTrend: 'down',
+        leadsToday: 0,
+        unfulfilledLeads: 0,
+      };
+    }
+
     return NextResponse.json(result);
 
   } catch (error: any) {
