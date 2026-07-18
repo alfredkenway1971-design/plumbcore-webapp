@@ -280,6 +280,37 @@ export default function PricingPage() {
           </table>
         </div>
       </div>
+
+      {/* ── How Lead Priority Works ── */}
+      <div className="mt-10">
+        <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">How Lead Priority Works</h3>
+        <p className="text-sm text-gray-500 text-center mb-6 max-w-2xl mx-auto">When a homeowner submits a job, our AI scores and routes leads based on plan tier and job value. Higher-tier plans get earlier access to high-value jobs.</p>
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <table className="w-full min-w-[400px] text-sm border-collapse">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left px-4 py-3 font-semibold text-gray-900">Job Value</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-900">Who Gets Notified First</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              <tr className="hover:bg-gray-50/50">
+                <td className="px-4 py-3 font-medium text-gray-700">Under $500</td>
+                <td className="px-4 py-3 text-sm text-gray-500">Everyone, highest score wins</td>
+              </tr>
+              <tr className="hover:bg-gray-50/50">
+                <td className="px-4 py-3 font-medium text-gray-700">$500 – $1,999</td>
+                <td className="px-4 py-3 text-sm text-gray-500">Pro &amp; Business first, Solo after 15 min</td>
+              </tr>
+              <tr className="hover:bg-gray-50/50">
+                <td className="px-4 py-3 font-medium text-gray-700">$2,000+</td>
+                <td className="px-4 py-3 text-sm text-gray-500">Business first (10 min), Pro (10 min), Solo (20 min)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-gray-400 text-center mt-4">Enterprise plans with exclusive zone rights receive all leads from their territory immediately.</p>
+      </div>
     </div>
   );
 }
