@@ -38,14 +38,25 @@ export async function GET(request: Request) {
     const sb = admin as any;
     let result: any = {};
 
-    // Fetch companies for the companies endpoint
+    // Fetch companies — actually query auth_users since companies table is incomplete
     if (endpoint === 'companies') {
-      const { data: companies, error } = await sb
-        .from('companies')
-        .select('id,name,slug,email,phone,owner_id,stripe_customer_id,stripe_subscription_id,subscription_tier,created_at,timezone,primary_color,logo_url,website,street,city,state,zip,country,service_area_zipcodes,how_heard,onboarding_completed,monthly_lead_limit,current_month_leads,lead_fee_cents,payout_threshold_cents,payout_schedule,stripe_onboarding_complete,stripe_connect_account_id,stripe_onboarding_url')
+      const { data: users, error } = await sb
+        .from('auth_users')
+        .select('id,email,full_name,company_name,company_id,role,stripe_customer_id,stripe_subscription_id,subscription_tier,created_at')
         .order('created_at', { ascending: false });
-      if (error) console.error('Companies query error:', error);
-      result.companies = companies || [];
+      if (error) console.error('Users query error:', error);
+      // Map auth_users fields to company-like structure for the admin page
+      result.companies = (users || []).map((u: any) => ({
+        id: u.company_id || u.id,
+        name: u.company_name || u.full_name || u.email?.split('@')[0] || 'Unnamed',
+        email: u.email || '',
+        subscription_tier: u.subscription_tier || '',
+        stripe_customer_id: u.stripe_customer_id || '',
+        stripe_subscription_id: u.stripe_subscription_id || '',
+        created_at: u.created_at,
+        city: '',
+        state: '',
+      }));
     }
 
     // Fetch leads for the leads endpoint

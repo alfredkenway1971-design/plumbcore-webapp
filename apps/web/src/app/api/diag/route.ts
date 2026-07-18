@@ -1,42 +1,54 @@
 import { NextResponse } from 'next/server';
-import { getAdminClient } from '@/lib/supabase-admin';
 
 export async function GET() {
-  const admin = getAdminClient();
-  if (!admin) return NextResponse.json({ error: 'No DB' });
-  const sb = admin as any;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const key = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '';
+  if (!url || !key) return NextResponse.json({ error: 'No creds' });
+  
+  const results: any = {};
 
-  // Query auth_users with all subscription fields
-  const { data: users, error: ue } = await sb
-    .from('auth_users')
-    .select('id,email,full_name,company_id,company_name,role,stripe_customer_id,stripe_subscription_id,subscription_tier,created_at')
-    .not('stripe_customer_id', 'is', null)
-    .not('stripe_customer_id', 'eq', '')
-    .order('created_at', { ascending: false });
+  // Try Supabase SQL endpoint: POST {project_url}/sql
+  const sqlUrl = url.replace('/rest/v1', '') + '/sql';
+  
+  const sqlCommands = [
+    `ALTER TABLE companies ADD COLUMN IF NOT EXISTS stripe_customer_id text DEFAULT ''`,
+    `ALTER TABLE companies ADD COLUMN IF NOT EXISTS stripe_subscription_id text DEFAULT ''`,
+    `ALTER TABLE companies ADD COLUMN IF NOT EXISTS subscription_tier text DEFAULT ''`,
+    `ALTER TABLE companies ADD COLUMN IF NOT EXISTS subscription_status text DEFAULT ''`,
+  ];
 
-  // Query all auth_users for comparison
-  const { data: allUsers } = await sb.from('auth_users').select('id,email,role,company_id').limit(50);
-
-  // Try to insert a minimal company
-  const testId = 't-' + Date.now();
-  let companyInsertResult = 'not attempted';
-  try {
-    const { error: ie } = await sb.from('companies').insert({
-      id: testId, name: 'Test Co', email: 'test@test.co',
-      stripe_customer_id: 'test_cus_123',
-      subscription_tier: 'solo',
-    }).select('id').single();
-    companyInsertResult = ie ? `FAIL: ${ie.message}` : 'OK';
-    if (!ie) await sb.from('companies').delete().eq('id', testId);
-  } catch (e: any) {
-    companyInsertResult = `ERROR: ${e.message}`;
+  for (const sql of sqlCommands) {
+    try {
+      const resp = await fetch(sqlUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': key,
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({ query: sql })
+      });
+      const text = await resp.text();
+      results[sql.substring(0, 40)] = { status: resp.status, text: text.substring(0, 100) };
+    } catch (e: any) {
+      results[sql.substring(0, 40)] = { error: e.message };
+    }
   }
 
-  return NextResponse.json({
-    usersWithSubscriptions: users || [],
-    userCount: users?.length || 0,
-    allUsers: allUsers?.length || 0,
-    companyInsertTest: companyInsertResult,
-    userErr: ue?.message,
-  });
+  // Verify: try to read companies
+  try {
+    const admin = (await import('@/lib/supabase-admin')).getAdminClient();
+    if (admin) {
+      const sb = admin as any;
+      const { data: companies } = await sb
+        .from('companies')
+        .select('id,name,email,subscription_tier,stripe_customer_id')
+        .limit(10);
+      results.companies = companies;
+    }
+  } catch (e: any) {
+    results.verifyError = e.message;
+  }
+
+  return NextResponse.json(results);
 }
