@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, Building2, TrendingUp, Users, Zap, Filter, ChevronDown, MoreHorizontal, Download, Clock, CheckCircle, XCircle, AlertTriangle, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import type { Company } from '@/lib/admin-data';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -152,18 +152,19 @@ export default function AdminCustomersPage() {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortAsc, setSortAsc] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [companies, setCompanies] = useState<Company[]>([]);
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortAsc(!sortAsc);
-    } else {
-      setSortField(field);
-      setSortAsc(true);
-    }
-  };
-
-  const companies: Company[] = [];
+  useEffect(() => {
+    setIsLoading(true);
+    fetch('/api/admin/data?endpoint=companies')
+      .then(r => r.json())
+      .then(data => {
+        if (data.companies) setCompanies(data.companies);
+        setIsLoading(false);
+      })
+      .catch(() => { setIsLoading(false); setError('Failed to load'); });
+  }, []);
 
   if (isLoading) return <CustomersLoading />;
   if (error) return <CustomersError error={error} />;
@@ -175,7 +176,7 @@ export default function AdminCustomersPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
           <p className="text-sm text-slate-500 mt-1">
-            0 total companies · $0 total MRR
+            {companies.length} total companies
           </p>
         </div>
       </div>

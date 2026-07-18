@@ -99,9 +99,20 @@ export async function GET(request: Request) {
 
     console.log(`✅ Success: Found ${leads?.length || 0} leads, stats: matching=${stats.matching}`);
 
+    // Fetch companies
+    const { data: companies, error: companiesError } = await sb
+      .from('companies')
+      .select('id,name,slug,email,phone,owner_id,stripe_customer_id,stripe_subscription_id,subscription_tier,subscription_status,created_at,timezone,primary_color,logo_url,website,street,city,state,zip,country,service_area_zipcodes,how_heard,onboarding_completed,monthly_lead_limit,current_month_leads,lead_fee_cents,payout_threshold_cents,payout_schedule,stripe_onboarding_complete,stripe_connect_account_id,stripe_onboarding_url')
+      .order('created_at', { ascending: false });
+
+    if (companiesError) {
+      console.error('❌ Companies query error:', companiesError);
+    }
+
     return NextResponse.json({
       leads: leads || [],
-      stats
+      stats,
+      companies: companies || [],
     });
 
   } catch (error: any) {
