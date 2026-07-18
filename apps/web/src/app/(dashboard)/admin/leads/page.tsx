@@ -511,21 +511,21 @@ export default function LeadsMarketplacePage() {
 
       {/* ── Stats ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-lg bg-blue-50 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-slate-500">Total Revenue</p>
-          <p className="text-lg font-bold text-blue-600">${revenue.toLocaleString()}</p>
+        <div className="rounded-xl bg-white border border-blue-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Total Revenue</p>
+          <p className="text-lg font-bold text-blue-600 mt-1">${revenue.toLocaleString()}</p>
         </div>
-        <div className="rounded-lg bg-purple-50 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-slate-500">Matching</p>
-          <p className="text-lg font-bold text-purple-600">{stats?.matching ?? matching}</p>
+        <div className="rounded-xl bg-white border border-purple-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Matching</p>
+          <p className="text-lg font-bold text-purple-600 mt-1">{stats?.matching ?? matching}</p>
         </div>
-        <div className="rounded-lg bg-green-50 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-slate-500">Assigned</p>
-          <p className="text-lg font-bold text-emerald-600">{stats?.assigned ?? leads.filter(l => l.status === 'assigned').length}</p>
+        <div className="rounded-xl bg-white border border-emerald-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Assigned</p>
+          <p className="text-lg font-bold text-emerald-600 mt-1">{stats?.assigned ?? leads.filter(l => l.status === 'assigned').length}</p>
         </div>
-        <div className="rounded-lg hover:bg-slate-50 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-slate-500">Completed</p>
-          <p className="text-lg font-bold text-slate-400">{stats?.complete ?? leads.filter(l => l.status === 'complete').length}</p>
+        <div className="rounded-xl bg-white border border-slate-100 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Completed</p>
+          <p className="text-lg font-bold text-slate-400 mt-1">{stats?.complete ?? leads.filter(l => l.status === 'complete').length}</p>
         </div>
       </div>
 
@@ -627,57 +627,29 @@ export default function LeadsMarketplacePage() {
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex sm:flex-col items-center sm:items-stretch gap-2 sm:min-w-[140px]" onClick={e => e.stopPropagation()}>
-                  {lead.status === 'matching' && (
-                    <>
-                      <button
-                        onClick={() => openAssignModal(lead.id)}
-                        className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-                      >
-                        <User className="w-3.5 h-3.5" />
-                        Assign
-                      </button>
-                      <button
-                        onClick={() => openDetailModal(lead)}
-                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        Details
-                      </button>
-                      <button
-                        onClick={() => roundRobinSingle(lead.id)}
-                        className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
-                      >
-                        <ListOrdered className="w-3.5 h-3.5" />
-                        Round-Robin
-                      </button>
-                    </>
-                  )}
-                  {lead.status === 'unfulfilled' && (
-                    <span className="flex items-center gap-1.5 text-xs text-red-500 font-medium px-2 py-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      No plumber found
-                    </span>
-                  )}
-                  {lead.status === 'assigned' && (
-                    <span className="flex items-center gap-1.5 text-xs text-blue-600 font-medium px-2 py-1">
-                      <CheckCircle className="w-3.5 h-3.5" />
-                      {lead.assignedPlumber}
-                    </span>
-                  )}
-                  {lead.status === 'complete' && (
-                    <span className="flex items-center gap-1.5 text-xs text-green-600 font-medium px-2 py-1">
-                      <CheckCircle className="w-3.5 h-3.5" />
-                      Complete
-                    </span>
-                  )}
-                  {(lead.status === 'en_route' || lead.status === 'arrived') && (
-                    <span className="flex items-center gap-1.5 text-xs text-cyan-600 font-medium px-2 py-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {lead.status === 'en_route' ? 'En Route' : 'Arrived'}
-                    </span>
-                  )}
+                {/* Actions — All leads get Assign, Details, Round-Robin */}
+                <div className="flex flex-row sm:flex-col items-stretch gap-1.5 sm:min-w-[130px]" onClick={e => e.stopPropagation()}>
+                  <button
+                    onClick={() => openAssignModal(lead.id)}
+                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 hover:shadow-sm transition-all active:scale-[0.97]"
+                  >
+                    <User className="w-3.5 h-3.5" />
+                    Assign
+                  </button>
+                  <button
+                    onClick={() => openDetailModal(lead)}
+                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:scale-[0.97]"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    Details
+                  </button>
+                  <button
+                    onClick={() => roundRobinSingle(lead.id)}
+                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm active:scale-[0.97]"
+                  >
+                    <ListOrdered className="w-3.5 h-3.5" />
+                    Round-Robin
+                  </button>
                 </div>
               </div>
             </Card>
