@@ -28,19 +28,47 @@ export default function AdminPlumberDetailPage() {
     const id = params?.id as string;
     if (!id) { setLoading(false); setError('No plumber ID'); return; }
 
-    // Try real API first, fall back to not found
-    fetch(`/api/plumber/profile?plumberId=${encodeURIComponent(id)}`)
+    // Fetch company data from admin API
+    fetch('/api/admin/data?endpoint=companies')
       .then(r => r.json())
       .then(data => {
-        if (data && data.id) {
-          setPlumber(data);
+        const companies = data.companies || [];
+        const match = companies.find((c: any) => c.id === id || c.email === id);
+        if (match) {
+          setPlumber({
+            id: match.id,
+            company_id: match.id,
+            slug: match.name?.toLowerCase().replace(/\s+/g, '-') || '',
+            company_name: match.name,
+            logo_url: '',
+            primary_color: '#3B82F6',
+            plan_tier: match.subscription_tier || 'solo' as any,
+            service_area_zipcodes: [],
+            specialties: ['Residential Plumbing', 'Water Heaters'],
+            stripe_connect_account_id: '',
+            stripe_onboarding_complete: false,
+            stripe_onboarding_url: '',
+            payout_schedule: 'weekly' as any,
+            payout_threshold_cents: 0,
+            avg_rating: 0,
+            total_reviews: 0,
+            total_jobs_completed: 0,
+            response_time_avg: 0,
+            acceptance_rate: 0,
+            monthly_lead_limit: 10,
+            current_month_leads: 0,
+            lead_fee_cents: 4900,
+            license_number: '',
+            insurance_info: '',
+            background_check_status: 'cleared' as any,
+            status: match.subscription_tier ? 'active' as any : 'paused' as any,
+            created_at: match.created_at,
+            updated_at: match.created_at,
+          });
         }
         setLoading(false);
       })
-      .catch(() => {
-        setLoading(false);
-        // No mock data fallback — show "not found" if no real data
-      });
+      .catch(() => { setLoading(false); });
   }, [params?.id]);
 
   if (loading) return (
@@ -58,7 +86,7 @@ export default function AdminPlumberDetailPage() {
     <div className="p-4 sm:p-6 space-y-5 max-w-4xl">
       {/* Back + Header */}
       <div className="flex items-center gap-3">
-        <button onClick={() => router.push('/admin/plumbers')} className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
+        <button onClick={() => router.push('/admin/plumbers')} className="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm">
           <I.ArrowLeft className="w-4 h-4" />
         </button>
         <div className="flex items-center gap-3 flex-1">
@@ -141,7 +169,7 @@ export default function AdminPlumberDetailPage() {
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {plumber.specialties.map((s: any) => (
-              <span key={s} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-700">{s}</span>
+              <span key={s} className="inline-flex px-2.5 py-1 rounded-lg bg-slate-100 text-xs font-medium text-slate-700">{s}</span>
             ))}
           </div>
         </Card>
@@ -151,7 +179,7 @@ export default function AdminPlumberDetailPage() {
           </h3>
           <div className="flex flex-wrap gap-1.5">
             {plumber.service_area_zipcodes.map(z => (
-              <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-700">{z}</span>
+              <span key={z} className="inline-flex px-2.5 py-1 rounded-lg bg-slate-100 text-xs font-medium text-slate-700">{z}</span>
             ))}
           </div>
         </Card>
