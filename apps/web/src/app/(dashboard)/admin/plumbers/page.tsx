@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
 import { PLAN_LABELS_PRETTY } from '@/lib/plan-pricing';
-import type { PlumberProfile, PlanTier, PlumberStatus } from '@/lib/plumber-profiles';
+import type { PlumberProfile, PlanTier, PlumberStatus, BackgroundCheckStatus, PayoutSchedule } from '@/lib/plumber-profiles';
 
 /* ── Icons ── */
 const I = {
@@ -57,7 +57,41 @@ export default function AdminPlumbersPage() {
   const [search, setSearch] = useState('');
   const [filterTier, setFilterTier] = useState<string>('all');
   const [error, setError] = useState<string | null>(null);
-  const [plumbers] = useState<PlumberProfile[]>([]);
+  const [plumbers, setPlumbers] = useState<PlumberProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/data?endpoint=companies')
+      .then(r => r.json())
+      .then(data => {
+        const companies = data.companies || [];
+        setPlumbers(companies.map((c: any) => ({
+          id: c.id,
+          company_id: c.id,
+          company_name: c.name,
+          email: c.email,
+          phone: c.phone || '',
+          specialties: [],
+          plan_tier: c.subscription_tier || 'solo' as PlanTier,
+          status: c.subscription_tier ? 'active' as PlumberStatus : 'paused' as PlumberStatus,
+          avg_rating: 0,
+          total_jobs_completed: 0,
+          acceptance_rate: 0,
+          monthly_lead_limit: 10,
+          current_month_leads: 0,
+          stripe_customer_id: c.stripe_customer_id || '',
+          stripe_subscription_id: c.stripe_subscription_id || '',
+          stripe_onboarding_complete: false,
+          primary_color: '#3B82F6',
+          background_check: 'cleared' as BackgroundCheckStatus,
+          payout_schedule: 'weekly' as PayoutSchedule,
+          created_at: c.created_at,
+          last_active: c.created_at,
+        })));
+        setLoading(false);
+      })
+      .catch(() => { setError('Failed to load plumbers'); setLoading(false); });
+  }, []);
 
   const filtered = plumbers.filter(p => {
     if (filterTier !== 'all' && p.plan_tier !== filterTier) return false;
