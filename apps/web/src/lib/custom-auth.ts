@@ -243,7 +243,42 @@ async function dbUpdateSubscription(email: string, updates: {
     .eq('email', email.toLowerCase())
     .single() as { data: { company_id: string } | null };
 
-  if (!authUser) return;
+  if (!authUser) {
+    // User not found in DB — they may have been stored in-memory
+    // Create the company + auth_user record so webhook can update it
+    console.log(`  → No auth_user found for ${email}, creating company record from Stripe data`);
+    try {
+      const companyId = generateId();
+      const now = new Date().toISOString();
+      const cusId = updates.stripeCustomerId || '';
+      
+      await sb.from('companies').insert({
+        id: companyId,
+        name: email.split('@')[0],
+        email: email.toLowerCase(),
+        stripe_customer_id: cusId,
+        stripe_subscription_id: updates.stripeSubscriptionId || '',
+        subscription_tier: updates.subscriptionTier || 'solo',
+        subscription_status: updates.subscriptionStatus || 'active',
+        created_at: now,
+      });
+      
+      await sb.from('auth_users').insert({
+        id: generateId(),
+        email: email.toLowerCase(),
+        company_id: companyId,
+        role: 'tech',
+        stripe_customer_id: cusId,
+        stripe_subscription_id: updates.stripeSubscriptionId || '',
+        subscription_tier: updates.subscriptionTier || 'solo',
+      });
+      
+      console.log(`  → Created company + auth_user for ${email}`);
+    } catch (createErr: any) {
+      console.error(`  → Failed to create missing user: ${createErr.message}`);
+    }
+    return;
+  }
 
   // Update auth_users
   const authUpdates: Record<string, string> = {};
