@@ -221,7 +221,7 @@ export default function AdminPlumbersPage() {
       <Card variant="bordered" padding="none">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
-            <thead>
+            <thead className="hidden sm:table-header-group">
               <tr className="bg-slate-100 border-b border-slate-200">
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plumber</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plan</th>
@@ -288,10 +288,10 @@ export default function AdminPlumbersPage() {
                 </tr>
               ))}
               {filtered.length === 0 && total > 0 && (
-                <tr><td colSpan={10} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
+                <tr className="hidden sm:table-row"><td colSpan={10} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
               )}
               {total === 0 && (
-                <tr><td colSpan={10} className="px-4 py-16"><EmptyPlumberState /></td></tr>
+                <tr className="hidden sm:table-row"><td colSpan={10} className="px-4 py-16"><EmptyPlumberState /></td></tr>
               )}
             </tbody>
           </table>
