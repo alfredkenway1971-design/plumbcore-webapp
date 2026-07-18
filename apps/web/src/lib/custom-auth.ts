@@ -188,7 +188,6 @@ async function dbAddUser(user: StoredUser): Promise<void> {
       slug: user.companySlug,
       name: user.companyName,
       subscription_tier: user.subscriptionTier || '',
-      subscription_status: user.subscriptionTier ? 'active' : 'none',
       stripe_customer_id: user.stripeCustomerId || '',
       stripe_subscription_id: user.stripeSubscriptionId || '',
     });
@@ -259,7 +258,6 @@ async function dbUpdateSubscription(email: string, updates: {
         stripe_customer_id: cusId,
         stripe_subscription_id: updates.stripeSubscriptionId || '',
         subscription_tier: updates.subscriptionTier || 'solo',
-        subscription_status: updates.subscriptionStatus || 'active',
         created_at: now,
       });
       
@@ -294,7 +292,6 @@ async function dbUpdateSubscription(email: string, updates: {
   if (updates.stripeCustomerId !== undefined) companyUpdates.stripe_customer_id = updates.stripeCustomerId;
   if (updates.stripeSubscriptionId !== undefined) companyUpdates.stripe_subscription_id = updates.stripeSubscriptionId;
   if (updates.subscriptionTier !== undefined) companyUpdates.subscription_tier = updates.subscriptionTier;
-  if (updates.subscriptionStatus !== undefined) companyUpdates.subscription_status = updates.subscriptionStatus;
   if (Object.keys(companyUpdates).length > 0) {
     await sb.from('companies').update(companyUpdates).eq('id', authUser.company_id);
   }

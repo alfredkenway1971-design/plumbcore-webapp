@@ -122,11 +122,15 @@ export default function AdminCustomersPage() {
       result = result.filter(c => (c.name || '').toLowerCase().includes(q) || (c.email || '').toLowerCase().includes(q) || (c.city || '').toLowerCase().includes(q));
     }
     if (planFilter) result = result.filter(c => (c.subscription_tier || 'solo') === planFilter);
-    if (statusFilter) result = result.filter(c => (c.subscription_status || 'inactive') === statusFilter);
+    if (statusFilter) result = result.filter(c => {
+      const t = c.subscription_tier || '';
+      if (statusFilter === 'active') return t !== '';
+      return false;
+    });
     return result;
   }, [companies, search, planFilter, statusFilter]);
 
-  const activeCount = companies.filter(c => c.subscription_status === 'active').length;
+  const activeCount = companies.filter(c => c.subscription_tier && c.subscription_tier !== '').length;
 
   if (isLoading) return <CustomersLoading />;
   if (error) return <CustomersError error={error} />;
@@ -189,8 +193,8 @@ export default function AdminCustomersPage() {
           <div className="divide-y divide-slate-100">
             {filtered.map(company => {
               const tier = company.subscription_tier || 'solo';
-              const status = company.subscription_status || 'inactive';
-              const sc = statusStyles[status] || statusStyles.cancelled;
+              const isActive = tier !== '';
+              const sc = isActive ? statusStyles.active : statusStyles.cancelled;
               const planColor = planColors[tier] || planColors.solo;
               return (
                 <div key={company.id} className="px-5 py-4 hover:bg-slate-50 transition-colors flex items-center gap-4">
