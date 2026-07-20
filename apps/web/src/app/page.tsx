@@ -603,10 +603,15 @@ function PricingSection({ t }: { t: (key: string) => string }) {
                   )}
                 </div>
 
-                {/* Quick specs */}
-                <div className="flex justify-center gap-4 mb-4 text-xs text-slate-600">
-                  <span><strong className="text-slate-700">{p.leads}</strong> {t('home.pricingLeadsLabel')}</span>
-                  <span><strong className="text-slate-700">{p.aiHours}</strong> {t('home.pricingAILabel')}</span>
+                {/* Lead count — prominent */}
+                <div className="mb-3 text-center">
+                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">{t('home.pricingLeadsLabel')}</span>
+                  <div className="text-2xl font-bold text-amber-600 mt-0.5">{p.leads}</div>
+                </div>
+                <div className="flex items-center justify-center gap-3 mb-4 text-xs text-slate-500">
+                  <span className="flex items-center gap-1"><Wrench className="w-3.5 h-3.5" /> {p.techs}</span>
+                  <span className="w-1 h-1 rounded-full bg-slate-300" />
+                  <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {p.aiHours} {t('home.pricingAILabel')}</span>
                 </div>
 
                 <ul className="space-y-2.5 text-left max-w-[200px] mx-auto">
