@@ -15,7 +15,21 @@
 
 @theme inline {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-jakarta: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+
+  --color-background: #FFFFFF;
+  --color-foreground: #12203D;
+  --color-blue-deep: #12336B;
+  --color-blue: #1E56D6;
+  --color-blue-bright: #2F7CF6;
+  --color-blue-tint: #EAF1FE;
+  --color-blue-tint2: #F4F8FF;
+  --color-muted: #5B6B85;
+  --color-line: #E3E9F4;
+  --color-green: #1E9E6B;
+  --color-amber: #C77E12;
+  --color-bg-alt: #F7F9FD;
 
   --color-background: #FFFFFF;
   --color-foreground: #0F172A;
