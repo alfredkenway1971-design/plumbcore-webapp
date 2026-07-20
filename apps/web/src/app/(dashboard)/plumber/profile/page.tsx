@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
+import { useI18n } from '@/components/i18n-provider';
 import { PROFILE_TABS } from '@/lib/plumber-profiles';
 import type { PlumberProfile, ProfileTab, PlanTier, PayoutSchedule, BackgroundCheckStatus, PlumberStatus } from '@/lib/plumber-profiles';
 import { PLAN_LABELS_PRETTY, PLAN_LEAD_FEES, PLAN_AI_RECEPTIONIST_HOURS } from '@/lib/plan-pricing';
@@ -28,6 +29,7 @@ export default function PlumberProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>('overview');
   const [saving, setSaving] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!company?.id) return;
@@ -78,8 +80,8 @@ export default function PlumberProfilePage() {
     </div>
   );
 
-  if (error) return <div className="p-6"><ErrorState title="Failed to load" message={error} onRetry={() => setError(null)} /></div>;
-  if (!plumber) return <div className="p-6"><ErrorState title="No profile found" message="Create a profile first" /></div>;
+  if (error) return <div className="p-6"><ErrorState title={t('home.profileFailedToLoad')} message={error} onRetry={() => setError(null)} /></div>;
+  if (!plumber) return <div className="p-6"><ErrorState title={t('home.profileNoProfile')} message={t('home.profileCreateFirst')} /></div>;
 
   const bcColor = plumber.primary_color;
   const tierLabel = PLAN_LABELS_PRETTY[plumber.plan_tier] || plumber.plan_tier;
@@ -99,7 +101,7 @@ export default function PlumberProfilePage() {
             <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${plumber.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{plumber.status}</span>
           </div>
         </div>
-        <Button size="sm" onClick={() => saveProfile({})} disabled={saving}>{saving ? 'Saving...' : 'Save'}</Button>
+        <Button size="sm" onClick={() => saveProfile({})} disabled={saving}>{saving ? t('home.profileSaving') : t('home.profileSave')}</Button>
       </div>
 
       {/* Tabs */}
@@ -107,7 +109,7 @@ export default function PlumberProfilePage() {
         {PROFILE_TABS.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-              activeTab === tab.key ? 'text-cyan-600 border-cyan-500' : 'text-muted-foreground border-transparent hover:text-foreground'
+              activeTab === tab.key ? 'text-primary border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'
             }`}>
             {tab.label}
           </button>
@@ -136,12 +138,13 @@ export default function PlumberProfilePage() {
 
 /* ══════════════════════ OVERVIEW TAB ══════════════════════ */
 function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
+  const { t } = useI18n();
   return (
     <>
       {/* Service Area */}
       <Card variant="bordered" padding="md">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
-          <I.MapPin className="w-4 h-4 text-muted-foreground" /> Service Area
+          <I.MapPin className="w-4 h-4 text-muted-foreground" /> {t('home.profileServiceArea')}
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.service_area_zipcodes.map(z => (
@@ -153,7 +156,7 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
       {/* Specialties */}
       <Card variant="bordered" padding="md">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
-          <I.Wrench className="w-4 h-4 text-muted-foreground" /> Specialties
+          <I.Wrench className="w-4 h-4 text-muted-foreground" /> {t('home.profileSpecialties')}
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.specialties.map((s: any) => (
@@ -164,10 +167,10 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard label="Jobs Completed" value={String(plumber.total_jobs_completed)} icon={I.Check} />
-        <StatCard label="Rating" value={`${plumber.avg_rating}`} icon={I.Star} sub={<span className="text-[10px] text-muted-foreground">({plumber.total_reviews})</span>} />
-        <StatCard label="Response Time" value={`${plumber.response_time_avg}min`} icon={I.Clock} />
-        <StatCard label="Acceptance" value={`${plumber.acceptance_rate}%`} icon={I.Upload} />
+        <StatCard label={t('home.profileJobsCompleted')} value={String(plumber.total_jobs_completed)} icon={I.Check} />
+        <StatCard label={t('home.profileRating')} value={`${plumber.avg_rating}`} icon={I.Star} sub={<span className="text-[10px] text-muted-foreground">({plumber.total_reviews})</span>} />
+        <StatCard label={t('home.profileResponseTime')} value={`${plumber.response_time_avg}min`} icon={I.Clock} />
+        <StatCard label={t('home.profileAcceptance')} value={`${plumber.acceptance_rate}%`} icon={I.Upload} />
       </div>
     </>
   );
