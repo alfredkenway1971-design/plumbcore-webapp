@@ -166,15 +166,15 @@ export default function LeadsPage() {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 space-y-4">
-        <div className="h-8 w-48 bg-slate-100 rounded animate-pulse" />
+        <div className="h-8 w-48 bg-muted rounded animate-pulse" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-20 bg-slate-50 rounded-2xl animate-pulse" />
+            <div key={i} className="h-20 bg-muted rounded-2xl animate-pulse" />
           ))}
         </div>
         <div className="space-y-3">
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-40 bg-slate-50 rounded-2xl animate-pulse" />
+            <div key={i} className="h-40 bg-muted rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -189,11 +189,11 @@ export default function LeadsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
-          <p className="text-sm text-slate-500 mt-1">Accept or decline incoming job leads</p>
+          <h1 className="text-2xl font-bold text-foreground">Leads</h1>
+          <p className="text-sm text-muted-foreground mt-1">Accept or decline incoming job leads</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 text-sm text-slate-400">
+          <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground/80">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             {pendingLeads.length} pending
           </span>
@@ -205,11 +205,11 @@ export default function LeadsPage() {
         {[
           { label: 'Pending', value: pendingLeads.length, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'Accepted', value: acceptedLeads.length, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Avg Est.', value: leads.length ? `$${Math.round(leads.reduce((s,l) => s + l.total_estimate, 0) / leads.length)}` : '—', color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Avg Est.', value: leads.length ? `$${Math.round(leads.reduce((s,l) => s + l.total_estimate, 0) / leads.length)}` : '—', color: 'text-primary', bg: 'bg-blue-50' },
           { label: 'Deposits Collected', value: `$${(leads.reduce((s,l) => s + l.deposit_paid, 0) / 100).toFixed(0)}`, color: 'text-violet-600', bg: 'bg-violet-50' },
         ].map((s: any) => (
           <div key={s.label} className={`${s.bg} rounded-2xl p-3 md:p-4`}>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">{s.label}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{s.label}</p>
             <p className={`text-xl md:text-2xl font-bold mt-1 ${s.color}`}>{s.value}</p>
           </div>
         ))}
@@ -218,7 +218,7 @@ export default function LeadsPage() {
       {/* Pending Leads */}
       {pendingLeads.length > 0 && (
         <div>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-semibold text-muted-foreground/80 uppercase tracking-wider mb-3">
             Available Leads ({pendingLeads.length})
           </h2>
           <div className="space-y-4">
@@ -234,7 +234,7 @@ export default function LeadsPage() {
                   <div className="flex flex-col sm:flex-row gap-4">
                     {/* Photo Thumbnail */}
                     <div className="shrink-0">
-                      <div className="w-20 h-20 rounded-xl bg-slate-100 overflow-hidden relative">
+                      <div className="w-20 h-20 rounded-xl bg-muted overflow-hidden relative">
                         {lead.photo_url ? (
                           <img
                             src={lead.photo_url}
@@ -255,7 +255,7 @@ export default function LeadsPage() {
                     {/* Content */}
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-slate-900">{lead.customer_name}</h3>
+                        <h3 className="font-semibold text-foreground">{lead.customer_name}</h3>
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${sevColors[lead.severity] || ''}`}>
                           <AlertTriangle className="w-3 h-3" />{lead.severity}
                         </span>
@@ -264,9 +264,9 @@ export default function LeadsPage() {
                         </span>
                       </div>
 
-                      <p className="text-sm text-slate-600">{lead.diagnosis}</p>
+                      <p className="text-sm text-muted-foreground">{lead.diagnosis}</p>
 
-                      <div className="flex flex-wrap gap-3 text-xs text-slate-500">
+                      <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 shrink-0" />{lead.customer_address}
                         </span>
@@ -316,11 +316,11 @@ export default function LeadsPage() {
 
                   {/* Decline Reason Dropdown */}
                   {showDecline === lead.id && (
-                    <div className="mt-3 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                    <div className="mt-3 pt-3 border-t border-border/50 flex flex-col sm:flex-row items-start sm:items-center gap-2">
                       <select
                         value={declineReason}
                         onChange={e => setDeclineReason(e.target.value)}
-                        className="w-full sm:w-auto h-9 px-3 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 outline-none focus:border-blue-400"
+                        className="w-full sm:w-auto h-9 px-3 rounded-xl bg-white border border-border text-xs text-foreground outline-none focus:border-blue-400"
                       >
                         <option value="">Select reason...</option>
                         {declineReasons.map(r => (
@@ -347,14 +347,14 @@ export default function LeadsPage() {
       {/* Accepted Leads */}
       {acceptedLeads.length > 0 && (
         <div>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-semibold text-muted-foreground/80 uppercase tracking-wider mb-3">
             Accepted ({acceptedLeads.length})
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {acceptedLeads.map(lead => (
               <Card key={lead.id} padding="md" className="!bg-emerald-50 !ring-1 !ring-emerald-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden shrink-0">
                     {lead.photo_url ? (
                       <img src={lead.photo_url} alt="" className="w-full h-full object-cover" />
                     ) : (
@@ -364,10 +364,10 @@ export default function LeadsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <h3 className="font-semibold text-slate-900 truncate">{lead.customer_name}</h3>
+                      <h3 className="font-semibold text-foreground truncate">{lead.customer_name}</h3>
                     </div>
-                    <p className="text-sm text-slate-500 truncate">{lead.diagnosis}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-sm text-muted-foreground truncate">{lead.diagnosis}</p>
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">
                       Est. ${lead.total_estimate.toLocaleString()} · {lead.customer_address}
                     </p>
                   </div>
@@ -376,7 +376,7 @@ export default function LeadsPage() {
                   <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${tierColors[lead.deposit_tier || 'small']}`}>
                     {depositDollars(lead.deposit_paid)} deposit
                   </span>
-                  <span className="text-xs text-slate-400">— credited on invoice</span>
+                  <span className="text-xs text-muted-foreground/80">— credited on invoice</span>
                 </div>
               </Card>
             ))}
@@ -387,11 +387,11 @@ export default function LeadsPage() {
       {/* Empty state */}
       {leads.length === 0 && (
         <div className="text-center py-16">
-          <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-3">
-            <Clock className="w-7 h-7 text-slate-400" />
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-3">
+            <Clock className="w-7 h-7 text-muted-foreground/80" />
           </div>
-          <p className="text-slate-500 font-medium">No leads yet</p>
-          <p className="text-xs text-slate-400 mt-1">New leads from the marketplace will appear here</p>
+          <p className="text-muted-foreground font-medium">No leads yet</p>
+          <p className="text-xs text-muted-foreground/80 mt-1">New leads from the marketplace will appear here</p>
         </div>
       )}
     </div>

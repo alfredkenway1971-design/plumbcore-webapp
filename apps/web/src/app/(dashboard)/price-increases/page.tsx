@@ -53,12 +53,12 @@ interface PriceChange {
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
-      <div className="h-4 w-40 rounded bg-slate-50" />
-      <div className="h-4 w-20 rounded bg-slate-50" />
-      <div className="h-4 w-20 rounded bg-slate-50" />
-      <div className="h-4 w-16 rounded bg-slate-50" />
-      <div className="h-4 w-24 rounded bg-slate-50" />
-      <div className="h-4 w-24 rounded bg-slate-50" />
+      <div className="h-4 w-40 rounded bg-muted" />
+      <div className="h-4 w-20 rounded bg-muted" />
+      <div className="h-4 w-20 rounded bg-muted" />
+      <div className="h-4 w-16 rounded bg-muted" />
+      <div className="h-4 w-24 rounded bg-muted" />
+      <div className="h-4 w-24 rounded bg-muted" />
     </div>
   );
 }
@@ -257,9 +257,9 @@ export default function PriceIncreasesPage() {
   if (initialLoading) {
     return (
       <div className="p-4 sm:p-6 space-y-5">
-        <div className="h-8 w-56 rounded bg-slate-50 animate-pulse" />
-        <div className="h-5 w-72 rounded bg-slate-50 animate-pulse" />
-        <div className="h-10 w-40 rounded bg-slate-50 animate-pulse" />
+        <div className="h-8 w-56 rounded bg-muted animate-pulse" />
+        <div className="h-5 w-72 rounded bg-muted animate-pulse" />
+        <div className="h-10 w-40 rounded bg-muted animate-pulse" />
         <Card variant="default" padding="sm">
           <div className="divide-y divide-white-border">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
@@ -274,8 +274,8 @@ export default function PriceIncreasesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Price Increase Detection</h1>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Price Increase Detection</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             Detect and manage price increases across your pricebook using AI analysis
           </p>
         </div>
@@ -301,20 +301,20 @@ export default function PriceIncreasesPage() {
       {hasRun && changes.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Card variant="bordered" padding="md">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Items Analyzed</p>
-            <p className="text-2xl font-bold text-slate-900 mt-1">{stats.total}</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Items Analyzed</p>
+            <p className="text-2xl font-bold text-foreground mt-1">{stats.total}</p>
           </Card>
           <Card variant="bordered" padding="md">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Flagged (&gt;5%)</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Flagged (&gt;5%)</p>
             <p className="text-2xl font-bold text-red-600 mt-1">{stats.flagged}</p>
           </Card>
           <Card variant="bordered" padding="md">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Increase</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Increase</p>
             <p className="text-2xl font-bold text-amber-600 mt-1">{formatCurrency(stats.totalIncrease)}</p>
           </Card>
           <Card variant="bordered" padding="md">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Approved / Rejected</p>
-            <p className="text-2xl font-bold text-slate-900 mt-1">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Approved / Rejected</p>
+            <p className="text-2xl font-bold text-foreground mt-1">
               {stats.approved} / {stats.rejected}
             </p>
           </Card>
@@ -326,7 +326,7 @@ export default function PriceIncreasesPage() {
         <Card variant="bordered" padding="md" className="border-blue-200 bg-blue-50/50">
           <div className="flex items-start gap-3">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100">
-              <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+              <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
             </div>
@@ -365,34 +365,34 @@ export default function PriceIncreasesPage() {
         <div className="overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
           <table className="w-full min-w-[900px]">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Part Name</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Old Price</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">New Price</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Change %</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Recommendation</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
+              <tr className="border-b border-border">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Part Name</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Old Price</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">New Price</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Change %</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recommendation</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {changes.map((item) => (
                 <tr
                   key={item.id}
-                  className={`transition-colors hover:bg-slate-50 ${
+                  className={`transition-colors hover:bg-muted ${
                     item.status === 'approved' ? 'bg-green-50/30' : item.status === 'rejected' ? 'bg-red-50/30' : ''
                   }`}
                 >
-                  <td className="px-4 py-3 text-sm font-medium text-slate-900 whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm font-medium text-foreground whitespace-nowrap">
                     <div>
                       {item.name}
-                      <p className="text-xs text-slate-400">{item.category}</p>
+                      <p className="text-xs text-muted-foreground/80">{item.category}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-500 text-right whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm text-muted-foreground text-right whitespace-nowrap">
                     {formatCurrency(item.oldPrice)}
                   </td>
-                  <td className="px-4 py-3 text-sm font-semibold text-slate-900 text-right whitespace-nowrap">
+                  <td className="px-4 py-3 text-sm font-semibold text-foreground text-right whitespace-nowrap">
                     {editingId === item.id ? (
                       <div className="inline-flex items-center gap-1">
                         <input
@@ -405,13 +405,13 @@ export default function PriceIncreasesPage() {
                         />
                         <button
                           onClick={handleSaveManualEdit}
-                          className="text-blue-600 hover:text-blue-800 text-xs font-medium"
+                          className="text-primary hover:text-blue-800 text-xs font-medium"
                         >
                           Save
                         </button>
                         <button
                           onClick={() => setEditingId(null)}
-                          className="text-slate-400 hover:text-slate-600 text-xs"
+                          className="text-muted-foreground/80 hover:text-muted-foreground text-xs"
                         >
                           Cancel
                         </button>
@@ -425,7 +425,7 @@ export default function PriceIncreasesPage() {
                       {item.changePercent > 0 ? '+' : ''}{item.changePercent}%
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-500 max-w-[200px]">
+                  <td className="px-4 py-3 text-sm text-muted-foreground max-w-[200px]">
                     <p className="truncate" title={item.recommendation}>{item.recommendation}</p>
                   </td>
                   <td className="px-4 py-3 text-center whitespace-nowrap">
@@ -469,7 +469,7 @@ export default function PriceIncreasesPage() {
               ))}
             </tbody>
           </table>
-          <div className="px-4 py-2 text-xs text-slate-500 border-t border-slate-200">
+          <div className="px-4 py-2 text-xs text-muted-foreground border-t border-border">
             Showing {changes.length} items
           </div>
         </div>

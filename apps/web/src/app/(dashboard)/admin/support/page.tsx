@@ -26,14 +26,14 @@ const priorityConfig: Record<string, { bg: string; text: string; dot: string; ic
   critical: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', icon: AlertTriangle, label: 'Critical' },
   high: { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500', icon: ArrowUp, label: 'High' },
   medium: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', icon: ArrowUp, label: 'Medium' },
-  low: { bg: 'bg-slate-50', text: 'text-slate-400', dot: 'bg-slate-400', icon: ArrowDown, label: 'Low' },
+  low: { bg: 'bg-muted', text: 'text-muted-foreground/80', dot: 'bg-slate-400', icon: ArrowDown, label: 'Low' },
 };
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  open: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', label: 'Open' },
+  open: { bg: 'bg-blue-50', text: 'text-primary', dot: 'bg-blue-500', label: 'Open' },
   in_progress: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', label: 'In Progress' },
   resolved: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Resolved' },
-  closed: { bg: 'bg-slate-50', text: 'text-slate-500', dot: 'bg-slate-400', label: 'Closed' },
+  closed: { bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-slate-400', label: 'Closed' },
 };
 
 const agents = ['Sarah Chen', 'Mike Torres', 'Lisa Park', 'James Wilson'];
@@ -50,7 +50,7 @@ function SupportLoading() {
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
+          <div key={i} className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5">
             <Skeleton className="h-10 w-10 rounded-xl mb-3" />
             <Skeleton className="h-3 w-20 mb-2" />
             <Skeleton className="h-8 w-12 mb-2" />
@@ -58,10 +58,10 @@ function SupportLoading() {
           </div>
         ))}
       </div>
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+      <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
         <Skeleton className="h-5 w-44 m-5" />
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 px-5 py-4 border-t border-slate-100">
+          <div key={i} className="flex items-center gap-4 px-5 py-4 border-t border-border/50">
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-4 w-48 flex-1" />
             <Skeleton className="h-5 w-20" />
@@ -84,11 +84,11 @@ function SupportError({ error }: { error: string }) {
         <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
           <AlertTriangle className="w-7 h-7 text-red-500" />
         </div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-1">Failed to load support tickets</h3>
-        <p className="text-sm text-slate-500 mb-4">{error}</p>
+        <h3 className="text-lg font-semibold text-foreground mb-1">Failed to load support tickets</h3>
+        <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -116,16 +116,16 @@ function SupportKPIs({ tickets }: { tickets: SupportTicket[] }) {
       {cards.map((card) => {
         const Icon = card.icon;
         return (
-          <div key={card.label} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
+          <div key={card.label} className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5">
             <div className="flex items-start justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">{card.label}</p>
+              <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
               <div className={`w-10 h-10 rounded-xl ${card.color} flex items-center justify-center`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{card.value}</p>
+            <p className="text-3xl font-bold text-foreground mb-1.5">{card.value}</p>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs text-slate-600">{card.change}</span>
+              <span className="text-xs text-muted-foreground">{card.change}</span>
             </div>
           </div>
         );
@@ -142,8 +142,8 @@ function EmptyState() {
       <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
         <MessageSquare className="w-7 h-7 text-blue-500" />
       </div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">No support tickets yet</h3>
-      <p className="text-sm text-slate-500 max-w-md mx-auto">
+      <h3 className="text-lg font-semibold text-foreground mb-1">No support tickets yet</h3>
+      <p className="text-sm text-muted-foreground max-w-md mx-auto">
         When plumbers submit support requests, they'll appear here with priority levels, status tracking, and agent assignments.
       </p>
     </div>
@@ -159,18 +159,18 @@ function TicketsTable({ tickets, filters }: {
   const filtered = tickets;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">
+        <h3 className="text-base font-semibold text-foreground">
           Support Tickets
-          <span className="ml-2 text-xs font-normal text-slate-600">({filtered.length})</span>
+          <span className="ml-2 text-xs font-normal text-muted-foreground">({filtered.length})</span>
         </h3>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1 h-8 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="inline-flex items-center gap-1 h-8 px-3 rounded-lg border border-border text-xs font-medium text-muted-foreground/80 hover:bg-muted transition-colors">
             <Eye className="w-3.5 h-3.5" />
             View All
           </button>
-          <button className="text-slate-600 hover:text-slate-400 transition-colors">
+          <button className="text-muted-foreground hover:text-muted-foreground/80 transition-colors">
             <MoreHorizontal className="w-5 h-5" />
           </button>
         </div>
@@ -180,14 +180,14 @@ function TicketsTable({ tickets, filters }: {
       <div className="hidden sm:block overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-5 py-3">Ticket</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Company</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Category</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Priority</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Agent</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3">Status</th>
-              <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Created</th>
+            <tr className="border-t border-b border-border/50">
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3">Ticket</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Company</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">Category</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3">Priority</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">Agent</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3">Status</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Created</th>
               <th className="w-10 px-2 py-3" />
             </tr>
           </thead>
@@ -205,22 +205,22 @@ function TicketsTable({ tickets, filters }: {
                 const statCfg = statusConfig[ticket.status];
                 const created = new Date(ticket.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
                 return (
-                  <tr key={ticket.id} className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${ticket.priority === 'critical' ? 'bg-red-50/30' : ''}`}>
+                  <tr key={ticket.id} className={`border-b border-border/50 hover:bg-muted transition-colors ${ticket.priority === 'critical' ? 'bg-red-50/30' : ''}`}>
                     <td className="px-5 py-3.5">
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[11px] font-mono font-semibold text-slate-600">{ticket.id}</span>
+                          <span className="text-[11px] font-mono font-semibold text-muted-foreground">{ticket.id}</span>
                         </div>
-                        <p className="text-sm font-medium text-slate-900 truncate max-w-[200px]">{ticket.subject}</p>
+                        <p className="text-sm font-medium text-foreground truncate max-w-[200px]">{ticket.subject}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3.5 hidden sm:table-cell">
                       <div className="flex items-center gap-1.5">
-                        <Building2 className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                        <span className="text-sm text-slate-400 truncate max-w-[140px]">{ticket.companyName}</span>
+                        <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                        <span className="text-sm text-muted-foreground/80 truncate max-w-[140px]">{ticket.companyName}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3.5 hidden md:table-cell"><span className="text-xs text-slate-500">{ticket.category}</span></td>
+                    <td className="px-4 py-3.5 hidden md:table-cell"><span className="text-xs text-muted-foreground">{ticket.category}</span></td>
                     <td className="px-4 py-3.5">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${prioCfg.bg} ${prioCfg.text}`}>
                         <PrioIcon className="w-3 h-3" />{prioCfg.label}
@@ -228,8 +228,8 @@ function TicketsTable({ tickets, filters }: {
                     </td>
                     <td className="px-4 py-3.5 hidden md:table-cell">
                       <div className="flex items-center gap-1.5">
-                        <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center"><User className="w-3 h-3 text-slate-500" /></div>
-                        <span className="text-xs text-slate-400">{ticket.assignedAgent}</span>
+                        <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center"><User className="w-3 h-3 text-muted-foreground" /></div>
+                        <span className="text-xs text-muted-foreground/80">{ticket.assignedAgent}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3.5">
@@ -239,12 +239,12 @@ function TicketsTable({ tickets, filters }: {
                     </td>
                     <td className="px-4 py-3.5 hidden lg:table-cell">
                       <div className="flex items-center gap-1.5">
-                        <Clock className="w-3 h-3 text-slate-600" />
-                        <span className="text-xs text-slate-500">{created}</span>
+                        <Clock className="w-3 h-3 text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">{created}</span>
                       </div>
                     </td>
                     <td className="px-2 py-3.5">
-                      <button className="text-slate-700 hover:text-slate-500 transition-colors"><MoreHorizontal className="w-4 h-4" /></button>
+                      <button className="text-foreground hover:text-muted-foreground transition-colors"><MoreHorizontal className="w-4 h-4" /></button>
                     </td>
                   </tr>
                 );
@@ -263,17 +263,17 @@ function TicketsTable({ tickets, filters }: {
             const statCfg = statusConfig[ticket.status];
             const created = new Date(ticket.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             return (
-              <div key={ticket.id} className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+              <div key={ticket.id} className="bg-white rounded-xl border border-border p-4 shadow-sm">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <span className="text-[11px] font-mono font-semibold text-slate-500">{ticket.id}</span>
-                    <p className="text-sm font-medium text-slate-900 mt-0.5">{ticket.subject}</p>
+                    <span className="text-[11px] font-mono font-semibold text-muted-foreground">{ticket.id}</span>
+                    <p className="text-sm font-medium text-foreground mt-0.5">{ticket.subject}</p>
                   </div>
                   <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold ${statCfg.bg} ${statCfg.text}`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${statCfg.dot}`} />{statCfg.label}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-1.5 text-xs text-slate-500">
+                <div className="grid grid-cols-2 gap-1.5 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1"><Building2 className="w-3 h-3" />{ticket.companyName}</div>
                   <div className="flex items-center gap-1"><span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold ${prioCfg.bg} ${prioCfg.text}`}><PrioIcon className="w-2.5 h-2.5" />{prioCfg.label}</span></div>
                   <div className="flex items-center gap-1"><User className="w-3 h-3" />{ticket.assignedAgent}</div>
@@ -285,10 +285,10 @@ function TicketsTable({ tickets, filters }: {
         </div>
       )}
 
-      <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100">
-        <span className="text-xs text-slate-600">Showing {filtered.length} of {tickets.length} tickets</span>
+      <div className="flex items-center justify-between px-5 py-3 border-t border-border/50">
+        <span className="text-xs text-muted-foreground">Showing {filtered.length} of {tickets.length} tickets</span>
         <div className="flex items-center gap-3">
-          <button className="text-xs font-medium text-blue-600 hover:text-blue-600">View Report →</button>
+          <button className="text-xs font-medium text-primary hover:text-primary">View Report →</button>
         </div>
       </div>
     </div>
@@ -318,17 +318,17 @@ export default function AdminSupportPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Support Tickets</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Support Tickets</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             0 total tickets · 0 open · 0 critical
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg border border-slate-200 text-sm font-medium text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg border border-border text-sm font-medium text-muted-foreground/80 hover:bg-muted transition-colors">
             <Reply className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">New Ticket</span>
           </button>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm ring-1 ring-black/5">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors shadow-sm ring-1 ring-black/5">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>
@@ -341,48 +341,48 @@ export default function AdminSupportPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5 mb-4">
+      <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5 mb-4">
         <div className="p-5 pb-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-              <input type="text" placeholder="Search tickets..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full h-10 pl-9 pr-3 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" placeholder="Search tickets..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full h-10 pl-9 pr-3 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400 transition-all" />
               {search && (
-                <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-500"><XCircle className="w-4 h-4" /></button>
+                <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground hover:text-muted-foreground"><XCircle className="w-4 h-4" /></button>
               )}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1.5 text-xs text-slate-600 mr-1"><Filter className="w-3.5 h-3.5" />Filters:</div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-1"><Filter className="w-3.5 h-3.5" />Filters:</div>
               <div className="relative">
-                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-border text-xs font-medium text-muted-foreground/80 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
                   <option value="">All Statuses</option>
                   <option value="open">Open</option><option value="in_progress">In Progress</option><option value="resolved">Resolved</option><option value="closed">Closed</option>
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-600 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground pointer-events-none" />
               </div>
               <div className="relative">
-                <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+                <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-border text-xs font-medium text-muted-foreground/80 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
                   <option value="">All Priorities</option>
                   <option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option>
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-600 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground pointer-events-none" />
               </div>
               <div className="relative">
-                <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+                <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-border text-xs font-medium text-muted-foreground/80 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
                   <option value="">All Agents</option>
                   {agents.map((a) => (<option key={a} value={a}>{a}</option>))}
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-600 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground pointer-events-none" />
               </div>
               <div className="relative">
-                <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-slate-200 text-xs font-medium text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+                <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="appearance-none h-9 pl-3 pr-7 rounded-lg border border-border text-xs font-medium text-muted-foreground/80 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
                   <option value="">All Categories</option>
                   {categories.map((c) => (<option key={c} value={c}>{c}</option>))}
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-600 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground pointer-events-none" />
               </div>
               {hasFilters && (
-                <button onClick={() => { setSearch(''); setStatusFilter(''); setPriorityFilter(''); setAgentFilter(''); setCategoryFilter(''); }} className="h-9 px-3 rounded-lg border border-slate-200 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors">Clear</button>
+                <button onClick={() => { setSearch(''); setStatusFilter(''); setPriorityFilter(''); setAgentFilter(''); setCategoryFilter(''); }} className="h-9 px-3 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:bg-muted transition-colors">Clear</button>
               )}
             </div>
           </div>
@@ -391,12 +391,12 @@ export default function AdminSupportPage() {
 
       {/* Quick Actions */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="text-xs text-slate-600 font-medium mr-1">Quick Actions:</span>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-50 text-blue-600 text-[11px] font-semibold hover:bg-blue-100 transition-colors"><MessageSquare className="w-3 h-3" />View Open</button>
+        <span className="text-xs text-muted-foreground font-medium mr-1">Quick Actions:</span>
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-50 text-primary text-[11px] font-semibold hover:bg-blue-100 transition-colors"><MessageSquare className="w-3 h-3" />View Open</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-red-50 text-red-700 text-[11px] font-semibold hover:bg-red-100 transition-colors"><AlertTriangle className="w-3 h-3" />Critical Only</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-amber-50 text-amber-600 text-[11px] font-semibold hover:bg-amber-100 transition-colors"><Clock className="w-3 h-3" />In Progress</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-semibold hover:bg-emerald-100 transition-colors"><CheckCircle className="w-3 h-3" />Resolved</button>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-slate-50 text-slate-400 text-[11px] font-semibold hover:bg-slate-700 transition-colors"><User className="w-3 h-3" />My Tickets</button>
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-muted text-muted-foreground/80 text-[11px] font-semibold hover:bg-slate-700 transition-colors"><User className="w-3 h-3" />My Tickets</button>
       </div>
 
       {/* Tickets Table */}

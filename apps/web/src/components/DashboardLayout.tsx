@@ -77,17 +77,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen w-full bg-slate-50 items-center justify-center">
+      <div className="flex min-h-screen w-full bg-muted items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
-          <p className="text-sm text-slate-500">Loading...</p>
+          <p className="text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen w-full bg-slate-50">
+    <div className="flex min-h-screen w-full bg-muted">
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
       {/* Main Content */}
@@ -99,18 +99,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors -ml-1"
+              className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors -ml-1"
               aria-label="Open menu"
             >
               <HamburgerIcon className="w-5 h-5" />
             </button>
             <div className="hidden sm:flex items-center gap-2 text-sm min-w-0">
-              <span className="text-slate-900 font-semibold tracking-tight truncate capitalize">
+              <span className="text-foreground font-semibold tracking-tight truncate capitalize">
                 {pathname.split('/').filter(Boolean)[0] || 'Dashboard'}
               </span>
               {pathname.split('/').filter(Boolean).slice(1).map((segment) => (
-                <span key={segment} className="text-slate-600 flex items-center gap-1">
-                  <span className="text-slate-700">/</span>
+                <span key={segment} className="text-muted-foreground flex items-center gap-1">
+                  <span className="text-foreground">/</span>
                   <span className="text-slate-300 truncate capitalize">{segment}</span>
                 </span>
               ))}
@@ -120,14 +120,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Center: Search */}
           <div className="hidden md:flex items-center flex-1 max-w-md">
             <div className="relative w-full">
-              <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 ref={searchRef}
                 type="text"
                 placeholder={t('common.search')}
-                className="w-full h-9 pl-10 pr-12 bg-white rounded-xl ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-blue-500/50 focus:bg-white transition-all"
+                className="w-full h-9 pl-10 pr-12 bg-white rounded-xl ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-primary/50 focus:bg-white transition-all"
               />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-slate-200 text-[10px] font-medium text-slate-500">
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted text-[10px] font-medium text-muted-foreground">
                 ⌘K
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
 
             {/* Notification Bell */}
-            <a href="/notifications" className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+            <a href="/notifications" className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-muted-foreground/80 hover:bg-muted hover:text-muted-foreground transition-colors">
               <BellIcon className="w-5 h-5" />
               <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold ring-2 ring-slate-900 px-1">4</span>
             </a>

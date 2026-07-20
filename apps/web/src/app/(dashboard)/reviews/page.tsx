@@ -139,18 +139,18 @@ export default function ReviewsPage() {
 
   if (!hasAccess) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6">
+      <div className="min-h-screen bg-muted p-6">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center">
+          <div className="bg-white rounded-2xl border border-border/50 p-12 text-center">
             <I.Star className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-slate-700 mb-2">Review Automation</h2>
-            <p className="text-slate-500 mb-6 max-w-md mx-auto">
+            <h2 className="text-xl font-semibold text-foreground mb-2">Review Automation</h2>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Review Automation is available on the <strong>Pro</strong> plan and above.
               Auto-request Google reviews after job completion and track performance by technician.
             </p>
             <a
               href="/settings"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
             >
               Upgrade to Pro
             </a>
@@ -161,13 +161,13 @@ export default function ReviewsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-muted">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Reviews</h1>
-            <p className="text-sm text-slate-500 mt-1">Manage review requests and track performance</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Reviews</h1>
+            <p className="text-sm text-muted-foreground mt-1">Manage review requests and track performance</p>
           </div>
           {sendSuccess && (
             <div className="w-full sm:w-auto flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-200 text-sm">
@@ -182,66 +182,66 @@ export default function ReviewsPage() {
 
         {/* ── Stats Cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">Reviews This Month</p>
+              <p className="text-sm font-medium text-muted-foreground">Reviews This Month</p>
               <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
-                <I.Star className="w-5 h-5 text-slate-900" />
+                <I.Star className="w-5 h-5 text-foreground" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{stats.count}</p>
+            <p className="text-3xl font-bold text-foreground mb-1.5">{stats.count}</p>
             <div className="flex items-center gap-2">
               <span className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full
                 ${stats.count >= stats.lastMonthCount ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                 <I.ArrowUp className={`w-3 h-3 ${stats.count < stats.lastMonthCount ? 'rotate-180' : ''}`} />
                 {stats.count - stats.lastMonthCount >= 0 ? '+' : ''}{stats.count - stats.lastMonthCount}
               </span>
-              <span className="text-xs text-slate-400">vs last month ({stats.lastMonthCount})</span>
+              <span className="text-xs text-muted-foreground/80">vs last month ({stats.lastMonthCount})</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">Average Rating</p>
+              <p className="text-sm font-medium text-muted-foreground">Average Rating</p>
               <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center">
-                <I.StarFill className="w-5 h-5 text-slate-900" />
+                <I.StarFill className="w-5 h-5 text-foreground" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{stats.avgRating || '—'}</p>
+            <p className="text-3xl font-bold text-foreground mb-1.5">{stats.avgRating || '—'}</p>
             {stats.avgRating > 0 && <StarRating rating={stats.avgRating} size="md" />}
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground/80 mt-1">
               {stats.lastMonthRating > 0
                 ? `vs ${stats.lastMonthRating} last month`
                 : 'No ratings yet this month'}
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">Response Rate</p>
+              <p className="text-sm font-medium text-muted-foreground">Response Rate</p>
               <div className="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center">
-                <I.Users className="w-5 h-5 text-slate-900" />
+                <I.Users className="w-5 h-5 text-foreground" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">
+            <p className="text-3xl font-bold text-foreground mb-1.5">
               {reviewRequests.length > 0
                 ? Math.round((reviewRequests.filter(r => r.reviewLinkClicked || r.reviewSubmitted).length / reviewRequests.length) * 100)
                 : 0}%
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-muted-foreground/80">
               {reviewRequests.filter(r => r.reviewLinkClicked || r.reviewSubmitted).length} of {reviewRequests.length} requests clicked
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">Pending Requests</p>
+              <p className="text-sm font-medium text-muted-foreground">Pending Requests</p>
               <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center">
-                <I.Clock className="w-5 h-5 text-slate-900" />
+                <I.Clock className="w-5 h-5 text-foreground" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-slate-900 mb-1.5">{pendingJobs.length}</p>
-            <p className="text-xs text-slate-400">Completed jobs without reviews</p>
+            <p className="text-3xl font-bold text-foreground mb-1.5">{pendingJobs.length}</p>
+            <p className="text-xs text-muted-foreground/80">Completed jobs without reviews</p>
           </div>
         </div>
 
@@ -249,41 +249,41 @@ export default function ReviewsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* ── Tech Leaderboard ── */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-              <div className="px-5 py-4 border-b border-slate-100">
-                <h2 className="text-base font-semibold text-slate-900">Tech Leaderboard</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Average rating & response rate</p>
+            <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="px-5 py-4 border-b border-border/50">
+                <h2 className="text-base font-semibold text-foreground">Tech Leaderboard</h2>
+                <p className="text-xs text-muted-foreground/80 mt-0.5">Average rating & response rate</p>
               </div>
               <div className="divide-y divide-slate-50">
                 {leaderboard.length === 0 && (
-                  <div className="px-5 py-8 text-center text-sm text-slate-400">
+                  <div className="px-5 py-8 text-center text-sm text-muted-foreground/80">
                     No reviews submitted yet
                   </div>
                 )}
                 {leaderboard.map((tech, idx) => (
-                  <div key={tech.techId} className="px-5 py-4 hover:bg-slate-50 transition-colors">
+                  <div key={tech.techId} className="px-5 py-4 hover:bg-muted transition-colors">
                     <div className="flex items-center gap-3">
                       <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
                         ${idx === 0 ? 'bg-amber-100 text-amber-700' :
-                          idx === 1 ? 'bg-slate-100 text-slate-600' :
+                          idx === 1 ? 'bg-muted text-muted-foreground' :
                           idx === 2 ? 'bg-orange-100 text-orange-700' :
-                          'bg-slate-50 text-slate-400'}`}>
+                          'bg-muted text-muted-foreground/80'}`}>
                         {idx + 1}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">{tech.techName}</p>
+                        <p className="text-sm font-medium text-foreground truncate">{tech.techName}</p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <StarRating rating={tech.avgRating} />
-                          <span className="text-xs text-slate-400">({tech.avgRating})</span>
+                          <span className="text-xs text-muted-foreground/80">({tech.avgRating})</span>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold text-slate-900">{tech.totalReviews}</p>
-                        <p className="text-xs text-slate-400">{tech.responseRate}% resp.</p>
+                        <p className="text-sm font-semibold text-foreground">{tech.totalReviews}</p>
+                        <p className="text-xs text-muted-foreground/80">{tech.responseRate}% resp.</p>
                       </div>
                     </div>
                     {/* Progress bar for response rate */}
-                    <div className="mt-2 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="mt-2 w-full h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full bg-blue-500 rounded-full transition-all duration-500"
                         style={{ width: `${tech.responseRate}%` }}
@@ -295,28 +295,28 @@ export default function ReviewsPage() {
             </div>
 
             {/* ── Send Review Request Panel ── */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden mt-6">
-              <div className="px-5 py-4 border-b border-slate-100">
-                <h2 className="text-base font-semibold text-slate-900">Send Review Request</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Completed jobs ready for review</p>
+            <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden mt-6">
+              <div className="px-5 py-4 border-b border-border/50">
+                <h2 className="text-base font-semibold text-foreground">Send Review Request</h2>
+                <p className="text-xs text-muted-foreground/80 mt-0.5">Completed jobs ready for review</p>
               </div>
               <div className="divide-y divide-slate-50 max-h-[400px] overflow-y-auto">
                 {pendingJobs.length === 0 && (
-                  <div className="px-5 py-8 text-center text-sm text-slate-400">
+                  <div className="px-5 py-8 text-center text-sm text-muted-foreground/80">
                     <I.Check className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
                     All completed jobs have review requests
                   </div>
                 )}
                 {pendingJobs.map(job => (
-                  <div key={job.id} className="px-5 py-3 hover:bg-slate-50 transition-colors">
+                  <div key={job.id} className="px-5 py-3 hover:bg-muted transition-colors">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">{job.title}</p>
-                        <p className="text-xs text-slate-500 truncate">{job.clientName} · {job.techName}</p>
+                        <p className="text-sm font-medium text-foreground truncate">{job.title}</p>
+                        <p className="text-xs text-muted-foreground truncate">{job.clientName} · {job.techName}</p>
                       </div>
                       <button
                         onClick={() => handleSendReview(job)}
-                        className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors"
+                        className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors"
                       >
                         <I.Send className="w-3.5 h-3.5" />
                         Send
@@ -330,28 +330,28 @@ export default function ReviewsPage() {
 
           {/* ── Review Request Log ── */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-              <div className="px-5 py-4 border-b border-slate-100">
+            <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="px-5 py-4 border-b border-border/50">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-base font-semibold text-slate-900">Review Request Log</h2>
-                    <p className="text-xs text-slate-400 mt-0.5">{reviewRequests.length} total requests</p>
+                    <h2 className="text-base font-semibold text-foreground">Review Request Log</h2>
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">{reviewRequests.length} total requests</p>
                   </div>
                   <div className="flex items-center gap-2 w-full sm:w-auto">
                     <div className="relative flex-1 sm:flex-initial">
-                      <I.Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <I.Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/80" />
                       <input
                         type="text"
                         placeholder="Search..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full sm:w-48 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+                        className="w-full sm:w-48 pl-9 pr-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400"
                       />
                     </div>
                     <select
                       value={filterStatus}
                       onChange={e => setFilterStatus(e.target.value)}
-                      className="text-sm border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+                      className="text-sm border border-border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400"
                     >
                       <option value="all">All Status</option>
                       <option value="pending">Pending</option>
@@ -368,18 +368,18 @@ export default function ReviewsPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-50">
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Customer</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Job</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Tech</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Rating</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Sent</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Customer</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Job</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Tech</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Status</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Rating</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Sent</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                     {filteredRequests.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="px-5 py-12 text-center text-sm text-slate-400">
+                        <td colSpan={6} className="px-5 py-12 text-center text-sm text-muted-foreground/80">
                           No review requests found
                         </td>
                       </tr>
@@ -388,15 +388,15 @@ export default function ReviewsPage() {
                       const sc = statusConfig[req.status];
                       const StatusIcon = sc?.icon;
                       return (
-                        <tr key={req.id} className="hover:bg-slate-50 transition-colors">
+                        <tr key={req.id} className="hover:bg-muted transition-colors">
                           <td className="px-5 py-4">
-                            <p className="text-sm font-medium text-slate-900">{req.customerName}</p>
+                            <p className="text-sm font-medium text-foreground">{req.customerName}</p>
                           </td>
                           <td className="px-5 py-4">
-                            <p className="text-sm text-slate-700">{req.jobTitle}</p>
+                            <p className="text-sm text-foreground">{req.jobTitle}</p>
                           </td>
                           <td className="px-5 py-4">
-                            <p className="text-sm text-slate-700">{req.techName}</p>
+                            <p className="text-sm text-foreground">{req.techName}</p>
                           </td>
                           <td className="px-5 py-4">
                             <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${sc?.bg} ${sc?.text}`}>
@@ -408,14 +408,14 @@ export default function ReviewsPage() {
                             {req.rating ? (
                               <div className="flex items-center gap-1.5">
                                 <StarRating rating={req.rating} />
-                                <span className="text-xs text-slate-400">{req.rating}</span>
+                                <span className="text-xs text-muted-foreground/80">{req.rating}</span>
                               </div>
                             ) : (
                               <span className="text-xs text-slate-300">—</span>
                             )}
                           </td>
                           <td className="px-5 py-4">
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-muted-foreground">
                               {req.sentAt ? new Date(req.sentAt).toLocaleDateString() : 'Not sent'}
                             </span>
                           </td>
@@ -429,7 +429,7 @@ export default function ReviewsPage() {
               {/* Card list - Mobile */}
               <div className="sm:hidden divide-y divide-slate-50">
                 {filteredRequests.length === 0 && (
-                  <div className="px-5 py-12 text-center text-sm text-slate-400">
+                  <div className="px-5 py-12 text-center text-sm text-muted-foreground/80">
                     No review requests found
                   </div>
                 )}
@@ -439,7 +439,7 @@ export default function ReviewsPage() {
                   return (
                     <div key={req.id} className="px-5 py-4 space-y-2">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-slate-900">{req.customerName}</p>
+                        <p className="text-sm font-medium text-foreground">{req.customerName}</p>
                         {req.rating ? (
                           <StarRating rating={req.rating} />
                         ) : (
@@ -447,17 +447,17 @@ export default function ReviewsPage() {
                         )}
                       </div>
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-slate-500">{req.jobTitle} · {req.techName}</p>
+                        <p className="text-xs text-muted-foreground">{req.jobTitle} · {req.techName}</p>
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${sc?.bg} ${sc?.text}`}>
                           {StatusIcon && <StatusIcon className="w-3 h-3" />}
                           {sc?.label}
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-400">
+                      <p className="text-[10px] text-muted-foreground/80">
                         {req.sentAt ? `Sent ${new Date(req.sentAt).toLocaleDateString()}` : 'Not sent'}
                       </p>
                       {req.reviewText && (
-                        <p className="text-xs text-slate-600 italic bg-slate-50 p-2 rounded-xl">
+                        <p className="text-xs text-muted-foreground italic bg-muted p-2 rounded-xl">
                           &ldquo;{req.reviewText}&rdquo;
                         </p>
                       )}
@@ -478,29 +478,29 @@ export default function ReviewsPage() {
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-slate-900">Send Review Request</h3>
+              <h3 className="text-lg font-semibold text-foreground">Send Review Request</h3>
               <button
                 onClick={() => { setShowSendModal(false); setSelectedJob(null); }}
                 disabled={sending}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-muted-foreground/80 hover:text-muted-foreground"
               >
                 <I.X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="space-y-4">
-              <div className="bg-slate-50 rounded-xl p-4 space-y-2">
+              <div className="bg-muted rounded-xl p-4 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Job</span>
-                  <span className="font-medium text-slate-900">{selectedJob.title}</span>
+                  <span className="text-muted-foreground">Job</span>
+                  <span className="font-medium text-foreground">{selectedJob.title}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Customer</span>
-                  <span className="font-medium text-slate-900">{selectedJob.clientName}</span>
+                  <span className="text-muted-foreground">Customer</span>
+                  <span className="font-medium text-foreground">{selectedJob.clientName}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Technician</span>
-                  <span className="font-medium text-slate-900">{selectedJob.techName}</span>
+                  <span className="text-muted-foreground">Technician</span>
+                  <span className="font-medium text-foreground">{selectedJob.techName}</span>
                 </div>
               </div>
 
@@ -526,14 +526,14 @@ export default function ReviewsPage() {
                 <button
                   onClick={() => { setShowSendModal(false); setSelectedJob(null); }}
                   disabled={sending}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-muted-foreground bg-muted rounded-xl hover:bg-muted transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={confirmSend}
                   disabled={sending}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                 >
                   {sending ? (
                     <>

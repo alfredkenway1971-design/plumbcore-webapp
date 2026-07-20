@@ -20,7 +20,7 @@ export default function PayoutsPage() {
 
   // Revenue summary data
   const revenueSummary = [
-    { label: 'SaaS Revenue', value: '$72,400', sub: 'Monthly subscriptions', color: 'text-blue-600' },
+    { label: 'SaaS Revenue', value: '$72,400', sub: 'Monthly subscriptions', color: 'text-primary' },
     { label: 'Deposit Revenue', value: '$38,650', sub: '800 jobs × avg $48', color: 'text-emerald-600' },
     { label: 'Total Revenue', value: '$111,050', sub: 'This month', color: 'text-emerald-600', large: true },
     { label: 'Net Profit', value: '$57,200', sub: 'After payouts & expenses', color: 'text-emerald-600', large: true },
@@ -32,8 +32,8 @@ export default function PayoutsPage() {
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">💰 Revenue & Payouts</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Monthly revenue summary and weekly deposit transfers</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">💰 Revenue & Payouts</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Monthly revenue summary and weekly deposit transfers</p>
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="secondary" onClick={() => alert('Exporting CSV...')}>
@@ -49,9 +49,9 @@ export default function PayoutsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {revenueSummary.map(r => (
           <div key={r.label} className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-sm">
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">{r.label}</p>
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{r.label}</p>
             <p className={`text-${r.large ? '2xl' : 'xl'} font-bold mt-1 ${r.color}`}>{r.value}</p>
-            <p className="text-xs text-slate-400 mt-0.5">{r.sub}</p>
+            <p className="text-xs text-muted-foreground/80 mt-0.5">{r.sub}</p>
           </div>
         ))}
       </div>
@@ -59,31 +59,31 @@ export default function PayoutsPage() {
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-blue-50 border border-blue-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-blue-600">Total Owed</p>
-          <p className="text-lg font-bold text-slate-900 mt-1">${(pendingTotal / 100).toLocaleString()}</p>
+          <p className="text-[10px] font-semibold uppercase text-primary">Total Owed</p>
+          <p className="text-lg font-bold text-foreground mt-1">${(pendingTotal / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-emerald-50 border border-emerald-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-emerald-600">Paid This Month</p>
-          <p className="text-lg font-bold text-slate-900 mt-1">${(totalPaid / 100).toLocaleString()}</p>
+          <p className="text-lg font-bold text-foreground mt-1">${(totalPaid / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-amber-50 border border-amber-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-amber-600">Pending Pay</p>
-          <p className="text-lg font-bold text-slate-900 mt-1">{pending.length}</p>
+          <p className="text-lg font-bold text-foreground mt-1">{pending.length}</p>
         </div>
         <div className="rounded-xl bg-violet-50 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-600">Connected Plumbers</p>
-          <p className="text-lg font-bold text-slate-900 mt-1">{connectedPlumbers}/{totalPlumbers}</p>
+          <p className="text-lg font-bold text-foreground mt-1">{connectedPlumbers}/{totalPlumbers}</p>
         </div>
       </div>
 
       {/* Pending Payouts */}
       <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-sm font-semibold text-slate-900">Pending Payouts (Next Monday)</h3>
+        <div className="px-5 py-4 border-b border-border/50">
+          <h3 className="text-sm font-semibold text-foreground">Pending Payouts (Next Monday)</h3>
         </div>
         <div className="px-5 py-3 divide-y divide-slate-100">
           {pending.length === 0 ? (
-            <p className="text-sm text-slate-500 py-3">💰 No pending payouts</p>
+            <p className="text-sm text-muted-foreground py-3">💰 No pending payouts</p>
           ) : (
             pending.map(p => (
               <div key={p.id} className="flex items-center py-3">
@@ -91,12 +91,12 @@ export default function PayoutsPage() {
                   {p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('')}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-900">{p.plumber_name}</p>
-                  <p className="text-xs text-slate-500">{p.fee_count} jobs · {p.period_start} to {p.period_end}</p>
+                  <p className="text-sm font-semibold text-foreground">{p.plumber_name}</p>
+                  <p className="text-xs text-muted-foreground">{p.fee_count} jobs · {p.period_start} to {p.period_end}</p>
                 </div>
                 <div className="text-right mr-4">
-                  <p className="text-sm font-bold text-slate-900">${(p.net_amount / 100).toFixed(2)}</p>
-                  <p className="text-[10px] text-slate-400">net</p>
+                  <p className="text-sm font-bold text-foreground">${(p.net_amount / 100).toFixed(2)}</p>
+                  <p className="text-[10px] text-muted-foreground/80">net</p>
                 </div>
                 <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-600">
                   ⏳ Pending
@@ -106,8 +106,8 @@ export default function PayoutsPage() {
           )}
           {pending.length > 0 && (
             <div className="flex justify-between items-center pt-3 mt-1 border-t-2 border-slate-900">
-              <span className="text-sm font-bold text-slate-900">Total Pending</span>
-              <span className="text-lg font-bold text-slate-900">${(pendingTotal / 100).toFixed(2)}</span>
+              <span className="text-sm font-bold text-foreground">Total Pending</span>
+              <span className="text-lg font-bold text-foreground">${(pendingTotal / 100).toFixed(2)}</span>
             </div>
           )}
         </div>
@@ -121,8 +121,8 @@ export default function PayoutsPage() {
 
       {/* Payout History */}
       <Card variant="bordered" padding="none">
-        <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
+        <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground">Payout History</h3>
           <Button size="sm" variant="secondary">Process Weekly ↓</Button>
         </div>
 
@@ -130,48 +130,48 @@ export default function PayoutsPage() {
         <div className="hidden sm:block overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
             <thead>
-              <tr className="bg-slate-100 border-b border-slate-200">
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Plumber</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Period</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Gross</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Platform Fee</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Net</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Jobs</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Status</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-400 text-xs">Date</th>
+              <tr className="bg-muted border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Plumber</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Period</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Gross</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Platform Fee</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Net</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Jobs</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Status</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground/80 text-xs">Date</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {payouts.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center">
-                    <p className="text-sm text-slate-500">📋 No payout history yet. Weekly payouts run every Sunday.</p>
+                    <p className="text-sm text-muted-foreground">📋 No payout history yet. Weekly payouts run every Sunday.</p>
                   </td>
                 </tr>
               ) : (
                 payouts.map(p => (
-                <tr key={p.id} className="hover:bg-slate-50">
+                <tr key={p.id} className="hover:bg-muted">
                   <td className="px-4 py-3">
-                    <span className="text-sm font-medium text-slate-900">{p.plumber_name || '—'}</span>
+                    <span className="text-sm font-medium text-foreground">{p.plumber_name || '—'}</span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-slate-400">{p.period_start} — {p.period_end}</td>
-                  <td className="px-4 py-3 text-slate-700">${(p.gross_amount / 100).toFixed(2)}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground/80">{p.period_start} — {p.period_end}</td>
+                  <td className="px-4 py-3 text-foreground">${(p.gross_amount / 100).toFixed(2)}</td>
                   <td className="px-4 py-3 text-amber-600">-${(p.platform_fee / 100).toFixed(2)}</td>
                   <td className="px-4 py-3">
                     <span className="font-semibold text-emerald-600">${(p.net_amount / 100).toFixed(2)}</span>
                   </td>
-                  <td className="px-4 py-3 text-slate-400">{p.fee_count}</td>
+                  <td className="px-4 py-3 text-muted-foreground/80">{p.fee_count}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                       p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
-                      p.status === 'processing' ? 'bg-blue-50 text-blue-600' :
+                      p.status === 'processing' ? 'bg-blue-50 text-primary' :
                       p.status === 'failed' ? 'bg-red-50 text-red-600' :
                       'bg-amber-50 text-amber-600'
                     }`}>
                       {p.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-slate-500">{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
                 </tr>
               )))}
             </tbody>
@@ -182,14 +182,14 @@ export default function PayoutsPage() {
         <div className="sm:hidden space-y-3 p-4">
           {payouts.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-sm text-slate-500">📋 No payout history yet. Weekly payouts run every Sunday.</p>
+              <p className="text-sm text-muted-foreground">📋 No payout history yet. Weekly payouts run every Sunday.</p>
             </div>
           ) : (
             payouts.map(p => {
               const initials = p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('') || '—';
               const statusClass =
                 p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
-                p.status === 'processing' ? 'bg-blue-50 text-blue-600' :
+                p.status === 'processing' ? 'bg-blue-50 text-primary' :
                 p.status === 'failed' ? 'bg-red-50 text-red-600' :
                 'bg-amber-50 text-amber-600';
               return (
@@ -200,22 +200,22 @@ export default function PayoutsPage() {
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
                         {initials}
                       </div>
-                      <span className="text-sm font-semibold text-slate-900 truncate">{p.plumber_name || '—'}</span>
+                      <span className="text-sm font-semibold text-foreground truncate">{p.plumber_name || '—'}</span>
                     </div>
                     <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 ${statusClass}`}>
                       {p.status === 'pending' ? '⏳ ' : ''}{p.status}
                     </span>
                   </div>
                   {/* Row 2: Period */}
-                  <p className="text-xs text-slate-400">{p.period_start} to {p.period_end}</p>
+                  <p className="text-xs text-muted-foreground/80">{p.period_start} to {p.period_end}</p>
                   {/* Row 3: Gross · Fee · Net */}
                   <div className="flex items-center gap-3 text-xs">
-                    <span className="text-slate-700">Gross: <strong>${(p.gross_amount / 100).toFixed(2)}</strong></span>
+                    <span className="text-foreground">Gross: <strong>${(p.gross_amount / 100).toFixed(2)}</strong></span>
                     <span className="text-amber-600">Fee: <strong>-${(p.platform_fee / 100).toFixed(2)}</strong></span>
                     <span className="text-emerald-600 font-semibold">Net: <strong>${(p.net_amount / 100).toFixed(2)}</strong></span>
                   </div>
                   {/* Row 4: Jobs + Date */}
-                  <div className="flex items-center justify-between text-xs text-slate-500">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>Jobs: {p.fee_count}</span>
                     <span>{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</span>
                   </div>

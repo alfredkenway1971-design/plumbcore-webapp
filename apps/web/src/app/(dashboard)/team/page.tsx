@@ -33,11 +33,11 @@ interface TeamMemberData {
 /* ── Role config ── */
 
 const roleConfig: Record<TeamRole, { label: string; color: string }> = {
-  admin: { label: 'Admin', color: 'bg-electric/15 text-blue-600' },
+  admin: { label: 'Admin', color: 'bg-electric/15 text-primary' },
   dispatcher: { label: 'Dispatcher', color: 'bg-amber-500/15 text-amber-400' },
   'lead-tech': { label: 'Lead Tech', color: 'bg-green-500/15 text-green-600' },
   'senior-tech': { label: 'Senior Tech', color: 'bg-green-50 text-green-600' },
-  tech: { label: 'Tech', color: 'bg-white/10 text-slate-400' },
+  tech: { label: 'Tech', color: 'bg-white/10 text-muted-foreground/80' },
   accountant: { label: 'Accountant', color: 'bg-blue-500/15 text-blue-400' },
 };
 
@@ -228,7 +228,7 @@ export default function TeamPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">Team</h1>
+          <h1 className="text-2xl font-bold text-foreground">Team</h1>
         </div>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load team" message={error} onRetry={handleRetry} />
@@ -242,7 +242,7 @@ export default function TeamPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">Team</h1>
+          <h1 className="text-2xl font-bold text-foreground">Team</h1>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -257,7 +257,7 @@ export default function TeamPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-slate-900">Team</h1>
+        <h1 className="text-2xl font-bold text-foreground">Team</h1>
         <div className="flex gap-2">
           <Input
             placeholder="Search team members..."
@@ -307,11 +307,11 @@ export default function TeamPage() {
             onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
           />
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Role</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Role</label>
             <select
               value={inviteForm.role}
               onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}
-              className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/50"
             >
               <option value="tech">Technician</option>
               <option value="senior-tech">Senior Technician</option>
@@ -361,10 +361,10 @@ export default function TeamPage() {
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar name={member.name} size="md" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 truncate">{member.name}</p>
+                    <p className="text-sm font-semibold text-foreground truncate">{member.name}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className={`h-2 w-2 rounded-full ${status.dotColor}`} />
-                      <span className="text-[10px] text-slate-500">{status.label}</span>
+                      <span className="text-[10px] text-muted-foreground">{status.label}</span>
                     </div>
                   </div>
                 </div>
@@ -375,20 +375,20 @@ export default function TeamPage() {
                       {role.label}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     {member.email}
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                     {member.phone}
                   </div>
                   {member.role !== 'admin' && member.role !== 'accountant' && member.role !== 'dispatcher' && (
-                    <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
@@ -429,7 +429,7 @@ export default function TeamPage() {
             <div className="flex items-center gap-3">
               <Avatar name={selectedMember.name} size="lg" />
               <div>
-                <p className="text-lg font-semibold text-slate-900">{selectedMember.name}</p>
+                <p className="text-lg font-semibold text-foreground">{selectedMember.name}</p>
                 <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${roleConfig[selectedMember.role].color}`}>
                   {roleConfig[selectedMember.role].label}
                 </span>
@@ -437,39 +437,39 @@ export default function TeamPage() {
             </div>
 
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Email</span>
-                <span className="text-slate-900">{selectedMember.email}</span>
+                <span className="text-foreground">{selectedMember.email}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Phone</span>
-                <span className="text-slate-900">{selectedMember.phone}</span>
+                <span className="text-foreground">{selectedMember.phone}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Status</span>
-                <span className="flex items-center gap-1.5 text-slate-900">
+                <span className="flex items-center gap-1.5 text-foreground">
                   <span className={`h-2 w-2 rounded-full ${statusConfig[selectedMember.status].dotColor}`} />
                   {statusConfig[selectedMember.status].label}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Assigned Jobs</span>
-                <span className="text-slate-900 font-medium">{getAssignedJobsCount(selectedMember.id)}</span>
+                <span className="text-foreground font-medium">{getAssignedJobsCount(selectedMember.id)}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Rating</span>
-                <span className="text-slate-900">{selectedMember.rating > 0 ? `${selectedMember.rating}/5` : 'N/A'}</span>
+                <span className="text-foreground">{selectedMember.rating > 0 ? `${selectedMember.rating}/5` : 'N/A'}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 pb-2">
+              <div className="flex justify-between border-b border-border/50 pb-2">
                 <span className="text-steel">Joined</span>
-                <span className="text-slate-900">{new Date(selectedMember.joinedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                <span className="text-foreground">{new Date(selectedMember.joinedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               </div>
               {selectedMember.specialties.length > 0 && (
                 <div className="flex justify-between pb-2">
                   <span className="text-steel">Specialties</span>
                   <div className="flex flex-wrap gap-1 justify-end">
                     {selectedMember.specialties.map((s: any) => (
-                      <span key={s} className="inline-flex rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-slate-400">{s}</span>
+                      <span key={s} className="inline-flex rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground/80">{s}</span>
                     ))}
                   </div>
                 </div>
@@ -493,17 +493,17 @@ export default function TeamPage() {
             <div className="flex items-center gap-3 mb-4">
               <Avatar name={editingMember.name} size="lg" />
               <div>
-                <p className="text-lg font-semibold text-slate-900">{editingMember.name}</p>
-                <p className="text-xs text-slate-500">{editingMember.email}</p>
+                <p className="text-lg font-semibold text-foreground">{editingMember.name}</p>
+                <p className="text-xs text-muted-foreground">{editingMember.email}</p>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1.5">Role</label>
+              <label className="block text-sm font-medium text-muted-foreground/80 mb-1.5">Role</label>
               <select
                 value={editRole}
                 onChange={(e) => setEditRole(e.target.value as TeamRole)}
-                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 <option value="admin">Admin</option>
                 <option value="dispatcher">Dispatcher</option>
@@ -516,8 +516,8 @@ export default function TeamPage() {
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-400">Active Status</p>
-                <p className="text-xs text-slate-500">{editActive ? 'Member is active and receiving assignments' : 'Member is inactive and not receiving assignments'}</p>
+                <p className="text-sm font-medium text-muted-foreground/80">Active Status</p>
+                <p className="text-xs text-muted-foreground">{editActive ? 'Member is active and receiving assignments' : 'Member is inactive and not receiving assignments'}</p>
               </div>
               <button
                 onClick={() => setEditActive(!editActive)}

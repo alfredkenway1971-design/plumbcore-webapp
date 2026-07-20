@@ -48,12 +48,12 @@ export default function EarningsPage() {
     <div className="p-4 sm:p-6 space-y-5 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Earnings</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Track your revenue and payouts</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Earnings</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Track your revenue and payouts</p>
         </div>
         <a
           href={`/api/plumber/earnings?companyId=${company?.id}&format=csv`}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-200 transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-muted px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition-colors"
         >
           <I.TrendingUp className="w-3.5 h-3.5" /> Export
         </a>
@@ -62,16 +62,16 @@ export default function EarningsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase text-blue-600">This Week</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
+          <p className="text-[10px] font-semibold uppercase text-primary">This Week</p>
+          <p className="text-xl font-bold text-foreground mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-emerald-600">This Month</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.thisMonth / 100).toFixed(2)}</p>
+          <p className="text-xl font-bold text-foreground mt-1">${(summary.thisMonth / 100).toFixed(2)}</p>
         </div>
         <div className="rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-violet-600">Lifetime</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">${(summary.lifetime / 100).toLocaleString()}</p>
+          <p className="text-xl font-bold text-foreground mt-1">${(summary.lifetime / 100).toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-amber-600">Pending</p>
@@ -89,34 +89,34 @@ export default function EarningsPage() {
 
       {/* Revenue Breakdown */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Revenue Breakdown</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Revenue Breakdown</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-400">Jobs This Month</span>
-              <span className="text-sm font-semibold text-slate-900">{summary.jobsThisMonth}</span>
+              <span className="text-sm text-muted-foreground/80">Jobs This Month</span>
+              <span className="text-sm font-semibold text-foreground">{summary.jobsThisMonth}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-400">Avg. Per Job</span>
-              <span className="text-sm font-semibold text-slate-900">${(summary.avgPerJob / 100).toFixed(2)}</span>
+              <span className="text-sm text-muted-foreground/80">Avg. Per Job</span>
+              <span className="text-sm font-semibold text-foreground">${(summary.avgPerJob / 100).toFixed(2)}</span>
             </div>
-            <div className="h-px bg-slate-200 my-1" />
+            <div className="h-px bg-muted my-1" />
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-400">Lead Fees Charged (PlumbCore)</span>
-              <span className="text-sm font-semibold text-slate-900">${(summary.leadFeesCharged / 100).toFixed(2)}</span>
+              <span className="text-sm text-muted-foreground/80">Lead Fees Charged (PlumbCore)</span>
+              <span className="text-sm font-semibold text-foreground">${(summary.leadFeesCharged / 100).toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-400">Platform Fees Paid</span>
+              <span className="text-sm text-muted-foreground/80">Platform Fees Paid</span>
               <span className="text-sm font-semibold text-amber-600">-${(summary.platformFeesPaid / 100).toFixed(2)}</span>
             </div>
           </div>
-          <div className="bg-slate-50 rounded-xl p-4">
-            <p className="text-xs text-slate-500 mb-1">Next Payout</p>
+          <div className="bg-muted rounded-xl p-4">
+            <p className="text-xs text-muted-foreground mb-1">Next Payout</p>
             <div className="flex items-center gap-2">
               <I.Clock className="w-4 h-4 text-blue-500" />
-              <p className="text-sm font-semibold text-slate-900">{summary.nextPayoutDate}</p>
+              <p className="text-sm font-semibold text-foreground">{summary.nextPayoutDate}</p>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Weekly payout — every Sunday</p>
+            <p className="text-xs text-muted-foreground mt-1">Weekly payout — every Sunday</p>
           </div>
         </div>
       </Card>
@@ -125,10 +125,10 @@ export default function EarningsPage() {
       <Card variant="bordered" padding="md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <I.Bank className="w-5 h-5 text-slate-500" />
+            <I.Bank className="w-5 h-5 text-muted-foreground" />
             <div>
-              <p className="text-sm font-semibold text-slate-900">Payout Method</p>
-              <p className="text-xs text-slate-500">Stripe Connect — Weekly automatic transfers</p>
+              <p className="text-sm font-semibold text-foreground">Payout Method</p>
+              <p className="text-xs text-muted-foreground">Stripe Connect — Weekly automatic transfers</p>
             </div>
           </div>
           <Button size="sm" onClick={() => window.open('/plumber/profile', '_self')}>Manage →</Button>
@@ -137,37 +137,37 @@ export default function EarningsPage() {
 
       {/* Payout History */}
       <Card variant="bordered" padding="none">
-        <div className="px-4 py-3 border-b border-slate-200">
-          <h3 className="text-sm font-semibold text-slate-900">Payout History</h3>
+        <div className="px-4 py-3 border-b border-border">
+          <h3 className="text-sm font-semibold text-foreground">Payout History</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Period</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Gross</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Fee</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Net</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Jobs</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Status</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Date</th>
+              <tr className="bg-muted border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Period</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Gross</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Fee</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Net</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Jobs</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Status</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Date</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {payouts.length === 0 ? (
-                <tr><td colSpan={7} className="px-4 py-6 text-center text-sm text-slate-500">No payouts yet</td></tr>
+                <tr><td colSpan={7} className="px-4 py-6 text-center text-sm text-muted-foreground">No payouts yet</td></tr>
               ) : (
                 payouts.map(p => (
                   <tr key={p.id} className="hover:bg-white/[0.02]">
                     <td className="px-4 py-3">
-                      <span className="text-sm font-medium text-slate-900">{p.period_start} — {p.period_end}</span>
+                      <span className="text-sm font-medium text-foreground">{p.period_start} — {p.period_end}</span>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">${(p.gross_amount / 100).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-muted-foreground">${(p.gross_amount / 100).toFixed(2)}</td>
                     <td className="px-4 py-3 text-amber-600">-${(p.platform_fee / 100).toFixed(2)}</td>
                     <td className="px-4 py-3">
                       <span className="font-semibold text-emerald-600">${(p.net_amount / 100).toFixed(2)}</span>
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{p.fee_count}</td>
+                    <td className="px-4 py-3 text-muted-foreground/80">{p.fee_count}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                         p.status === 'paid' ? 'bg-emerald-50 text-emerald-700' :
@@ -178,7 +178,7 @@ export default function EarningsPage() {
                         {p.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground">{p.paid_at ? new Date(p.paid_at).toLocaleDateString() : '—'}</td>
                   </tr>
                 ))
               )}

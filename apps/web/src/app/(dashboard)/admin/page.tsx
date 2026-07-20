@@ -61,7 +61,7 @@ const activityColorMap: Record<string, string> = {
   success: 'bg-emerald-50 text-emerald-600',
   warning: 'bg-amber-50 text-amber-600',
   error: 'bg-red-50 text-red-600',
-  info: 'bg-blue-50 text-blue-600',
+  info: 'bg-blue-50 text-primary',
 };
 
 /* ═══════════════════════════════════════════
@@ -113,12 +113,12 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
         return (
           <div
             key={kpi.label}
-            className="bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5"
+            className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-black/5 transition-all hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5"
           >
             <div className="flex items-start justify-between mb-3">
-              <p className="text-sm font-medium text-slate-500">{kpi.label}</p>
+              <p className="text-sm font-medium text-muted-foreground">{kpi.label}</p>
             </div>
-            <p className="text-3xl font-semibold tracking-tight text-slate-900 mb-1.5">{kpi.value}</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground mb-1.5">{kpi.value}</p>
             <div className="flex items-center gap-1.5">
               <span
                 className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
@@ -134,7 +134,7 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
                 )}
                 {kpi.change}
               </span>
-              <span className="text-xs text-slate-600">vs last month</span>
+              <span className="text-xs text-muted-foreground">vs last month</span>
             </div>
           </div>
         );
@@ -148,13 +148,13 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
    ═══════════════════════════════════════════ */
 function MRRGrowthChart() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
+    <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">MRR Growth (12 Months)</h3>
+        <h3 className="text-base font-semibold text-foreground">MRR Growth (12 Months)</h3>
       </div>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <span className="text-4xl mb-3">📈</span>
-        <p className="text-sm text-slate-500">MRR growth data will appear once subscription payments start processing.</p>
+        <p className="text-sm text-muted-foreground">MRR growth data will appear once subscription payments start processing.</p>
       </div>
     </div>
   );
@@ -165,13 +165,13 @@ function MRRGrowthChart() {
    ═══════════════════════════════════════════ */
 function CustomerFunnel() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
+    <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">Customer Funnel</h3>
+        <h3 className="text-base font-semibold text-foreground">Customer Funnel</h3>
       </div>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <span className="text-4xl mb-3">🥧</span>
-        <p className="text-sm text-slate-500">Customer funnel data will appear once plumbers sign up.</p>
+        <p className="text-sm text-muted-foreground">Customer funnel data will appear once plumbers sign up.</p>
       </div>
     </div>
   );
@@ -182,14 +182,14 @@ function CustomerFunnel() {
    ═══════════════════════════════════════════ */
 function TrialPipelineTable() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Trial Pipeline</h3>
+        <h3 className="text-base font-semibold text-foreground">Trial Pipeline</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">📋</span>
-          <p className="text-sm text-slate-500">No active trials. When plumbers sign up for free trials, they&apos;ll appear here.</p>
+          <p className="text-sm text-muted-foreground">No active trials. When plumbers sign up for free trials, they&apos;ll appear here.</p>
         </div>
       </div>
     </div>
@@ -201,14 +201,14 @@ function TrialPipelineTable() {
    ═══════════════════════════════════════════ */
 function AtRiskCustomers() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">At-Risk Customers</h3>
+        <h3 className="text-base font-semibold text-foreground">At-Risk Customers</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">⚠️</span>
-          <p className="text-sm text-slate-500">No at-risk accounts.</p>
+          <p className="text-sm text-muted-foreground">No at-risk accounts.</p>
         </div>
       </div>
     </div>
@@ -220,14 +220,14 @@ function AtRiskCustomers() {
    ═══════════════════════════════════════════ */
 function TopCustomersTable() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Top Customers by Revenue</h3>
+        <h3 className="text-base font-semibold text-foreground">Top Customers by Revenue</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">🏆</span>
-          <p className="text-sm text-slate-500">No top customers yet. Revenue data will appear once plumbers complete jobs.</p>
+          <p className="text-sm text-muted-foreground">No top customers yet. Revenue data will appear once plumbers complete jobs.</p>
         </div>
       </div>
     </div>
@@ -239,14 +239,14 @@ function TopCustomersTable() {
    ═══════════════════════════════════════════ */
 function ActivityFeed() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Activity Feed</h3>
+        <h3 className="text-base font-semibold text-foreground">Activity Feed</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">📡</span>
-          <p className="text-sm text-slate-500">No recent activity.</p>
+          <p className="text-sm text-muted-foreground">No recent activity.</p>
         </div>
       </div>
     </div>
@@ -258,14 +258,14 @@ function ActivityFeed() {
    ═══════════════════════════════════════════ */
 function FeatureUsageHeatmap() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Feature Usage Heatmap</h3>
+        <h3 className="text-base font-semibold text-foreground">Feature Usage Heatmap</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">📊</span>
-          <p className="text-sm text-slate-500">Feature adoption data will appear once plumbers start using the platform.</p>
+          <p className="text-sm text-muted-foreground">Feature adoption data will appear once plumbers start using the platform.</p>
         </div>
       </div>
     </div>
@@ -277,13 +277,13 @@ function FeatureUsageHeatmap() {
    ═══════════════════════════════════════════ */
 function RevenueByPlanDonut() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5 h-full">
+    <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">Revenue by Plan</h3>
+        <h3 className="text-base font-semibold text-foreground">Revenue by Plan</h3>
       </div>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <span className="text-4xl mb-3">💰</span>
-        <p className="text-sm text-slate-500">Revenue breakdown will appear once subscriptions are active.</p>
+        <p className="text-sm text-muted-foreground">Revenue breakdown will appear once subscriptions are active.</p>
       </div>
     </div>
   );
@@ -294,13 +294,13 @@ function RevenueByPlanDonut() {
    ═══════════════════════════════════════════ */
 function GeographicMap() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">Geographic Distribution</h3>
+        <h3 className="text-base font-semibold text-foreground">Geographic Distribution</h3>
       </div>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <span className="text-4xl mb-3">🗺️</span>
-        <p className="text-sm text-slate-500">Geographic data will appear as plumbers sign up across regions.</p>
+        <p className="text-sm text-muted-foreground">Geographic data will appear as plumbers sign up across regions.</p>
       </div>
     </div>
   );
@@ -311,14 +311,14 @@ function GeographicMap() {
    ═══════════════════════════════════════════ */
 function UnfulfilledLeads() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">⚠️ Unfulfilled Leads</h3>
+        <h3 className="text-base font-semibold text-foreground">⚠️ Unfulfilled Leads</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">📥</span>
-          <p className="text-sm text-slate-500">No unfulfilled leads. All matched leads should appear here if they need attention.</p>
+          <p className="text-sm text-muted-foreground">No unfulfilled leads. All matched leads should appear here if they need attention.</p>
         </div>
       </div>
     </div>
@@ -330,14 +330,14 @@ function UnfulfilledLeads() {
    ═══════════════════════════════════════════ */
 function MarketingGrowth() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm ring-1 ring-black/5">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">📈 Marketing & Growth</h3>
+        <h3 className="text-base font-semibold text-foreground">📈 Marketing & Growth</h3>
       </div>
       <div className="px-5 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <span className="text-4xl mb-3">📊</span>
-          <p className="text-sm text-slate-500">Marketing data will appear once lead generation and ad campaigns are active.</p>
+          <p className="text-sm text-muted-foreground">Marketing data will appear once lead generation and ad campaigns are active.</p>
         </div>
       </div>
     </div>
@@ -401,16 +401,16 @@ export default function AdminPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Platform Overview</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Platform Overview</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Super Admin — {displayKPIs.activePlumbers} plumbers · ${displayKPIs.totalMRR.toLocaleString()} MRR
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
+          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border text-sm text-muted-foreground hover:bg-muted transition-colors cursor-pointer">
             <span className="text-xs">📅</span>
             <span className="text-xs font-medium">This Month</span>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
+            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
           </div>
 
         </div>

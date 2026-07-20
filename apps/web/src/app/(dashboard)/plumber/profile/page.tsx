@@ -93,9 +93,9 @@ export default function PlumberProfilePage() {
           {plumber.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
         </div>
         <div className="flex-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{plumber.company_name}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">{plumber.company_name}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600">{tierLabel}</span>
+            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-primary">{tierLabel}</span>
             <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${plumber.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{plumber.status}</span>
           </div>
         </div>
@@ -103,11 +103,11 @@ export default function PlumberProfilePage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-200 pb-0 overflow-x-auto">
+      <div className="flex gap-1 border-b border-border pb-0 overflow-x-auto">
         {PROFILE_TABS.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-              activeTab === tab.key ? 'text-cyan-600 border-cyan-500' : 'text-slate-500 border-transparent hover:text-slate-700'
+              activeTab === tab.key ? 'text-cyan-600 border-cyan-500' : 'text-muted-foreground border-transparent hover:text-foreground'
             }`}>
             {tab.label}
           </button>
@@ -140,24 +140,24 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
     <>
       {/* Service Area */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
-          <I.MapPin className="w-4 h-4 text-slate-500" /> Service Area
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
+          <I.MapPin className="w-4 h-4 text-muted-foreground" /> Service Area
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.service_area_zipcodes.map(z => (
-            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-slate-100 text-xs text-slate-700">{z}</span>
+            <span key={z} className="inline-flex px-2 py-1 rounded-lg bg-muted text-xs text-foreground">{z}</span>
           ))}
         </div>
       </Card>
 
       {/* Specialties */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
-          <I.Wrench className="w-4 h-4 text-slate-500" /> Specialties
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
+          <I.Wrench className="w-4 h-4 text-muted-foreground" /> Specialties
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {plumber.specialties.map((s: any) => (
-            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-slate-100 text-xs font-medium text-slate-700">{s}</span>
+            <span key={s} className="inline-flex px-2.5 py-1.5 rounded-xl bg-muted text-xs font-medium text-foreground">{s}</span>
           ))}
         </div>
       </Card>
@@ -165,7 +165,7 @@ function OverviewTab({ plumber }: { plumber: PlumberProfile }) {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <StatCard label="Jobs Completed" value={String(plumber.total_jobs_completed)} icon={I.Check} />
-        <StatCard label="Rating" value={`${plumber.avg_rating}`} icon={I.Star} sub={<span className="text-[10px] text-slate-500">({plumber.total_reviews})</span>} />
+        <StatCard label="Rating" value={`${plumber.avg_rating}`} icon={I.Star} sub={<span className="text-[10px] text-muted-foreground">({plumber.total_reviews})</span>} />
         <StatCard label="Response Time" value={`${plumber.response_time_avg}min`} icon={I.Clock} />
         <StatCard label="Acceptance" value={`${plumber.acceptance_rate}%`} icon={I.Upload} />
       </div>
@@ -179,54 +179,54 @@ function FinancialTab({ plumber, onConnectStripe, saving }: { plumber: PlumberPr
     <>
       {/* Plan Info */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Plan & Pricing</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Plan & Pricing</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div>
-            <p className="text-xs text-slate-500">Plan Tier</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
+            <p className="text-xs text-muted-foreground">Plan Tier</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5">{PLAN_LABELS_PRETTY[plumber.plan_tier]}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Lead Fee (per job)</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}</p>
+            <p className="text-xs text-muted-foreground">Lead Fee (per job)</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5">${(plumber.lead_fee_cents / 100).toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Monthly Lead Limit</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.monthly_lead_limit}</p>
+            <p className="text-xs text-muted-foreground">Monthly Lead Limit</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5">{plumber.monthly_lead_limit}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Current Month Leads</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">{plumber.current_month_leads}</p>
+            <p className="text-xs text-muted-foreground">Current Month Leads</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5">{plumber.current_month_leads}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Payout Schedule</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5 capitalize">{plumber.payout_schedule}</p>
+            <p className="text-xs text-muted-foreground">Payout Schedule</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5 capitalize">{plumber.payout_schedule}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Payout Threshold</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">${(plumber.payout_threshold_cents / 100).toFixed(2)}</p>
+            <p className="text-xs text-muted-foreground">Payout Threshold</p>
+            <p className="text-sm font-semibold text-foreground mt-0.5">${(plumber.payout_threshold_cents / 100).toFixed(2)}</p>
           </div>
         </div>
       </Card>
 
       {/* Stripe Connect */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-3">
-          <I.Bank className="w-4 h-4 text-slate-500" /> Bank Account (Stripe Connect)
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
+          <I.Bank className="w-4 h-4 text-muted-foreground" /> Bank Account (Stripe Connect)
         </h3>
         {plumber.stripe_onboarding_complete ? (
           <div className="flex items-center gap-2 text-sm">
             <I.Check className="w-4 h-4 text-emerald-600" />
             <span className="text-emerald-600 font-medium">Connected</span>
-            <span className="text-slate-500 text-xs ml-2">Account: {plumber.stripe_connect_account_id}</span>
+            <span className="text-muted-foreground text-xs ml-2">Account: {plumber.stripe_connect_account_id}</span>
           </div>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm text-slate-400">Link your bank account to receive weekly payouts via Stripe Connect.</p>
+            <p className="text-sm text-muted-foreground/80">Link your bank account to receive weekly payouts via Stripe Connect.</p>
             <Button onClick={onConnectStripe} disabled={saving}>
               {saving ? 'Loading...' : 'Link Bank Account'}
             </Button>
             {plumber.stripe_onboarding_url && (
-              <p className="text-xs text-slate-500 mt-1">Already started? <a href={plumber.stripe_onboarding_url} target="_blank" className="text-blue-600 hover:underline">Continue onboarding</a></p>
+              <p className="text-xs text-muted-foreground mt-1">Already started? <a href={plumber.stripe_onboarding_url} target="_blank" className="text-primary hover:underline">Continue onboarding</a></p>
             )}
           </div>
         )}
@@ -235,14 +235,14 @@ function FinancialTab({ plumber, onConnectStripe, saving }: { plumber: PlumberPr
       {/* Quick revenue stats */}
       <div className="grid grid-cols-2 gap-3">
         <Card variant="bordered" padding="md">
-          <p className="text-xs text-slate-500">This Month Lead Revenue</p>
-          <p className="text-xl font-bold text-slate-900 mt-1">${(plumber.current_month_leads * plumber.lead_fee_cents / 100).toLocaleString()}</p>
-          <p className="text-[10px] text-slate-600 mt-0.5">{plumber.current_month_leads} leads at ${(plumber.lead_fee_cents / 100).toFixed(2)} each</p>
+          <p className="text-xs text-muted-foreground">This Month Lead Revenue</p>
+          <p className="text-xl font-bold text-foreground mt-1">${(plumber.current_month_leads * plumber.lead_fee_cents / 100).toLocaleString()}</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">{plumber.current_month_leads} leads at ${(plumber.lead_fee_cents / 100).toFixed(2)} each</p>
         </Card>
         <Card variant="bordered" padding="md">
-          <p className="text-xs text-slate-500">PlumbCore Processing Fee</p>
+          <p className="text-xs text-muted-foreground">PlumbCore Processing Fee</p>
           <p className="text-xl font-bold text-amber-600 mt-1">${(plumber.current_month_leads * (4900 - plumber.lead_fee_cents) / 100).toLocaleString()}</p>
-          <p className="text-[10px] text-slate-600 mt-0.5">$49 deposit - ${(plumber.lead_fee_cents / 100).toFixed(2)} lead fee</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">$49 deposit - ${(plumber.lead_fee_cents / 100).toFixed(2)} lead fee</p>
         </Card>
       </div>
     </>
@@ -264,10 +264,10 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
         {metrics.map(m => (
           <Card key={m.label} variant="bordered" padding="md">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-slate-400">{m.label}</p>
-              <p className="text-lg font-bold text-slate-900">{m.value}</p>
+              <p className="text-sm text-muted-foreground/80">{m.label}</p>
+              <p className="text-lg font-bold text-foreground">{m.value}</p>
             </div>
-            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${m.pct}%`, backgroundColor: m.color }} />
             </div>
           </Card>
@@ -275,7 +275,7 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
       </div>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Reviews</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Reviews</h3>
         {plumber.total_reviews > 0 ? (
           <div className="space-y-3">
             {/* Star rating display */}
@@ -285,12 +285,12 @@ function PerformanceTab({ plumber }: { plumber: PlumberProfile }) {
                   <I.Star key={s} className={`w-5 h-5 ${s <= Math.round(plumber.avg_rating) ? 'text-amber-600 fill-amber-400' : 'text-slate-300'}`} />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-slate-900">{plumber.avg_rating}</span>
-              <span className="text-xs text-slate-500">({plumber.total_reviews} reviews)</span>
+              <span className="text-sm font-semibold text-foreground">{plumber.avg_rating}</span>
+              <span className="text-xs text-muted-foreground">({plumber.total_reviews} reviews)</span>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-slate-500">No reviews yet.</p>
+          <p className="text-sm text-muted-foreground">No reviews yet.</p>
         )}
       </Card>
     </>
@@ -313,36 +313,36 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-2">
-            <I.Shield className="w-4 h-4 text-slate-500" /> Background Check
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-2">
+            <I.Shield className="w-4 h-4 text-muted-foreground" /> Background Check
           </h3>
           <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${bcCfg.bg} ${bcCfg.text}`}>
             {plumber.background_check_status.charAt(0).toUpperCase() + plumber.background_check_status.slice(1)}
           </span>
         </Card>
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">License</h3>
-          <p className="text-sm text-slate-700">{plumber.license_number || 'Not provided'}</p>
+          <h3 className="text-sm font-semibold text-foreground mb-2">License</h3>
+          <p className="text-sm text-foreground">{plumber.license_number || 'Not provided'}</p>
         </Card>
       </div>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Insurance</h3>
-        <p className="text-sm text-slate-400">{plumber.insurance_info || 'Not provided'}</p>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Insurance</h3>
+        <p className="text-sm text-muted-foreground/80">{plumber.insurance_info || 'Not provided'}</p>
       </Card>
 
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Update Compliance Info</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Update Compliance Info</h3>
         <div className="space-y-3">
           <div>
-            <label className="block text-xs text-slate-500 mb-1">License Number</label>
+            <label className="block text-xs text-muted-foreground mb-1">License Number</label>
             <input value={license} onChange={e => setLicense(e.target.value)}
-              className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500" />
+              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-blue-500" />
           </div>
           <div>
-            <label className="block text-xs text-slate-500 mb-1">Insurance Info</label>
+            <label className="block text-xs text-muted-foreground mb-1">Insurance Info</label>
             <textarea value={insurance} onChange={e => setInsurance(e.target.value)} rows={2}
-              className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 resize-none" />
+              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-blue-500 resize-none" />
           </div>
           <Button size="sm" onClick={() => onUpdate({ license_number: license, insurance_info: insurance })}>Save Changes</Button>
         </div>
@@ -362,29 +362,29 @@ function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
     <>
       {/* Usage Card */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-4">
-          <svg className="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-4">
+          <svg className="w-4 h-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 3.75v4.5m0-4.5h-4.5m4.5 0l-6 6m3 12c-8.284 0-15-6.716-15-15V18m9-6.75V15m0 0v.75m0-6.75h.008v.008H12V8.25z" />
           </svg>
           AI Receptionist — {plumber.company_name}
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
           <div>
-            <p className="text-xs text-slate-500">Plan Allocation</p>
-            <p className="text-lg font-bold text-slate-900">{maxHours} hrs/mo</p>
+            <p className="text-xs text-muted-foreground">Plan Allocation</p>
+            <p className="text-lg font-bold text-foreground">{maxHours} hrs/mo</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Used This Month</p>
-            <p className="text-lg font-bold text-blue-600">{usedHours}h {pct > 0 ? `(${Math.round(pct)}%)` : ''}</p>
+            <p className="text-xs text-muted-foreground">Used This Month</p>
+            <p className="text-lg font-bold text-primary">{usedHours}h {pct > 0 ? `(${Math.round(pct)}%)` : ''}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Remaining</p>
+            <p className="text-xs text-muted-foreground">Remaining</p>
             <p className={`text-lg font-bold ${remaining > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
               {remaining}h
             </p>
           </div>
           <div>
-            <p className="text-xs text-slate-500">Status</p>
+            <p className="text-xs text-muted-foreground">Status</p>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 mt-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Active
@@ -392,29 +392,29 @@ function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
           </div>
         </div>
         {/* Usage bar */}
-        <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+        <div className="h-2 rounded-full bg-muted overflow-hidden">
           <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
         </div>
       </Card>
 
       {/* Greeting Preview */}
       <Card variant="bordered" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Greeting & Settings</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Greeting & Settings</h3>
         <div className="space-y-3">
           <div>
-            <p className="text-xs text-slate-500 mb-1">Greeting Message</p>
-            <div className="rounded-xl bg-slate-50 p-3 text-sm text-slate-600 italic">
+            <p className="text-xs text-muted-foreground mb-1">Greeting Message</p>
+            <div className="rounded-xl bg-muted p-3 text-sm text-muted-foreground italic">
               &ldquo;Thank you for calling {plumber.company_name}! I&apos;m your AI receptionist. How can I help you today?&rdquo;
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-xs text-slate-500 mb-1">Booking Hours</p>
-              <p className="text-sm font-medium text-slate-900">8:00 AM — 5:00 PM</p>
+              <p className="text-xs text-muted-foreground mb-1">Booking Hours</p>
+              <p className="text-sm font-medium text-foreground">8:00 AM — 5:00 PM</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 mb-1">After Hours</p>
-              <p className="text-sm font-medium text-slate-900">Emergency transfers only</p>
+              <p className="text-xs text-muted-foreground mb-1">After Hours</p>
+              <p className="text-sm font-medium text-foreground">Emergency transfers only</p>
             </div>
           </div>
         </div>
@@ -423,8 +423,8 @@ function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
       {/* Recent Calls */}
       <Card variant="bordered" padding="md">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-slate-900">Recent Calls</h3>
-          <a href="/voice-receptionist" className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+          <h3 className="text-sm font-semibold text-foreground">Recent Calls</h3>
+          <a href="/voice-receptionist" className="text-xs text-primary hover:text-primary/80 font-medium">
             View All →
           </a>
         </div>
@@ -433,8 +433,8 @@ function ReceptionistTab({ plumber }: { plumber: PlumberProfile }) {
             <svg className="w-10 h-10 text-slate-300 mx-auto mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 3.75v4.5m0-4.5h-4.5m4.5 0l-6 6m3 12c-8.284 0-15-6.716-15-15V18m9-6.75V15m0 0v.75m0-6.75h.008v.008H12V8.25z" />
             </svg>
-            <p className="text-sm text-slate-500">No recent calls yet.</p>
-            <p className="text-xs text-slate-400 mt-1">Calls will appear here once your AI receptionist starts taking calls.</p>
+            <p className="text-sm text-muted-foreground">No recent calls yet.</p>
+            <p className="text-xs text-muted-foreground/80 mt-1">Calls will appear here once your AI receptionist starts taking calls.</p>
           </div>
         </div>
       </Card>
@@ -459,13 +459,13 @@ function StatCard({ label, value, icon: Icon, sub }: { label: string; value: str
   return (
     <Card variant="bordered" padding="md">
       <div className="flex items-start justify-between mb-1">
-        <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-slate-400" />
+        <div className="w-8 h-8 rounded-xl bg-muted flex items-center justify-center">
+          <Icon className="w-4 h-4 text-muted-foreground/80" />
         </div>
         {sub && <div>{sub}</div>}
       </div>
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className="text-lg font-bold text-slate-900 mt-0.5">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-lg font-bold text-foreground mt-0.5">{value}</p>
     </Card>
   );
 }

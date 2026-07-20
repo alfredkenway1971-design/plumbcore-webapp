@@ -32,7 +32,7 @@ function formatDate(d: string) {
 }
 
 const priorityStyles: Record<string, string> = {
-  low: 'bg-steel/10 text-slate-400',
+  low: 'bg-steel/10 text-muted-foreground/80',
   medium: 'bg-accent-amber/10 text-amber-600',
   high: 'bg-red-50 text-red-600',
   urgent: 'bg-red-500/20 text-red-600 animate-pulse',
@@ -83,15 +83,15 @@ function SplitViewSkeleton() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 animate-pulse">
       <div className="lg:col-span-2 space-y-4">
-        <div className="h-8 w-48 rounded bg-slate-50" />
-        <div className="h-5 w-72 rounded bg-slate-50" />
+        <div className="h-8 w-48 rounded bg-muted" />
+        <div className="h-5 w-72 rounded bg-muted" />
         <div className="h-32 rounded-xl bg-white ring-1 ring-black/5" />
         <div className="h-24 rounded-xl bg-white ring-1 ring-black/5" />
       </div>
       <div className="space-y-3">
-        <div className="h-6 w-24 rounded bg-slate-50" />
+        <div className="h-6 w-24 rounded bg-muted" />
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-16 rounded-xl bg-slate-50" />
+          <div key={i} className="h-16 rounded-xl bg-muted" />
         ))}
       </div>
     </div>
@@ -286,7 +286,7 @@ export default function JobDetailPage() {
       {/* Back link */}
       <button
         onClick={() => router.push('/jobs')}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-900 transition-colors"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground/80 hover:text-foreground transition-colors"
       >
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -301,10 +301,10 @@ export default function JobDetailPage() {
           {/* Header */}
           <div>
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{job.id}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">{job.id}</h1>
               <StatusBadge status={job.status} size="md" />
               <span
-                className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-slate-400'}`}
+                className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-muted-foreground/80'}`}
               >
                 {job.priority}
               </span>
@@ -315,23 +315,23 @@ export default function JobDetailPage() {
                 </span>
               )}
             </div>
-            <p className="mt-1 text-sm text-slate-500">{job.title}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{job.title}</p>
           </div>
 
           {/* Customer Info */}
           <Card variant="default" padding="md">
-            <h3 className="text-sm font-semibold text-slate-900 mb-3">Customer</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Customer</h3>
             <div className="flex items-center gap-3">
               <Avatar name={job.clientName} size="md" />
               <div>
                 <button
                   onClick={() => router.push(`/clients/${client?.id || job.clientId}`)}
-                  className="text-sm font-medium text-blue-600 hover:underline"
+                  className="text-sm font-medium text-primary hover:underline"
                 >
                   {job.clientName}
                 </button>
                 {client && (
-                  <p className="text-xs text-slate-500">{client.email} · {client.phone}</p>
+                  <p className="text-xs text-muted-foreground">{client.email} · {client.phone}</p>
                 )}
               </div>
             </div>
@@ -339,28 +339,28 @@ export default function JobDetailPage() {
 
           {/* Job Details */}
           <Card variant="default" padding="md">
-            <h3 className="text-sm font-semibold text-slate-900 mb-3">Details</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Details</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">Description</p>
-                <p className="text-sm text-slate-900">{job.description}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Description</p>
+                <p className="text-sm text-foreground">{job.description}</p>
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">Date & Time</p>
-                  <p className="text-sm text-slate-900">{formatDate(job.scheduledDate)}{job.scheduledTime ? ` at ${job.scheduledTime}` : ''}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Date & Time</p>
+                  <p className="text-sm text-foreground">{formatDate(job.scheduledDate)}{job.scheduledTime ? ` at ${job.scheduledTime}` : ''}</p>
                   {job.completedDate && (
-                    <p className="text-xs text-slate-500 mt-0.5">Completed: {formatDate(job.completedDate)}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Completed: {formatDate(job.completedDate)}</p>
                   )}
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">Address</p>
-                  <p className="text-sm text-slate-900">{job.address}</p>
-                  <p className="text-xs text-slate-500">{job.city}, {job.state} {job.zip}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Address</p>
+                  <p className="text-sm text-foreground">{job.address}</p>
+                  <p className="text-xs text-muted-foreground">{job.city}, {job.state} {job.zip}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">Assigned Tech(s)</p>
-                  <p className="text-sm text-slate-900">{techNames || 'Unassigned'}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Assigned Tech(s)</p>
+                  <p className="text-sm text-foreground">{techNames || 'Unassigned'}</p>
                 </div>
               </div>
             </div>
@@ -369,7 +369,7 @@ export default function JobDetailPage() {
           {/* Photo Gallery */}
           <Card variant="default" padding="md">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-slate-900">Photos</h3>
+              <h3 className="text-sm font-semibold text-foreground">Photos</h3>
               <Button variant="secondary" size="sm" onClick={handleAddPhoto}>
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -385,12 +385,12 @@ export default function JobDetailPage() {
               onChange={() => handleAddPhoto()}
             />
             {photos.length === 0 ? (
-              <div className="flex items-center justify-center py-8 border border-dashed border-slate-200 rounded-xl bg-whiteer/30">
+              <div className="flex items-center justify-center py-8 border border-dashed border-border rounded-xl bg-whiteer/30">
                 <div className="text-center">
-                  <svg className="mx-auto h-10 w-10 text-slate-500-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                  <svg className="mx-auto h-10 w-10 text-muted-foreground-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                   </svg>
-                  <p className="mt-2 text-xs text-slate-500">No photos yet. Click &quot;Add Photo&quot; to upload.</p>
+                  <p className="mt-2 text-xs text-muted-foreground">No photos yet. Click &quot;Add Photo&quot; to upload.</p>
                 </div>
               </div>
             ) : (
@@ -404,7 +404,7 @@ export default function JobDetailPage() {
                     />
                     <button
                       onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
-                      className="absolute top-1 right-1 rounded-full bg-black/60 p-1 text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1 right-1 rounded-full bg-black/60 p-1 text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -418,30 +418,30 @@ export default function JobDetailPage() {
 
           {/* Pricing */}
           <Card variant="default" padding="md">
-            <h3 className="text-sm font-semibold text-slate-900 mb-3">Pricing</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Pricing</h3>
             <div className="space-y-2">
               {job.actualCost !== undefined && (
                 <div className="flex justify-between items-center py-1">
-                  <span className="text-sm text-slate-400">Labor</span>
-                  <span className="text-sm text-slate-900">{formatCurrency(job.actualCost - (job.materialsCost || 0))}</span>
+                  <span className="text-sm text-muted-foreground/80">Labor</span>
+                  <span className="text-sm text-foreground">{formatCurrency(job.actualCost - (job.materialsCost || 0))}</span>
                 </div>
               )}
               {job.materialsCost !== undefined && (
                 <div className="flex justify-between items-center py-1">
-                  <span className="text-sm text-slate-400">Parts / Materials</span>
-                  <span className="text-sm text-slate-900">{formatCurrency(job.materialsCost)}</span>
+                  <span className="text-sm text-muted-foreground/80">Parts / Materials</span>
+                  <span className="text-sm text-foreground">{formatCurrency(job.materialsCost)}</span>
                 </div>
               )}
-              <div className="flex justify-between items-center py-2 border-t border-slate-200">
-                <span className="text-sm font-semibold text-slate-900">
+              <div className="flex justify-between items-center py-2 border-t border-border">
+                <span className="text-sm font-semibold text-foreground">
                   {job.actualCost !== undefined ? 'Total (Actual)' : 'Estimated Total'}
                 </span>
-                <span className="text-base font-bold text-blue-600">
+                <span className="text-base font-bold text-primary">
                   {formatCurrency(job.actualCost ?? job.estimatedCost)}
                 </span>
               </div>
               {job.laborHours !== undefined && (
-                <p className="text-xs text-slate-500">{job.laborHours} labor hours</p>
+                <p className="text-xs text-muted-foreground">{job.laborHours} labor hours</p>
               )}
             </div>
           </Card>
@@ -482,8 +482,8 @@ export default function JobDetailPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-1">Job Complete! 🎉</h2>
-                  <p className="text-sm text-slate-500 mb-2">{job.title} finished successfully.</p>
+                  <h2 className="text-xl font-bold text-foreground mb-1">Job Complete! 🎉</h2>
+                  <p className="text-sm text-muted-foreground mb-2">{job.title} finished successfully.</p>
                   <p className="text-2xl font-bold text-emerald-600 mb-5">
                     {formatCurrency(job.actualCost || job.estimatedCost)}
                   </p>
@@ -503,13 +503,13 @@ export default function JobDetailPage() {
 
         {/* ── RIGHT PANEL: Activity Timeline (1/3) ── */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-slate-900">Activity</h3>
+          <h3 className="text-sm font-semibold text-foreground">Activity</h3>
 
           <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
             <div className="divide-y divide-white-border max-h-[500px] overflow-y-auto">
               {jobActivities.length === 0 ? (
                 <div className="px-4 py-8 text-center">
-                  <p className="text-sm text-slate-500">No activity recorded yet.</p>
+                  <p className="text-sm text-muted-foreground">No activity recorded yet.</p>
                 </div>
               ) : (
                 jobActivities.map((act) => {
@@ -532,26 +532,26 @@ export default function JobDetailPage() {
                             isStatusChange
                               ? 'bg-accent-amber/20 text-amber-600'
                               : isOwnNote
-                              ? 'bg-blue-100 text-blue-600'
-                              : 'bg-slate-50 text-slate-400'
+                              ? 'bg-blue-100 text-primary'
+                              : 'bg-muted text-muted-foreground/80'
                           }`}
                         >
                           <TimelineIcon type={act.type} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className={`text-sm ${isOwnNote ? 'text-blue-600 font-medium' : 'text-slate-900'}`}>
+                          <p className={`text-sm ${isOwnNote ? 'text-primary font-medium' : 'text-foreground'}`}>
                             {act.description}
                           </p>
-                          <div className="mt-1 flex items-center gap-2 text-xs text-slate-500 flex-wrap">
+                          <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
                             <span>{formatDateTime(act.timestamp)}</span>
                             <span>·</span>
-                            <span className={`${isOwnNote ? 'text-blue-600 font-medium' : 'text-blue-600'}`}>
+                            <span className={`${isOwnNote ? 'text-primary font-medium' : 'text-primary'}`}>
                               {act.userId === 'You' ? 'You' : (teamMembers.find((m) => m.id === act.userId)?.name || act.userId || 'System')}
                             </span>
                             {act.amount !== undefined && (
                               <>
                                 <span>·</span>
-                                <span className="font-medium text-slate-900">{formatCurrency(act.amount)}</span>
+                                <span className="font-medium text-foreground">{formatCurrency(act.amount)}</span>
                               </>
                             )}
                           </div>
@@ -564,7 +564,7 @@ export default function JobDetailPage() {
             </div>
 
             {/* Add Note Input */}
-            <div className="border-t border-slate-200 p-3">
+            <div className="border-t border-border p-3">
               <div className="flex flex-col gap-2">
                 <TextArea
                   placeholder="Add a note..."
@@ -591,19 +591,19 @@ export default function JobDetailPage() {
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between">
                 <span className="text-steel">Created</span>
-                <span className="text-slate-900">{formatDate(job.createdAt)}</span>
+                <span className="text-foreground">{formatDate(job.createdAt)}</span>
               </div>
               {job.completedDate && (
                 <div className="flex justify-between">
                   <span className="text-steel">Completed</span>
-                  <span className="text-slate-900">{formatDate(job.completedDate)}</span>
+                  <span className="text-foreground">{formatDate(job.completedDate)}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span className="text-steel">Client ID</span>
                 <button
                   onClick={() => router.push(`/clients/${client?.id || job.clientId}`)}
-                  className="text-blue-600 hover:underline"
+                  className="text-primary hover:underline"
                 >
                   {job.clientId}
                 </button>
@@ -647,11 +647,11 @@ export default function JobDetailPage() {
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-slate-400">Priority</label>
+              <label className="block text-sm font-medium text-muted-foreground/80">Priority</label>
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -682,11 +682,11 @@ export default function JobDetailPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-400">Assigned Tech</label>
+            <label className="block text-sm font-medium text-muted-foreground/80">Assigned Tech</label>
             <select
               value={editTechId}
               onChange={(e) => setEditTechId(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="">Unassigned</option>
               {teamMembers.map((tm) => (

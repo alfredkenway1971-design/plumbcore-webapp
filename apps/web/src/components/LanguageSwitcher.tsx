@@ -18,7 +18,7 @@ export default function LanguageSwitcher({ locale, onLocaleChange }: { locale: s
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all active:scale-95 border border-slate-200/50"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-muted-foreground/80 hover:text-muted-foreground hover:bg-muted transition-all active:scale-95 border border-border/50"
         aria-label="Change language"
       >
         <span>{current.flag}</span>
@@ -28,7 +28,7 @@ export default function LanguageSwitcher({ locale, onLocaleChange }: { locale: s
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1 min-w-[140px] overflow-hidden">
+          <div className="absolute right-0 mt-1.5 bg-white border border-border rounded-xl shadow-lg z-50 py-1 min-w-[140px] overflow-hidden">
             {locales.map((l) => (
               <button
                 key={l.code}
@@ -36,7 +36,7 @@ export default function LanguageSwitcher({ locale, onLocaleChange }: { locale: s
                 className={`flex items-center gap-2.5 w-full px-3.5 py-2.5 text-sm text-left transition-colors ${
                   l.code === locale
                     ? 'bg-blue-50 text-blue-700 font-semibold'
-                    : 'text-slate-600 hover:bg-slate-50'
+                    : 'text-muted-foreground hover:bg-muted'
                 }`}
               >
                 <span className="text-base">{l.flag}</span>

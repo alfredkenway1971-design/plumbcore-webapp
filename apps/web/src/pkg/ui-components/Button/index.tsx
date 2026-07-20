@@ -21,9 +21,9 @@ const variantStyles: Record<ButtonVariant, string> = {
   destructive:
     'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
   ghost:
-    'bg-transparent text-slate-400 hover:text-white hover:bg-white/10 active:bg-white/5',
+    'bg-transparent text-muted-foreground/80 hover:text-white hover:bg-white/10 active:bg-white/5',
   outline:
-    'ring-1 ring-white/10 text-slate-400 hover:text-white hover:ring-white/20 hover:bg-white/5 active:bg-white/10',
+    'ring-1 ring-white/10 text-muted-foreground/80 hover:text-white hover:ring-white/20 hover:bg-white/5 active:bg-white/10',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

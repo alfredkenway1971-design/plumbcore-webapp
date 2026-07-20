@@ -67,14 +67,14 @@ export default function AdminApiLogsPage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">API Logs</h1>
-          <p className="text-sm text-slate-500 mt-1">Monitor API requests and diagnose issues</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">API Logs</h1>
+          <p className="text-sm text-muted-foreground mt-1">Monitor API requests and diagnose issues</p>
         </div>
         <div className="flex gap-2">
-          <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all">
+          <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all">
             <Filter className="w-4 h-4" /> Filters
           </button>
-          <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all">
+          <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all">
             <Download className="w-4 h-4" /> Export
           </button>
         </div>
@@ -83,43 +83,43 @@ export default function AdminApiLogsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
         {[ { label: 'Total Requests', value: totalRequests, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Error Rate', value: errorRate + '%', color: errorRate > 5 ? 'text-red-500' : 'text-emerald-500', bg: errorRate > 5 ? 'bg-red-50' : 'bg-emerald-50' }, { label: 'Avg Latency', value: avgLatency + 'ms', color: 'text-purple-500', bg: 'bg-purple-50' } ].map((s, i) => (
           <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-4 shadow-sm ring-1 ring-black/5 text-center">
-            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+            <p className="text-2xl font-bold text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search endpoints or IPs..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input placeholder="Search endpoints or IPs..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-muted border-0 rounded-xl text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'GET', 'POST', 'DELETE'].map(m => (
-              <button key={m} onClick={() => setMethodFilter(m)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${methodFilter === m ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{m === 'all' ? 'All' : m}</button>
+              <button key={m} onClick={() => setMethodFilter(m)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all ${methodFilter === m ? 'bg-primary text-white' : 'hover:bg-muted text-muted-foreground'}`}>{m === 'all' ? 'All' : m}</button>
             ))}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead><tr className="border-b border-slate-100">
+            <thead><tr className="border-b border-border/50">
               {['Time', 'Method', 'Endpoint', 'Status', 'Latency', 'IP'].map((h, i) => (
-                <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map(l => {
-                const s = statusStyles[l.status] || { bg: 'hover:bg-slate-50', text: 'text-slate-400', icon: Clock };
+                const s = statusStyles[l.status] || { bg: 'hover:bg-muted', text: 'text-muted-foreground/80', icon: Clock };
                 const StatusIcon = s.icon;
                 return (
-                  <tr key={l.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors font-mono text-xs">
-                    <td className="py-3 px-5 text-slate-500">{new Date(l.timestamp).toLocaleTimeString()}</td>
-                    <td className="py-3 px-5"><span className={`font-semibold ${l.method === 'GET' ? 'text-blue-600' : l.method === 'POST' ? 'text-emerald-600' : 'text-red-600'}`}>{l.method}</span></td>
-                    <td className="py-3 px-5"><span className="text-slate-700">{l.endpoint}</span></td>
+                  <tr key={l.id} className="border-b border-border/50 hover:bg-muted transition-colors font-mono text-xs">
+                    <td className="py-3 px-5 text-muted-foreground">{new Date(l.timestamp).toLocaleTimeString()}</td>
+                    <td className="py-3 px-5"><span className={`font-semibold ${l.method === 'GET' ? 'text-primary' : l.method === 'POST' ? 'text-emerald-600' : 'text-red-600'}`}>{l.method}</span></td>
+                    <td className="py-3 px-5"><span className="text-foreground">{l.endpoint}</span></td>
                     <td className="py-3 px-5"><span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold ${s.bg} ${s.text}`}><StatusIcon className="w-3 h-3" />{l.status}</span></td>
-                    <td className="py-3 px-5"><span className={`${l.latency > 1000 ? 'text-red-600' : l.latency > 500 ? 'text-amber-600' : 'text-slate-500'}`}>{l.latency}ms</span></td>
-                    <td className="py-3 px-5 text-slate-600">{l.ip}</td>
+                    <td className="py-3 px-5"><span className={`${l.latency > 1000 ? 'text-red-600' : l.latency > 500 ? 'text-amber-600' : 'text-muted-foreground'}`}>{l.latency}ms</span></td>
+                    <td className="py-3 px-5 text-muted-foreground">{l.ip}</td>
                   </tr>
                 );
               })}

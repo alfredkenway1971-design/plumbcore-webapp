@@ -51,13 +51,13 @@ interface RevenueSummary {
    ═══════════════════════════════════════════ */
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: any }> = {
-  draft: { label: 'Draft', color: 'text-slate-600', bg: 'bg-slate-100', icon: FileText },
+  draft: { label: 'Draft', color: 'text-muted-foreground', bg: 'bg-muted', icon: FileText },
   pending: { label: 'Pending', color: 'text-amber-600', bg: 'bg-amber-50', icon: Clock },
   approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: CheckCircle },
   declined: { label: 'Declined', color: 'text-red-600', bg: 'bg-red-50', icon: XCircle },
-  active: { label: 'Active', color: 'text-blue-600', bg: 'bg-blue-50', icon: CreditCard },
+  active: { label: 'Active', color: 'text-primary', bg: 'bg-blue-50', icon: CreditCard },
   paid_off: { label: 'Paid Off', color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle },
-  cancelled: { label: 'Cancelled', color: 'text-slate-500', bg: 'bg-slate-50', icon: XCircle },
+  cancelled: { label: 'Cancelled', color: 'text-muted-foreground', bg: 'bg-muted', icon: XCircle },
 };
 
 const providerLabels: Record<FinancingProvider, string> = {
@@ -81,12 +81,12 @@ function StatCard({ icon: Icon, label, value, sub, color }: {
   return (
     <Card padding="md" className="flex items-start gap-4">
       <div className={`shrink-0 w-10 h-10 rounded-xl ${color} flex items-center justify-center`}>
-        <Icon className="w-5 h-5 text-slate-900" />
+        <Icon className="w-5 h-5 text-foreground" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">{label}</p>
-        <p className="mt-0.5 text-xl font-bold text-slate-900">{value}</p>
-        {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
+        <p className="mt-0.5 text-xl font-bold text-foreground">{value}</p>
+        {sub && <p className="text-xs text-muted-foreground/80 mt-0.5">{sub}</p>}
       </div>
     </Card>
   );
@@ -110,81 +110,81 @@ function ApplicationRow({ app, onStatusChange }: {
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center gap-4 px-4 py-3.5 text-left"
       >
-        <div className={`shrink-0 w-8 h-8 rounded-xl ${statusConfig[app.status]?.bg || 'bg-slate-100'} flex items-center justify-center`}>
-          <StatIcon className={`w-4 h-4 ${statusConfig[app.status]?.color || 'text-slate-500'}`} />
+        <div className={`shrink-0 w-8 h-8 rounded-xl ${statusConfig[app.status]?.bg || 'bg-muted'} flex items-center justify-center`}>
+          <StatIcon className={`w-4 h-4 ${statusConfig[app.status]?.color || 'text-muted-foreground'}`} />
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-slate-900 truncate">{app.customer_name}</p>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-sm font-medium text-foreground truncate">{app.customer_name}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
             {providerLabels[app.provider] || app.provider} &middot; {app.terms_months} mo
           </p>
         </div>
 
         <div className="text-right shrink-0">
-          <p className="text-sm font-semibold text-slate-900">${(app.approved_amount || app.amount).toLocaleString()}</p>
+          <p className="text-sm font-semibold text-foreground">${(app.approved_amount || app.amount).toLocaleString()}</p>
           {app.monthly_payment && (
-            <p className="text-xs text-slate-500">${app.monthly_payment.toFixed(2)}/mo</p>
+            <p className="text-xs text-muted-foreground">${app.monthly_payment.toFixed(2)}/mo</p>
           )}
         </div>
 
-        <span className={`shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig[app.status]?.bg || 'bg-slate-100'} ${statusConfig[app.status]?.color || 'text-slate-600'}`}>
+        <span className={`shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig[app.status]?.bg || 'bg-muted'} ${statusConfig[app.status]?.color || 'text-muted-foreground'}`}>
           {statusConfig[app.status]?.label || app.status}
         </span>
 
-        <div className="shrink-0 text-slate-400">
+        <div className="shrink-0 text-muted-foreground/80">
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </div>
       </button>
 
       {/* Expanded details */}
       {expanded && (
-        <div className="border-t border-slate-100 px-4 py-3 space-y-3">
+        <div className="border-t border-border/50 px-4 py-3 space-y-3">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
-              <p className="text-xs text-slate-500">Email</p>
-              <p className="text-sm text-slate-900 truncate">{app.customer_email}</p>
+              <p className="text-xs text-muted-foreground">Email</p>
+              <p className="text-sm text-foreground truncate">{app.customer_email}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Phone</p>
-              <p className="text-sm text-slate-900">{app.customer_phone || '—'}</p>
+              <p className="text-xs text-muted-foreground">Phone</p>
+              <p className="text-sm text-foreground">{app.customer_phone || '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Amount Financed</p>
-              <p className="text-sm font-medium text-slate-900">${(app.approved_amount || app.amount).toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground">Amount Financed</p>
+              <p className="text-sm font-medium text-foreground">${(app.approved_amount || app.amount).toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">APR</p>
-              <p className="text-sm font-medium text-slate-900">{app.apr ? `${app.apr}%` : '—'}</p>
+              <p className="text-xs text-muted-foreground">APR</p>
+              <p className="text-sm font-medium text-foreground">{app.apr ? `${app.apr}%` : '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Monthly Payment</p>
-              <p className="text-sm font-medium text-slate-900">${app.monthly_payment?.toFixed(2) || '—'}</p>
+              <p className="text-xs text-muted-foreground">Monthly Payment</p>
+              <p className="text-sm font-medium text-foreground">${app.monthly_payment?.toFixed(2) || '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Terms</p>
-              <p className="text-sm text-slate-900">{app.terms_months} months</p>
+              <p className="text-xs text-muted-foreground">Terms</p>
+              <p className="text-sm text-foreground">{app.terms_months} months</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Invoice</p>
-              <p className="text-sm text-slate-900">{app.invoice_id || '—'}</p>
+              <p className="text-xs text-muted-foreground">Invoice</p>
+              <p className="text-sm text-foreground">{app.invoice_id || '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Applied</p>
-              <p className="text-sm text-slate-900">{new Date(app.created_at).toLocaleDateString()}</p>
+              <p className="text-xs text-muted-foreground">Applied</p>
+              <p className="text-sm text-foreground">{new Date(app.created_at).toLocaleDateString()}</p>
             </div>
           </div>
 
           {app.notes && (
             <div>
-              <p className="text-xs text-slate-500">Notes</p>
-              <p className="text-sm text-slate-700">{app.notes}</p>
+              <p className="text-xs text-muted-foreground">Notes</p>
+              <p className="text-sm text-foreground">{app.notes}</p>
             </div>
           )}
 
           {/* Action buttons for pending applications */}
           {app.status === 'pending' && (
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
               <Button
                 size="sm"
                 variant="primary"
@@ -205,7 +205,7 @@ function ApplicationRow({ app, onStatusChange }: {
           )}
 
           {app.status === 'approved' && (
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
               <Button
                 size="sm"
                 variant="primary"
@@ -218,7 +218,7 @@ function ApplicationRow({ app, onStatusChange }: {
           )}
 
           {app.status === 'active' && (
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
               <Button
                 size="sm"
                 variant="primary"
@@ -427,7 +427,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
       {step === 'simulating' && (
         <div className="flex flex-col items-center justify-center py-8">
           <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mb-3" />
-          <p className="text-sm text-slate-600">Evaluating application...</p>
+          <p className="text-sm text-muted-foreground">Evaluating application...</p>
         </div>
       )}
 
@@ -457,21 +457,21 @@ function FinancingFormModal({ open, onClose, onCreated }: {
           )}
 
           {/* Summary */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-xl">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-muted rounded-xl">
             <div>
-              <p className="text-xs text-slate-500">Amount</p>
+              <p className="text-xs text-muted-foreground">Amount</p>
               <p className="text-sm font-medium">${parseFloat(form.amount).toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">APR</p>
+              <p className="text-xs text-muted-foreground">APR</p>
               <p className="text-sm font-medium">{decision.apr ? `${decision.apr}%` : '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Monthly</p>
+              <p className="text-xs text-muted-foreground">Monthly</p>
               <p className="text-sm font-medium">{decision.monthlyPayment ? `$${decision.monthlyPayment.toFixed(2)}` : '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Terms</p>
+              <p className="text-xs text-muted-foreground">Terms</p>
               <p className="text-sm font-medium">{decision.termsMonths} mo</p>
             </div>
           </div>
@@ -481,7 +481,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
             <span>Application {createdApp.id} created — status: {statusConfig[createdApp.status]?.label}</span>
           </div>
 
-          <div className="flex justify-end pt-2 border-t border-slate-100">
+          <div className="flex justify-end pt-2 border-t border-border/50">
             <Button variant="primary" onClick={() => { reset(); onClose(); }}>Done</Button>
           </div>
         </div>
@@ -513,27 +513,27 @@ function FinancingFormModal({ open, onClose, onCreated }: {
           )}
 
           {/* Summary */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-slate-50 rounded-xl">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-muted rounded-xl">
             <div>
-              <p className="text-xs text-slate-500">Amount</p>
+              <p className="text-xs text-muted-foreground">Amount</p>
               <p className="text-sm font-medium">${parseFloat(form.amount).toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">APR</p>
+              <p className="text-xs text-muted-foreground">APR</p>
               <p className="text-sm font-medium">{decision.apr ? `${decision.apr}%` : '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Monthly</p>
+              <p className="text-xs text-muted-foreground">Monthly</p>
               <p className="text-sm font-medium">{decision.monthlyPayment ? `$${decision.monthlyPayment.toFixed(2)}` : '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Terms</p>
+              <p className="text-xs text-muted-foreground">Terms</p>
               <p className="text-sm font-medium">{decision.termsMonths} mo</p>
             </div>
           </div>
 
           {decision.approved && !createdApp && (
-            <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex justify-end gap-2 pt-2 border-t border-border/50">
               <Button variant="ghost" onClick={() => { reset(); onClose(); }}>Cancel</Button>
               <Button variant="primary" onClick={handleSubmitApplication}>
                 Submit Application
@@ -542,7 +542,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
           )}
 
           {!decision.approved && (
-            <div className="flex justify-end pt-2 border-t border-slate-100">
+            <div className="flex justify-end pt-2 border-t border-border/50">
               <Button variant="ghost" onClick={() => { reset(); onClose(); }}>Close</Button>
             </div>
           )}
@@ -552,7 +552,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
       {step === 'submitting' && (
         <div className="flex flex-col items-center justify-center py-8">
           <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mb-3" />
-          <p className="text-sm text-slate-600">Submitting application...</p>
+          <p className="text-sm text-muted-foreground">Submitting application...</p>
         </div>
       )}
     </Modal>
@@ -587,8 +587,8 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
         {/* Toggle */}
         <label className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-slate-900">Enable Financing</p>
-            <p className="text-xs text-slate-500">Allow customers to finance jobs over ${local.minJobAmount}</p>
+            <p className="text-sm font-medium text-foreground">Enable Financing</p>
+            <p className="text-xs text-muted-foreground">Allow customers to finance jobs over ${local.minJobAmount}</p>
           </div>
           <button
             onClick={() => setLocal({ ...local, enabled: !local.enabled })}
@@ -612,9 +612,9 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
         />
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">Provider</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Provider</label>
           <select
-            className="w-full rounded-xl ring-1 ring-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+            className="w-full rounded-xl ring-1 ring-slate-200 bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500 focus:ring-1 focus:ring-primary/20"
             value={local.provider}
             onChange={(e) => setLocal({ ...local, provider: e.target.value as FinancingProvider })}
           >
@@ -646,7 +646,7 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
           />
         </div>
 
-        <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <div className="flex justify-end gap-2 pt-2 border-t border-border/50">
           <Button variant="ghost" onClick={onClose}>Cancel</Button>
           <Button variant="primary" onClick={() => { onSave(local); onClose(); }}>Save Settings</Button>
         </div>
@@ -729,7 +729,7 @@ export default function FinancingPage() {
     return (
       <div className="p-6 max-w-3xl mx-auto">
         <EmptyState
-          icon={<TrendingUp className="w-7 h-7 text-slate-400" />}
+          icon={<TrendingUp className="w-7 h-7 text-muted-foreground/80" />}
           title="Customer Financing"
           description="Customer financing is available on Business and Enterprise plans. Upgrade to offer your customers flexible payment options."
           action={
@@ -747,8 +747,8 @@ export default function FinancingPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Customer Financing</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Customer Financing</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Offer your customers flexible payment options through financing partners
           </p>
         </div>
@@ -833,14 +833,14 @@ export default function FinancingPage() {
 
       {/* Applications list */}
       <Card padding="none">
-        <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-900">Financing Applications</h2>
-          <span className="text-xs text-slate-500">{apps.length} total</span>
+        <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-foreground">Financing Applications</h2>
+          <span className="text-xs text-muted-foreground">{apps.length} total</span>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <RefreshCw className="w-6 h-6 text-slate-400 animate-spin" />
+            <RefreshCw className="w-6 h-6 text-muted-foreground/80 animate-spin" />
           </div>
         ) : error ? (
           <div className="p-6">
@@ -859,7 +859,7 @@ export default function FinancingPage() {
         ) : apps.length === 0 ? (
           <div className="p-6">
             <EmptyState
-              icon={<DollarSign className="w-7 h-7 text-slate-400" />}
+              icon={<DollarSign className="w-7 h-7 text-muted-foreground/80" />}
               title="No financing applications yet"
               description="When customers choose to finance their invoices, their applications will appear here."
               action={
@@ -883,13 +883,13 @@ export default function FinancingPage() {
       </Card>
 
       {/* Info section */}
-      <Card padding="md" className="bg-slate-50 border-slate-100">
+      <Card padding="md" className="bg-muted border-border/50">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
-            <TrendingUp className="w-4 h-4 text-blue-600" />
+            <TrendingUp className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-sm text-slate-600">
-            <p className="font-medium text-slate-900 mb-1">How Financing Works</p>
+          <div className="text-sm text-muted-foreground">
+            <p className="font-medium text-foreground mb-1">How Financing Works</p>
             <ol className="list-decimal list-inside space-y-1 text-xs sm:text-sm">
               <li>Customer receives an invoice over ${settings.minJobAmount}</li>
               <li>They choose &quot;Finance from $49/mo&quot; on the invoice</li>

@@ -89,10 +89,10 @@ export default function ResetPasswordPage() {
     return (
       <div className="w-full">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-foreground">
             {resetComplete ? 'Password Reset Complete' : 'Set New Password'}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {resetComplete
               ? 'Your password has been updated. Redirecting to your dashboard...'
               : 'Enter your new password below.'}
@@ -106,15 +106,15 @@ export default function ResetPasswordPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-sm text-slate-500">
-                Password reset successfully. <a href="/dashboard" className="font-medium text-blue-600 hover:text-blue-700">Go to dashboard →</a>
+              <p className="text-sm text-muted-foreground">
+                Password reset successfully. <a href="/dashboard" className="font-medium text-primary hover:text-primary/80">Go to dashboard →</a>
               </p>
             </div>
           ) : (
             <form onSubmit={handleSetPassword} className="space-y-5">
               {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">New Password</label>
                 <input
                   type="password"
                   placeholder="At least 8 characters"
@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Confirm Password</label>
                 <input
                   type="password"
                   placeholder="Re-enter your password"
@@ -140,15 +140,15 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={loading || !isValidPassword}
-                className="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+                className="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
               >
                 {loading ? 'Resetting...' : 'Reset Password'}
               </button>
             </form>
           )}
         </div>
-        <p className="mt-6 text-center text-sm text-slate-500">
-          <a href="/login" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">Back to sign in</a>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          <a href="/login" className="font-medium text-primary hover:text-primary/80 transition-colors">Back to sign in</a>
         </p>
       </div>
     );
@@ -158,8 +158,8 @@ export default function ResetPasswordPage() {
   return (
     <div className="w-full">
       <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-slate-900">Reset password</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-2xl font-bold text-foreground">Reset password</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           {sent ? 'Check your email for the reset link' : 'Enter your email and we will send you a reset link'}
         </p>
       </div>
@@ -171,15 +171,15 @@ export default function ResetPasswordPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-sm text-slate-500">
-              We sent a reset link to <strong className="text-slate-900">{email}</strong>. It may take a few minutes.
+            <p className="text-sm text-muted-foreground">
+              We sent a reset link to <strong className="text-foreground">{email}</strong>. It may take a few minutes.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSendReset} className="space-y-5">
             {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Email address</label>
               <input
                 type="email"
                 placeholder="you@company.com"
@@ -193,15 +193,15 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || !isValidEmail}
-              className="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+              className="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
             >
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
         )}
       </div>
-      <p className="mt-6 text-center text-sm text-slate-500">
-        <a href="/login" className="font-medium text-blue-600 hover:text-blue-700 transition-colors">Back to sign in</a>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        <a href="/login" className="font-medium text-primary hover:text-primary/80 transition-colors">Back to sign in</a>
       </p>
     </div>
   );

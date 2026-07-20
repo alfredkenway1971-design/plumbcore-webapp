@@ -130,7 +130,7 @@ export default function AddressAutocomplete({
   return (
     <div ref={containerRef} className="relative">
       <div className="relative">
-        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80 pointer-events-none" />
         <input
           id={id}
           type="text"
@@ -139,10 +139,10 @@ export default function AddressAutocomplete({
           onChange={handleInputChange}
           onFocus={handleFocus}
           autoComplete="off"
-          className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-all ${
+          className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${
             error
               ? 'border-red-300 focus:ring-2 focus:ring-red-100'
-              : 'border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+              : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
           } ${className}`}
         />
         {loading && (
@@ -155,19 +155,19 @@ export default function AddressAutocomplete({
 
       {/* Dropdown suggestions */}
       {open && suggestions.length > 0 && (
-        <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-border rounded-xl shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((s, i) => (
             <button
               key={i}
               type="button"
               onClick={() => handleSelect(s)}
-              className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-50 last:border-b-0 flex items-start gap-2.5"
+              className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-blue-50 hover:text-primary/80 transition-colors border-b border-slate-50 last:border-b-0 flex items-start gap-2.5"
             >
-              <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-slate-400" />
+              <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-muted-foreground/80" />
               <div>
                 <p className="font-medium">{s.display_name}</p>
                 {s.address?.city && (
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-muted-foreground/80 mt-0.5">
                     {s.address.city}, {s.address.state} {s.address.postcode}
                   </p>
                 )}
@@ -179,7 +179,7 @@ export default function AddressAutocomplete({
 
       {/* No results state */}
       {open && suggestions.length === 0 && !loading && value.length >= 5 && (
-        <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg p-4 text-sm text-slate-400 text-center">
+        <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-border rounded-xl shadow-lg p-4 text-sm text-muted-foreground/80 text-center">
           No addresses found. Try a different search.
         </div>
       )}

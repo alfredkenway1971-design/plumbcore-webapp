@@ -380,7 +380,7 @@ export default function LeadsMarketplacePage() {
   const depositBadge = (amount: number) => {
     const color = amount >= 149 ? 'bg-amber-50 text-amber-700 border-amber-200'
       : amount >= 99 ? 'bg-blue-50 text-blue-700 border-blue-200'
-      : 'bg-slate-50 text-slate-600 border-slate-200';
+      : 'bg-muted text-muted-foreground border-border';
     return (
       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${color}`}>
         <DollarSign className="w-3 h-3" />
@@ -397,8 +397,8 @@ export default function LeadsMarketplacePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Leads Marketplace</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Manage homeowner quotes and dispatch to plumbers</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Leads Marketplace</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage homeowner quotes and dispatch to plumbers</p>
         </div>
       </div>
 
@@ -408,16 +408,16 @@ export default function LeadsMarketplacePage() {
           {/* Search + Filters toggle */}
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search by name, ID, phone, location..."
-                className="w-full pl-9 pr-2.5 py-2 rounded-lg border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+                className="w-full pl-9 pr-2.5 py-2 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400 transition-all"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/80 hover:text-muted-foreground">
                   <X className="w-4 h-4" />
                 </button>
               )}
@@ -426,7 +426,7 @@ export default function LeadsMarketplacePage() {
               <button
                 onClick={() => setShowStatusFilter(!showStatusFilter)}
                 className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all ${
-                  filter !== 'all' ? 'bg-blue-50 border-blue-200 text-blue-600' : 'border-slate-200 text-slate-400 hover:border-slate-300'
+                  filter !== 'all' ? 'bg-blue-50 border-blue-200 text-primary' : 'border-border text-muted-foreground/80 hover:border-border'
                 }`}
                 title="Status filters"
               >
@@ -436,20 +436,20 @@ export default function LeadsMarketplacePage() {
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowStatusFilter(false)} />
                   <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-white rounded-xl shadow-lg ring-1 ring-black/5 p-1.5">
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-2 py-1.5">Status</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider px-2 py-1.5">Status</p>
                     {['matching', 'assigned', 'en_route', 'arrived', 'complete', 'unfulfilled', 'refunded'].map(f => (
                       <button
                         key={f}
                         onClick={() => setFilter(filter === f ? 'all' : f)}
                         className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-medium transition-all ${
-                          filter === f ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'
+                          filter === f ? 'bg-blue-50 text-blue-700' : 'text-muted-foreground hover:bg-muted'
                         }`}
                       >
                         {f === 'en_route' ? 'En Route' : f.charAt(0).toUpperCase() + f.slice(1)}
                       </button>
                     ))}
                     {filter !== 'all' && (
-                      <button onClick={() => setFilter('all')} className="w-full text-left px-2.5 py-2 text-xs text-blue-600 font-medium hover:bg-blue-50 rounded-lg">
+                      <button onClick={() => setFilter('all')} className="w-full text-left px-2.5 py-2 text-xs text-primary font-medium hover:bg-blue-50 rounded-lg">
                         Clear filter
                       </button>
                     )}
@@ -467,8 +467,8 @@ export default function LeadsMarketplacePage() {
                 onClick={() => setQuickFilter(qf)}
                 className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                   quickFilter === qf
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                    : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-slate-700'
+                    ? 'bg-primary text-white border-primary shadow-sm'
+                    : 'bg-white text-muted-foreground border-border hover:border-blue-300 hover:text-foreground'
                 }`}
               >
                 {qf === 'all' ? 'All Leads' : qf === 'us' ? 'US' : qf === 'canada' ? 'Canada' : qf === '149+' ? '$149+' : qf === '49' ? '$49' : qf === '99' ? '$99' : qf}
@@ -491,7 +491,7 @@ export default function LeadsMarketplacePage() {
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all ${
               dispatchMode === mode.key
                 ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
           >
             <span className="text-sm">{mode.icon}</span>
@@ -502,7 +502,7 @@ export default function LeadsMarketplacePage() {
 
       {/* Mode instruction */}
       <div className="text-center">
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-muted-foreground/80">
           {dispatchMode === 'manual' ? 'Select a matching lead, then choose a plumber to assign' :
            dispatchMode === 'round-robin' ? 'Leads auto-assign to next plumber in rotation order by ZIP prefix' :
            'Leads broadcast to all available plumbers — first to accept gets the job'}
@@ -512,20 +512,20 @@ export default function LeadsMarketplacePage() {
       {/* ── Stats ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-white border border-blue-100 shadow-sm px-4 py-3.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Total Revenue</p>
-          <p className="text-lg font-bold text-blue-600 mt-1">${revenue.toLocaleString()}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Total Revenue</p>
+          <p className="text-lg font-bold text-primary mt-1">${revenue.toLocaleString()}</p>
         </div>
         <div className="rounded-xl bg-white border border-purple-100 shadow-sm px-4 py-3.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Matching</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Matching</p>
           <p className="text-lg font-bold text-purple-600 mt-1">{stats?.matching ?? matching}</p>
         </div>
         <div className="rounded-xl bg-white border border-emerald-100 shadow-sm px-4 py-3.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Assigned</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Assigned</p>
           <p className="text-lg font-bold text-emerald-600 mt-1">{stats?.assigned ?? leads.filter(l => l.status === 'assigned').length}</p>
         </div>
-        <div className="rounded-xl bg-white border border-slate-100 shadow-sm px-4 py-3.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Completed</p>
-          <p className="text-lg font-bold text-slate-400 mt-1">{stats?.complete ?? leads.filter(l => l.status === 'complete').length}</p>
+        <div className="rounded-xl bg-white border border-border/50 shadow-sm px-4 py-3.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Completed</p>
+          <p className="text-lg font-bold text-muted-foreground/80 mt-1">{stats?.complete ?? leads.filter(l => l.status === 'complete').length}</p>
         </div>
       </div>
 
@@ -536,20 +536,20 @@ export default function LeadsMarketplacePage() {
             <div className="flex flex-col items-center gap-4">
               <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
               <div>
-                <h3 className="text-base font-semibold text-slate-900">Loading leads...</h3>
-                <p className="text-sm text-slate-500 mt-1">Fetching from database</p>
+                <h3 className="text-base font-semibold text-foreground">Loading leads...</h3>
+                <p className="text-sm text-muted-foreground mt-1">Fetching from database</p>
               </div>
             </div>
           </Card>
         ) : leads.length === 0 ? (
           <Card padding="lg" variant="bordered" className="text-center py-16">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl border border-slate-200">
+              <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-3xl border border-border">
                 📋
               </div>
               <div>
-                <h3 className="text-base font-semibold text-slate-900">No leads yet</h3>
-                <p className="text-sm text-slate-500 mt-1 max-w-sm">
+                <h3 className="text-base font-semibold text-foreground">No leads yet</h3>
+                <p className="text-sm text-muted-foreground mt-1 max-w-sm">
                   When customers pay deposits, they&apos;ll appear here for dispatch.
                 </p>
               </div>
@@ -558,10 +558,10 @@ export default function LeadsMarketplacePage() {
         ) : filteredLeads.length === 0 ? (
           <div className="text-center py-12">
             <Search className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm text-slate-400 font-medium">No leads match your filters</p>
+            <p className="text-sm text-muted-foreground/80 font-medium">No leads match your filters</p>
             <button
               onClick={() => { setQuickFilter('all'); setFilter('all'); setSearchQuery(''); }}
-              className="text-xs text-blue-600 hover:text-blue-700 mt-2"
+              className="text-xs text-primary hover:text-primary/80 mt-2"
             >
               Clear all filters
             </button>
@@ -572,7 +572,7 @@ export default function LeadsMarketplacePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Photo */}
                 <div className="flex-shrink-0">
-                  <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center text-2xl border border-slate-200">
+                  <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center text-2xl border border-border">
                     {lead.photo || '📸'}
                   </div>
                 </div>
@@ -581,23 +581,23 @@ export default function LeadsMarketplacePage() {
                 <div className="flex-1 min-w-0 space-y-2">
                   {/* Row 1: Name + Status + Deposit */}
                   <div className="flex items-center flex-wrap gap-2">
-                    <h3 className="text-sm font-semibold text-slate-900">{lead.customer}</h3>
+                    <h3 className="text-sm font-semibold text-foreground">{lead.customer}</h3>
                     {statusBadge(lead.status)}
                     {depositBadge(lead.depositAmount)}
                     {lead.confidence && (
-                      <span className="text-[10px] text-slate-400 font-medium ml-auto">
+                      <span className="text-[10px] text-muted-foreground/80 font-medium ml-auto">
                         {lead.confidence}% match confidence
                       </span>
                     )}
                   </div>
 
                   {/* Row 2: Diagnosis */}
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {lead.diagnosis || 'No diagnosis provided'}
                   </p>
 
                   {/* Row 3: Meta */}
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     {lead.phone && (
                       <span className="flex items-center gap-1">
                         <Phone className="w-3 h-3" />
@@ -613,7 +613,7 @@ export default function LeadsMarketplacePage() {
                       ${lead.estimate.toLocaleString()} est.
                     </span>
                     {lead.assignedPlumber && (
-                      <span className="flex items-center gap-1 text-blue-600 font-medium">
+                      <span className="flex items-center gap-1 text-primary font-medium">
                         <User className="w-3 h-3" />
                         {lead.assignedPlumber}
                       </span>
@@ -631,14 +631,14 @@ export default function LeadsMarketplacePage() {
                 <div className="flex flex-row sm:flex-col items-stretch gap-1.5 sm:min-w-[130px]" onClick={e => e.stopPropagation()}>
                   <button
                     onClick={() => openAssignModal(lead.id)}
-                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 hover:shadow-sm transition-all active:scale-[0.97]"
+                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold bg-primary text-white hover:bg-primary/90 hover:shadow-sm transition-all active:scale-[0.97]"
                   >
                     <User className="w-3.5 h-3.5" />
                     Assign
                   </button>
                   <button
                     onClick={() => openDetailModal(lead)}
-                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:scale-[0.97]"
+                    className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground bg-white border border-border hover:bg-muted hover:border-border transition-all shadow-sm active:scale-[0.97]"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     Details
@@ -661,12 +661,12 @@ export default function LeadsMarketplacePage() {
       {showRRConfig && dispatchMode === 'round-robin' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-              <Settings className="w-4 h-4 text-slate-500" />
+            <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <Settings className="w-4 h-4 text-muted-foreground" />
               Round-Robin Configuration
             </h2>
             {plumbers.length > 0 && (
-              <span className="text-[10px] text-slate-400 font-medium">
+              <span className="text-[10px] text-muted-foreground/80 font-medium">
                 {rrConfig.reduce((sum, c) => sum + c.rotationOrder.length, 0)} plumbers across {rrConfig.length} zones
               </span>
             )}
@@ -675,12 +675,12 @@ export default function LeadsMarketplacePage() {
           {plumbers.length === 0 ? (
             <Card padding="lg" variant="bordered" className="text-center py-12">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-2xl border border-slate-200">
+                <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center text-2xl border border-border">
                   👷
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-700">Add plumbers to zones first</p>
-                  <p className="text-xs text-slate-400 mt-0.5">Plumbers must be added to the system before configuring round-robin dispatch</p>
+                  <p className="text-sm font-medium text-foreground">Add plumbers to zones first</p>
+                  <p className="text-xs text-muted-foreground/80 mt-0.5">Plumbers must be added to the system before configuring round-robin dispatch</p>
                 </div>
               </div>
             </Card>
@@ -692,12 +692,12 @@ export default function LeadsMarketplacePage() {
               <Card key={ci} padding="md" variant="bordered" className="bg-white">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-slate-700">ZIP Prefix:</span>
-                    <span className="font-mono text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-semibold text-foreground">ZIP Prefix:</span>
+                    <span className="font-mono text-sm font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-md">
                       {config.zipGroupPrefix}***
                     </span>
                   </div>
-                  <span className="text-[10px] text-slate-400">
+                  <span className="text-[10px] text-muted-foreground/80">
                     {config.rotationOrder.length} plumber{config.rotationOrder.length !== 1 ? 's' : ''}
                   </span>
                 </div>
@@ -709,10 +709,10 @@ export default function LeadsMarketplacePage() {
                     return (
                       <div
                         key={ri}
-                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors group"
+                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-muted hover:bg-muted transition-colors group"
                       >
                         {/* Order */}
-                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                        <span className="w-5 h-5 rounded-full bg-blue-100 text-primary flex items-center justify-center text-[10px] font-bold flex-shrink-0">
                           {ri + 1}
                         </span>
 
@@ -729,7 +729,7 @@ export default function LeadsMarketplacePage() {
                               </span>
                             )}
                           </div>
-                          <div className="flex items-center gap-2 text-[10px] text-slate-400">
+                          <div className="flex items-center gap-2 text-[10px] text-muted-foreground/80">
                             {plumber && (
                               <>
                                 <span>{plumber.jobsToday || 0} jobs today</span>
@@ -748,20 +748,20 @@ export default function LeadsMarketplacePage() {
                           <button
                             onClick={() => reorderPlumber(ci, ri, 'up')}
                             disabled={ri === 0}
-                            className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                            className="p-1 rounded hover:bg-muted text-muted-foreground/80 hover:text-muted-foreground disabled:opacity-30 disabled:cursor-not-allowed"
                           >
                             <ChevronUp className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => reorderPlumber(ci, ri, 'down')}
                             disabled={ri === config.rotationOrder.length - 1}
-                            className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                            className="p-1 rounded hover:bg-muted text-muted-foreground/80 hover:text-muted-foreground disabled:opacity-30 disabled:cursor-not-allowed"
                           >
                             <ChevronDown className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => removePlumberFromZone(ci, ri)}
-                            className="p-1 rounded hover:bg-red-100 text-slate-400 hover:text-red-500 ml-1"
+                            className="p-1 rounded hover:bg-red-100 text-muted-foreground/80 hover:text-red-500 ml-1"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -772,13 +772,13 @@ export default function LeadsMarketplacePage() {
                 </div>
 
                 {/* Add Plumber */}
-                <button className="w-full mt-3 py-2.5 rounded-lg border-2 border-dashed border-slate-200 text-xs font-medium text-slate-400 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1.5">
+                <button className="w-full mt-3 py-2.5 rounded-lg border-2 border-dashed border-border text-xs font-medium text-muted-foreground/80 hover:text-primary hover:border-blue-300 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1.5">
                   <Plus className="w-3.5 h-3.5" />
                   Add Plumber to Zone
                 </button>
 
                 {/* Next up */}
-                <div className="mt-2 text-[10px] text-slate-400 font-medium flex items-center gap-1">
+                <div className="mt-2 text-[10px] text-muted-foreground/80 font-medium flex items-center gap-1">
                   <ArrowUpDown className="w-3 h-3" />
                   Next up: #{((rrRotationIndex[config.zipGroupPrefix] || 0) % config.rotationOrder.length) + 1} —{' '}
                   {plumbers.find(p => p.id === config.rotationOrder[(rrRotationIndex[config.zipGroupPrefix] || 0) % config.rotationOrder.length])?.name || '—'}
@@ -788,37 +788,37 @@ export default function LeadsMarketplacePage() {
           </div>
 
           {/* Settings */}
-          <Card padding="md" variant="bordered" className="bg-slate-50/50">
+          <Card padding="md" variant="bordered" className="bg-muted/50">
             <div className="flex items-center gap-2 mb-3">
-              <Settings className="w-4 h-4 text-slate-400" />
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Settings</h3>
+              <Settings className="w-4 h-4 text-muted-foreground/80" />
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Settings</h3>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
               {/* Max leads per day */}
               <div className="flex items-center gap-3">
-                <label className="text-xs text-slate-600 font-medium whitespace-nowrap">
+                <label className="text-xs text-muted-foreground font-medium whitespace-nowrap">
                   Max leads / plumber / day
                 </label>
-                <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden">
+                <div className="flex items-center border border-border rounded-lg bg-white overflow-hidden">
                   <button
                     onClick={() => setMaxLeadsPerDay(Math.max(1, maxLeadsPerDay - 1))}
-                    className="px-2 py-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-50 text-xs"
+                    className="px-2 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted text-xs"
                   >
                     −
                   </button>
-                  <span className="px-3 py-1.5 text-sm font-semibold text-slate-800 min-w-[2rem] text-center border-x border-slate-200">
+                  <span className="px-3 py-1.5 text-sm font-semibold text-slate-800 min-w-[2rem] text-center border-x border-border">
                     {maxLeadsPerDay}
                   </span>
                   <button
                     onClick={() => setMaxLeadsPerDay(Math.min(50, maxLeadsPerDay + 1))}
-                    className="px-2 py-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-50 text-xs"
+                    className="px-2 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted text-xs"
                   >
                     +
                   </button>
                 </div>
               </div>
 
-              <div className="w-px h-6 bg-slate-200 hidden sm:block" />
+              <div className="w-px h-6 bg-muted hidden sm:block" />
 
               {/* Skip unresponsive */}
               <label className="flex items-center gap-2 cursor-pointer">
@@ -829,13 +829,13 @@ export default function LeadsMarketplacePage() {
                     onChange={e => setSkipUnresponsive(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-blue-600 transition-colors" />
+                  <div className="w-9 h-5 bg-muted rounded-full peer-checked:bg-primary transition-colors" />
                   <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${skipUnresponsive ? 'translate-x-4' : ''}`} />
                 </div>
-                <span className="text-xs text-slate-600 font-medium">Skip unresponsive plumbers</span>
+                <span className="text-xs text-muted-foreground font-medium">Skip unresponsive plumbers</span>
               </label>
 
-              <div className="w-px h-6 bg-slate-200 hidden sm:block" />
+              <div className="w-px h-6 bg-muted hidden sm:block" />
 
               {/* Prioritize higher-tier */}
               <label className="flex items-center gap-2 cursor-pointer">
@@ -846,10 +846,10 @@ export default function LeadsMarketplacePage() {
                     onChange={e => setPrioritizeHigherTier(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-blue-600 transition-colors" />
+                  <div className="w-9 h-5 bg-muted rounded-full peer-checked:bg-primary transition-colors" />
                   <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${prioritizeHigherTier ? 'translate-x-4' : ''}`} />
                 </div>
-                <span className="text-xs text-slate-600 font-medium">Prioritize higher-tier plans</span>
+                <span className="text-xs text-muted-foreground font-medium">Prioritize higher-tier plans</span>
               </label>
             </div>
           </Card>
@@ -868,32 +868,32 @@ export default function LeadsMarketplacePage() {
           />
 
           {/* Modal */}
-          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-border overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="px-5 py-4 border-b border-border/50 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900">Assign Lead</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <h3 className="text-sm font-semibold text-foreground">Assign Lead</h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
                   {modalLead.id} — {modalLead.customer}
                 </p>
               </div>
               <button
                 onClick={() => { setShowAssignModal(false); setModalLeadId(null); }}
-                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground/80 hover:text-muted-foreground transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Lead Summary */}
-            <div className="px-5 py-3 bg-slate-50/70 border-b border-slate-100">
-              <div className="flex items-center gap-3 text-xs text-slate-600">
+            <div className="px-5 py-3 bg-muted/70 border-b border-border/50">
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-slate-400" />
+                  <MapPin className="w-3 h-3 text-muted-foreground/80" />
                   {modalLead.location}
                 </span>
                 <span className="flex items-center gap-1">
-                  <DollarSign className="w-3 h-3 text-slate-400" />
+                  <DollarSign className="w-3 h-3 text-muted-foreground/80" />
                   ${modalLead.estimate.toLocaleString()}
                 </span>
                 <span className="flex items-center gap-1">
@@ -901,7 +901,7 @@ export default function LeadsMarketplacePage() {
                 </span>
               </div>
               {modalLead.diagnosis && (
-                <p className="text-[11px] text-slate-500 mt-1.5 italic leading-relaxed">
+                <p className="text-[11px] text-muted-foreground mt-1.5 italic leading-relaxed">
                   &ldquo;{modalLead.diagnosis}&rdquo;
                 </p>
               )}
@@ -909,7 +909,7 @@ export default function LeadsMarketplacePage() {
 
             {/* Plumber List */}
             <div className="px-5 py-3 max-h-[340px] overflow-y-auto space-y-2">
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">
                 Available Plumbers ({availablePlumbersForLead.length})
               </p>
 
@@ -922,7 +922,7 @@ export default function LeadsMarketplacePage() {
                     className={`flex items-start gap-3 p-3 rounded-xl border-2 transition-all cursor-pointer ${
                       selectedPlumberId === p.id
                         ? 'border-blue-400 bg-blue-50/50 shadow-sm'
-                        : 'border-slate-100 hover:border-slate-200 hover:bg-slate-50'
+                        : 'border-border/50 hover:border-border hover:bg-muted'
                     }`}
                   >
                     {/* Radio */}
@@ -931,7 +931,7 @@ export default function LeadsMarketplacePage() {
                       name="plumber-select"
                       checked={selectedPlumberId === p.id}
                       onChange={() => setSelectedPlumberId(p.id)}
-                      className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500"
+                      className="mt-0.5 w-4 h-4 text-primary border-border focus:ring-primary"
                     />
 
                     {/* Plumber info */}
@@ -944,13 +944,13 @@ export default function LeadsMarketplacePage() {
                         </span>
                         {p.plan && (
                           <span className={`ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                            p.plan === 'Premium' ? 'bg-purple-50 text-purple-600' : 'bg-slate-100 text-slate-500'
+                            p.plan === 'Premium' ? 'bg-purple-50 text-purple-600' : 'bg-muted text-muted-foreground'
                           }`}>
                             {p.plan}
                           </span>
                         )}
                       </div>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1 text-[11px] text-slate-500">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1 text-[11px] text-muted-foreground">
                         <span>{p.distance || '—'}</span>
                         <span>✅ {p.acceptanceRate || '—'} accept</span>
                         <span>⚡ {p.responseTime || '—'}</span>
@@ -965,24 +965,24 @@ export default function LeadsMarketplacePage() {
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-3 border-t border-slate-100 flex items-center justify-between gap-3">
+            <div className="px-5 py-3 border-t border-border/50 flex items-center justify-between gap-3">
               <button
                 onClick={autoFindBestMatch}
-                className="text-xs text-blue-600 hover:text-blue-700 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+                className="text-xs text-primary hover:text-primary/80 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
               >
                 🤖 Auto-Pick Best Match
               </button>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => { setShowAssignModal(false); setModalLeadId(null); }}
-                  className="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="px-4 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => selectedPlumberId && assignLead(modalLead.id, selectedPlumberId)}
                   disabled={!selectedPlumberId}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary/90 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
                 >
                   Assign Selected
                 </button>
@@ -996,19 +996,19 @@ export default function LeadsMarketplacePage() {
       {showDetailModal && detailLead && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => { setShowDetailModal(false); setDetailLead(null); }}>
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-border overflow-hidden animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white">
+            <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl">
                   {detailLead.photo || '📸'}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{detailLead.customer}</h3>
-                  <p className="text-xs text-slate-500">{detailLead.id}</p>
+                  <h3 className="text-base font-bold text-foreground">{detailLead.customer}</h3>
+                  <p className="text-xs text-muted-foreground">{detailLead.id}</p>
                 </div>
               </div>
-              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600">
+              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground/80 hover:text-muted-foreground">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -1035,20 +1035,20 @@ export default function LeadsMarketplacePage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div>
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Location</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Location</p>
                     <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                      <MapPin className="w-3.5 h-3.5 text-muted-foreground/80" />
                       {detailLead.location}
                     </p>
                     {detailLead.address && (
-                      <p className="text-xs text-slate-500 mt-0.5 ml-5">{detailLead.address}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 ml-5">{detailLead.address}</p>
                     )}
                   </div>
                   {detailLead.phone && (
                     <div>
-                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Phone</p>
+                      <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Phone</p>
                       <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
-                        <Phone className="w-3.5 h-3.5 text-slate-400" />
+                        <Phone className="w-3.5 h-3.5 text-muted-foreground/80" />
                         {detailLead.phone}
                       </p>
                     </div>
@@ -1056,11 +1056,11 @@ export default function LeadsMarketplacePage() {
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Estimate</p>
-                    <p className="text-lg font-bold text-blue-600 mt-0.5">${detailLead.estimate.toLocaleString()}</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Estimate</p>
+                    <p className="text-lg font-bold text-primary mt-0.5">${detailLead.estimate.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Date Received</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Date Received</p>
                     <p className="text-sm text-slate-800 mt-0.5">{detailLead.date ? new Date(detailLead.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</p>
                   </div>
                 </div>
@@ -1068,27 +1068,27 @@ export default function LeadsMarketplacePage() {
 
               {/* Diagnosis */}
               <div>
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">AI Diagnosis</p>
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-                  <p className="text-sm text-slate-700 leading-relaxed">{detailLead.diagnosis || 'No AI diagnosis available'}</p>
+                <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider mb-1.5">AI Diagnosis</p>
+                <div className="p-3 rounded-lg bg-muted border border-border">
+                  <p className="text-sm text-foreground leading-relaxed">{detailLead.diagnosis || 'No AI diagnosis available'}</p>
                 </div>
               </div>
 
               {/* Photo */}
               {detailLead.photo && detailLead.photo !== '📸' && (
                 <div>
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Photo</p>
-                  <img src={detailLead.photo} alt="Lead" className="w-full max-h-64 object-cover rounded-lg border border-slate-200" />
+                  <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider mb-1.5">Photo</p>
+                  <img src={detailLead.photo} alt="Lead" className="w-full max-h-64 object-cover rounded-lg border border-border" />
                 </div>
               )}
             </div>
 
             {/* Footer Actions */}
-            <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
+            <div className="px-6 py-3 border-t border-border/50 flex items-center justify-between gap-3 bg-muted/50">
               <div className="flex items-center gap-2">
                 {detailLead.status === 'matching' && (
                   <>
-                    <button onClick={() => { setShowDetailModal(false); openAssignModal(detailLead.id); }} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                    <button onClick={() => { setShowDetailModal(false); openAssignModal(detailLead.id); }} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary/90 transition-colors">
                       <User className="w-3.5 h-3.5" />
                       Assign
                     </button>
@@ -1099,7 +1099,7 @@ export default function LeadsMarketplacePage() {
                   </>
                 )}
               </div>
-              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-colors">
+              <button onClick={() => { setShowDetailModal(false); setDetailLead(null); }} className="px-4 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:bg-muted transition-colors">
                 Close
               </button>
             </div>

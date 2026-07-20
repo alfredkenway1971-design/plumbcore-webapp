@@ -79,7 +79,7 @@ const SUBSCRIPTION_TIERS = [
 function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center py-16">
-      <svg className="h-8 w-8 animate-spin text-blue-600" viewBox="0 0 24 24" fill="none">
+      <svg className="h-8 w-8 animate-spin text-primary" viewBox="0 0 24 24" fill="none">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
       </svg>
@@ -270,8 +270,8 @@ export default function OnboardingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-lg font-semibold text-slate-900">Something went wrong</h2>
-            <p className="mt-1 text-sm text-slate-500">{loadError}</p>
+            <h2 className="text-lg font-semibold text-foreground">Something went wrong</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{loadError}</p>
             <Button className="mt-6" onClick={handleRetry}>Try Again</Button>
           </div>
         </Card>
@@ -291,8 +291,8 @@ export default function OnboardingPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">🎉 {companyName} is live!</h1>
-          <p className="mt-2 text-slate-500 max-w-sm mx-auto">
+          <h1 className="text-2xl font-bold text-foreground">🎉 {companyName} is live!</h1>
+          <p className="mt-2 text-muted-foreground max-w-sm mx-auto">
             You&apos;re all set. Your AI chat widget is ready — the first lead could arrive today.
           </p>
 
@@ -303,10 +303,10 @@ export default function OnboardingPage() {
               { label: 'Jobs', value: '0', icon: '🔧' },
               { label: 'Revenue', value: '$0', icon: '💰' },
             ].map((s, i) => (
-              <div key={i} className="rounded-xl bg-slate-50 ring-1 ring-black/5 p-3">
+              <div key={i} className="rounded-xl bg-muted ring-1 ring-black/5 p-3">
                 <p className="text-lg">{s.icon}</p>
-                <p className="text-base font-bold text-slate-900 mt-0.5">{s.value}</p>
-                <p className="text-[10px] text-slate-400">{s.label}</p>
+                <p className="text-base font-bold text-foreground mt-0.5">{s.value}</p>
+                <p className="text-[10px] text-muted-foreground/80">{s.label}</p>
               </div>
             ))}
           </div>
@@ -316,8 +316,8 @@ export default function OnboardingPage() {
             <Button size="lg" className="w-full max-w-xs" onClick={handleGoToDashboard}>
               Go to Dashboard
             </Button>
-            <div className="text-xs text-slate-400 mt-3 space-y-1">
-              <p>💡 <span className="font-medium text-slate-500">Next:</span> Set up your AI chat widget to start capturing leads</p>
+            <div className="text-xs text-muted-foreground/80 mt-3 space-y-1">
+              <p>💡 <span className="font-medium text-muted-foreground">Next:</span> Set up your AI chat widget to start capturing leads</p>
               <p>👥 Invite your team so they can see the schedule</p>
             </div>
           </div>
@@ -348,12 +348,12 @@ export default function OnboardingPage() {
       {/* Logo + Title */}
       <div className="mb-8 text-center">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 mb-4">
-          <svg className="h-7 w-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <svg className="h-7 w-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Set up your company</h1>
-        <p className="mt-1 text-sm text-slate-500">Get started with PlumbCore AI in a few steps</p>
+        <h1 className="text-2xl font-bold text-foreground">Set up your company</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Get started with PlumbCore AI in a few steps</p>
       </div>
 
       {/* Step indicator */}
@@ -364,8 +364,8 @@ export default function OnboardingPage() {
         {/* ── Step 1: Company Profile ── */}
         {step === 1 && (
           <div className="space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Company Profile</h2>
-            <p className="text-sm text-slate-500">Tell us about your plumbing business.</p>
+            <h2 className="text-base font-semibold text-foreground">Company Profile</h2>
+            <p className="text-sm text-muted-foreground">Tell us about your plumbing business.</p>
 
             <Input
               label="Company Name"
@@ -395,8 +395,8 @@ export default function OnboardingPage() {
               value={data.company.website}
               onChange={(e) => updateCompany('website', e.target.value)}
             />
-            <div className="border-t border-slate-200 pt-4">
-              <p className="text-sm font-medium text-slate-400 mb-3">Business Address</p>
+            <div className="border-t border-border pt-4">
+              <p className="text-sm font-medium text-muted-foreground/80 mb-3">Business Address</p>
               <Input
                 label="Street Address"
                 placeholder="123 Main Street"
@@ -434,12 +434,12 @@ export default function OnboardingPage() {
         {/* ── Step 2: Business Hours ── */}
         {step === 2 && (
           <div className="space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Business Hours</h2>
-            <p className="text-sm text-slate-500">Set your standard operating hours.</p>
+            <h2 className="text-base font-semibold text-foreground">Business Hours</h2>
+            <p className="text-sm text-muted-foreground">Set your standard operating hours.</p>
 
             <div className="space-y-2">
               {/* Header */}
-              <div className="grid grid-cols-[1fr_80px_80px_60px] gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <div className="grid grid-cols-[1fr_80px_80px_60px] gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <span>Day</span>
                 <span className="text-center">Open</span>
                 <span className="text-center">Close</span>
@@ -454,20 +454,20 @@ export default function OnboardingPage() {
                       !h.open ? 'opacity-50' : ''
                     }`}
                   >
-                    <span className="text-sm font-medium text-slate-900">{day}</span>
+                    <span className="text-sm font-medium text-foreground">{day}</span>
                     <input
                       type="time"
                       value={h.openTime}
                       onChange={(e) => updateHours(day, 'openTime', e.target.value)}
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-foreground outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <input
                       type="time"
                       value={h.closeTime}
                       onChange={(e) => updateHours(day, 'closeTime', e.target.value)}
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-whiteer px-2 py-1 text-xs text-foreground outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <div className="flex justify-end">
                       <button
@@ -499,8 +499,8 @@ export default function OnboardingPage() {
         {/* ── Step 3: Pricing Settings ── */}
         {step === 3 && (
           <div className="space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Pricing Settings</h2>
-            <p className="text-sm text-slate-500">Set your default pricing rates.</p>
+            <h2 className="text-base font-semibold text-foreground">Pricing Settings</h2>
+            <p className="text-sm text-muted-foreground">Set your default pricing rates.</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
@@ -543,12 +543,12 @@ export default function OnboardingPage() {
         {/* ── Step 4: Team Setup ── */}
         {step === 4 && (
           <div className="space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Team Setup</h2>
-            <p className="text-sm text-slate-500">Invite your team members to get started.</p>
+            <h2 className="text-base font-semibold text-foreground">Team Setup</h2>
+            <p className="text-sm text-muted-foreground">Invite your team members to get started.</p>
 
             {data.team.length === 0 && (
               <div className="rounded-xl border border-dashed border-white/10 p-6 text-center">
-                <p className="text-sm text-slate-500 mb-4">No team members added yet.</p>
+                <p className="text-sm text-muted-foreground mb-4">No team members added yet.</p>
                 <Button variant="secondary" size="sm" onClick={addTeamMember}>
                   + Add Team Member
                 </Button>
@@ -558,7 +558,7 @@ export default function OnboardingPage() {
             {data.team.map((member, index) => (
               <div key={index} className="rounded-xl ring-1 ring-black/5 p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Team Member {index + 1}
                   </span>
                   <button
@@ -583,11 +583,11 @@ export default function OnboardingPage() {
                   onChange={(e) => updateTeamMember(index, 'email', e.target.value)}
                 />
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-slate-400">Role</label>
+                  <label className="block text-sm font-medium text-muted-foreground/80">Role</label>
                   <select
                     value={member.role}
                     onChange={(e) => updateTeamMember(index, 'role', e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                    className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
                   >
                     <option value="admin">Admin</option>
                     <option value="dispatcher">Dispatcher</option>
@@ -611,7 +611,7 @@ export default function OnboardingPage() {
                 <button
                   type="button"
                   onClick={handleSkip}
-                  className="text-sm text-slate-500 hover:text-slate-400 transition-colors"
+                  className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors"
                 >
                   Skip &mdash; I&apos;ll add them later
                 </button>
@@ -624,8 +624,8 @@ export default function OnboardingPage() {
         {/* ── Step 5: Subscription ── */}
         {step === 5 && (
           <div className="space-y-5">
-            <h2 className="text-base font-semibold text-slate-900">Choose Your Plan</h2>
-            <p className="text-sm text-slate-500">Start your 14-day free trial. No credit card required.</p>
+            <h2 className="text-base font-semibold text-foreground">Choose Your Plan</h2>
+            <p className="text-sm text-muted-foreground">Start your 14-day free trial. No credit card required.</p>
 
             <div className="space-y-3">
               {SUBSCRIPTION_TIERS.map((tier) => (
@@ -636,17 +636,17 @@ export default function OnboardingPage() {
                   className={`w-full text-left rounded-xl border p-4 transition-all ${
                     data.plan === tier.id
                       ? 'border-electric bg-electric/5'
-                      : 'border-slate-200 bg-whiteer hover:border-white/20'
+                      : 'border-border bg-whiteer hover:border-white/20'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="text-base font-semibold text-slate-900">{tier.name}</h3>
-                      <p className="text-sm text-slate-500 mt-0.5">{tier.desc}</p>
+                      <h3 className="text-base font-semibold text-foreground">{tier.name}</h3>
+                      <p className="text-sm text-muted-foreground mt-0.5">{tier.desc}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold text-slate-900">${tier.price}</span>
-                      <span className="text-sm text-slate-500">/mo</span>
+                      <span className="text-xl font-bold text-foreground">${tier.price}</span>
+                      <span className="text-sm text-muted-foreground">/mo</span>
                       <div
                         className={`ml-2 flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                           data.plan === tier.id
@@ -664,7 +664,7 @@ export default function OnboardingPage() {
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1">
                     {tier.features.map((f, i) => (
-                      <div key={i} className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <div key={i} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <svg className="h-3.5 w-3.5 shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>

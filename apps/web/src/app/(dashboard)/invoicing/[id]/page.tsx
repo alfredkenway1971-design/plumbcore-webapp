@@ -42,10 +42,10 @@ function Toast({ message, visible, onClose }: { message: string; visible: boolea
   return (
     <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 fade-in">
       <div className="flex items-center gap-3 rounded-xl bg-green-500 px-5 py-3 shadow-xl shadow-black/30 border border-status-success/30">
-        <svg className="h-5 w-5 shrink-0 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <svg className="h-5 w-5 shrink-0 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <p className="text-sm font-medium text-slate-900">{message}</p>
+        <p className="text-sm font-medium text-foreground">{message}</p>
       </div>
     </div>
   );
@@ -55,8 +55,8 @@ function Toast({ message, visible, onClose }: { message: string; visible: boolea
 function InvoiceSkeleton() {
   return (
     <div className="space-y-5 animate-pulse">
-      <div className="h-8 w-48 rounded bg-slate-50" />
-      <div className="h-5 w-72 rounded bg-slate-50" />
+      <div className="h-8 w-48 rounded bg-muted" />
+      <div className="h-5 w-72 rounded bg-muted" />
       <div className="h-40 rounded-xl bg-white ring-1 ring-black/5" />
       <div className="h-48 rounded-xl bg-white ring-1 ring-black/5" />
       <div className="h-16 rounded-xl bg-white ring-1 ring-black/5" />
@@ -377,7 +377,7 @@ export default function InvoiceDetailPage() {
       {/* Back link */}
       <button
         onClick={() => router.push('/invoicing')}
-        className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-900 transition-colors"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground/80 hover:text-foreground transition-colors"
       >
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -389,7 +389,7 @@ export default function InvoiceDetailPage() {
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{invoice.id}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">{invoice.id}</h1>
             <StatusBadge status={invoice.status} size="md" />
             {invoice.status === 'overdue' && (
               <span className="inline-flex items-center gap-1 text-xs text-red-600 font-medium">
@@ -398,11 +398,11 @@ export default function InvoiceDetailPage() {
               </span>
             )}
           </div>
-          <p className="mt-1 text-sm text-slate-500">{invoice.jobTitle}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{invoice.jobTitle}</p>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-slate-900">{formatCurrency(invoice.amount)}</p>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-2xl font-bold text-foreground">{formatCurrency(invoice.amount)}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
             Issued: {formatDate(invoice.issueDate)} · Due: {formatDate(invoice.dueDate)}
           </p>
         </div>
@@ -410,7 +410,7 @@ export default function InvoiceDetailPage() {
 
       {/* Status Flow */}
       <Card variant="default" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-4">Status Flow</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Status Flow</h3>
         <div className="flex items-center gap-0">
           {statusFlow.map((step, idx) => {
             const isComplete = idx <= (currentStepIndex ?? -1);
@@ -424,7 +424,7 @@ export default function InvoiceDetailPage() {
                     className={`flex items-center justify-center h-8 w-8 rounded-full text-xs font-bold transition-all ${
                       isComplete
                         ? 'bg-electric text-[#0a0e2a]'
-                        : 'bg-slate-50 text-slate-500-dark'
+                        : 'bg-muted text-muted-foreground-dark'
                     } ${isCurrent ? 'ring-2 ring-electric/50' : ''}`}
                   >
                     {isComplete ? (
@@ -435,13 +435,13 @@ export default function InvoiceDetailPage() {
                       idx + 1
                     )}
                   </div>
-                  <span className={`text-xs font-medium capitalize ${isComplete ? 'text-slate-900' : 'text-steel-dark'}`}>
+                  <span className={`text-xs font-medium capitalize ${isComplete ? 'text-foreground' : 'text-steel-dark'}`}>
                     {step}
                   </span>
                 </div>
                 {!isLast && (
                   <div className={`flex-1 h-0.5 mx-3 ${
-                    idx < (currentStepIndex ?? -1) ? 'bg-electric' : 'bg-slate-50'
+                    idx < (currentStepIndex ?? -1) ? 'bg-electric' : 'bg-muted'
                   }`} />
                 )}
               </div>
@@ -457,7 +457,7 @@ export default function InvoiceDetailPage() {
         )}
         {invoice.status === 'cancelled' && (
           <div className="mt-3 rounded-xl bg-steel/10 ring-1 ring-black/5 px-3 py-2">
-            <p className="text-xs text-slate-400 font-medium">This invoice has been cancelled.</p>
+            <p className="text-xs text-muted-foreground/80 font-medium">This invoice has been cancelled.</p>
           </div>
         )}
         {invoice.paidAmount !== undefined && invoice.paidAmount !== null && invoice.paymentMethod && (
@@ -471,24 +471,24 @@ export default function InvoiceDetailPage() {
 
       {/* Bill To */}
       <Card variant="default" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Bill To</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Bill To</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm font-medium text-slate-900">{invoice.clientName}</p>
+            <p className="text-sm font-medium text-foreground">{invoice.clientName}</p>
             {client && (
               <>
-                <p className="text-sm text-slate-500 mt-1">{client.address}</p>
-                <p className="text-sm text-slate-500">{client.city}, {client.state} {client.zip}</p>
-                <p className="text-sm text-slate-500 mt-2">{client.email}</p>
-                <p className="text-sm text-slate-500">{client.phone}</p>
+                <p className="text-sm text-muted-foreground mt-1">{client.address}</p>
+                <p className="text-sm text-muted-foreground">{client.city}, {client.state} {client.zip}</p>
+                <p className="text-sm text-muted-foreground mt-2">{client.email}</p>
+                <p className="text-sm text-muted-foreground">{client.phone}</p>
               </>
             )}
           </div>
           <div className="text-left sm:text-right">
-            <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Invoice Details</p>
-            <p className="text-sm text-slate-900">Invoice #: {invoice.id}</p>
-            <p className="text-sm text-slate-400">Job: {invoice.jobTitle} ({invoice.jobId})</p>
-            {client && <p className="text-sm text-slate-400">Client ID: {client.id}</p>}
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Invoice Details</p>
+            <p className="text-sm text-foreground">Invoice #: {invoice.id}</p>
+            <p className="text-sm text-muted-foreground/80">Job: {invoice.jobTitle} ({invoice.jobId})</p>
+            {client && <p className="text-sm text-muted-foreground/80">Client ID: {client.id}</p>}
           </div>
         </div>
       </Card>
@@ -496,11 +496,11 @@ export default function InvoiceDetailPage() {
       {/* Line Items Table */}
       <Card variant="default" padding="md">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-slate-900">Line Items</h3>
+          <h3 className="text-sm font-semibold text-foreground">Line Items</h3>
           {editing && (
             <button
               onClick={() => setEditLineItems([...editLineItems, { description: '', quantity: 1, unitPrice: 0, total: 0 }])}
-              className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+              className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
             >
               + Add Line Item
             </button>
@@ -509,16 +509,16 @@ export default function InvoiceDetailPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[400px]">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="pb-2 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Description</th>
-                <th className="pb-2 px-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Qty</th>
-                <th className="pb-2 px-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
-                <th className="pb-2 pl-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Total</th>
+              <tr className="border-b border-border">
+                <th className="pb-2 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</th>
+                <th className="pb-2 px-4 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Qty</th>
+                <th className="pb-2 px-4 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Unit Price</th>
+                <th className="pb-2 pl-4 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total</th>
               </tr>
             </thead>
             <tbody>
               {(editing ? editLineItems : invoice.lineItems).map((item: any, idx: number) => (
-                <tr key={idx} className="border-b border-slate-200/50 last:border-b-0">
+                <tr key={idx} className="border-b border-border/50 last:border-b-0">
                   {editing ? (
                     <>
                       <td className="py-2 pr-4">
@@ -530,7 +530,7 @@ export default function InvoiceDetailPage() {
                             setEditLineItems(next);
                           }}
                           placeholder="Description"
-                          className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-full h-9 px-3 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
                         />
                       </td>
                       <td className="py-2 px-4">
@@ -543,7 +543,7 @@ export default function InvoiceDetailPage() {
                             next[idx] = { ...next[idx], quantity: q, total: q * next[idx].unitPrice };
                             setEditLineItems(next);
                           }}
-                          className="w-16 h-9 px-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-16 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
                         />
                       </td>
                       <td className="py-2 px-4">
@@ -556,12 +556,12 @@ export default function InvoiceDetailPage() {
                             next[idx] = { ...next[idx], unitPrice: p, total: next[idx].quantity * p };
                             setEditLineItems(next);
                           }}
-                          className="w-20 h-9 px-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
                         />
                       </td>
                       <td className="py-2 pl-4 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <span className="text-sm font-medium text-slate-900">{formatCurrency(item.total)}</span>
+                          <span className="text-sm font-medium text-foreground">{formatCurrency(item.total)}</span>
                           <button
                             onClick={() => {
                               if (editLineItems.length <= 1) return;
@@ -579,10 +579,10 @@ export default function InvoiceDetailPage() {
                     </>
                   ) : (
                     <>
-                      <td className="py-3 pr-4 text-sm text-slate-900">{item.description}</td>
-                      <td className="py-3 px-4 text-sm text-slate-400 text-right">{item.quantity}</td>
-                      <td className="py-3 px-4 text-sm text-slate-400 text-right">{formatCurrency(item.unitPrice)}</td>
-                      <td className="py-3 pl-4 text-sm font-medium text-slate-900 text-right">{formatCurrency(item.total)}</td>
+                      <td className="py-3 pr-4 text-sm text-foreground">{item.description}</td>
+                      <td className="py-3 px-4 text-sm text-muted-foreground/80 text-right">{item.quantity}</td>
+                      <td className="py-3 px-4 text-sm text-muted-foreground/80 text-right">{formatCurrency(item.unitPrice)}</td>
+                      <td className="py-3 pl-4 text-sm font-medium text-foreground text-right">{formatCurrency(item.total)}</td>
                     </>
                   )}
                 </tr>
@@ -595,12 +595,12 @@ export default function InvoiceDetailPage() {
         {editing && (
           <div className="mt-4 space-y-3">
             <div className="flex items-center gap-3">
-              <label className="text-sm text-slate-500">Tax Rate (%)</label>
+              <label className="text-sm text-muted-foreground">Tax Rate (%)</label>
               <input
                 type="number" min="0" max="100" step="0.5"
                 value={editTaxRate}
                 onChange={(e) => setEditTaxRate(parseFloat(e.target.value) || 0)}
-                className="w-20 h-9 px-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 text-center outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-center outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -625,24 +625,24 @@ export default function InvoiceDetailPage() {
         )}
 
         {/* Totals */}
-        <div className="mt-4 border-t border-slate-200 pt-3 space-y-1.5">
+        <div className="mt-4 border-t border-border pt-3 space-y-1.5">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Subtotal</span>
-            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0))}</span>
+            <span className="text-muted-foreground/80">Subtotal</span>
+            <span className="text-foreground">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0))}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Tax ({editing ? editTaxRate : 8}%)</span>
-            <span className="text-slate-900">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
+            <span className="text-muted-foreground/80">Tax ({editing ? editTaxRate : 8}%)</span>
+            <span className="text-foreground">{formatCurrency((editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0) * (editing ? editTaxRate : 8) / 100)}</span>
           </div>
           {depositCredit > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Deposit (paid via PlumbCore)</span>
+              <span className="text-muted-foreground/80">Deposit (paid via PlumbCore)</span>
               <span className="text-emerald-600">-{formatCurrency(depositCredit)}</span>
             </div>
           )}
-          <div className="flex justify-between text-base font-bold border-t border-slate-200 pt-2">
-            <span className="text-slate-900">Total</span>
-            <span className="text-blue-600">{formatCurrency(
+          <div className="flex justify-between text-base font-bold border-t border-border pt-2">
+            <span className="text-foreground">Total</span>
+            <span className="text-primary">{formatCurrency(
               (editing ? editLineItems : invoice.lineItems).reduce((s: number, li: any) => s + li.total, 0) * (1 + (editing ? editTaxRate : 8) / 100)
             )}</span>
           </div>
@@ -651,16 +651,16 @@ export default function InvoiceDetailPage() {
 
       {/* Email Preview Section */}
       <Card variant="default" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Email Preview</h3>
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-3">
+        <h3 className="text-sm font-semibold text-foreground mb-3">Email Preview</h3>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground/80 mb-3">
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          <span>Send to: <span className="text-slate-900 font-medium">{client?.email || 'No email on file'}</span></span>
+          <span>Send to: <span className="text-foreground font-medium">{client?.email || 'No email on file'}</span></span>
         </div>
         <div className="rounded-xl ring-1 ring-black/5 bg-whiteer p-3">
-          <p className="text-sm text-slate-900 font-medium">Subject: Invoice {invoice.id} from PlumbCore AI</p>
-          <p className="text-sm text-slate-500 mt-2">
+          <p className="text-sm text-foreground font-medium">Subject: Invoice {invoice.id} from PlumbCore AI</p>
+          <p className="text-sm text-muted-foreground mt-2">
             Dear {invoice.clientName},{'\n\n'}
             Please find attached invoice {invoice.id} for {invoice.jobTitle}.{'\n\n'}
             Amount Due: {formatCurrency(invoice.amount)}{'\n'}
@@ -681,15 +681,15 @@ export default function InvoiceDetailPage() {
 
       {/* Notes Section */}
       <Card variant="default" padding="md">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Notes</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Notes</h3>
         <textarea
           placeholder="Add notes to this invoice..."
           rows={4}
           value={invoiceNotes}
           onChange={(e) => setInvoiceNotes(e.target.value)}
-          className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+          className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
         />
-        <p className="mt-1 text-xs text-slate-500">Notes are saved locally and visible on this page.</p>
+        <p className="mt-1 text-xs text-muted-foreground">Notes are saved locally and visible on this page.</p>
       </Card>
 
       {/* Actions */}
@@ -750,11 +750,11 @@ export default function InvoiceDetailPage() {
           />
 
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-400">Payment Method *</label>
+            <label className="block text-sm font-medium text-muted-foreground/80">Payment Method *</label>
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="credit_card">Credit Card</option>
               <option value="bank_transfer">Bank Transfer</option>
@@ -770,9 +770,9 @@ export default function InvoiceDetailPage() {
             onChange={(e) => setPaymentDate(e.target.value)}
           />
 
-          <div className="rounded-xl bg-slate-50 p-3">
-            <p className="text-xs text-slate-500 mb-1">Invoice Total</p>
-            <p className="text-lg font-bold text-slate-900">{formatCurrency(invoice.amount)}</p>
+          <div className="rounded-xl bg-muted p-3">
+            <p className="text-xs text-muted-foreground mb-1">Invoice Total</p>
+            <p className="text-lg font-bold text-foreground">{formatCurrency(invoice.amount)}</p>
           </div>
         </div>
       </Modal>

@@ -32,10 +32,10 @@ export default function AdminFeedbackReviewsPage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Feedback & Reviews</h1>
-          <p className="text-sm text-slate-500 mt-1">Customer reviews and feedback management</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Feedback & Reviews</h1>
+          <p className="text-sm text-muted-foreground mt-1">Customer reviews and feedback management</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
@@ -49,21 +49,21 @@ export default function AdminFeedbackReviewsPage() {
         ].map((s, i) => (
           <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
-            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+            <p className="text-2xl font-bold text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input readOnly placeholder="Search reviews..." className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input readOnly placeholder="Search reviews..." className="w-full h-10 pl-10 pr-4 hover:bg-muted border-0 rounded-xl text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'published', 'flagged'].map((s: any) => (
-              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{s}</button>
+              <button key={s} onClick={() => setStatusFilter(s)} className={`h-10 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${statusFilter === s ? 'bg-primary text-white' : 'hover:bg-muted text-muted-foreground'}`}>{s}</button>
             ))}
           </div>
         </div>
@@ -71,8 +71,8 @@ export default function AdminFeedbackReviewsPage() {
           <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-4">
             <Star className="w-7 h-7 text-amber-500" />
           </div>
-          <h3 className="text-lg font-semibold text-slate-900 mb-1">No reviews yet</h3>
-          <p className="text-sm text-slate-500 max-w-md mx-auto">
+          <h3 className="text-lg font-semibold text-foreground mb-1">No reviews yet</h3>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto">
             When plumbers submit feedback and reviews about the platform, they'll appear here for moderation and management.
           </p>
         </div>

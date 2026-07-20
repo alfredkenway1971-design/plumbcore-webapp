@@ -245,7 +245,7 @@ const translations = {
       heroSubtitle: "Flat-rate pricing. No per-tech fees. No setup costs.",
       heroCTA1: "Start Free Trial",
       heroCTA2: "Get a Free Estimate",
-      heroTrusted: "Trusted by <span class=\"text-slate-900 font-semibold\">500+</span> plumbing companies",
+      heroTrusted: "Trusted by <span class=\"text-foreground font-semibold\">500+</span> plumbing companies",
 
       // Stats
       statsProjectsDone: "Projects Done",

@@ -26,15 +26,15 @@ function EmptyPlumberState() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
         </svg>
       </div>
-      <h3 className="text-base font-semibold text-slate-900 mb-1">No plumbers registered yet</h3>
-      <p className="text-sm text-slate-500 max-w-xs">Plumbers will appear here after they sign up and complete onboarding.</p>
+      <h3 className="text-base font-semibold text-foreground mb-1">No plumbers registered yet</h3>
+      <p className="text-sm text-muted-foreground max-w-xs">Plumbers will appear here after they sign up and complete onboarding.</p>
     </div>
   );
 }
 
 const planColors: Record<string, string> = {
   solo: 'bg-amber-50 text-amber-600 border-amber-500/20',
-  pro: 'bg-blue-50 text-blue-600 border-blue-500/20',
+  pro: 'bg-blue-50 text-primary border-blue-500/20',
   business: 'bg-violet-50 text-violet-600 border-violet-500/20',
   enterprise: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
 };
@@ -111,13 +111,13 @@ export default function AdminPlumbersPage() {
   return (
     <div className="p-4 sm:p-6 space-y-5">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div><h1 className="text-xl sm:text-2xl font-bold text-slate-900">Plumber Profiles</h1><p className="text-sm text-slate-500 mt-0.5">Manage all plumbers, their plans, and performance</p></div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-foreground">Plumber Profiles</h1><p className="text-sm text-muted-foreground mt-0.5">Manage all plumbers, their plans, and performance</p></div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm flex-1 sm:flex-none">
+          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted hover:border-border transition-all shadow-sm flex-1 sm:flex-none">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
             Export
           </button>
-          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-all shadow-sm shadow-blue-200 flex-1 sm:flex-none">
+          <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-all shadow-sm shadow-blue-200 flex-1 sm:flex-none">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
             Invite Plumber
           </button>
@@ -128,36 +128,36 @@ export default function AdminPlumbersPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-2xl bg-white border border-emerald-100 shadow-sm px-4 py-3.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600">Active Plumbers</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{totalActive}</p>
+          <p className="text-2xl font-bold text-foreground mt-1">{totalActive}</p>
         </div>
         <div className="rounded-2xl bg-white border border-amber-100 shadow-sm px-4 py-3.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">At Risk</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{totalAtRisk}</p>
+          <p className="text-2xl font-bold text-foreground mt-1">{totalAtRisk}</p>
         </div>
         <div className="rounded-2xl bg-white border border-violet-100 shadow-sm px-4 py-3.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-violet-600">Jobs Completed</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{totalCompleted.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-foreground mt-1">{totalCompleted.toLocaleString()}</p>
         </div>
         <div className="rounded-2xl bg-white border border-amber-100 shadow-sm px-4 py-3.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">Avg Rating</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{totalAvgRating} <span className="text-amber-400 text-lg">★</span></p>
+          <p className="text-2xl font-bold text-foreground mt-1">{totalAvgRating} <span className="text-amber-400 text-lg">★</span></p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div className="relative w-full sm:max-w-xs">
-          <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search plumbers..."
-            className="w-full rounded-xl bg-white border border-slate-200 pl-9 pr-3 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all" />
+            className="w-full rounded-xl bg-white border border-border pl-9 pr-3 py-2.5 text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-primary/20 transition-all" />
         </div>
         <div className="flex gap-1.5 overflow-x-auto pb-1 w-full sm:w-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {['all', 'solo', 'pro', 'business', 'enterprise'].map(t => (
             <button key={t} onClick={() => setFilterTier(t)}
               className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium border transition-all ${
                 filterTier === t
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                  : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                  ? 'bg-primary text-white border-primary shadow-sm'
+                  : 'bg-white text-muted-foreground border-border hover:border-blue-300 hover:text-primary'
               }`}>
               {t === 'all' ? 'All' : PLAN_LABELS_PRETTY[t] || t}
             </button>
@@ -168,7 +168,7 @@ export default function AdminPlumbersPage() {
       {/* Mobile cards */}
       <div className="sm:hidden space-y-3">
         {filtered.map(p => (
-          <div key={p.id} className="rounded-xl bg-white border border-slate-200 p-4 cursor-pointer hover:border-blue-300 transition-colors"
+          <div key={p.id} className="rounded-xl bg-white border border-border p-4 cursor-pointer hover:border-blue-300 transition-colors"
             onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2.5">
@@ -177,16 +177,16 @@ export default function AdminPlumbersPage() {
                   {p.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">{p.company_name}</p>
-                  <p className="text-[11px] text-slate-500">{p.specialties.slice(0, 2).join(', ')}</p>
+                  <p className="text-sm font-medium text-foreground">{p.company_name}</p>
+                  <p className="text-[11px] text-muted-foreground">{p.specialties.slice(0, 2).join(', ')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <I.Star className="w-3.5 h-3.5 text-amber-600" />
-                <span className="text-sm font-semibold text-slate-900">{p.avg_rating}</span>
+                <span className="text-sm font-semibold text-foreground">{p.avg_rating}</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-xs text-slate-600 mb-2">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
               <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold border ${planColors[p.plan_tier] || planColors.solo}`}>
                 {PLAN_LABELS_PRETTY[p.plan_tier]}
               </span>
@@ -200,17 +200,17 @@ export default function AdminPlumbersPage() {
               </span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-3 text-slate-600">
+              <div className="flex items-center gap-3 text-muted-foreground">
                 <span className="font-medium">{p.total_jobs_completed.toLocaleString()} jobs</span>
                 <span className="font-semibold text-emerald-600">{planRevenueDisplay[p.plan_tier]}/mo</span>
               </div>
               <button onClick={(e) => { e.stopPropagation(); router.push(`/admin/plumbers/${p.id}`); }}
-                className="text-xs text-blue-600 hover:text-blue-600 font-medium">View →</button>
+                className="text-xs text-primary hover:text-primary font-medium">View →</button>
             </div>
           </div>
         ))}
         {filtered.length === 0 && total > 0 && (
-          <div className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</div>
+          <div className="px-4 py-6 text-center text-sm text-muted-foreground">No plumbers found</div>
         )}
         {total === 0 && (
           <EmptyPlumberState />
@@ -222,22 +222,22 @@ export default function AdminPlumbersPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px] text-sm">
             <thead className="hidden sm:table-header-group">
-              <tr className="bg-slate-100 border-b border-slate-200">
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plumber</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Plan</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Rating</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Jobs</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Acceptance</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Leads (mo)</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Revenue/mo</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Connect</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-500 text-xs">Status</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-500 text-xs">Actions</th>
+              <tr className="bg-muted border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Plumber</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Plan</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Rating</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Jobs</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Acceptance</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Leads (mo)</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Revenue/mo</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Connect</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs">Status</th>
+                <th className="text-right px-4 py-3 font-semibold text-muted-foreground text-xs">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.map(p => (
-                <tr key={p.id} className="hidden sm:table-row hover:bg-slate-50 cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
+                <tr key={p.id} className="hidden sm:table-row hover:bg-muted cursor-pointer" onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold text-white shrink-0"
@@ -245,8 +245,8 @@ export default function AdminPlumbersPage() {
                         {p.company_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-900">{p.company_name}</p>
-                        <p className="text-[11px] text-slate-500">{p.specialties.slice(0, 2).join(', ')}</p>
+                        <p className="text-sm font-medium text-foreground">{p.company_name}</p>
+                        <p className="text-[11px] text-muted-foreground">{p.specialties.slice(0, 2).join(', ')}</p>
                       </div>
                     </div>
                   </td>
@@ -258,12 +258,12 @@ export default function AdminPlumbersPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
                       <I.Star className="w-3.5 h-3.5 text-amber-600" />
-                      <span className="text-sm font-semibold text-slate-900">{p.avg_rating}</span>
+                      <span className="text-sm font-semibold text-foreground">{p.avg_rating}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-700">{p.total_jobs_completed.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-sm text-slate-700">{p.acceptance_rate}%</td>
-                  <td className="px-4 py-3 text-sm text-slate-700">{p.current_month_leads}/{p.monthly_lead_limit}</td>
+                  <td className="px-4 py-3 text-sm text-foreground">{p.total_jobs_completed.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-sm text-foreground">{p.acceptance_rate}%</td>
+                  <td className="px-4 py-3 text-sm text-foreground">{p.current_month_leads}/{p.monthly_lead_limit}</td>
                   <td className="px-4 py-3 text-sm font-semibold text-emerald-600">{planRevenueDisplay[p.plan_tier]}</td>
                   <td className="px-4 py-3">
                     {p.stripe_onboarding_complete
@@ -283,12 +283,12 @@ export default function AdminPlumbersPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={(e) => { e.stopPropagation(); router.push(`/admin/plumbers/${p.id}`); }}
-                      className="text-xs text-blue-600 hover:text-blue-600">View →</button>
+                      className="text-xs text-primary hover:text-primary">View →</button>
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && total > 0 && (
-                <tr className="hidden sm:table-row"><td colSpan={10} className="px-4 py-6 text-center text-sm text-slate-500">No plumbers found</td></tr>
+                <tr className="hidden sm:table-row"><td colSpan={10} className="px-4 py-6 text-center text-sm text-muted-foreground">No plumbers found</td></tr>
               )}
               {total === 0 && (
                 <tr className="hidden sm:table-row"><td colSpan={10} className="px-4 py-16"><EmptyPlumberState /></td></tr>

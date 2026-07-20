@@ -53,7 +53,7 @@ export function Modal({ open, onClose, title, description, children, footer, siz
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="absolute right-4 top-4 rounded-lg p-1.5 text-muted-foreground/80 hover:text-foreground hover:bg-muted transition-colors"
             aria-label="Close"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -65,8 +65,8 @@ export function Modal({ open, onClose, title, description, children, footer, siz
         {/* Header */}
         {(title || description) && (
           <div className="px-6 pt-6 pb-2">
-            {title && <h2 className="text-lg font-semibold text-slate-900">{title}</h2>}
-            {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
+            {title && <h2 className="text-lg font-semibold text-foreground">{title}</h2>}
+            {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
           </div>
         )}
 
@@ -75,7 +75,7 @@ export function Modal({ open, onClose, title, description, children, footer, siz
 
         {/* Footer */}
         {footer && (
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-slate-200 px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-border px-6 py-4">
             {footer}
           </div>
         )}

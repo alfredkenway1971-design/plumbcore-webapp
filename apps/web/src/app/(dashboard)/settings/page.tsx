@@ -167,13 +167,13 @@ const BILLING_HISTORY: InvoiceRecord[] = [
 /* ── Role Badge Component ── */
 function RoleBadge({ role }: { role: string }) {
   const config: Record<string, { label: string; bg: string; text: string; border: string }> = {
-    admin: { label: 'Admin', bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-electric/20' },
+    admin: { label: 'Admin', bg: 'bg-blue-50', text: 'text-primary', border: 'border-electric/20' },
     dispatcher: { label: 'Dispatcher', bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-status-warning/20' },
     'lead-tech': { label: 'Lead Tech', bg: 'bg-green-50', text: 'text-green-600', border: 'border-status-success/20' },
     'senior-tech': { label: 'Senior Tech', bg: 'bg-green-50', text: 'text-green-600', border: 'border-status-success/20' },
-    tech: { label: 'Tech', bg: 'bg-white/5', text: 'text-slate-400', border: 'border-white/10' },
+    tech: { label: 'Tech', bg: 'bg-white/5', text: 'text-muted-foreground/80', border: 'border-white/10' },
   };
-  const c = config[role] || { label: role, bg: 'bg-white/5', text: 'text-slate-400', border: 'border-white/10' };
+  const c = config[role] || { label: role, bg: 'bg-white/5', text: 'text-muted-foreground/80', border: 'border-white/10' };
   return (
     <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${c.bg} ${c.text} ${c.border}`}>
       {c.label}
@@ -188,7 +188,7 @@ function StatusBadge({ active }: { active: boolean }) {
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
         active
           ? 'bg-green-50 text-green-600 border border-status-success/20'
-          : 'bg-steel/10 text-slate-500 border border-steel/20'
+          : 'bg-steel/10 text-muted-foreground border border-steel/20'
       }`}
     >
       {active ? 'Active' : 'Inactive'}
@@ -218,7 +218,7 @@ function ToggleSwitch({ enabled, onChange }: { enabled: boolean; onChange: (v: b
 /* ── Skeleton ── */
 function SkeletonTeamRow() {
   return (
-    <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 animate-pulse">
+    <div className="flex items-center gap-3 border-b border-border px-4 py-3 animate-pulse">
       <div className="h-7 w-7 rounded-full bg-white/5" />
       <div className="h-4 w-36 rounded bg-white/5" />
       <div className="h-4 w-44 rounded bg-white/5" />
@@ -283,17 +283,17 @@ function ProfileTab() {
   return (
     <div className="space-y-6 max-w-2xl">
       <Card variant="default" padding="lg">
-        <h2 className="mb-5 text-base font-semibold text-slate-900">Profile Picture</h2>
+        <h2 className="mb-5 text-base font-semibold text-foreground">Profile Picture</h2>
         <div className="flex items-center gap-5">
           <div className="relative">
             {avatarUrl ? (
               <img
                 src={avatarUrl}
                 alt="Profile"
-                className="h-20 w-20 rounded-full object-cover border-2 border-slate-200"
+                className="h-20 w-20 rounded-full object-cover border-2 border-border"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-electric/10 text-lg font-bold text-electric border-2 border-slate-200">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-electric/10 text-lg font-bold text-electric border-2 border-border">
                 {initials}
               </div>
             )}
@@ -323,7 +323,7 @@ function ProfileTab() {
       </Card>
 
       <Card variant="default" padding="lg">
-        <h2 className="mb-5 text-base font-semibold text-slate-900">Personal Information</h2>
+        <h2 className="mb-5 text-base font-semibold text-foreground">Personal Information</h2>
         <div className="space-y-4">
           <Input
             label="Full Name"
@@ -607,7 +607,7 @@ export default function SettingsPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState
             title="Failed to load settings"
@@ -622,7 +622,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
         <div className="flex gap-1 animate-pulse">
           {TABS.map((t) => (
             <div key={t.id} className="h-9 w-24 rounded-xl bg-white/5" />
@@ -635,18 +635,18 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+      <h1 className="text-2xl font-bold text-foreground">Settings</h1>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-200">
+      <div className="flex gap-1 border-b border-border">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2.5 text-sm font-medium transition-all border-b-2 -mb-px ${
               activeTab === tab.id
-                ? 'border-electric text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
+                ? 'border-electric text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
             {tab.label}
@@ -662,15 +662,15 @@ export default function SettingsPage() {
         <div className="space-y-6 max-w-2xl">
           {/* Company Information */}
           <Card variant="default" padding="lg">
-            <h2 className="mb-5 text-base font-semibold text-slate-900">Company Information</h2>
+            <h2 className="mb-5 text-base font-semibold text-foreground">Company Information</h2>
             <div className="space-y-4">
               {/* Logo Upload */}
-              <div className="flex items-center gap-5 pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-5 pb-4 border-b border-border/50">
                 <div className="relative shrink-0">
                   {company.logo_url ? (
-                    <img src={company.logo_url} alt="Company logo" className="w-20 h-20 rounded-xl object-cover border-2 border-slate-200" />
+                    <img src={company.logo_url} alt="Company logo" className="w-20 h-20 rounded-xl object-cover border-2 border-border" />
                   ) : (
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-xl font-bold text-white border-2 border-slate-200">
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-xl font-bold text-white border-2 border-border">
                       {company.name.charAt(0) || 'P'}
                     </div>
                   )}
@@ -714,7 +714,7 @@ export default function SettingsPage() {
                         reader.readAsDataURL(file);
                       }}
                     />
-                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors shadow-sm cursor-pointer">
+                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
                       {company.logo_url ? 'Change Logo' : 'Upload Logo'}
                     </span>
                   </label>
@@ -729,7 +729,7 @@ export default function SettingsPage() {
                       Remove Logo
                     </button>
                   )}
-                  <p className="text-[10px] text-slate-400">Your logo appears on invoices and reports</p>
+                  <p className="text-[10px] text-muted-foreground/80">Your logo appears on invoices and reports</p>
                 </div>
               </div>
               <Input
@@ -756,8 +756,8 @@ export default function SettingsPage() {
                 value={company.website}
                 onChange={(e) => setCompany({ ...company, website: e.target.value })}
               />
-              <div className="border-t border-slate-200 pt-4">
-                <p className="text-sm font-medium text-slate-400 mb-3">Address</p>
+              <div className="border-t border-border pt-4">
+                <p className="text-sm font-medium text-muted-foreground/80 mb-3">Address</p>
                 <Input
                   label="Street Address"
                   value={company.street}
@@ -786,7 +786,7 @@ export default function SettingsPage() {
 
           {/* Business Hours */}
           <Card variant="default" padding="lg">
-            <h2 className="mb-5 text-base font-semibold text-slate-900">Business Hours</h2>
+            <h2 className="mb-5 text-base font-semibold text-foreground">Business Hours</h2>
             <div className="space-y-2">
               {DAYS.map((day) => {
                 const h = hours[day];
@@ -797,7 +797,7 @@ export default function SettingsPage() {
                       !h.open ? 'opacity-50' : ''
                     }`}
                   >
-                    <span className="text-sm font-medium text-slate-900 whitespace-nowrap">{day}</span>
+                    <span className="text-sm font-medium text-foreground whitespace-nowrap">{day}</span>
                     <input
                       type="time"
                       value={h.openTime}
@@ -808,7 +808,7 @@ export default function SettingsPage() {
                         }))
                       }
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-foreground outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <input
                       type="time"
@@ -820,7 +820,7 @@ export default function SettingsPage() {
                         }))
                       }
                       disabled={!h.open}
-                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-slate-900 outline-none focus:border-electric/50 disabled:opacity-30"
+                      className="w-full rounded-md border border-white/10 bg-white px-2 py-1 text-xs text-foreground outline-none focus:border-electric/50 disabled:opacity-30"
                     />
                     <div className="flex justify-end">
                       <button
@@ -850,7 +850,7 @@ export default function SettingsPage() {
 
           {/* Pricing */}
           <Card variant="default" padding="lg">
-            <h2 className="mb-5 text-base font-semibold text-slate-900">Pricing Settings</h2>
+            <h2 className="mb-5 text-base font-semibold text-foreground">Pricing Settings</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Hourly Rate ($/hr)"
@@ -884,7 +884,7 @@ export default function SettingsPage() {
             <button
               type="button"
               onClick={handleResetDefaults}
-              className="text-sm text-slate-500 hover:text-slate-400 transition-colors"
+              className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors"
             >
               Reset to Defaults
             </button>
@@ -905,7 +905,7 @@ export default function SettingsPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <p className="text-sm text-slate-500">{members.length} team members</p>
+              <p className="text-sm text-muted-foreground">{members.length} team members</p>
               {inviteSuccess && (
                 <span className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">{inviteSuccess}</span>
               )}
@@ -926,24 +926,24 @@ export default function SettingsPage() {
               {/* Mobile card layout */}
               <div className="sm:hidden space-y-3">
                 {members.map((member) => (
-                  <div key={member.id} className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+                  <div key={member.id} className="bg-white border border-border rounded-xl p-4 space-y-3">
                     <div className="flex items-center gap-3">
                       <Avatar name={member.name} size="sm" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">{member.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{member.email}</p>
+                        <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{member.email}</p>
                       </div>
                       <RoleBadge role={member.role} />
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/80">
                         <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-steel'}`} />
                         {statusLabel[member.status] || member.status}
                       </span>
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEditMember(member.id)}
-                          className="h-8 px-3 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
+                          className="h-8 px-3 text-xs font-medium text-muted-foreground bg-muted border border-border rounded-xl hover:bg-muted transition-colors"
                         >
                           Edit
                         </button>
@@ -963,32 +963,32 @@ export default function SettingsPage() {
               <Card variant="bordered" padding="sm" className="hidden sm:block overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Email</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Role</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
+                  <tr className="border-b border-border">
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {members.map((member) => (
                     <tr
                       key={member.id}
-                      className="border-b border-slate-200 transition-colors hover:bg-white/[0.02]"
+                      className="border-b border-border transition-colors hover:bg-white/[0.02]"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
                           <Avatar name={member.name} size="sm" />
-                          <span className="font-medium text-slate-900">{member.name}</span>
+                          <span className="font-medium text-foreground">{member.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-slate-500">{member.email}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{member.email}</td>
                       <td className="px-4 py-3">
                         <RoleBadge role={member.role} />
                       </td>
                       <td className="px-4 py-3">
-                        <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                        <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/80">
                           <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-steel'}`} />
                           {statusLabel[member.status] || member.status}
                         </span>
@@ -1052,11 +1052,11 @@ export default function SettingsPage() {
                 onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
               />
               <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-slate-400">Role</label>
+                <label className="block text-sm font-medium text-muted-foreground/80">Role</label>
                 <select
                   value={inviteForm.role}
                   onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
                 >
                   <option value="admin">Admin</option>
                   <option value="dispatcher">Dispatcher</option>
@@ -1108,11 +1108,11 @@ export default function SettingsPage() {
                   onChange={(e) => setEditMember({ ...editMember, email: e.target.value })}
                 />
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-slate-400">Role</label>
+                  <label className="block text-sm font-medium text-muted-foreground/80">Role</label>
                   <select
                     value={editMember.role}
                     onChange={(e) => setEditMember({ ...editMember, role: e.target.value })}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
+                    className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
                   >
                     <option value="admin">Admin</option>
                     <option value="dispatcher">Dispatcher</option>
@@ -1130,12 +1130,12 @@ export default function SettingsPage() {
       {/* ── Notifications Tab ── */}
       {activeTab === 'notifications' && (
         <Card variant="default" padding="lg" className="max-w-xl">
-          <h2 className="mb-5 text-base font-semibold text-slate-900">Notification Preferences</h2>
+          <h2 className="mb-5 text-base font-semibold text-foreground">Notification Preferences</h2>
           <div className="space-y-5">
             {notifications.map((notif, idx) => (
-              <div key={notif.label} className="border-b border-slate-200 pb-5 last:border-0 last:pb-0">
-                <p className="text-sm font-medium text-slate-900 mb-0.5">{notif.label}</p>
-                <p className="text-xs text-slate-500 mb-3">{notif.description}</p>
+              <div key={notif.label} className="border-b border-border pb-5 last:border-0 last:pb-0">
+                <p className="text-sm font-medium text-foreground mb-0.5">{notif.label}</p>
+                <p className="text-xs text-muted-foreground mb-3">{notif.description}</p>
                 <div className="flex flex-wrap gap-4">
                   {notif.channels.map((channel) => (
                     <label
@@ -1146,7 +1146,7 @@ export default function SettingsPage() {
                         enabled={notif.enabled[channel.id] ?? false}
                         onChange={() => toggleNotification(idx, channel.id)}
                       />
-                      <span className="text-xs text-slate-400">{channel.label}</span>
+                      <span className="text-xs text-muted-foreground/80">{channel.label}</span>
                     </label>
                   ))}
                 </div>
@@ -1166,10 +1166,10 @@ export default function SettingsPage() {
 
       {/* ── Logout Tab ── */}
       {activeTab === 'profile' && (
-        <div className="pt-4 border-t border-slate-100 max-w-2xl">
+        <div className="pt-4 border-t border-border/50 max-w-2xl">
           <Card variant="default" padding="lg">
             <h2 className="text-base font-semibold text-red-600 mb-2">Sign Out</h2>
-            <p className="text-sm text-slate-500 mb-4">Sign out of your PlumbCore account on this device.</p>
+            <p className="text-sm text-muted-foreground mb-4">Sign out of your PlumbCore account on this device.</p>
             <button
               onClick={async () => {
                 await useAuthStore.getState().logout();
@@ -1193,20 +1193,20 @@ export default function SettingsPage() {
           <Card variant="default" padding="lg">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-base font-semibold text-slate-900">Current Plan</h2>
-                <p className="text-sm text-slate-500 mt-1">
-                  You are on the <span className="font-medium text-slate-900">
+                <h2 className="text-base font-semibold text-foreground">Current Plan</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  You are on the <span className="font-medium text-foreground">
                     {PLAN_LABELS[currentPlan] || 'Pro'}
                   </span> plan
                 </p>
-                <p className="text-2xl font-bold text-slate-900 mt-2">
+                <p className="text-2xl font-bold text-foreground mt-2">
                   {currentPlan === 'enterprise' ? (
                     <span>Custom</span>
                   ) : (
-                    <>${(PLAN_PRICES[currentPlan] || 34900) / 100}<span className="text-sm font-normal text-slate-500">/mo</span></>
+                    <>${(PLAN_PRICES[currentPlan] || 34900) / 100}<span className="text-sm font-normal text-muted-foreground">/mo</span></>
                   )}
                 </p>
-                <p className="text-xs text-slate-400 mt-1">Next billing date: Aug 1, 2026</p>
+                <p className="text-xs text-muted-foreground/80 mt-1">Next billing date: Aug 1, 2026</p>
               </div>
               <div className="flex flex-col gap-2">
                 <Button variant="outline" size="sm" onClick={() => {
@@ -1230,7 +1230,7 @@ export default function SettingsPage() {
             </div>
             <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1.5">
               {(PLAN_FEATURES[currentPlan] || []).slice(0, 8).map((f: string, i: number) => (
-                <div key={i} className="flex items-center gap-1.5 text-xs text-slate-500">
+                <div key={i} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <svg className="h-3.5 w-3.5 shrink-0 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -1242,8 +1242,8 @@ export default function SettingsPage() {
 
           {/* Manage Billing */}
           <Card variant="default" padding="lg">
-            <h2 className="text-base font-semibold text-slate-900 mb-3">Manage Billing</h2>
-            <p className="text-sm text-slate-500 mb-4">View and update your payment methods, invoices, and subscription details through Stripe's billing portal.</p>
+            <h2 className="text-base font-semibold text-foreground mb-3">Manage Billing</h2>
+            <p className="text-sm text-muted-foreground mb-4">View and update your payment methods, invoices, and subscription details through Stripe's billing portal.</p>
             <Button
               onClick={async () => {
                 const state = useAuthStore.getState();
@@ -1274,16 +1274,16 @@ export default function SettingsPage() {
 
           {/* Payment Method */}
           <Card variant="bordered" padding="lg">
-            <h2 className="text-base font-semibold text-slate-900 mb-3">Payment Method</h2>
+            <h2 className="text-base font-semibold text-foreground mb-3">Payment Method</h2>
             <div className="flex items-center gap-4 rounded-xl ring-1 ring-black/5 bg-white p-4">
-              <div className="flex h-10 w-14 items-center justify-center rounded-xl bg-white/5 text-slate-400">
+              <div className="flex h-10 w-14 items-center justify-center rounded-xl bg-white/5 text-muted-foreground/80">
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-slate-900 font-medium">Visa ending in 4242</p>
-                <p className="text-xs text-slate-500">Expires 12/2026</p>
+                <p className="text-sm text-foreground font-medium">Visa ending in 4242</p>
+                <p className="text-xs text-muted-foreground">Expires 12/2026</p>
               </div>
               <Button variant="ghost" size="sm" className="ml-auto">
                 Update
@@ -1294,7 +1294,7 @@ export default function SettingsPage() {
           {/* Cancel Subscription */}
           <Card variant="bordered" padding="lg" className="border-red-200">
             <h2 className="text-base font-semibold text-red-600 mb-2">Cancel Subscription</h2>
-            <p className="text-sm text-slate-500 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               Once cancelled, you'll lose access to premium features at the end of your billing period. Your data will be retained for 30 days.
             </p>
             <Button
@@ -1330,7 +1330,7 @@ export default function SettingsPage() {
 
           {/* Billing History */}
           <Card variant="default" padding="lg">
-            <h2 className="text-base font-semibold text-slate-900 mb-4">Billing History</h2>
+            <h2 className="text-base font-semibold text-foreground mb-4">Billing History</h2>
             {BILLING_HISTORY.length === 0 ? (
               <EmptyState
                 title="No billing history"
@@ -1340,24 +1340,24 @@ export default function SettingsPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Date</th>
-                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Amount</th>
-                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                      <th className="pb-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Invoice</th>
+                    <tr className="border-b border-border">
+                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date</th>
+                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Amount</th>
+                      <th className="pb-3 pr-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
+                      <th className="pb-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Invoice</th>
                     </tr>
                   </thead>
                   <tbody>
                     {BILLING_HISTORY.map((inv) => (
-                      <tr key={inv.id} className="border-b border-slate-200/50">
-                        <td className="py-3 pr-4 text-slate-400 whitespace-nowrap">
+                      <tr key={inv.id} className="border-b border-border/50">
+                        <td className="py-3 pr-4 text-muted-foreground/80 whitespace-nowrap">
                           {new Date(inv.date).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
                           })}
                         </td>
-                        <td className="py-3 pr-4 text-slate-900 font-medium">
+                        <td className="py-3 pr-4 text-foreground font-medium">
                           ${inv.amount.toFixed(2)}
                         </td>
                         <td className="py-3 pr-4">
@@ -1395,7 +1395,7 @@ export default function SettingsPage() {
                                 downloadPdfFallback();
                               }
                             }}
-                            className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1"
+                            className="text-xs font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
                           >
                             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -1450,17 +1450,17 @@ export default function SettingsPage() {
                   className={`w-full text-left rounded-xl border p-4 transition-all ${
                     currentPlan === plan.id
                       ? 'border-electric bg-electric/5'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      : 'border-border bg-white hover:border-border'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="text-sm font-semibold text-slate-900">{plan.name}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5">{plan.features.length} features</p>
+                      <h3 className="text-sm font-semibold text-foreground">{plan.name}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">{plan.features.length} features</p>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-lg font-bold text-slate-900">${plan.price}</span>
-                      <span className="text-xs text-slate-500">/mo</span>
+                      <span className="text-lg font-bold text-foreground">${plan.price}</span>
+                      <span className="text-xs text-muted-foreground">/mo</span>
                       <div
                         className={`ml-1 flex h-4 w-4 items-center justify-center rounded-full border-2 ${
                           currentPlan === plan.id ? 'border-electric bg-electric' : 'border-white/20'

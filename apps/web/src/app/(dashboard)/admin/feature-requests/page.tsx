@@ -40,11 +40,11 @@ const mockRequests: FeatureRequest[] = [];
 /* ── Status Config ── */
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; icon: any; label: string }> = {
-  'under-review': { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', icon: Clock, label: 'Under Review' },
+  'under-review': { bg: 'bg-blue-50', text: 'text-primary', dot: 'bg-blue-500', icon: Clock, label: 'Under Review' },
   planned: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', icon: Lightbulb, label: 'Planned' },
   'in-progress': { bg: 'bg-violet-50', text: 'text-violet-600', dot: 'bg-violet-500', icon: ArrowRight, label: 'In Progress' },
   completed: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', icon: CheckCircle2, label: 'Completed' },
-  declined: { bg: 'bg-slate-50', text: 'text-slate-500', dot: 'bg-slate-400', icon: XCircle, label: 'Declined' },
+  declined: { bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-slate-400', icon: XCircle, label: 'Declined' },
 };
 
 const categories = ['Mobile App', 'Communications', 'Integrations', 'Customer Portal', 'Scheduling', 'Reporting', 'Billing'];
@@ -118,12 +118,12 @@ export default function AdminFeatureRequestsPage() {
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Feature Requests</h1>
-          <p className="text-sm text-slate-500 mt-1">Collect and manage plumber feature requests</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Feature Requests</h1>
+          <p className="text-sm text-muted-foreground mt-1">Collect and manage plumber feature requests</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all shadow-sm"
+          className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-all shadow-sm"
         >
           <MessageSquarePlus className="w-4 h-4" />
           {showForm ? 'Close Form' : 'Submit Request'}
@@ -145,8 +145,8 @@ export default function AdminFeatureRequestsPage() {
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}>
               <s.icon className={`w-5 h-5 ${s.color}`} />
             </div>
-            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+            <p className="text-2xl font-bold text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
@@ -159,8 +159,8 @@ export default function AdminFeatureRequestsPage() {
               <MessageSquarePlus className="w-5 h-5 text-blue-500" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-slate-900">Submit a Feature Request</h2>
-              <p className="text-xs text-slate-500">Suggest a new feature or improvement</p>
+              <h2 className="text-base font-semibold text-foreground">Submit a Feature Request</h2>
+              <p className="text-xs text-muted-foreground">Suggest a new feature or improvement</p>
             </div>
           </div>
 
@@ -168,32 +168,32 @@ export default function AdminFeatureRequestsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Name */}
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">Full Name</label>
+                <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Full Name</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
                   <input
                     type="text"
                     required
                     value={form.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     placeholder="e.g. John Smith"
-                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                   />
                 </div>
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email</label>
+                <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
                   <input
                     type="email"
                     required
                     value={form.email}
                     onChange={(e) => updateField('email', e.target.value)}
                     placeholder="e.g. john@company.com"
-                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                   />
                 </div>
               </div>
@@ -201,30 +201,30 @@ export default function AdminFeatureRequestsPage() {
 
             {/* Title */}
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Feature Title</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Feature Title</label>
               <div className="relative">
-                <Lightbulb className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Lightbulb className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
                 <input
                   type="text"
                   required
                   value={form.title}
                   onChange={(e) => updateField('title', e.target.value)}
                   placeholder="e.g. Offline mode for estimates"
-                  className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                  className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                 />
               </div>
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Category</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Category</label>
               <div className="relative">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
+                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80 z-10" />
                 <select
                   required
                   value={form.category}
                   onChange={(e) => updateField('category', e.target.value)}
-                  className="w-full h-10 pl-10 pr-10 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 outline-none appearance-none focus:ring-2 focus:ring-blue-500/30 transition-all cursor-pointer"
+                  className="w-full h-10 pl-10 pr-10 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground outline-none appearance-none focus:ring-2 focus:ring-primary/30 transition-all cursor-pointer"
                 >
                   <option value="">Select a category</option>
                   {categories.map((c) => (
@@ -233,22 +233,22 @@ export default function AdminFeatureRequestsPage() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80 pointer-events-none" />
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Description</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Description</label>
               <div className="relative">
-                <FileText className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                <FileText className="absolute left-3 top-3 w-4 h-4 text-muted-foreground/80" />
                 <textarea
                   required
                   rows={3}
                   value={form.description}
                   onChange={(e) => updateField('description', e.target.value)}
                   placeholder="Describe the feature and how it would help..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/30 transition-all resize-none"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
                 />
               </div>
             </div>
@@ -264,14 +264,14 @@ export default function AdminFeatureRequestsPage() {
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-all"
+                className="h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-muted-foreground hover:bg-muted transition-all"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+                className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
               >
                 {submitting ? (
                   <>
@@ -293,14 +293,14 @@ export default function AdminFeatureRequestsPage() {
       {/* ── Requests Table ── */}
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
         {/* Filters */}
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
             <input
               placeholder="Search requests..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -309,7 +309,7 @@ export default function AdminFeatureRequestsPage() {
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`h-8 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${
-                  statusFilter === s ? 'bg-blue-600 text-white' : 'bg-white ring-1 ring-slate-200 text-slate-600 hover:bg-slate-50'
+                  statusFilter === s ? 'bg-primary text-white' : 'bg-white ring-1 ring-slate-200 text-muted-foreground hover:bg-muted'
                 }`}
               >
                 {s === 'under-review' ? 'Under Review' : s === 'in-progress' ? 'In Progress' : s}
@@ -322,24 +322,24 @@ export default function AdminFeatureRequestsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-5 py-3">Request</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">From</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Category</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3">Status</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Date</th>
-                <th className="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3">Votes</th>
+              <tr className="border-b border-border/50">
+                <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-5 py-3">Request</th>
+                <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden sm:table-cell">From</th>
+                <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">Category</th>
+                <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3">Status</th>
+                <th className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Date</th>
+                <th className="text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 py-3">Votes</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-5 py-16 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-3">
-                      <Search className="w-6 h-6 text-slate-400" />
+                    <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-3">
+                      <Search className="w-6 h-6 text-muted-foreground/80" />
                     </div>
-                    <p className="text-sm font-medium text-slate-600">No feature requests found</p>
-                    <p className="text-xs text-slate-400 mt-1">Try adjusting your filters or submit a new request</p>
+                    <p className="text-sm font-medium text-muted-foreground">No feature requests found</p>
+                    <p className="text-xs text-muted-foreground/80 mt-1">Try adjusting your filters or submit a new request</p>
                   </td>
                 </tr>
               ) : (
@@ -348,15 +348,15 @@ export default function AdminFeatureRequestsPage() {
                   const StatusIcon = statCfg.icon;
 
                   return (
-                    <tr key={req.id} className="hover:bg-slate-50 transition-colors">
+                    <tr key={req.id} className="hover:bg-muted transition-colors">
                       <td className="px-5 py-4">
                         <div className="flex items-start gap-2">
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[11px] font-mono font-semibold text-slate-400">{req.id}</span>
+                              <span className="text-[11px] font-mono font-semibold text-muted-foreground/80">{req.id}</span>
                             </div>
-                            <p className="text-sm font-medium text-slate-900 leading-snug">{req.title}</p>
-                            <p className="text-xs text-slate-400 mt-0.5 line-clamp-1 max-w-[280px]">{req.description}</p>
+                            <p className="text-sm font-medium text-foreground leading-snug">{req.title}</p>
+                            <p className="text-xs text-muted-foreground/80 mt-0.5 line-clamp-1 max-w-[280px]">{req.description}</p>
                           </div>
                         </div>
                       </td>
@@ -366,12 +366,12 @@ export default function AdminFeatureRequestsPage() {
                             {req.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-slate-700 truncate max-w-[130px]">{req.name}</p>
+                            <p className="text-sm font-medium text-foreground truncate max-w-[130px]">{req.name}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-4 py-4 hidden md:table-cell">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 text-xs text-slate-500">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-muted text-xs text-muted-foreground">
                           <Tag className="w-3 h-3" />
                           {req.category}
                         </span>
@@ -386,12 +386,12 @@ export default function AdminFeatureRequestsPage() {
                       </td>
                       <td className="px-4 py-4 hidden lg:table-cell">
                         <div className="flex items-center gap-1.5">
-                          <Clock className="w-3 h-3 text-slate-400" />
-                          <span className="text-xs text-slate-400">{req.createdAt}</span>
+                          <Clock className="w-3 h-3 text-muted-foreground/80" />
+                          <span className="text-xs text-muted-foreground/80">{req.createdAt}</span>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-50 text-xs font-semibold text-slate-600">
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-muted text-xs font-semibold text-muted-foreground">
                           <ThumbsUp className="w-3 h-3" />
                           {req.votes}
                         </div>
@@ -405,8 +405,8 @@ export default function AdminFeatureRequestsPage() {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100">
-          <span className="text-xs text-slate-400">
+        <div className="flex items-center justify-between px-5 py-3 border-t border-border/50">
+          <span className="text-xs text-muted-foreground/80">
             Showing {filtered.length} of {requests.length} requests
           </span>
         </div>

@@ -51,10 +51,10 @@ function StepIndicator({ current, total, t }: { current: number; total: number; 
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} className="flex items-center">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-blue-500 text-white shadow-sm' : 'bg-slate-100 text-slate-400'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-blue-500 text-white shadow-sm' : 'bg-muted text-muted-foreground/80'}`}>
             {i + 1 < current ? <Check className="w-4 h-4" /> : i + 1}
           </div>
-          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-blue-500' : 'bg-slate-200'}`} />}
+          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-blue-500' : 'bg-muted'}`} />}
         </div>
       ))}
     </div>
@@ -66,31 +66,31 @@ const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext, t
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 mb-2">{t('quote.uploadTitle')}</h1>
-        <p className="text-sm text-slate-500">{t('quote.uploadSubtitle')}</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-2">{t('quote.uploadTitle')}</h1>
+        <p className="text-sm text-muted-foreground">{t('quote.uploadSubtitle')}</p>
       </div>
-      <label className="relative block w-full aspect-[4/3] rounded-2xl ring-2 ring-dashed ring-slate-200 bg-slate-50/50 cursor-pointer hover:ring-blue-400 hover:bg-blue-50/30 transition-all overflow-hidden group">
+      <label className="relative block w-full aspect-[4/3] rounded-2xl ring-2 ring-dashed ring-slate-200 bg-muted/50 cursor-pointer hover:ring-blue-400 hover:bg-blue-50/30 transition-all overflow-hidden group">
         <input type="file" accept="image/*" multiple onChange={onAdd} className="absolute inset-0 opacity-0 cursor-pointer z-10" aria-label="Upload photos" />
         {photos.length === 0 ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 transition-transform group-hover:scale-105">
-            <div className="w-16 h-16 rounded-2xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-black/5 flex items-center justify-center"><Camera className="w-7 h-7 text-slate-400" /></div>
-            <div className="text-center"><p className="text-sm font-semibold text-slate-900">{t('quote.addPhotos')}</p><p className="text-xs text-slate-400 mt-0.5">{t('quote.addPhotosHint')}</p></div>
+            <div className="w-16 h-16 rounded-2xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-black/5 flex items-center justify-center"><Camera className="w-7 h-7 text-muted-foreground/80" /></div>
+            <div className="text-center"><p className="text-sm font-semibold text-foreground">{t('quote.addPhotos')}</p><p className="text-xs text-muted-foreground/80 mt-0.5">{t('quote.addPhotosHint')}</p></div>
           </div>
         ) : (
           <div className="p-3 h-full flex flex-col">
             <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
               {photos.map((p: File, i: number) => (
-                <div key={i} className="relative rounded-xl overflow-hidden bg-slate-100 aspect-square ring-1 ring-black/5">
+                <div key={i} className="relative rounded-xl overflow-hidden bg-muted aspect-square ring-1 ring-black/5">
                   <img src={URL.createObjectURL(p)} className="w-full h-full object-cover" alt={`Photo ${i+1}`} />
                   <button type="button" onClick={e => { e.preventDefault(); onRemove(i); }} className="absolute top-1.5 right-1.5 w-6 h-6 bg-slate-900/70 text-white rounded-full flex items-center justify-center text-xs hover:bg-slate-900 active:scale-90 transition-all">✕</button>
                 </div>
               ))}
             </div>
-            {photos.length < 4 && <label className="mt-2 py-2 text-xs text-center text-blue-600 font-medium cursor-pointer hover:text-blue-700 active:scale-95 transition-all">{t('quote.addMorePhotos')}</label>}
+            {photos.length < 4 && <label className="mt-2 py-2 text-xs text-center text-primary font-medium cursor-pointer hover:text-primary/80 active:scale-95 transition-all">{t('quote.addMorePhotos')}</label>}
           </div>
         )}
       </label>
-      <div className="flex items-center justify-center gap-4 text-xs text-slate-400 mb-2">
+      <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/80 mb-2">
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustNoSignup')}</span>
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustUpfrontPrice')}</span>
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustLicensed')}</span>
@@ -107,22 +107,22 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 mb-2">{t('quote.infoTitle')}</h2>
-        <p className="text-sm text-slate-500">{t('quote.infoSubtitle')}</p>
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-2">{t('quote.infoTitle')}</h2>
+        <p className="text-sm text-muted-foreground">{t('quote.infoSubtitle')}</p>
       </div>
       <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 space-y-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
         {/* Name — Title Case, spaces allowed */}
-        <Input type="text" placeholder={t('quote.namePlaceholder')} value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-slate-200 focus:border-blue-400 h-12" autoComplete="name" maxLength={50} />
+        <Input type="text" placeholder={t('quote.namePlaceholder')} value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-border focus:border-blue-400 h-12" autoComplete="name" maxLength={50} />
         
         {/* Phone — US/CA format */}
         <div className="relative">
-          <Input type="tel" inputMode="numeric" placeholder={t('quote.phonePlaceholder')} value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
+          <Input type="tel" inputMode="numeric" placeholder={t('quote.phonePlaceholder')} value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-border focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
           {phoneDisplay.length > 0 && !phoneValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.validPhone')}</p>}
         </div>
 
         {/* Email — REQUIRED */}
         <div className="relative">
-          <Input type="email" inputMode="email" placeholder={t('quote.emailPlaceholder')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-slate-200 focus:border-blue-400 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
+          <Input type="email" inputMode="email" placeholder={t('quote.emailPlaceholder')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-border focus:border-blue-400 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
           {form.email.length > 0 && !emailValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.emailValidation')}</p>}
         </div>
 
@@ -131,9 +131,9 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         
         {/* City / State / Zip */}
         <div className="grid grid-cols-2 gap-3">
-          <Input type="text" placeholder={t('quote.cityPlaceholder')} value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" />
+          <Input type="text" placeholder={t('quote.cityPlaceholder')} value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 h-11" />
           <div className="grid grid-cols-2 gap-2">
-            <Input type="text" placeholder={t('quote.statePlaceholder')} value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={20} />
+            <Input type="text" placeholder={t('quote.statePlaceholder')} value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 h-11" maxLength={20} />
             <Input type="text" placeholder={t('quote.zipPlaceholder')} value={form.zip} onChange={(e: any) => {
               let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
               // Canadian postal: auto-space after 3rd char
@@ -141,22 +141,22 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
               // US ZIP: max 10 chars (5+4 with dash)
               if (form.country === 'US' && val.length > 5 && !val.includes('-') && val.length <= 10) val = val.slice(0,5) + '-' + val.slice(5,9);
               setForm((p: any) => ({ ...p, zip: val.slice(0, form.country === 'CA' ? 7 : 10) }));
-            }} className="rounded-xl border-slate-200 focus:border-blue-400 h-11" maxLength={form.country === 'CA' ? 7 : 10} />
+            }} className="rounded-xl border-border focus:border-blue-400 h-11" maxLength={form.country === 'CA' ? 7 : 10} />
           </div>
         </div>
         
         {/* Country */}
-        <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
+        <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-border bg-white px-3 text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
           <option value="US">{t('quote.countryUS')}</option>
           <option value="CA">{t('quote.countryCA')}</option>
         </select>
 
         {/* Description — with mic voice input + AI enhance */}
         <div className="relative">
-          <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-slate-200 focus:border-blue-400 resize-none pr-20" />
+          <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 resize-none pr-20" />
           <div className="absolute right-2 bottom-2 flex items-center gap-1">
             {/* Voice mic button */}
-            <button type="button" onClick={onToggleVoice} title={isListening ? t('quote.stopListening') : t('quote.voiceInput')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 hover:bg-slate-200 text-slate-500'}`}>
+            <button type="button" onClick={onToggleVoice} title={isListening ? t('quote.stopListening') : t('quote.voiceInput')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-muted hover:bg-muted text-muted-foreground'}`}>
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
             </button>
             {/* AI enhance button */}
@@ -179,7 +179,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
 
         {/* Urgency — Card-style selector */}
         <div>
-          <p className="text-xs font-semibold text-slate-500 mb-2.5">{t('quote.urgencyLabel')}</p>
+          <p className="text-xs font-semibold text-muted-foreground mb-2.5">{t('quote.urgencyLabel')}</p>
           <div className="space-y-2">
             {[
               { key: 'routine', color: 'bg-emerald-500', border: 'border-emerald-300', bg: 'bg-emerald-50', text: 'text-emerald-700', label: t('quote.routine'), sub: t('quote.routineSub') },
@@ -195,16 +195,16 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all active:scale-[0.98] text-left ${
                     sel
                       ? `${item.border} ${item.bg}`
-                      : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
+                      : 'border-border bg-white hover:border-border hover:bg-muted'
                   }`}
                 >
-                  <span className={`w-3.5 h-3.5 rounded-full shrink-0 ${sel ? item.color : 'bg-slate-200'}`} />
+                  <span className={`w-3.5 h-3.5 rounded-full shrink-0 ${sel ? item.color : 'bg-muted'}`} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-semibold ${sel ? item.text : 'text-slate-700'}`}>{item.label}</span>
+                      <span className={`text-sm font-semibold ${sel ? item.text : 'text-foreground'}`}>{item.label}</span>
                       {item.key === 'emergency' && <Badge className="bg-red-500 text-white text-[9px] px-1.5 py-0.5">RED</Badge>}
                     </div>
-                    <p className={`text-xs mt-0.5 ${sel ? item.text.replace('text-', 'text-').replace('700', '500') : 'text-slate-400'}`}>{item.sub}</p>
+                    <p className={`text-xs mt-0.5 ${sel ? item.text.replace('text-', 'text-').replace('700', '500') : 'text-muted-foreground/80'}`}>{item.sub}</p>
                   </div>
                   {sel && (
                     <svg className={`w-5 h-5 shrink-0 ${item.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -218,7 +218,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <button onClick={onBack} className="h-12 rounded-xl ring-1 ring-black/5 text-slate-700 font-medium active:scale-[0.97] transition-all hover:bg-slate-50 flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> {t('quote.back')}</button>
+        <button onClick={onBack} className="h-12 rounded-xl ring-1 ring-black/5 text-foreground font-medium active:scale-[0.97] transition-all hover:bg-muted flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> {t('quote.back')}</button>
         <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
           {canSubmit ? t('quote.getMyPrice') : t('quote.enterPhone')} <ChevronRight className="w-4 h-4" />
         </button>
@@ -234,15 +234,15 @@ function StepLoading({ t }: { t: (key: string) => string }) {
   useEffect(() => { if (idx >= messages.length - 1) return; const tmr = setTimeout(() => setIdx(i => i + 1), 2000); return () => clearTimeout(tmr); }, [idx]);
   return (
     <div className="space-y-6 text-center">
-      <div className="w-16 h-16 mx-auto mb-4 relative"><div className="absolute inset-0 rounded-full border-4 border-slate-100" /><div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" /></div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">{messages[idx]}</h3>
-      <p className="text-sm text-slate-400">{t('quote.analyzingDuration')}</p>
+      <div className="w-16 h-16 mx-auto mb-4 relative"><div className="absolute inset-0 rounded-full border-4 border-border/50" /><div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" /></div>
+      <h3 className="text-lg font-semibold text-foreground mb-1">{messages[idx]}</h3>
+      <p className="text-sm text-muted-foreground/80">{t('quote.analyzingDuration')}</p>
       <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 space-y-4 text-left">
-        <Skeleton className="h-4 w-24 bg-slate-200" /><Skeleton className="h-8 w-40 bg-slate-200" /><Separator className="bg-slate-100" />
-        <div className="flex items-center justify-between"><Skeleton className="h-3 w-16 bg-slate-200" /><Skeleton className="h-3 w-20 bg-slate-200" /></div>
-        <div className="flex items-center justify-between"><Skeleton className="h-3 w-12 bg-slate-200" /><Skeleton className="h-3 w-16 bg-slate-200" /></div>
-        <Separator className="bg-slate-100" />
-        <div className="flex items-center justify-between"><Skeleton className="h-4 w-20 bg-slate-200" /><Skeleton className="h-6 w-24 bg-slate-200" /></div>
+        <Skeleton className="h-4 w-24 bg-muted" /><Skeleton className="h-8 w-40 bg-muted" /><Separator className="bg-muted" />
+        <div className="flex items-center justify-between"><Skeleton className="h-3 w-16 bg-muted" /><Skeleton className="h-3 w-20 bg-muted" /></div>
+        <div className="flex items-center justify-between"><Skeleton className="h-3 w-12 bg-muted" /><Skeleton className="h-3 w-16 bg-muted" /></div>
+        <Separator className="bg-muted" />
+        <div className="flex items-center justify-between"><Skeleton className="h-4 w-20 bg-muted" /><Skeleton className="h-6 w-24 bg-muted" /></div>
       </div>
     </div>
   );
@@ -258,8 +258,8 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
-          <p className="text-sm text-slate-400">{t('quote.resultValid')}</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-1">{t('quote.resultTitle')}</h2>
+          <p className="text-sm text-muted-foreground/80">{t('quote.resultValid')}</p>
         </div>
         <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-6 text-white text-center shadow-lg">
           <p className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">{t('quote.lowConfidence')}</p>
@@ -267,21 +267,21 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <p className="text-sm text-white/80">{t('quote.aiAnalysisPrefix')} {result.confidence}% {t('quote.aiAnalysisSuffix')}</p>
         </div>
         <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-          <div className="flex items-start justify-between pb-4 mb-4 border-b border-slate-100">
+          <div className="flex items-start justify-between pb-4 mb-4 border-b border-border/50">
             <div className="flex-1">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p>
-              <p className="text-sm font-medium text-slate-900 leading-relaxed">{result.diagnosis}</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">{t('quote.diagnosis')}</p>
+              <p className="text-sm font-medium text-foreground leading-relaxed">{result.diagnosis}</p>
             </div>
             <Badge className="ml-3 text-xs font-medium px-3 py-1 shrink-0 bg-red-50 text-red-700 border-red-200">{result.confidence}% {t('quote.match')}</Badge>
           </div>
         </div>
         <div className="text-center space-y-3">
-          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-all shadow-sm">
+          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-all shadow-sm">
             <RefreshCcw className="w-4 h-4" /> {t('quote.tryAgain')}
           </button>
         </div>
         <div className="text-center">
-          <button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">{t('quote.startOver')}</button>
+          <button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-muted-foreground text-sm font-medium hover:bg-muted transition-all">{t('quote.startOver')}</button>
         </div>
       </div>
     );
@@ -333,14 +333,14 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{t('quote.resultTitle')}</h2>
-        <p className="text-sm text-slate-400">{t('quote.validFor')} {validityDays} {validityDays > 1 ? t('quote.days') : t('quote.day')} — {t('quote.priceMayVary')}</p>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-1">{t('quote.resultTitle')}</h2>
+        <p className="text-sm text-muted-foreground/80">{t('quote.validFor')} {validityDays} {validityDays > 1 ? t('quote.days') : t('quote.day')} — {t('quote.priceMayVary')}</p>
         
         {/* Social Proof Counter */}
-        <div className="flex items-center justify-center gap-4 text-xs text-slate-400 bg-slate-50 rounded-xl py-2.5 px-4">
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/80 bg-muted rounded-xl py-2.5 px-4">
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span className="font-medium text-slate-500">{result.confidence}% {t('quote.aiConfidence')}</span>
+            <span className="font-medium text-muted-foreground">{result.confidence}% {t('quote.aiConfidence')}</span>
           </span>
           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
           <span className="flex items-center gap-1.5">
@@ -394,24 +394,24 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold text-slate-900">{t('quote.matchingPlumber')}</p>
+          <p className="text-sm font-semibold text-foreground">{t('quote.matchingPlumber')}</p>
           <div className="flex items-center gap-2 mt-0.5">
             <span className="flex gap-0.5">
               {[1,2,3,4,5].map(i => <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}
             </span>
-            <span className="text-xs text-slate-400">{t('quote.avgRating')}</span>
+            <span className="text-xs text-muted-foreground/80">{t('quote.avgRating')}</span>
             <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded font-medium">{t('quote.availableNow')}</span>
           </div>
         </div>
-        <div className="text-xs text-slate-400 animate-pulse">{t('quote.finding')}</div>
+        <div className="text-xs text-muted-foreground/80 animate-pulse">{t('quote.finding')}</div>
       </div>
 
       {/* Estimate Breakdown Card */}
       <div className={`bg-white rounded-2xl ring-1 ${sevCardTint} p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] ${sevTopBorder}`}>
         {/* Diagnosis — Hero */}
-        <div className="pb-5 mb-4 border-b border-slate-100">
+        <div className="pb-5 mb-4 border-b border-border/50">
           <div className="flex items-start justify-between gap-3 mb-2">
-            <h3 className="text-base font-bold text-slate-900">{t('quote.aiDiagnosis')}</h3>
+            <h3 className="text-base font-bold text-foreground">{t('quote.aiDiagnosis')}</h3>
             <div className="flex items-center gap-1.5 shrink-0">
               {isEmergency && <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>}
               <Badge className={`text-xs font-medium px-3 py-1 ${sevColors[severity] || sevColors.low}`}>
@@ -419,46 +419,46 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
               </Badge>
             </div>
           </div>
-          <p className="text-sm text-slate-700 leading-relaxed font-medium">{result.diagnosis}</p>
+          <p className="text-sm text-foreground leading-relaxed font-medium">{result.diagnosis}</p>
           <div className="flex items-center gap-2 mt-3">
-            <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">{t('quote.aiConfidenceHigh')}</span>
-            <span className="text-[11px] text-slate-400">{result.confidence}% {t('quote.matchTo')} 847 {t('quote.similarRepairs')}</span>
+            <span className="text-[11px] bg-blue-50 text-primary px-2 py-0.5 rounded-full font-medium">{t('quote.aiConfidenceHigh')}</span>
+            <span className="text-[11px] text-muted-foreground/80">{result.confidence}% {t('quote.matchTo')} 847 {t('quote.similarRepairs')}</span>
           </div>
         </div>
 
         {/* Cost Breakdown */}
         <div className="space-y-0">
           {/* Labor */}
-          <div className="flex items-center justify-between py-3 border-b border-slate-100">
-            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66 5.66a2 2 0 11-2.83-2.83l5.66-5.66M14.83 5.17l-2.83 2.83 5.66 5.66 2.83-2.83M18.36 2.14a2 2 0 112.83 2.83L14.83 11.4l-2.83-2.83 6.36-6.43z" /></svg>
+          <div className="flex items-center justify-between py-3 border-b border-border/50">
+            <span className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <svg className="w-4 h-4 text-muted-foreground/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66 5.66a2 2 0 11-2.83-2.83l5.66-5.66M14.83 5.17l-2.83 2.83 5.66 5.66 2.83-2.83M18.36 2.14a2 2 0 112.83 2.83L14.83 11.4l-2.83-2.83 6.36-6.43z" /></svg>
               {t('quote.labor')} 
-              <span className="font-normal text-slate-400 ml-0.5">{result.estimatedHours}h @ ${laborRate}/hr</span>
+              <span className="font-normal text-muted-foreground/80 ml-0.5">{result.estimatedHours}h @ ${laborRate}/hr</span>
             </span>
-            <span className="text-sm font-semibold text-slate-900">{f(result.laborCost)}</span>
+            <span className="text-sm font-semibold text-foreground">{f(result.laborCost)}</span>
           </div>
           
           {/* Parts — collapsible */}
-          <div className="py-3 border-b border-slate-100">
-            <button onClick={() => setShowAllParts(!showAllParts)} className="flex items-center justify-between w-full text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <div className="py-3 border-b border-border/50">
+            <button onClick={() => setShowAllParts(!showAllParts)} className="flex items-center justify-between w-full text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
               <span className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                <svg className="w-4 h-4 text-muted-foreground/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                 {t('quote.parts')} 
-                <span className="font-normal text-slate-400">({parts.length} items)</span>
+                <span className="font-normal text-muted-foreground/80">({parts.length} items)</span>
               </span>
-              <svg className={`w-4 h-4 text-slate-400 transition-transform ${showAllParts ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+              <svg className={`w-4 h-4 text-muted-foreground/80 transition-transform ${showAllParts ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </button>
             <div className={`space-y-1.5 transition-all ${showAllParts ? '' : ''}`}>
               {displayParts.map((p: any, i: number) => (
-                <div key={i} className="grid grid-cols-[2rem_1fr_3.5rem_3.5rem] gap-x-2 text-sm py-1.5 px-2 rounded-lg hover:bg-slate-50 items-center">
-                  <span className="text-slate-400 text-center text-xs">{p.qty}x</span>
-                  <span className="text-slate-700 text-sm truncate">{p.name}</span>
-                  <span className="text-right text-slate-500 text-xs">{f(p.unitPrice)}</span>
-                  <span className="text-right font-medium text-slate-900 text-sm">{f(p.total)}</span>
+                <div key={i} className="grid grid-cols-[2rem_1fr_3.5rem_3.5rem] gap-x-2 text-sm py-1.5 px-2 rounded-lg hover:bg-muted items-center">
+                  <span className="text-muted-foreground/80 text-center text-xs">{p.qty}x</span>
+                  <span className="text-foreground text-sm truncate">{p.name}</span>
+                  <span className="text-right text-muted-foreground text-xs">{f(p.unitPrice)}</span>
+                  <span className="text-right font-medium text-foreground text-sm">{f(p.total)}</span>
                 </div>
               ))}
               {!showAllParts && parts.length > 2 && (
-                <button onClick={() => setShowAllParts(true)} className="text-xs text-blue-600 font-medium hover:text-blue-700 mt-1 ml-1">
+                <button onClick={() => setShowAllParts(true)} className="text-xs text-primary font-medium hover:text-primary/80 mt-1 ml-1">
                   {t('quote.viewMoreParts')} {parts.length - 2} {t('quote.moreParts')}
                 </button>
               )}
@@ -466,36 +466,36 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
           
           {/* Travel Fee */}
-          <div className="flex items-center justify-between py-3 border-b border-slate-100">
-            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+          <div className="flex items-center justify-between py-3 border-b border-border/50">
+            <span className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <svg className="w-4 h-4 text-muted-foreground/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
               {t('quote.travelFee')}
             </span>
-            <span className="text-sm font-semibold text-slate-900">{f(travelFee)}</span>
+            <span className="text-sm font-semibold text-foreground">{f(travelFee)}</span>
           </div>
           
           {/* Tax */}
-          <div className="flex items-center justify-between py-3 border-b border-slate-100">
-            <span className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+          <div className="flex items-center justify-between py-3 border-b border-border/50">
+            <span className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <svg className="w-4 h-4 text-muted-foreground/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
               {t('quote.tax')} 
-              <span className="font-normal text-slate-400 ml-0.5">{result.taxLabel || (result.taxRate ? `${(result.taxRate*100).toFixed(1)}%` : '8.5%')}</span>
+              <span className="font-normal text-muted-foreground/80 ml-0.5">{result.taxLabel || (result.taxRate ? `${(result.taxRate*100).toFixed(1)}%` : '8.5%')}</span>
             </span>
-            <span className="text-sm font-semibold text-slate-900">{f(result.tax)}</span>
+            <span className="text-sm font-semibold text-foreground">{f(result.tax)}</span>
           </div>
         </div>
         
         {/* Total */}
         <div className="flex items-center justify-between pt-4 mt-1">
-          <span className="text-base font-bold text-slate-900">{t('quote.total')}</span>
-          <span className="text-2xl font-bold text-blue-600">{f(result.totalPrice)}</span>
+          <span className="text-base font-bold text-foreground">{t('quote.total')}</span>
+          <span className="text-2xl font-bold text-primary">{f(result.totalPrice)}</span>
         </div>
       </div>
 
       {/* Stripe Deposit Payment — Sticky on mobile */}
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white space-y-4 shadow-lg">
         <h3 className="text-lg font-semibold">{ctaCopy}</h3>
-        <p className="text-sm text-slate-400">{ctaSubtext}</p>
+        <p className="text-sm text-muted-foreground/80">{ctaSubtext}</p>
         
         {/* Refund Guarantee Banner */}
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-center">
@@ -506,7 +506,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
         </div>
         
         <div className="text-center space-y-1">
-          <p className="text-sm text-slate-400">{t('quote.confirmDeposit')}</p>
+          <p className="text-sm text-muted-foreground/80">{t('quote.confirmDeposit')}</p>
           <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold text-white">{depositDollars(result.depositAmount)}</span>
             <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-600 text-[10px] text-slate-300 cursor-help font-bold" 
@@ -518,17 +518,17 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           {stripeLoading ? t('quote.redirecting') : `${ctaCopy} →`}
         </button>
         
-        <p className="text-xs text-slate-500 text-center">{t('quote.bookRefundable')}</p>
+        <p className="text-xs text-muted-foreground text-center">{t('quote.bookRefundable')}</p>
       </div>
       
       {/* Trust Badges */}
-      <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
+      <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground/80">
         <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.securePayment')}</span>
         <span className="flex items-center gap-1.5"><RefreshCcw className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.fullyRefundable')}</span>
         <span className="flex items-center gap-1.5"><Wrench className="w-3.5 h-3.5 text-emerald-500" /> {t('quote.licensedInsured')}</span>
       </div>
       
-      <div className="text-center"><button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-slate-500 text-sm font-medium hover:bg-slate-50 transition-all">{t('quote.startOver')}</button></div>
+      <div className="text-center"><button onClick={onReset} className="h-10 px-5 rounded-xl ring-1 ring-black/5 text-muted-foreground text-sm font-medium hover:bg-muted transition-all">{t('quote.startOver')}</button></div>
     </div>
   );
 }
@@ -543,19 +543,19 @@ function StepSuccess({ result, t, trackingLeadId, trackingToken }: { result?: an
         </svg>
       </div>
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('quote.paymentSuccessful')}</h2>
-        <p className="text-slate-500 max-w-md mx-auto">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{t('quote.paymentSuccessful')}</h2>
+        <p className="text-muted-foreground max-w-md mx-auto">
           {t('quote.depositReceived')} <strong>{depositDollars(result?.depositAmount || 4900)}</strong> {t('quote.depositReceivedMid')}
         </p>
       </div>
-      <div className="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto text-left space-y-3">
-        <h3 className="font-semibold text-slate-900">{t('quote.whatHappensNext')}</h3>
-        <ul className="space-y-2 text-sm text-slate-600">
+      <div className="bg-muted rounded-2xl p-6 max-w-sm mx-auto text-left space-y-3">
+        <h3 className="font-semibold text-foreground">{t('quote.whatHappensNext')}</h3>
+        <ul className="space-y-2 text-sm text-muted-foreground">
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.confirmationEmail')}</span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.matchPlumber')}</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingToken || trackingLeadId || result?.leadId || ''}?estimate=${result?.totalPrice || 0}&deposit=${Math.round((result?.depositAmount || 0) / 100)}`} className="text-blue-600 font-medium underline">plumbcore.ai/track/{trackingToken || '...'}</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.trackPlumber')} <a href={`/track/${trackingToken || trackingLeadId || result?.leadId || ''}?estimate=${result?.totalPrice || 0}&deposit=${Math.round((result?.depositAmount || 0) / 100)}`} className="text-primary font-medium underline">plumbcore.ai/track/{trackingToken || '...'}</a></span></li>
           <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.depositRefundable')}</span></li>
-          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a></span></li>
+          <li className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 shrink-0">✓</span><span>{t('quote.needHelp')} <a href="tel:+155****4567" className="text-primary font-medium">(555) 123-4567</a></span></li>
         </ul>
       </div>
     </div>
@@ -819,22 +819,22 @@ export default function QuotePage() {
           <a href="/" className="flex items-center gap-2.5">
             <PlumbCoreLogo size="sm" showText={false} />
             {isWhiteLabel && wlBrand ? (
-              <div><p className="text-sm font-bold text-slate-900">{wlBrand.name || companySlug}</p><p className="text-[11px] text-slate-400">{t('quote.plumbingServices')}</p></div>
+              <div><p className="text-sm font-bold text-foreground">{wlBrand.name || companySlug}</p><p className="text-[11px] text-muted-foreground/80">{t('quote.plumbingServices')}</p></div>
             ) : (
-              <div><p className="text-sm font-bold text-slate-900">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-slate-400">{t('quote.premiumPlumbingServices')}</p></div>
+              <div><p className="text-sm font-bold text-foreground">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-muted-foreground/80">{t('quote.premiumPlumbingServices')}</p></div>
             )}
           </a>
           <div className="flex items-center gap-2">
-            <a href={`tel:${wlBrand?.phone || '+15551234567'}`} className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-all active:scale-95"><Phone className="w-4 h-4" /><span className="hidden sm:inline">{wlBrand?.phone || '(555) 123-4567'}</span></a>
+            <a href={`tel:${wlBrand?.phone || '+15551234567'}`} className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-all active:scale-95"><Phone className="w-4 h-4" /><span className="hidden sm:inline">{wlBrand?.phone || '(555) 123-4567'}</span></a>
             <LanguageSwitcher locale={locale} onLocaleChange={l => changeLocale(l as 'en'|'fr'|'es'|'de')} />
           </div>
         </div>
       </header>
       <section className="bg-gradient-to-b from-slate-50 to-white py-10 sm:py-14">
         <div className="max-w-5xl mx-auto px-4 text-center">
-          <span className="inline-flex items-center gap-2 bg-blue-50 ring-1 ring-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-blue-600 mb-4"><Clock className="w-3 h-3" /> {t('quote.badge')}</span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 mb-3">{t('quote.heroTitle')}</h1>
-          <p className="text-sm sm:text-base text-slate-500 max-w-lg mx-auto">{t('quote.heroSubtitle')}</p>
+          <span className="inline-flex items-center gap-2 bg-blue-50 ring-1 ring-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-primary mb-4"><Clock className="w-3 h-3" /> {t('quote.badge')}</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-3">{t('quote.heroTitle')}</h1>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">{t('quote.heroSubtitle')}</p>
         </div>
       </section>
       <section className="py-6 sm:py-10 pb-20">

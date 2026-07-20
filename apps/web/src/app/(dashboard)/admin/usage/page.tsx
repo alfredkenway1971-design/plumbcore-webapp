@@ -57,11 +57,11 @@ function UsageError({ error }: { error: string }) {
         <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
           <AlertTriangle className="w-7 h-7 text-red-500" />
         </div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-1">Failed to load usage data</h3>
-        <p className="text-sm text-slate-500 mb-4">{error}</p>
+        <h3 className="text-lg font-semibold text-foreground mb-1">Failed to load usage data</h3>
+        <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -84,8 +84,8 @@ export default function AdminUsagePage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Platform Usage</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Platform Usage</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             0 features tracked · 0 weekly active users
           </p>
         </div>
@@ -106,11 +106,11 @@ export default function AdminUsagePage() {
               className="rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30"
             >
               <div className="flex items-start justify-between mb-3">
-                <p className="text-sm font-medium text-slate-500">{card.label}</p>
+                <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
               </div>
-              <p className="text-3xl font-bold text-slate-900 mb-1.5">{card.value}</p>
+              <p className="text-3xl font-bold text-foreground mb-1.5">{card.value}</p>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-slate-600">Data will appear once plumbers start using the platform</span>
+                <span className="text-xs text-muted-foreground">Data will appear once plumbers start using the platform</span>
               </div>
             </div>
           );
@@ -122,8 +122,8 @@ export default function AdminUsagePage() {
         <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
           <BarChart3 className="w-8 h-8 text-blue-500" />
         </div>
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">No usage data yet</h3>
-        <p className="text-sm text-slate-500 max-w-lg mx-auto">
+        <h3 className="text-xl font-semibold text-foreground mb-2">No usage data yet</h3>
+        <p className="text-sm text-muted-foreground max-w-lg mx-auto">
           Feature adoption rates, daily active users, API usage stats, and top active companies will appear here once plumbers start using the platform's features.
         </p>
       </div>

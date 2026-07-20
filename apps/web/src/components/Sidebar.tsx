@@ -203,12 +203,12 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           <PlumbCoreLogo size="sm" showText={!collapsed} />
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden md:flex items-center justify-center w-7 h-7 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-all shrink-0"
+            className="hidden md:flex items-center justify-center w-7 h-7 rounded-lg text-muted-foreground/80 hover:bg-muted hover:text-foreground transition-all shrink-0"
           >
             <Icons.ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
           </button>
           {/* Mobile close */}
-          <button onClick={onClose} className="md:hidden w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white">
+          <button onClick={onClose} className="md:hidden w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/80 hover:bg-white/10 hover:text-white">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
@@ -218,7 +218,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           {visibleNav.map((section) => (
             <div key={section.sectionKey}>
               {!collapsed && (
-                <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/80">
                   {sectionLabels[section.sectionKey] || section.sectionKey}
                 </p>
               )}
@@ -233,15 +233,15 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                       className={`
                         flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150
                         ${active
-                          ? 'bg-blue-50 text-blue-600 ring-1 ring-blue-200'
-                          : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+                          ? 'bg-blue-50 text-primary ring-1 ring-blue-200'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                         }
                         ${collapsed ? 'justify-center px-0' : ''}
                       `}
                       title={collapsed ? item.label : undefined}
                     >
                       {IconComponent && (
-                        <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-blue-600' : 'text-slate-400'}`} />
+                        <IconComponent className={`w-5 h-5 shrink-0 transition-colors duration-150 ${active ? 'text-primary' : 'text-muted-foreground/80'}`} />
                       )}
                       {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
                       {!collapsed && item.badge && (
@@ -260,7 +260,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         {/* Profile */}
         <div className="shrink-0 ring-1 ring-slate-200 p-3" ref={profileRef}>
           <div
-            className="flex items-center gap-3 rounded-xl px-2.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer group relative"
+            className="flex items-center gap-3 rounded-xl px-2.5 py-2.5 hover:bg-muted transition-colors cursor-pointer group relative"
             onClick={() => setProfileOpen(!profileOpen)}
           >
             {avatarUrl ? (
@@ -273,12 +273,12 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             {!collapsed && (
               <>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{profile?.full_name || 'User'}</p>
-                  <p className="text-xs text-slate-400 truncate">{isAdmin ? 'Admin' : userRole || 'PlumbCore'}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{profile?.full_name || 'User'}</p>
+                  <p className="text-xs text-muted-foreground/80 truncate">{isAdmin ? 'Admin' : userRole || 'PlumbCore'}</p>
                 </div>
                 <button
                   onClick={(e) => { e.stopPropagation(); handleLogout(); }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground/80 hover:text-red-500"
                   title="Logout"
                 >
                   <Icons.Logout className="w-4 h-4" />
@@ -288,8 +288,8 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           </div>
           {profileOpen && (
             <div className="mt-1 mx-1 rounded-xl ring-1 ring-slate-200 bg-white shadow-xl overflow-hidden">
-              <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
-                <Icons.Cog className="w-4 h-4 text-slate-500" /> Settings
+              <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-muted-foreground hover:bg-muted transition-colors">
+                <Icons.Cog className="w-4 h-4 text-muted-foreground" /> Settings
               </button>
               <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors ring-1 ring-inset ring-slate-200">
                 <Icons.Logout className="w-4 h-4" /> Logout

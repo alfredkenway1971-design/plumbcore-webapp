@@ -39,58 +39,58 @@ export default function AdminTrialPipelinePage() {
     <div className="max-w-[1440px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Trial Pipeline</h1>
-          <p className="text-sm text-slate-500 mt-1">Monitor active trials and conversion progress</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Trial Pipeline</h1>
+          <p className="text-sm text-muted-foreground mt-1">Monitor active trials and conversion progress</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Active Trials', value: stats.total, icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50' }, { label: 'High Risk', value: stats.highRisk, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'Expired', value: stats.expired, icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Avg Engagement', value: stats.avgEngagement + '%', icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' } ].map((s, i) => (
+        {[ { label: 'Active Trials', value: stats.total, icon: Clock, color: 'text-primary', bg: 'bg-blue-50' }, { label: 'High Risk', value: stats.highRisk, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'Expired', value: stats.expired, icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Avg Engagement', value: stats.avgEngagement + '%', icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' } ].map((s, i) => (
           <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
-            <p className="text-2xl font-bold text-slate-900">{s.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+            <p className="text-2xl font-bold text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
-        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-slate-100">
+        <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
-            <input placeholder="Search companies..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-slate-50 border-0 rounded-xl text-sm text-slate-900 placeholder:text-slate-600 outline-none focus:ring-2 focus:ring-blue-500/20" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input placeholder="Search companies..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 pl-10 pr-4 hover:bg-muted border-0 rounded-xl text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
           </div>
           <div className="flex gap-2">
             {['all', 'high', 'medium', 'low'].map(r => (
-              <button key={r} onClick={() => setRiskFilter(r)} className={`h-10 px-4 rounded-xl text-xs font-semibold transition-all ${riskFilter === r ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}>{r === 'all' ? 'All' : r.charAt(0).toUpperCase() + r.slice(1)}</button>
+              <button key={r} onClick={() => setRiskFilter(r)} className={`h-10 px-4 rounded-xl text-xs font-semibold transition-all ${riskFilter === r ? 'bg-primary text-white' : 'hover:bg-muted text-muted-foreground'}`}>{r === 'all' ? 'All' : r.charAt(0).toUpperCase() + r.slice(1)}</button>
             ))}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead><tr className="border-b border-slate-100">
+            <thead><tr className="border-b border-border/50">
               {['Company', 'Plan', 'Days Left', 'Engagement', 'Risk'].map((h, i) => (
-                <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                <th key={i} className="text-left py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {filtered.map(t => {
                 const risk = riskStyles[t.riskLevel];
                 return (
-                  <tr key={t.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                  <tr key={t.id} className="border-b border-border/50 hover:bg-muted transition-colors">
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl hover:bg-slate-50 flex items-center justify-center"><Building2 className="w-4 h-4 text-slate-500" /></div>
-                        <div><p className="text-sm font-semibold text-slate-900">{t.companyName}</p><p className="text-xs text-slate-600">{t.email}</p></div>
+                        <div className="w-9 h-9 rounded-xl hover:bg-muted flex items-center justify-center"><Building2 className="w-4 h-4 text-muted-foreground" /></div>
+                        <div><p className="text-sm font-semibold text-foreground">{t.companyName}</p><p className="text-xs text-muted-foreground">{t.email}</p></div>
                       </div>
                     </td>
                     <td className="py-3.5 px-5"><span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" style={{backgroundColor: planColors[t.planTier] + '20', color: planColors[t.planTier]}}>{t.planTier.charAt(0).toUpperCase() + t.planTier.slice(1)}</span></td>
-                    <td className="py-3.5 px-5"><span className={`text-sm font-semibold ${t.daysRemaining <= 0 ? 'text-red-600' : t.daysRemaining <= 5 ? 'text-amber-600' : 'text-slate-700'}`}>{t.daysRemaining <= 0 ? 'Expired' : t.daysRemaining + ' days'}</span></td>
+                    <td className="py-3.5 px-5"><span className={`text-sm font-semibold ${t.daysRemaining <= 0 ? 'text-red-600' : t.daysRemaining <= 5 ? 'text-amber-600' : 'text-foreground'}`}>{t.daysRemaining <= 0 ? 'Expired' : t.daysRemaining + ' days'}</span></td>
                     <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2"><div className="w-24 h-2 hover:bg-slate-50 rounded-full overflow-hidden"><div className={`h-full rounded-full transition-all ${t.engagementScore >= 70 ? 'bg-emerald-500' : t.engagementScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`} style={{width: t.engagementScore + '%'}} /></div><span className="text-xs font-semibold text-slate-400">{t.engagementScore}%</span></div>
+                      <div className="flex items-center gap-2"><div className="w-24 h-2 hover:bg-muted rounded-full overflow-hidden"><div className={`h-full rounded-full transition-all ${t.engagementScore >= 70 ? 'bg-emerald-500' : t.engagementScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`} style={{width: t.engagementScore + '%'}} /></div><span className="text-xs font-semibold text-muted-foreground/80">{t.engagementScore}%</span></div>
                     </td>
                     <td className="py-3.5 px-5"><span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${risk.bg} ${risk.text}`}><span className={`w-1.5 h-1.5 rounded-full ${risk.dot}`} />{risk.label}</span></td>
                   </tr>

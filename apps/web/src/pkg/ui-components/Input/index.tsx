@@ -16,9 +16,9 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 const baseInputStyles = `
   w-full rounded-xl bg-white border-0 ring-1 ring-slate-200
-  px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none
+  px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none
   transition-all duration-200
-  focus:ring-blue-500/50 focus:bg-white
+  focus:ring-primary/50 focus:bg-white
   disabled:cursor-not-allowed disabled:opacity-40
 `;
 
@@ -29,7 +29,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="space-y-1.5">
         {label && (
-          <label className="block text-sm font-medium text-slate-600 uppercase tracking-wider">
+          <label className="block text-sm font-medium text-muted-foreground uppercase tracking-wider">
             {label}
           </label>
         )}
@@ -39,7 +39,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && <p className="text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
+        {hint && !error && <p className="text-xs text-muted-foreground">{hint}</p>}
       </div>
     );
   }
@@ -51,7 +51,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className="space-y-1.5">
         {label && (
-          <label className="block text-sm font-medium text-slate-600 uppercase tracking-wider">
+          <label className="block text-sm font-medium text-muted-foreground uppercase tracking-wider">
             {label}
           </label>
         )}
@@ -61,7 +61,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...props}
         />
         {error && <p className="text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
+        {hint && !error && <p className="text-xs text-muted-foreground">{hint}</p>}
       </div>
     );
   }

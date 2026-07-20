@@ -52,7 +52,7 @@ const statusMap: Record<string, JobStatus | 'all'> = {
 };
 
 const priorityStyles: Record<string, string> = {
-  low: 'bg-steel/10 text-slate-400',
+  low: 'bg-steel/10 text-muted-foreground/80',
   medium: 'bg-accent-amber/10 text-amber-600',
   high: 'bg-red-50 text-red-600',
   critical: 'bg-red-500/20 text-red-600',
@@ -63,22 +63,22 @@ const calendarColorMap: Record<string, string> = {
   'scheduled': 'border-l-2 border-accent-amber bg-accent-amber/5',
   'completed': 'border-l-2 border-status-success bg-green-500/5',
   'urgent': 'border-l-2 border-status-error bg-red-500/5',
-  'cancelled': 'border-l-2 border-steel-dark bg-slate-50 opacity-60',
+  'cancelled': 'border-l-2 border-steel-dark bg-muted opacity-60',
 };
 
 /* ── Skeleton Row ── */
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
-      <div className="h-4 w-20 rounded bg-slate-50" />
-      <div className="h-4 w-32 rounded bg-slate-50" />
-      <div className="h-4 w-48 rounded bg-slate-50 hidden md:block" />
-      <div className="h-4 w-24 rounded bg-slate-50 hidden lg:block" />
-      <div className="h-5 w-24 rounded-full bg-slate-50" />
-      <div className="h-4 w-24 rounded bg-slate-50 hidden lg:block" />
-      <div className="h-4 w-28 rounded bg-slate-50 hidden lg:block" />
-      <div className="h-4 w-16 rounded bg-slate-50" />
-      <div className="h-4 w-20 rounded bg-slate-50" />
+      <div className="h-4 w-20 rounded bg-muted" />
+      <div className="h-4 w-32 rounded bg-muted" />
+      <div className="h-4 w-48 rounded bg-muted hidden md:block" />
+      <div className="h-4 w-24 rounded bg-muted hidden lg:block" />
+      <div className="h-5 w-24 rounded-full bg-muted" />
+      <div className="h-4 w-24 rounded bg-muted hidden lg:block" />
+      <div className="h-4 w-28 rounded bg-muted hidden lg:block" />
+      <div className="h-4 w-16 rounded bg-muted" />
+      <div className="h-4 w-20 rounded bg-muted" />
     </div>
   );
 }
@@ -89,9 +89,9 @@ function SkeletonCalendar() {
     <div className="grid grid-cols-7 gap-1 animate-pulse">
       {Array.from({ length: 7 }).map((_, i) => (
         <div key={i} className="space-y-2 p-2">
-          <div className="h-4 w-full rounded bg-slate-50" />
+          <div className="h-4 w-full rounded bg-muted" />
           {Array.from({ length: 4 }).map((_, j) => (
-            <div key={j} className="h-12 w-full rounded bg-slate-50" />
+            <div key={j} className="h-12 w-full rounded bg-muted" />
           ))}
         </div>
       ))}
@@ -323,14 +323,14 @@ export default function JobsPage() {
   };
 
   function SortIcon({ field }: { field: string }) {
-    if (sortField !== field) return <span className="ml-1 text-slate-500-dark">↕</span>;
-    return <span className="ml-1 text-blue-600">{sortDir === 'asc' ? '↑' : '↓'}</span>;
+    if (sortField !== field) return <span className="ml-1 text-muted-foreground-dark">↕</span>;
+    return <span className="ml-1 text-primary">{sortDir === 'asc' ? '↑' : '↓'}</span>;
   }
 
   function SortableTh({ field, children }: { field: string; children: React.ReactNode }) {
     return (
       <th
-        className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 cursor-pointer select-none hover:text-slate-900 transition-colors"
+        className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors"
         onClick={() => toggleSort(field)}
       >
         {children}
@@ -484,11 +484,11 @@ export default function JobsPage() {
       <div className="p-4 sm:p-6 space-y-5">
         {/* Tabs skeleton */}
         <div className="flex items-center gap-4">
-          <div className="h-9 w-24 rounded-xl bg-slate-50 animate-pulse" />
-          <div className="h-9 w-28 rounded-xl bg-slate-50 animate-pulse" />
+          <div className="h-9 w-24 rounded-xl bg-muted animate-pulse" />
+          <div className="h-9 w-28 rounded-xl bg-muted animate-pulse" />
         </div>
         {/* Search skeleton */}
-        <div className="h-10 w-full max-w-md rounded-xl bg-slate-50 animate-pulse" />
+        <div className="h-10 w-full max-w-md rounded-xl bg-muted animate-pulse" />
         {/* Table skeleton */}
         <Card variant="default" padding="sm">
           <div className="divide-y divide-white-border">
@@ -506,8 +506,8 @@ export default function JobsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Jobs & Schedule</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Manage and dispatch jobs to your team</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Jobs & Schedule</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage and dispatch jobs to your team</p>
         </div>
         <Button size="sm" onClick={() => { resetCreateForm(); setShowCreateModal(true); }}>+ New Job</Button>
       </div>
@@ -519,7 +519,7 @@ export default function JobsPage() {
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'list'
               ? 'bg-electric text-[#0a0e2a] shadow-sm'
-              : 'text-slate-400 hover:text-slate-900'
+              : 'text-muted-foreground/80 hover:text-foreground'
           }`}
         >
           List View
@@ -529,7 +529,7 @@ export default function JobsPage() {
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'calendar'
               ? 'bg-electric text-[#0a0e2a] shadow-sm'
-              : 'text-slate-400 hover:text-slate-900'
+              : 'text-muted-foreground/80 hover:text-foreground'
           }`}
         >
           Schedule View
@@ -548,7 +548,7 @@ export default function JobsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {statusFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Statuses' : opt}</option>
@@ -557,7 +557,7 @@ export default function JobsPage() {
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {priorityFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Priorities' : opt}</option>
@@ -566,7 +566,7 @@ export default function JobsPage() {
         <select
           value={techFilter}
           onChange={(e) => setTechFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {techOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Techs' : opt}</option>
@@ -602,40 +602,40 @@ export default function JobsPage() {
                     <div
                       key={job.id}
                       onClick={() => router.push(`/jobs/${job.id}`)}
-                      className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 cursor-pointer hover:shadow-sm transition-shadow"
+                      className="bg-white border border-border rounded-xl p-4 space-y-3 cursor-pointer hover:shadow-sm transition-shadow"
                     >
                       <div className="flex items-start justify-between">
                         <div>
-                          <span className="text-sm font-medium text-blue-600">{job.id}</span>
-                          <h3 className="text-sm font-semibold text-slate-900 mt-0.5">{job.clientName}</h3>
+                          <span className="text-sm font-medium text-primary">{job.id}</span>
+                          <h3 className="text-sm font-semibold text-foreground mt-0.5">{job.clientName}</h3>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-slate-400'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-muted-foreground/80'}`}
                           >
                             {job.priority}
                           </span>
                           <StatusBadge status={job.status} size="sm" />
                         </div>
                       </div>
-                      <p className="text-xs text-slate-500 line-clamp-2">{job.title}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{job.title}</p>
                       <div className="flex items-center justify-between text-xs">
                         <div className="space-y-1">
-                          <p className="text-slate-400">{formatDate(job.scheduledDate)}</p>
-                          <p className="text-slate-400 truncate max-w-[140px]">{techNames}</p>
+                          <p className="text-muted-foreground/80">{formatDate(job.scheduledDate)}</p>
+                          <p className="text-muted-foreground/80 truncate max-w-[140px]">{techNames}</p>
                         </div>
-                        <span className="text-sm font-semibold text-slate-900">{formatCurrency(job.estimatedCost)}</span>
+                        <span className="text-sm font-semibold text-foreground">{formatCurrency(job.estimatedCost)}</span>
                       </div>
-                      <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
+                      <div className="flex items-center gap-2 pt-1 border-t border-border/50">
                         <button
                           onClick={(e) => { e.stopPropagation(); router.push(`/jobs/${job.id}`); }}
-                          className="flex-1 h-8 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
+                          className="flex-1 h-8 text-xs font-medium text-muted-foreground bg-muted border border-border rounded-xl hover:bg-muted transition-colors"
                         >
                           View
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); openEditJob(job, e); }}
-                          className="flex-1 h-8 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
+                          className="flex-1 h-8 text-xs font-medium text-muted-foreground bg-muted border border-border rounded-xl hover:bg-muted transition-colors"
                         >
                           Edit
                         </button>
@@ -649,7 +649,7 @@ export default function JobsPage() {
                     </div>
                   );
                 })}
-                <div className="px-1 text-xs text-slate-500">
+                <div className="px-1 text-xs text-muted-foreground">
                   Showing {filteredJobs.length} of {jobList.length} jobs
                 </div>
               </div>
@@ -658,7 +658,7 @@ export default function JobsPage() {
               <div className="hidden sm:block overflow-x-auto rounded-xl ring-1 ring-black/5 bg-white">
               <table className="w-full min-w-[950px]">
                 <thead>
-                  <tr className="border-b border-slate-200">
+                  <tr className="border-b border-border">
                     <SortableTh field="id">Job ID</SortableTh>
                     <SortableTh field="clientName">Customer</SortableTh>
                     <SortableTh field="scheduledDate">Description</SortableTh>
@@ -667,7 +667,7 @@ export default function JobsPage() {
                     <SortableTh field="status">Status</SortableTh>
                     <SortableTh field="assignedTo">Tech</SortableTh>
                     <SortableTh field="estimatedCost">Amount</SortableTh>
-                    <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
+                    <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white-border">
@@ -679,15 +679,15 @@ export default function JobsPage() {
                       <tr
                         key={job.id}
                         onClick={() => router.push(`/jobs/${job.id}`)}
-                        className="cursor-pointer transition-colors hover:bg-slate-50"
+                        className="cursor-pointer transition-colors hover:bg-muted"
                       >
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600 whitespace-nowrap">{job.id}</td>
-                        <td className="px-4 py-3 text-sm text-slate-900 whitespace-nowrap">{job.clientName}</td>
-                        <td className="px-4 py-3 text-sm text-slate-400 max-w-[200px] truncate">{job.title}</td>
-                        <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap">{formatDate(job.scheduledDate)}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-primary whitespace-nowrap">{job.id}</td>
+                        <td className="px-4 py-3 text-sm text-foreground whitespace-nowrap">{job.clientName}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground/80 max-w-[200px] truncate">{job.title}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground/80 whitespace-nowrap">{formatDate(job.scheduledDate)}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-slate-400'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-muted-foreground/80'}`}
                           >
                             {job.priority}
                           </span>
@@ -695,13 +695,13 @@ export default function JobsPage() {
                         <td className="px-4 py-3 whitespace-nowrap">
                           <StatusBadge status={job.status} size="sm" />
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-400 whitespace-nowrap max-w-[140px] truncate">{techNames}</td>
-                        <td className="px-4 py-3 text-sm font-semibold text-slate-900 whitespace-nowrap">{formatCurrency(job.estimatedCost)}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground/80 whitespace-nowrap max-w-[140px] truncate">{techNames}</td>
+                        <td className="px-4 py-3 text-sm font-semibold text-foreground whitespace-nowrap">{formatCurrency(job.estimatedCost)}</td>
                         <td className="px-4 py-3 text-center whitespace-nowrap">
                           <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => router.push(`/jobs/${job.id}`)}
-                              className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                              className="rounded-xl p-1.5 text-muted-foreground/80 hover:bg-muted hover:text-foreground transition-colors"
                               title="View job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -711,7 +711,7 @@ export default function JobsPage() {
                             </button>
                             <button
                               onClick={(e) => openEditJob(job, e)}
-                              className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                              className="rounded-xl p-1.5 text-muted-foreground/80 hover:bg-muted hover:text-foreground transition-colors"
                               title="Edit job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -720,7 +720,7 @@ export default function JobsPage() {
                             </button>
                             <button
                               onClick={() => setShowDeleteConfirm(job.id)}
-                              className="rounded-xl p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                              className="rounded-xl p-1.5 text-muted-foreground/80 hover:bg-red-50 hover:text-red-600 transition-colors"
                               title="Delete job"
                             >
                               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -734,7 +734,7 @@ export default function JobsPage() {
                   })}
                 </tbody>
               </table>
-              <div className="px-4 py-2 text-xs text-slate-500 border-t border-slate-200">
+              <div className="px-4 py-2 text-xs text-muted-foreground border-t border-border">
                 Showing {filteredJobs.length} of {jobList.length} jobs
               </div>
             </div>
@@ -757,7 +757,7 @@ export default function JobsPage() {
           ) : (
             <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
               {/* Day headers */}
-              <div className="grid grid-cols-7 border-b border-slate-200">
+              <div className="grid grid-cols-7 border-b border-border">
                 {weekDays.map((day, i) => {
                   const d = calendarDates[i];
                   const dateObj = new Date(d);
@@ -767,12 +767,12 @@ export default function JobsPage() {
                   return (
                     <div
                       key={day}
-                      className={`px-2 py-3 text-center border-r border-slate-200 last:border-r-0 ${
+                      className={`px-2 py-3 text-center border-r border-border last:border-r-0 ${
                         isToday ? 'bg-electric/5' : ''
                       }`}
                     >
-                      <p className="text-xs font-semibold uppercase text-slate-500">{day}</p>
-                      <p className={`text-lg font-bold mt-0.5 ${isToday ? 'text-blue-600' : 'text-slate-900'}`}>
+                      <p className="text-xs font-semibold uppercase text-muted-foreground">{day}</p>
+                      <p className={`text-lg font-bold mt-0.5 ${isToday ? 'text-primary' : 'text-foreground'}`}>
                         {dateObj.getDate()}
                       </p>
                     </div>
@@ -787,7 +787,7 @@ export default function JobsPage() {
                   return (
                     <div key={date} className="min-h-[300px] p-1.5 space-y-1.5">
                       {dayJobs.length === 0 && (
-                        <p className="text-[10px] text-slate-500-dark text-center pt-6">—</p>
+                        <p className="text-[10px] text-muted-foreground-dark text-center pt-6">—</p>
                       )}
                       {dayJobs.map((job) => {
                         const techNames = job.assignedTo
@@ -797,11 +797,11 @@ export default function JobsPage() {
                           <div
                             key={job.id}
                             onClick={() => router.push(`/jobs/${job.id}`)}
-                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-steel bg-slate-50'}`}
+                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-steel bg-muted'}`}
                           >
-                            <p className="text-[11px] font-semibold text-slate-900 truncate">{job.title}</p>
-                            <p className="text-[10px] text-slate-400 truncate">{job.clientName}</p>
-                            <p className="text-[10px] text-slate-500 truncate">{techNames}</p>
+                            <p className="text-[11px] font-semibold text-foreground truncate">{job.title}</p>
+                            <p className="text-[10px] text-muted-foreground/80 truncate">{job.clientName}</p>
+                            <p className="text-[10px] text-muted-foreground truncate">{techNames}</p>
                           </div>
                         );
                       })}
@@ -811,18 +811,18 @@ export default function JobsPage() {
               </div>
 
               {/* Legend */}
-              <div className="flex items-center gap-4 px-4 py-2 border-t border-slate-200 bg-whiteer flex-wrap">
-                <span className="text-[11px] text-slate-500">Legend:</span>
-                <span className="flex items-center gap-1 text-[11px] text-slate-400">
+              <div className="flex items-center gap-4 px-4 py-2 border-t border-border bg-whiteer flex-wrap">
+                <span className="text-[11px] text-muted-foreground">Legend:</span>
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-blue-100 border-l-2 border-electric" /> In Progress
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-accent-amber/20 border-l-2 border-accent-amber" /> Scheduled
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-green-500/20 border-l-2 border-status-success" /> Completed
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-red-500/20 border-l-2 border-status-error" /> Urgent
                 </span>
               </div>
@@ -835,32 +835,32 @@ export default function JobsPage() {
       {showCreateModal && (
         <>
           <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setShowCreateModal(false); resetCreateForm(); }}>
-            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-border overflow-hidden" onClick={e => e.stopPropagation()}>
               {/* Header */}
-              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
-                <h2 className="text-lg font-bold text-slate-900">Create New Job</h2>
-                <p className="text-sm text-slate-500 mt-0.5">Fill in the details to create a new service job.</p>
+              <div className="px-6 pt-6 pb-4 border-b border-border/50">
+                <h2 className="text-lg font-bold text-foreground">Create New Job</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">Fill in the details to create a new service job.</p>
               </div>
 
               {/* Body */}
               <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Title *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Title *</label>
                   <input
                     type="text" placeholder="Kitchen sink repair"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Description *</label>
                   <div className="relative">
                     <textarea
                       rows={3} placeholder="Tap the mic and describe the job..."
                       value={newDescription}
                       onChange={(e) => setNewDescription(e.target.value)}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none pr-12"
+                      className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none pr-12"
                     />
                     <button
                       type="button"
@@ -871,7 +871,7 @@ export default function JobsPage() {
                           ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-200'
                           : voiceState === 'processing'
                           ? 'bg-blue-400 text-white'
-                          : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600'
+                          : 'bg-muted text-muted-foreground/80 hover:bg-muted hover:text-muted-foreground'
                       }`}
                       title="Voice input"
                     >
@@ -909,7 +909,7 @@ export default function JobsPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Client *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Client *</label>
                     <select
                       value={newClientId}
                       onChange={(e) => {
@@ -922,7 +922,7 @@ export default function JobsPage() {
                           if (!newZip) setNewZip(c.zip);
                         }
                       }}
-                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
                     >
                       <option value="">Select a client</option>
                       {clients.map((c) => (
@@ -931,11 +931,11 @@ export default function JobsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Priority</label>
                     <select
                       value={newPriority}
                       onChange={(e) => setNewPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -947,7 +947,7 @@ export default function JobsPage() {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Address</label>
                   <AddressAutocomplete
                     value={newAddress}
                     onChange={(v) => setNewAddress(v)}
@@ -963,37 +963,37 @@ export default function JobsPage() {
 
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
-                    <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <label className="block text-sm font-medium text-foreground mb-1">City</label>
+                    <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">State/Province</label>
-                    <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <label className="block text-sm font-medium text-foreground mb-1">State/Province</label>
+                    <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP/Postal Code</label>
-                    <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Scheduled Date</label>
-                    <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Scheduled Time</label>
-                    <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <label className="block text-sm font-medium text-foreground mb-1">ZIP/Postal Code</label>
+                    <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Tech</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Scheduled Date</label>
+                    <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1">Scheduled Time</label>
+                    <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1">Assigned Tech</label>
                     <select
                       value={newTechId}
                       onChange={(e) => setNewTechId(e.target.value)}
-                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
                     >
                       <option value="">Unassigned</option>
                       {teamMembers.map((tm) => (
@@ -1002,16 +1002,16 @@ export default function JobsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Estimated Cost ($)</label>
-                    <input type="number" placeholder="0" value={newEstimatedCost} onChange={(e) => setNewEstimatedCost(e.target.value)} className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <label className="block text-sm font-medium text-foreground mb-1">Estimated Cost ($)</label>
+                    <input type="number" placeholder="0" value={newEstimatedCost} onChange={(e) => setNewEstimatedCost(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
-                <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
-                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
+                <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
+                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {creating ? 'Creating...' : 'Create Job'}
                 </button>
               </div>
@@ -1054,11 +1054,11 @@ export default function JobsPage() {
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Priority</label>
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -1089,11 +1089,11 @@ export default function JobsPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Tech</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Assigned Tech</label>
             <select
               value={editTechId}
               onChange={(e) => setEditTechId(e.target.value)}
-              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
             >
               <option value="">Unassigned</option>
               {teamMembers.map((tm) => (

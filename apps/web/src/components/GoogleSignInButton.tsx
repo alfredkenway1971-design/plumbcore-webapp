@@ -128,7 +128,7 @@ export default function GoogleSignInButton({ mode = 'login' }: GoogleSignInButto
         type="button"
         onClick={handleGoogleSignIn}
         disabled={loading || !clientId || !scriptLoaded}
-        className="w-full h-11 rounded-full ring-1 ring-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
+        className="w-full h-11 rounded-full ring-1 ring-slate-200 text-muted-foreground text-sm font-medium hover:bg-muted transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
       >
         <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>

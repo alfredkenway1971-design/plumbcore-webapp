@@ -28,21 +28,21 @@ interface CreatePOForm {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 animate-pulse">
-      <div className="h-4 w-24 rounded bg-slate-100" />
-      <div className="h-4 w-36 rounded bg-slate-100" />
-      <div className="h-4 w-12 rounded bg-slate-100" />
-      <div className="h-4 w-16 rounded bg-slate-100" />
-      <div className="h-4 w-20 rounded bg-slate-100" />
-      <div className="h-4 w-24 rounded bg-slate-100" />
-      <div className="h-5 w-16 rounded bg-slate-100" />
+    <div className="flex items-center gap-3 border-b border-border px-4 py-3 animate-pulse">
+      <div className="h-4 w-24 rounded bg-muted" />
+      <div className="h-4 w-36 rounded bg-muted" />
+      <div className="h-4 w-12 rounded bg-muted" />
+      <div className="h-4 w-16 rounded bg-muted" />
+      <div className="h-4 w-20 rounded bg-muted" />
+      <div className="h-4 w-24 rounded bg-muted" />
+      <div className="h-5 w-16 rounded bg-muted" />
     </div>
   );
 }
 
 const STATUS_COLORS: Record<POStatus, string> = {
-  Draft: 'bg-slate-100 text-slate-500 border border-slate-200',
-  Sent: 'bg-blue-50 text-blue-600 border border-blue-200',
+  Draft: 'bg-muted text-muted-foreground border border-border',
+  Sent: 'bg-blue-50 text-primary border border-blue-200',
   Received: 'bg-green-50 text-green-600 border border-green-200',
   Cancelled: 'bg-red-50 text-red-600 border border-red-200',
 };
@@ -185,7 +185,7 @@ export default function PurchaseOrdersPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-foreground">Purchase Orders</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load purchase orders" message={error} onRetry={handleRetry} />
         </Card>
@@ -196,22 +196,22 @@ export default function PurchaseOrdersPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-foreground">Purchase Orders</h1>
         <div className="flex gap-2">
           {['All', 'Draft', 'Sent', 'Received', 'Cancelled'].map((s) => (
-            <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-slate-100" />
+            <div key={s} className="h-8 w-20 animate-pulse rounded-full bg-muted" />
           ))}
         </div>
         <Card variant="bordered" padding="sm">
           <div className="space-y-0">
-            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-2.5">
-              <div className="h-3 w-24 rounded bg-slate-100" />
-              <div className="h-3 w-36 rounded bg-slate-100" />
-              <div className="h-3 w-12 rounded bg-slate-100" />
-              <div className="h-3 w-16 rounded bg-slate-100" />
-              <div className="h-3 w-20 rounded bg-slate-100" />
-              <div className="h-3 w-24 rounded bg-slate-100" />
-              <div className="h-3 w-16 rounded bg-slate-100" />
+            <div className="flex items-center gap-3 border-b border-border px-4 py-2.5">
+              <div className="h-3 w-24 rounded bg-muted" />
+              <div className="h-3 w-36 rounded bg-muted" />
+              <div className="h-3 w-12 rounded bg-muted" />
+              <div className="h-3 w-16 rounded bg-muted" />
+              <div className="h-3 w-20 rounded bg-muted" />
+              <div className="h-3 w-24 rounded bg-muted" />
+              <div className="h-3 w-16 rounded bg-muted" />
             </div>
             {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonRow key={i} />
@@ -243,7 +243,7 @@ export default function PurchaseOrdersPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)}>← Back</Button>
-            <h1 className="text-2xl font-bold text-slate-900">{po.poNumber}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{po.poNumber}</h1>
             <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status as POStatus]}`}>{po.status}</span>
           </div>
           <div className="flex gap-2">
@@ -262,35 +262,35 @@ export default function PurchaseOrdersPage() {
         {/* Supplier Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card variant="bordered" padding="md">
-            <h3 className="text-sm font-semibold text-slate-900 mb-2">Supplier Information</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Supplier Information</h3>
             <div className="space-y-1.5 text-sm">
-              <p className="text-slate-400">{po.supplierName}</p>
+              <p className="text-muted-foreground/80">{po.supplierName}</p>
               {supplier && (
                 <>
-                  <p className="text-slate-500">{supplier.contactPerson}</p>
-                  <p className="text-slate-500">{supplier.phone}</p>
-                  <p className="text-slate-500">{supplier.email}</p>
-                  <p className="text-slate-500 text-xs">{supplier.address}</p>
+                  <p className="text-muted-foreground">{supplier.contactPerson}</p>
+                  <p className="text-muted-foreground">{supplier.phone}</p>
+                  <p className="text-muted-foreground">{supplier.email}</p>
+                  <p className="text-muted-foreground text-xs">{supplier.address}</p>
                 </>
               )}
             </div>
           </Card>
           <Card variant="bordered" padding="md">
-            <h3 className="text-sm font-semibold text-slate-900 mb-2">Order Details</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Order Details</h3>
             <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between"><span className="text-slate-500">Created:</span><span className="text-slate-900">{po.createdAt}</span></div>
-              {po.sentDate && <div className="flex justify-between"><span className="text-slate-500">Sent:</span><span className="text-slate-900">{po.sentDate}</span></div>}
-              {po.receivedDate && <div className="flex justify-between"><span className="text-slate-500">Received:</span><span className="text-slate-900">{po.receivedDate}</span></div>}
-              <div className="flex justify-between"><span className="text-slate-500">Expected Delivery:</span><span className="text-slate-900">{po.expectedDelivery}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">Items:</span><span className="text-slate-900">{po.itemsCount}</span></div>
-              <div className="flex justify-between border-t border-slate-200 pt-2 mt-2"><span className="text-slate-500 font-semibold">Total:</span><span className="text-slate-900 font-bold">${po.total.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Created:</span><span className="text-foreground">{po.createdAt}</span></div>
+              {po.sentDate && <div className="flex justify-between"><span className="text-muted-foreground">Sent:</span><span className="text-foreground">{po.sentDate}</span></div>}
+              {po.receivedDate && <div className="flex justify-between"><span className="text-muted-foreground">Received:</span><span className="text-foreground">{po.receivedDate}</span></div>}
+              <div className="flex justify-between"><span className="text-muted-foreground">Expected Delivery:</span><span className="text-foreground">{po.expectedDelivery}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Items:</span><span className="text-foreground">{po.itemsCount}</span></div>
+              <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="text-muted-foreground font-semibold">Total:</span><span className="text-foreground font-bold">${po.total.toFixed(2)}</span></div>
             </div>
           </Card>
         </div>
 
         {/* Status Timeline */}
         <Card variant="bordered" padding="md">
-          <h3 className="text-sm font-semibold text-slate-900 mb-3">Status Timeline</h3>
+          <h3 className="text-sm font-semibold text-foreground mb-3">Status Timeline</h3>
           <div className="flex items-center gap-0">
             {[['Draft', po.createdAt], ['Sent', po.sentDate], ['Received', po.receivedDate], ['Cancelled', po.cancelledDate]].map(([status, date], idx, arr) => {
               const isActive = !!date;
@@ -299,24 +299,24 @@ export default function PurchaseOrdersPage() {
                 <div key={String(status)} className={`flex items-center ${idx < arr.length - 1 ? 'flex-1' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                      isCurrent ? 'bg-blue-500 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'
+                      isCurrent ? 'bg-blue-500 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-muted text-muted-foreground'
                     }`}>
                       {isActive ? '✓' : idx + 1}
                     </div>
-                    <span className="mt-1 text-[10px] font-medium text-slate-500">{String(status)}</span>
-                    {date && <span className="text-[9px] text-slate-400/60">{date}</span>}
+                    <span className="mt-1 text-[10px] font-medium text-muted-foreground">{String(status)}</span>
+                    {date && <span className="text-[9px] text-muted-foreground/80/60">{date}</span>}
                   </div>
                   {idx < arr.length - 1 && (
-                    <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-slate-100'}`} />
+                    <div className={`h-px flex-1 mx-2 mt-[-1.5rem] ${isActive ? 'bg-green-500/30' : 'bg-muted'}`} />
                   )}
                 </div>
               );
             })}
           </div>
           {po.notes && (
-            <div className="mt-4 rounded-xl bg-slate-50 p-3">
-              <p className="text-xs font-medium text-slate-500 mb-1">Notes:</p>
-              <p className="text-sm text-slate-600">{po.notes}</p>
+            <div className="mt-4 rounded-xl bg-muted p-3">
+              <p className="text-xs font-medium text-muted-foreground mb-1">Notes:</p>
+              <p className="text-sm text-muted-foreground">{po.notes}</p>
             </div>
           )}
         </Card>
@@ -325,27 +325,27 @@ export default function PurchaseOrdersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Item</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Quantity</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Total</th>
+              <tr className="border-b border-border">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Item</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quantity</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Unit Price</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total</th>
               </tr>
             </thead>
             <tbody>
               {po.items.map((item: any) => (
-                <tr key={item.itemId} className="border-b border-slate-200">
-                  <td className="px-4 py-3 text-slate-900 font-medium">{item.itemName}</td>
-                  <td className="px-4 py-3 text-right text-slate-900">{item.quantity}</td>
-                  <td className="px-4 py-3 text-right text-slate-900">${item.unitPrice.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-right text-slate-900 font-medium">${item.total.toFixed(2)}</td>
+                <tr key={item.itemId} className="border-b border-border">
+                  <td className="px-4 py-3 text-foreground font-medium">{item.itemName}</td>
+                  <td className="px-4 py-3 text-right text-foreground">{item.quantity}</td>
+                  <td className="px-4 py-3 text-right text-foreground">${item.unitPrice.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right text-foreground font-medium">${item.total.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-slate-400">Total</td>
-                <td className="px-4 py-3 text-right text-sm font-bold text-slate-900">${po.total.toFixed(2)}</td>
+                <td colSpan={3} className="px-4 py-3 text-right text-sm font-semibold text-muted-foreground/80">Total</td>
+                <td className="px-4 py-3 text-right text-sm font-bold text-foreground">${po.total.toFixed(2)}</td>
               </tr>
             </tfoot>
           </table>
@@ -371,7 +371,7 @@ export default function PurchaseOrdersPage() {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">Purchase Orders</h1>
+        <h1 className="text-2xl font-bold text-foreground">Purchase Orders</h1>
         <Button onClick={() => setModalOpen(true)}>+ Create PO</Button>
       </div>
 
@@ -392,7 +392,7 @@ export default function PurchaseOrdersPage() {
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 statusFilter === s
                   ? 'bg-blue-500 text-white'
-                  : 'bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-slate-200'
+                  : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-muted'
               }`}
             >
               {s}
@@ -416,40 +416,40 @@ export default function PurchaseOrdersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">PO#</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Supplier</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Items</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Total</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Date</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
+              <tr className="border-b border-border">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">PO#</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Supplier</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Items</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((po) => (
                 <tr
                   key={po.id}
-                  className="border-b border-slate-200 transition-colors hover:bg-slate-50 cursor-pointer"
+                  className="border-b border-border transition-colors hover:bg-muted cursor-pointer"
                   onClick={() => setDetailPO(po.id)}
                 >
-                  <td className="px-4 py-3 text-slate-900 font-mono text-xs font-medium">{po.poNumber}</td>
-                  <td className="px-4 py-3 text-slate-400">{po.supplierName}</td>
-                  <td className="px-4 py-3 text-right text-slate-900">{po.itemsCount}</td>
-                  <td className="px-4 py-3 text-right text-slate-900 font-medium">${po.total.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-foreground font-mono text-xs font-medium">{po.poNumber}</td>
+                  <td className="px-4 py-3 text-muted-foreground/80">{po.supplierName}</td>
+                  <td className="px-4 py-3 text-right text-foreground">{po.itemsCount}</td>
+                  <td className="px-4 py-3 text-right text-foreground font-medium">${po.total.toFixed(2)}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_COLORS[po.status as POStatus]}`}>
                       {po.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-500 text-xs">{po.createdAt}</td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs">{po.createdAt}</td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
                       {po.status === 'Draft' && (
                         <>
                           <button
                             onClick={() => updatePOStatus(po.id, 'Sent')}
-                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-primary hover:bg-blue-50 transition-colors"
                           >
                             Send
                           </button>
@@ -470,7 +470,7 @@ export default function PurchaseOrdersPage() {
                         </button>
                       )}
                       {po.status === 'Received' && (
-                        <span className="text-[10px] text-slate-500">Complete</span>
+                        <span className="text-[10px] text-muted-foreground">Complete</span>
                       )}
                       {po.status === 'Cancelled' && (
                         <span className="text-[10px] text-red-600">Cancelled</span>
@@ -504,9 +504,9 @@ export default function PurchaseOrdersPage() {
         <div className="space-y-4">
           {/* Supplier Selection */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Supplier</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Supplier</label>
             <select
-              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
               value={form.supplierId}
               onChange={(e) => {
                 setForm({ ...form, supplierId: e.target.value, items: [] });
@@ -522,9 +522,9 @@ export default function PurchaseOrdersPage() {
           {/* Items Selection */}
           {form.supplierId && (
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Items</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Items</label>
               <select
-                className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
                 value=""
                 onChange={(e) => { addItemToForm(e.target.value); e.target.value = ''; }}
               >
@@ -540,28 +540,28 @@ export default function PurchaseOrdersPage() {
 
           {/* Items Table */}
           {form.items.length > 0 && (
-            <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <div className="overflow-x-auto rounded-xl border border-border">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50">
-                    <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Item</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Qty</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Unit Price</th>
-                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Total</th>
-                    <th className="px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-500"></th>
+                  <tr className="border-b border-border bg-muted">
+                    <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Item</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Qty</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Unit Price</th>
+                    <th className="px-3 py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Total</th>
+                    <th className="px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {form.items.map((item: any) => (
-                    <tr key={item.itemId} className="border-b border-slate-200">
-                      <td className="px-3 py-2 text-slate-900 text-xs">{item.itemName}</td>
+                    <tr key={item.itemId} className="border-b border-border">
+                      <td className="px-3 py-2 text-foreground text-xs">{item.itemName}</td>
                       <td className="px-3 py-2">
                         <input
                           type="number"
                           min={1}
                           value={item.quantity}
                           onChange={(e) => updateFormItem(item.itemId, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-16 h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-16 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2">
@@ -571,10 +571,10 @@ export default function PurchaseOrdersPage() {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateFormItem(item.itemId, 'unitPrice', parseFloat(e.target.value) || 0)}
-                          className="w-20 h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-20 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                         />
                       </td>
-                      <td className="px-3 py-2 text-right text-slate-900 text-xs font-medium">
+                      <td className="px-3 py-2 text-right text-foreground text-xs font-medium">
                         ${(item.quantity * item.unitPrice).toFixed(2)}
                       </td>
                       <td className="px-3 py-2 text-center">
@@ -592,8 +592,8 @@ export default function PurchaseOrdersPage() {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={3} className="px-3 py-2 text-right text-xs font-semibold text-slate-400">Total</td>
-                    <td className="px-3 py-2 text-right text-xs font-bold text-slate-900">${formTotal.toFixed(2)}</td>
+                    <td colSpan={3} className="px-3 py-2 text-right text-xs font-semibold text-muted-foreground/80">Total</td>
+                    <td className="px-3 py-2 text-right text-xs font-bold text-foreground">${formTotal.toFixed(2)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -603,23 +603,23 @@ export default function PurchaseOrdersPage() {
 
           {/* Expected Delivery */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Expected Delivery Date</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Expected Delivery Date</label>
             <input
               type="date"
               value={form.expectedDelivery}
               onChange={(e) => setForm({ ...form, expectedDelivery: e.target.value })}
-              className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
             />
           </div>
 
           {/* Notes */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Notes</label>
             <textarea
               placeholder="Optional notes for this purchase order..."
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+              className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
               rows={2}
             />
           </div>

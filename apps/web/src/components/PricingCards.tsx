@@ -167,7 +167,7 @@ export default function PricingPage() {
                   disabled={loading === tier}
                   className={`w-full h-11 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
                     isPro
-                      ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                      ? 'bg-primary text-white hover:bg-primary/90 shadow-sm'
                       : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50'
                   } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >

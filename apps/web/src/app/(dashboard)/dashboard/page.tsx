@@ -42,7 +42,7 @@ const statusConfig: Record<string, { label: string; bg: string; text: string }> 
   'in-progress': { label: 'In Progress', bg: 'bg-cyan-50', text: 'text-cyan-700' },
   completed: { label: 'Completed', bg: 'bg-emerald-50', text: 'text-emerald-700' },
   urgent: { label: 'Urgent', bg: 'bg-red-50', text: 'text-red-700' },
-  cancelled: { label: 'Cancelled', bg: 'bg-slate-100', text: 'text-slate-500' },
+  cancelled: { label: 'Cancelled', bg: 'bg-muted', text: 'text-muted-foreground' },
 } as const;
 
 /* ═══════════════════════════════════════════
@@ -55,18 +55,18 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
       <div className="flex items-start justify-between mb-3">
-        <p className="text-sm font-medium text-slate-500">{label}</p>
+        <p className="text-sm font-medium text-muted-foreground">{label}</p>
         <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center`}>
-          <Icon className="w-5 h-5 text-slate-900" />
+          <Icon className="w-5 h-5 text-foreground" />
         </div>
       </div>
-      <p className="text-3xl font-semibold tracking-tight text-slate-900 mb-1.5">{value}</p>
+      <p className="text-3xl font-semibold tracking-tight text-foreground mb-1.5">{value}</p>
       <div className="flex items-center gap-2">
         <span className={`inline-flex items-center gap-0.5 text-xs font-semibold ${trend.color} bg-opacity-10 px-1.5 py-0.5 rounded-full ${trend.direction === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
           <I.ArrowUp className={`w-3 h-3 ${trend.direction === 'down' ? 'rotate-180' : ''}`} />
           {change}
         </span>
-        <span className="text-xs text-slate-400">{trend.label}</span>
+        <span className="text-xs text-muted-foreground/80">{trend.label}</span>
       </div>
     </div>
   );
@@ -96,7 +96,7 @@ function RevenueGoalBar() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-slate-900">{t('dashboard.monthlyGoal')}</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t('dashboard.monthlyGoal')}</h3>
         </div>
         <div className="flex items-center gap-2">
           {editing ? (
@@ -105,21 +105,21 @@ function RevenueGoalBar() {
                 type="number"
                 value={editValue}
                 onChange={e => setEditValue(e.target.value)}
-                className="w-20 h-7 rounded-lg border border-slate-200 px-2 text-xs font-medium text-slate-700 outline-none focus:border-blue-400"
+                className="w-20 h-7 rounded-lg border border-border px-2 text-xs font-medium text-foreground outline-none focus:border-blue-400"
                 autoFocus
               />
               <button onClick={() => { setGoal(Number(editValue) || 50000); setEditing(false); }}
-                className="h-7 px-2 rounded-lg bg-blue-500 text-white text-[10px] font-semibold hover:bg-blue-600 transition-colors">Set</button>
+                className="h-7 px-2 rounded-lg bg-blue-500 text-white text-[10px] font-semibold hover:bg-primary transition-colors">Set</button>
             </div>
           ) : (
             <button onClick={() => { setEditValue(String(goal)); setEditing(true); }}
-              className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Edit</button>
+              className="text-xs text-muted-foreground/80 hover:text-muted-foreground transition-colors">Edit</button>
           )}
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="relative h-3 rounded-full bg-slate-100 overflow-hidden mb-2">
+      <div className="relative h-3 rounded-full bg-muted overflow-hidden mb-2">
         <div
           className={`h-full rounded-full transition-all duration-700 ease-out ${
             pct >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'
@@ -132,14 +132,14 @@ function RevenueGoalBar() {
 
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-900">${totalThis.toLocaleString()}</span>
-          <span className="text-slate-400">of ${goal.toLocaleString()}</span>
-          <span className={`font-semibold ${pct >= 100 ? 'text-emerald-600' : 'text-blue-600'}`}>
+          <span className="font-semibold text-foreground">${totalThis.toLocaleString()}</span>
+          <span className="text-muted-foreground/80">of ${goal.toLocaleString()}</span>
+          <span className={`font-semibold ${pct >= 100 ? 'text-emerald-600' : 'text-primary'}`}>
             {pct.toFixed(0)}%
           </span>
         </div>
         {remaining > 0 ? (
-          <span className="text-slate-400">${remaining.toLocaleString()} {t('dashboard.toGo')}</span>
+          <span className="text-muted-foreground/80">${remaining.toLocaleString()} {t('dashboard.toGo')}</span>
         ) : (
           <span className="flex items-center gap-1 text-emerald-600 font-semibold">
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -179,7 +179,7 @@ function DepositsThisWeek() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-slate-900">{t('dashboard.depositsThisWeek')}</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t('dashboard.depositsThisWeek')}</h3>
         </div>
         <span className={`inline-flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-full ${isUp ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
           <I.ArrowUp className={`w-3 h-3 ${isUp ? '' : 'rotate-180'}`} />
@@ -188,11 +188,11 @@ function DepositsThisWeek() {
       </div>
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-3xl font-bold text-slate-900">${weeklyDepositRevenue.toLocaleString()}</p>
-          <p className="text-xs text-slate-400 mt-1">{depositCount} {t('dashboard.depositsCollected')}</p>
+          <p className="text-3xl font-bold text-foreground">${weeklyDepositRevenue.toLocaleString()}</p>
+          <p className="text-xs text-muted-foreground/80 mt-1">{depositCount} {t('dashboard.depositsCollected')}</p>
         </div>
       </div>
-      <div className="flex items-center gap-4 mt-2 pt-3 border-t border-slate-50 text-xs text-slate-400">
+      <div className="flex items-center gap-4 mt-2 pt-3 border-t border-slate-50 text-xs text-muted-foreground/80">
         <span>{t('dashboard.vsLastWeek')}: ${lastWeekDeposits.toLocaleString()}</span>
       </div>
     </div>
@@ -243,15 +243,15 @@ function RevenueChart() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold text-slate-900">{t('dashboard.revenueChart')}</h3>
+            <h3 className="text-base font-semibold text-foreground">{t('dashboard.revenueChart')}</h3>
             <span className={`flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full ${+pctChange >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
               <I.ArrowUp className={`w-3 h-3 ${+pctChange < 0 ? 'rotate-180' : ''}`} /> {pctChange}%
             </span>
           </div>
-          <p className="text-3xl font-bold text-slate-900">${totalThis.toLocaleString()}</p>
-          <p className="text-xs text-slate-400 mt-0.5">vs ${totalPrev.toLocaleString()} last month</p>
+          <p className="text-3xl font-bold text-foreground">${totalThis.toLocaleString()}</p>
+          <p className="text-xs text-muted-foreground/80 mt-0.5">vs ${totalPrev.toLocaleString()} last month</p>
         </div>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
+        <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
       </div>
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
         <defs>
@@ -272,8 +272,8 @@ function RevenueChart() {
         ))}
       </svg>
       <div className="flex items-center gap-4 mt-2">
-        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-500 rounded-full" /><span className="text-[10px] text-slate-400">This month</span></div>
-        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-slate-400">{t('dashboard.lastMonth')}</span></div>
+        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-500 rounded-full" /><span className="text-[10px] text-muted-foreground/80">This month</span></div>
+        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-muted-foreground/80">{t('dashboard.lastMonth')}</span></div>
       </div>
     </div>
   );
@@ -326,8 +326,8 @@ function JobDonutChart() {
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 h-full">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.jobBreakdown')}</h3>
-        <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
+        <h3 className="text-base font-semibold text-foreground">{t('dashboard.jobBreakdown')}</h3>
+        <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
       </div>
       <div className="flex items-start gap-4">
         <div className="relative shrink-0">
@@ -344,9 +344,9 @@ function JobDonutChart() {
             <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                <span className="text-xs text-slate-600">{s.label}</span>
+                <span className="text-xs text-muted-foreground">{s.label}</span>
               </div>
-              <span className="text-xs font-semibold text-slate-900">{s.value}%</span>
+              <span className="text-xs font-semibold text-foreground">{s.value}%</span>
             </div>
           ))}
         </div>
@@ -383,11 +383,11 @@ function WeeklyTechChart() {
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.weeklyPerformance')}</h3>
+        <h3 className="text-base font-semibold text-foreground">{t('dashboard.weeklyPerformance')}</h3>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-500" /><span className="text-[10px] text-slate-400">Jobs</span></div>
-          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /><span className="text-[10px] text-slate-400">Revenue</span></div>
-          <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-500" /><span className="text-[10px] text-muted-foreground/80">Jobs</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /><span className="text-[10px] text-muted-foreground/80">Revenue</span></div>
+          <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
         </div>
       </div>
       <div className="space-y-4">
@@ -401,9 +401,9 @@ function WeeklyTechChart() {
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[8px] font-bold text-white shrink-0">
                     {tech.initials}
                   </div>
-                  <span className="text-sm font-medium text-slate-700">{tech.name}</span>
+                  <span className="text-sm font-medium text-foreground">{tech.name}</span>
                 </div>
-                <span className="text-xs text-slate-500">{tech.jobs} jobs · ${(tech.revenue / 100).toFixed(1)}K</span>
+                <span className="text-xs text-muted-foreground">{tech.jobs} jobs · ${(tech.revenue / 100).toFixed(1)}K</span>
               </div>
               <div className="flex gap-1.5 items-center h-4">
                 <div className="h-3 bg-blue-500 rounded-full transition-all duration-500" style={{ width: `${jobsPct}%` }} />
@@ -426,52 +426,52 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
   const { t } = useI18n();
   const router = useRouter();
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.upcomingJobs')}</h3>
+        <h3 className="text-base font-semibold text-foreground">{t('dashboard.upcomingJobs')}</h3>
         <div className="flex items-center gap-3">
-          <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-5 h-5" /></button>
-          <a href="/jobs" className="text-xs font-medium text-blue-600 hover:text-blue-700">{t('dashboard.viewAll')} →</a>
+          <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
+          <a href="/jobs" className="text-xs font-medium text-primary hover:text-primary/80">{t('dashboard.viewAll')} →</a>
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-t border-b border-slate-100">
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Time</th>
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Customer</th>
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Address</th>
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Tech</th>
-              <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Status</th>
-              <th className="text-right text-xs font-semibold text-slate-400 uppercase tracking-wider px-5 py-3">Actions</th>
+            <tr className="border-t border-b border-border/50">
+              <th className="text-left text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-5 py-3">Time</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-4 py-3">Customer</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Address</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-4 py-3">Tech</th>
+              <th className="text-left text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-4 py-3">Status</th>
+              <th className="text-right text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-5 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {demoJobs.map((job) => {
               const cfg = statusConfig[job.status];
               return (
-                <tr key={job.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => router.push(`/jobs/${job.id}`)}>
+                <tr key={job.id} className="border-b border-slate-50 hover:bg-muted transition-colors cursor-pointer" onClick={() => router.push(`/jobs/${job.id}`)}>
                   <td className="px-5 py-3.5 whitespace-nowrap">
                     <div className="flex items-center gap-1.5">
-                      <I.Clock className="w-3.5 h-3.5 text-slate-400" />
+                      <I.Clock className="w-3.5 h-3.5 text-muted-foreground/80" />
                       <span className="text-sm font-medium text-slate-800">{job.time}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
                     <div>
-                      <span className="text-sm text-slate-700 font-medium">{job.customer}</span>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{job.service}</p>
+                      <span className="text-sm text-foreground font-medium">{job.customer}</span>
+                      <p className="text-[11px] text-muted-foreground/80 mt-0.5">{job.service}</p>
                     </div>
                   </td>
                   <td className="px-4 py-3.5 hidden md:table-cell">
-                    <span className="text-sm text-slate-500">{job.address}</span>
+                    <span className="text-sm text-muted-foreground">{job.address}</span>
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
                         {job.tech.split(' ').map((n: string) => n[0]).join('')}
                       </div>
-                      <span className="text-sm text-slate-600">{job.tech}</span>
+                      <span className="text-sm text-muted-foreground">{job.tech}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
@@ -480,7 +480,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-right">
-                    <button className="text-slate-400 hover:text-slate-600 transition-colors"><I.Dots className="w-4 h-4" /></button>
+                    <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-4 h-4" /></button>
                   </td>
                 </tr>
               );
@@ -507,14 +507,14 @@ const statusDotColors: Record<string, string> = {
 const TechStatusTable = memo(function TechStatusTable() {
   const { t } = useI18n();
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">{t('dashboard.techStatus')}</h3>
-        <a href="/team" className="text-xs font-medium text-blue-600 hover:text-blue-700">View All →</a>
+        <h3 className="text-base font-semibold text-foreground">{t('dashboard.techStatus')}</h3>
+        <a href="/team" className="text-xs font-medium text-primary hover:text-primary/80">View All →</a>
       </div>
       <div className="divide-y divide-slate-50 max-h-[380px] overflow-y-auto">
         {techStatusData.map((tech, i) => (
-          <div key={i} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50 transition-colors">
+          <div key={i} className="flex items-center gap-3 px-5 py-3 hover:bg-muted transition-colors">
             <div className="relative shrink-0">
               <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${tech.color} flex items-center justify-center text-[10px] font-bold text-white shadow-sm`}>
                 {tech.initials}
@@ -522,12 +522,12 @@ const TechStatusTable = memo(function TechStatusTable() {
               <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full ${statusDotColors[tech.status]} ring-2 ring-white`} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-slate-900 truncate">{tech.name}</p>
-              <p className="text-xs text-slate-400 truncate">{tech.job} · {tech.location}</p>
+              <p className="text-sm font-medium text-foreground truncate">{tech.name}</p>
+              <p className="text-xs text-muted-foreground/80 truncate">{tech.job} · {tech.location}</p>
             </div>
             <div className="text-right shrink-0">
-              <span className="text-xs font-semibold text-slate-900">{tech.jobsToday}</span>
-              <p className="text-[10px] text-slate-400">today</p>
+              <span className="text-xs font-semibold text-foreground">{tech.jobsToday}</span>
+              <p className="text-[10px] text-muted-foreground/80">today</p>
             </div>
           </div>
         ))}
@@ -544,24 +544,24 @@ const alerts: any[] = [];
 const AlertsPanel = memo(function AlertsPanel() {
   const router = useRouter();
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-base font-semibold text-slate-900">Alerts</h3>
+        <h3 className="text-base font-semibold text-foreground">Alerts</h3>
         <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold">{alerts.length}</span>
       </div>
       <div className="divide-y divide-slate-50">
         {alerts.map((alert, i) => (
-          <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-colors">
+          <div key={i} className="px-5 py-3.5 hover:bg-muted transition-colors">
             <div className="flex items-start gap-3">
               <div className={`w-8 h-8 rounded-xl ${alert.iconBg} flex items-center justify-center shrink-0 mt-0.5`}>
                 <alert.icon className={`w-4 h-4 ${alert.iconColor}`} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-slate-700 leading-snug">{alert.message}</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">{alert.time}</p>
+                <p className="text-sm text-foreground leading-snug">{alert.message}</p>
+                <p className="text-[11px] text-muted-foreground/80 mt-0.5">{alert.time}</p>
               </div>
               <div className="shrink-0">
-                <button onClick={() => router.push(alert.href)} className="text-xs font-medium text-blue-600 hover:text-blue-700 whitespace-nowrap">
+                <button onClick={() => router.push(alert.href)} className="text-xs font-medium text-primary hover:text-primary/80 whitespace-nowrap">
                   {alert.action} →
                 </button>
               </div>
@@ -587,16 +587,16 @@ const QuickActionsBar = memo(function QuickActionsBar() {
   ];
   return (
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
-      <h3 className="text-base font-semibold text-slate-900 mb-4">Quick Actions</h3>
+      <h3 className="text-base font-semibold text-foreground mb-4">Quick Actions</h3>
       <div className="space-y-2">
         {actions.map((a, i) => (
           <button key={i} onClick={() => router.push(a.href)}
-            className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-slate-50 transition-colors active:scale-[0.98] group">
+            className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-muted transition-colors active:scale-[0.98] group">
             <div className={`w-9 h-9 rounded-xl ${a.color} flex items-center justify-center shadow-sm group-hover:shadow transition-shadow`}>
-              <a.icon className="w-4 h-4 text-slate-900" />
+              <a.icon className="w-4 h-4 text-foreground" />
             </div>
-            <span className="text-sm font-medium text-slate-700">{a.label}</span>
-            <I.ArrowUp className="w-3.5 h-3.5 text-slate-300 ml-auto rotate-45 group-hover:text-slate-500 transition-colors" />
+            <span className="text-sm font-medium text-foreground">{a.label}</span>
+            <I.ArrowUp className="w-3.5 h-3.5 text-slate-300 ml-auto rotate-45 group-hover:text-muted-foreground transition-colors" />
           </button>
         ))}
       </div>
@@ -666,9 +666,9 @@ const UpgradeCard = memo(function UpgradeCard() {
         <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5" />
         <div className="relative z-10">
           <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm"><I.Zap className="w-4 h-4 text-white" /></div>
-          <h3 className="text-base font-bold text-slate-900 mb-1.5">Start Your Free Trial!</h3>
+          <h3 className="text-base font-bold text-foreground mb-1.5">Start Your Free Trial!</h3>
           <p className="text-xs text-blue-100 leading-relaxed mb-4">Unlock AI photo estimates, voice receptionist, and advanced analytics.</p>
-          <button onClick={() => router.push('/pricing')} className="h-9 px-4 rounded-xl bg-white text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
+          <button onClick={() => router.push('/pricing')} className="h-9 px-4 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
         </div>
       </div>
     );
@@ -680,9 +680,9 @@ const UpgradeCard = memo(function UpgradeCard() {
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11px] font-medium text-slate-900/80 uppercase tracking-wider">{status === 'active' ? 'Active' : status}</span>
+          <span className="text-[11px] font-medium text-foreground/80 uppercase tracking-wider">{status === 'active' ? 'Active' : status}</span>
         </div>
-        <h3 className="text-lg font-bold text-slate-900 mb-0.5">{label} Plan</h3>
+        <h3 className="text-lg font-bold text-foreground mb-0.5">{label} Plan</h3>
         {tier === 'enterprise' ? (
           <p className="text-xs text-blue-100 mb-3">Custom pricing</p>
         ) : (
@@ -692,7 +692,7 @@ const UpgradeCard = memo(function UpgradeCard() {
           <button onClick={openBilling} disabled={billingLoading} className="h-8 px-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-semibold backdrop-blur-sm transition-all active:scale-[0.97] border border-white/10">
             {billingLoading ? 'Opening...' : 'Manage Plan'}
           </button>
-          <button onClick={() => router.push('/billing')} className="h-8 px-3.5 rounded-xl bg-white text-blue-600 text-xs font-semibold hover:bg-blue-50 transition-all active:scale-[0.97]">Billing</button>
+          <button onClick={() => router.push('/billing')} className="h-8 px-3.5 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-50 transition-all active:scale-[0.97]">Billing</button>
         </div>
       </div>
     </div>
@@ -741,16 +741,16 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
   }, [input, sendMessage]);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col h-full">
       <div className="flex items-center justify-between p-5 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
-            <I.Sparkles className="w-4 h-4 text-slate-900" />
+            <I.Sparkles className="w-4 h-4 text-foreground" />
           </div>
-          <h3 className="text-sm font-semibold tracking-tight text-slate-900">PlumbCore AI</h3>
+          <h3 className="text-sm font-semibold tracking-tight text-foreground">PlumbCore AI</h3>
         </div>
         {showChat && (
-          <button onClick={() => { setShowChat(false); setMessages([]); }} className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Clear</button>
+          <button onClick={() => { setShowChat(false); setMessages([]); }} className="text-xs text-muted-foreground/80 hover:text-muted-foreground transition-colors">Clear</button>
         )}
       </div>
 
@@ -761,7 +761,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
               <div className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
                 msg.role === 'user'
                   ? 'bg-blue-500 text-white rounded-br-md'
-                  : 'bg-slate-50 text-slate-700 rounded-bl-md border border-slate-100'
+                  : 'bg-muted text-foreground rounded-bl-md border border-border/50'
               }`}>
                 {msg.content}
               </div>
@@ -769,7 +769,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-slate-50 rounded-xl px-3.5 py-2.5 text-sm text-slate-400 border border-slate-100 rounded-bl-md">
+              <div className="bg-muted rounded-xl px-3.5 py-2.5 text-sm text-muted-foreground/80 border border-border/50 rounded-bl-md">
                 <span className="inline-flex gap-1">
                   <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{animationDelay:'0ms'}} />
                   <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{animationDelay:'150ms'}} />
@@ -783,7 +783,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
 
       {!showChat && (
         <div className="px-5 pb-3">
-          <p className="text-xs text-slate-400 text-center mb-3">Ask me anything about your business</p>
+          <p className="text-xs text-muted-foreground/80 text-center mb-3">Ask me anything about your business</p>
           <div className="space-y-1">
             {[
               { label: "What's on my schedule today?", icon: I.Check },
@@ -791,8 +791,8 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
               { label: 'Show me overdue invoices', icon: I.Cart },
             ].map((s) => (
               <button key={s.label} onClick={() => sendMessage(s.label)}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors text-left">
-                <s.icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors text-left">
+                <s.icon className="w-3.5 h-3.5 text-muted-foreground/80 shrink-0" />
                 <span>{s.label}</span>
               </button>
             ))}
@@ -809,10 +809,10 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={loading}
-            className="w-full h-10 pl-4 pr-10 bg-slate-50 rounded-xl text-sm text-slate-600 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white border border-slate-200 transition-all disabled:opacity-50"
+            className="w-full h-10 pl-4 pr-10 bg-muted rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white border border-border transition-all disabled:opacity-50"
           />
           <button onClick={() => sendMessage(input)} disabled={loading || !input.trim()}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-500 text-white flex items-center justify-center hover:bg-primary transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
             <I.Send className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -866,7 +866,7 @@ function PlanInfoWidget() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-slate-900">Plan Info</h3>
+          <h3 className="text-sm font-semibold text-foreground">Plan Info</h3>
         </div>
         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
           status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
@@ -875,33 +875,33 @@ function PlanInfoWidget() {
         </span>
       </div>
       <div className="flex items-baseline gap-1 mb-1">
-        <h2 className="text-2xl font-bold text-slate-900">{planLabel}</h2>
-        <span className="text-sm text-slate-500">· ${planPrice}/mo</span>
+        <h2 className="text-2xl font-bold text-foreground">{planLabel}</h2>
+        <span className="text-sm text-muted-foreground">· ${planPrice}/mo</span>
       </div>
       <div className="grid grid-cols-3 gap-3 my-4">
-        <div className="bg-slate-50 rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-slate-900">{aiHours}h</p>
-          <p className="text-[10px] text-slate-500">AI Receptionist</p>
+        <div className="bg-muted rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-foreground">{aiHours}h</p>
+          <p className="text-[10px] text-muted-foreground">AI Receptionist</p>
         </div>
-        <div className="bg-slate-50 rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-slate-900">{maxTechs === 999 ? '∞' : maxTechs}</p>
-          <p className="text-[10px] text-slate-500">Max Techs</p>
+        <div className="bg-muted rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-foreground">{maxTechs === 999 ? '∞' : maxTechs}</p>
+          <p className="text-[10px] text-muted-foreground">Max Techs</p>
         </div>
-        <div className="bg-slate-50 rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-slate-900">${planPrice}</p>
-          <p className="text-[10px] text-slate-500">/mo</p>
+        <div className="bg-muted rounded-xl p-3 text-center">
+          <p className="text-lg font-bold text-foreground">${planPrice}</p>
+          <p className="text-[10px] text-muted-foreground">/mo</p>
         </div>
       </div>
       <div className="flex gap-2">
         <button
           onClick={() => window.location.href = '/settings?tab=billing'}
-          className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-all active:scale-[0.97]"
+          className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-primary transition-all active:scale-[0.97]"
         >
           Upgrade
         </button>
         <button
           onClick={openBilling}
-          className="flex-1 h-9 rounded-xl border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-all active:scale-[0.97]"
+          className="flex-1 h-9 rounded-xl border border-border text-foreground text-xs font-semibold hover:bg-muted transition-all active:scale-[0.97]"
         >
           Manage Billing
         </button>

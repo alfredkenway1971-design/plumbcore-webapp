@@ -34,7 +34,7 @@ const initialForm: SupplierForm = {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3 animate-pulse">
+    <div className="flex items-center gap-3 border-b border-border px-4 py-3 animate-pulse">
       <div className="h-4 w-48 rounded bg-white/5" />
       <div className="h-4 w-32 rounded bg-white/5" />
       <div className="h-4 w-28 rounded bg-white/5" />
@@ -123,7 +123,7 @@ export default function SuppliersPage() {
   if (error) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-foreground">Supplier Directory</h1>
         <Card variant="bordered" padding="lg">
           <ErrorState title="Failed to load suppliers" message={error} onRetry={handleRetry} />
         </Card>
@@ -134,13 +134,13 @@ export default function SuppliersPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-foreground">Supplier Directory</h1>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="h-10 w-64 animate-pulse rounded-xl bg-white/5" />
         </div>
         <Card variant="bordered" padding="sm">
           <div className="space-y-0">
-            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-2.5">
+            <div className="flex items-center gap-3 border-b border-border px-4 py-2.5">
               <div className="h-3 w-48 rounded bg-white/5" />
               <div className="h-3 w-32 rounded bg-white/5" />
               <div className="h-3 w-28 rounded bg-white/5" />
@@ -174,7 +174,7 @@ export default function SuppliersPage() {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">Supplier Directory</h1>
+        <h1 className="text-2xl font-bold text-foreground">Supplier Directory</h1>
         <Button onClick={() => setModalOpen(true)}>+ Add Supplier</Button>
       </div>
 
@@ -195,7 +195,7 @@ export default function SuppliersPage() {
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 categoryFilter === cat
                   ? 'bg-electric text-[#0a0e2a]'
-                  : 'bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-white/10'
+                  : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-white/10'
               }`}
             >
               {cat}
@@ -219,31 +219,31 @@ export default function SuppliersPage() {
         <Card variant="bordered" padding="sm" className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Supplier Name</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Contact Person</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Phone</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Email</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Categories Supplied</th>
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
+              <tr className="border-b border-border">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Supplier Name</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contact Person</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Categories Supplied</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((supplier) => (
                 <tr
                   key={supplier.id}
-                  className="border-b border-slate-200 transition-colors hover:bg-white/[0.02]"
+                  className="border-b border-border transition-colors hover:bg-white/[0.02]"
                 >
-                  <td className="px-4 py-3 text-slate-900 font-medium">{supplier.name}</td>
-                  <td className="px-4 py-3 text-slate-400">{supplier.contactPerson}</td>
-                  <td className="px-4 py-3 text-slate-500 font-mono text-xs">{supplier.phone}</td>
-                  <td className="px-4 py-3 text-slate-400">{supplier.email}</td>
+                  <td className="px-4 py-3 text-foreground font-medium">{supplier.name}</td>
+                  <td className="px-4 py-3 text-muted-foreground/80">{supplier.contactPerson}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{supplier.phone}</td>
+                  <td className="px-4 py-3 text-muted-foreground/80">{supplier.email}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
                       {supplier.categories.map((cat: string) => (
                         <span
                           key={cat}
-                          className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-slate-400"
+                          className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground/80"
                         >
                           {cat}
                         </span>
@@ -269,55 +269,55 @@ export default function SuppliersPage() {
       {modalOpen && (
         <>
           <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-start justify-center pt-[5vh] pb-8 px-4 overflow-y-auto" onClick={() => { setModalOpen(false); setForm(initialForm); }}>
-            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-border overflow-hidden" onClick={e => e.stopPropagation()}>
               {/* Header */}
-              <div className="px-6 pt-6 pb-4 border-b border-slate-100">
-                <h2 className="text-lg font-bold text-slate-900">Add New Supplier</h2>
-                <p className="text-sm text-slate-500 mt-0.5">Fill in the details to add a new supplier.</p>
+              <div className="px-6 pt-6 pb-4 border-b border-border/50">
+                <h2 className="text-lg font-bold text-foreground">Add New Supplier</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">Fill in the details to add a new supplier.</p>
               </div>
 
               {/* Body */}
               <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Company Name *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Company Name *</label>
                   <input
                     type="text" placeholder="e.g. Plumbing Supply Co"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Contact Person *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Contact Person *</label>
                   <input
                     type="text" placeholder="e.g. John Smith"
                     value={form.contactPerson}
                     onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Phone</label>
                     <input
                       type="tel" placeholder="e.g. (800) 555-0100"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Email</label>
                     <input
                       type="email" placeholder="e.g. contact@supplier.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Address</label>
                   <AddressAutocomplete
                     value={form.address}
                     onChange={(v) => setForm({ ...form, address: v })}
@@ -325,7 +325,7 @@ export default function SuppliersPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Categories Supplied</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Categories Supplied</label>
                   <div className="flex flex-wrap gap-2">
                     {ALL_CATEGORIES.map((cat) => (
                       <button
@@ -334,7 +334,7 @@ export default function SuppliersPage() {
                         className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                           form.categories.includes(cat)
                             ? 'bg-blue-500 text-white'
-                            : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                            : 'bg-muted text-muted-foreground hover:bg-muted hover:text-foreground'
                         }`}
                       >
                         {cat}
@@ -345,9 +345,9 @@ export default function SuppliersPage() {
               </div>
 
               {/* Footer */}
-              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-end gap-3">
-                <button onClick={() => { setModalOpen(false); setForm(initialForm); }} className="h-10 px-5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
-                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+              <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
+                <button onClick={() => { setModalOpen(false); setForm(initialForm); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
+                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   Add Supplier
                 </button>
               </div>

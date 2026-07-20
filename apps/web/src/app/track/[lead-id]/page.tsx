@@ -67,7 +67,7 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
       {/* Spinner */}
       <div className="flex justify-center">
         <div className="relative w-20 h-20">
-          <div className="absolute inset-0 rounded-full border-[3px] border-slate-100" />
+          <div className="absolute inset-0 rounded-full border-[3px] border-border/50" />
           <div className="absolute inset-0 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-2xl">🔍</span>
@@ -77,27 +77,27 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
 
       {/* Text */}
       <div className="text-center">
-        <h2 className="text-xl font-bold text-slate-900 mb-1.5">Finding your plumber...</h2>
-        <p className="text-sm text-slate-500 leading-relaxed">
-          We&apos;re searching our network of licensed plumbers in <strong className="text-slate-700">{data.customerCity || 'your area'}</strong>.
+        <h2 className="text-xl font-bold text-foreground mb-1.5">Finding your plumber...</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          We&apos;re searching our network of licensed plumbers in <strong className="text-foreground">{data.customerCity || 'your area'}</strong>.
           You&apos;ll receive a notification when we find the right match.
         </p>
       </div>
 
       {/* Estimate Card */}
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
-        <div className="px-4 py-3 bg-slate-50 border-b border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Estimate Details</p>
+        <div className="px-4 py-3 bg-muted border-b border-border/50">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estimate Details</p>
         </div>
         <div className="px-4 py-3 space-y-3">
           <Row label="Issue" value={data.diagnosis} />
-          <Row label="Severity" value={data.severity} highlight={data.severity === 'emergency' ? 'text-red-600' : 'text-slate-900'} />
+          <Row label="Severity" value={data.severity} highlight={data.severity === 'emergency' ? 'text-red-600' : 'text-foreground'} />
           <Row label="Estimate" value={`$${data.totalEstimate?.toFixed(2)}`} />
-          <div className="border-t border-slate-100 pt-3">
+          <div className="border-t border-border/50 pt-3">
             <Row label="Deposit Paid" value={`-$${data.depositPaid?.toFixed(2)}`} valueClass="text-emerald-600 font-medium" />
             <div className="flex justify-between items-center mt-1.5">
-              <span className="text-sm font-bold text-slate-900">Remaining Balance</span>
-              <span className="text-base font-bold text-blue-600">${((data.totalEstimate || 0) - (data.depositPaid || 0)).toFixed(2)}</span>
+              <span className="text-sm font-bold text-foreground">Remaining Balance</span>
+              <span className="text-base font-bold text-primary">${((data.totalEstimate || 0) - (data.depositPaid || 0)).toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
         <span className="text-lg shrink-0 mt-0.5">🔒</span>
         <div>
           <p className="text-sm font-semibold text-blue-800">48-Hour Refund Guarantee</p>
-          <p className="text-xs text-blue-600 mt-0.5">Fully refundable if we can&apos;t find a plumber in your area.</p>
+          <p className="text-xs text-primary mt-0.5">Fully refundable if we can&apos;t find a plumber in your area.</p>
         </div>
       </div>
     </div>
@@ -118,8 +118,8 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
 function Row({ label, value, highlight, valueClass }: { label: string; value: string; highlight?: string; valueClass?: string }) {
   return (
     <div className="flex justify-between items-center">
-      <span className="text-sm text-slate-500">{label}</span>
-      <span className={`text-sm font-medium text-right max-w-[55%] ${valueClass || highlight || 'text-slate-900'}`}>{value}</span>
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className={`text-sm font-medium text-right max-w-[55%] ${valueClass || highlight || 'text-foreground'}`}>{value}</span>
     </div>
   );
 }
@@ -129,7 +129,7 @@ function PlumberCard({ plumber, actionLabel, actionHref }: { plumber: PlumberInf
     <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
       <div className="p-5">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xl font-bold text-blue-600 shrink-0 ring-2 ring-white shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xl font-bold text-primary shrink-0 ring-2 ring-white shadow-sm">
             {plumber.logoUrl ? (
               <img src={plumber.logoUrl} alt={plumber.companyName} className="w-14 h-14 rounded-full object-cover" />
             ) : (
@@ -137,14 +137,14 @@ function PlumberCard({ plumber, actionLabel, actionHref }: { plumber: PlumberInf
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-base font-bold text-slate-900 truncate">{plumber.companyName}</p>
+            <p className="text-base font-bold text-foreground truncate">{plumber.companyName}</p>
             <div className="flex items-center gap-1.5 mt-1">
               <div className="flex">
                 {[1,2,3,4,5].map(i => (
                   <I.Star key={i} />
                 ))}
               </div>
-              <span className="text-xs text-slate-500">({plumber.totalReviews || 0})</span>
+              <span className="text-xs text-muted-foreground">({plumber.totalReviews || 0})</span>
             </div>
           </div>
         </div>
@@ -171,8 +171,8 @@ function AssignedState({ data }: { data: LeadStatusResponse }) {
         <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
           <div className="w-8 h-8 text-emerald-500"><I.Check /></div>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-1">Plumber Assigned! 🎉</h2>
-        <p className="text-sm text-slate-500">A licensed plumber has been assigned to your job</p>
+        <h2 className="text-xl font-bold text-foreground mb-1">Plumber Assigned! 🎉</h2>
+        <p className="text-sm text-muted-foreground">A licensed plumber has been assigned to your job</p>
       </div>
 
       {data.plumber ? (
@@ -198,13 +198,13 @@ function EnRouteState({ data }: { data: LeadStatusResponse }) {
             EN ROUTE
           </div>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-1">Your plumber is on the way!</h2>
-        <p className="text-sm text-slate-500">{data.plumber?.companyName || 'Your plumber'} is heading to your location.</p>
+        <h2 className="text-xl font-bold text-foreground mb-1">Your plumber is on the way!</h2>
+        <p className="text-sm text-muted-foreground">{data.plumber?.companyName || 'Your plumber'} is heading to your location.</p>
       </div>
 
       {/* Map placeholder */}
-      <div className="bg-slate-100 rounded-2xl h-44 flex items-center justify-center ring-1 ring-black/5">
-        <div className="text-center text-slate-400">
+      <div className="bg-muted rounded-2xl h-44 flex items-center justify-center ring-1 ring-black/5">
+        <div className="text-center text-muted-foreground/80">
           <span className="text-2xl block mb-1">🗺️</span>
           <p className="text-sm font-medium">Live Map</p>
           <p className="text-xs mt-0.5">Plumber tracking will appear here</p>
@@ -216,8 +216,8 @@ function EnRouteState({ data }: { data: LeadStatusResponse }) {
         <div className="flex items-center justify-center gap-3">
           <span className="text-2xl">⏱️</span>
           <div>
-            <p className="text-xs text-slate-500">Estimated Arrival</p>
-            <p className="text-lg font-bold text-slate-900">15-30 minutes</p>
+            <p className="text-xs text-muted-foreground">Estimated Arrival</p>
+            <p className="text-lg font-bold text-foreground">15-30 minutes</p>
           </div>
         </div>
       </div>
@@ -238,8 +238,8 @@ function ArrivedState({ data }: { data: LeadStatusResponse }) {
         <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
           <span className="text-2xl">✅</span>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-1">Your plumber has arrived!</h2>
-        <p className="text-sm text-slate-500">{data.plumber?.companyName || 'Your plumber'} is at your location and ready to begin.</p>
+        <h2 className="text-xl font-bold text-foreground mb-1">Your plumber has arrived!</h2>
+        <p className="text-sm text-muted-foreground">{data.plumber?.companyName || 'Your plumber'} is at your location and ready to begin.</p>
       </div>
 
       <div className="bg-emerald-50 rounded-2xl p-5 text-center ring-1 ring-emerald-200">
@@ -267,12 +267,12 @@ function CompleteState({ data }: { data: LeadStatusResponse }) {
         <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
           <div className="w-8 h-8 text-emerald-500"><I.Check /></div>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-1">Job Complete! 🎉</h2>
-        <p className="text-sm text-slate-500">Thank you for choosing PlumbCore AI. We hope everything went smoothly!</p>
+        <h2 className="text-xl font-bold text-foreground mb-1">Job Complete! 🎉</h2>
+        <p className="text-sm text-muted-foreground">Thank you for choosing PlumbCore AI. We hope everything went smoothly!</p>
       </div>
 
       <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm p-5">
-        <p className="text-sm font-semibold text-slate-900 text-center mb-3">How did we do?</p>
+        <p className="text-sm font-semibold text-foreground text-center mb-3">How did we do?</p>
         <div className="flex items-center justify-center gap-2">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -280,7 +280,7 @@ function CompleteState({ data }: { data: LeadStatusResponse }) {
               className={`w-11 h-11 rounded-full flex items-center justify-center text-xl transition-all active:scale-90 ${
                 (hoveredStar || selectedStar) >= star
                   ? 'bg-amber-100 text-amber-500'
-                  : 'bg-slate-100 text-slate-300 hover:bg-amber-50 hover:text-amber-400'
+                  : 'bg-muted text-slate-300 hover:bg-amber-50 hover:text-amber-400'
               }`}
               onMouseEnter={() => setHoveredStar(star)}
               onMouseLeave={() => setHoveredStar(0)}
@@ -291,7 +291,7 @@ function CompleteState({ data }: { data: LeadStatusResponse }) {
           ))}
         </div>
         {selectedStar > 0 && (
-          <p className="text-xs text-slate-400 text-center mt-2">
+          <p className="text-xs text-muted-foreground/80 text-center mt-2">
             {selectedStar === 5 ? 'Amazing! Thank you! ⭐' :
              selectedStar === 4 ? 'Great! We appreciate it!' :
              selectedStar >= 3 ? 'Thanks for your feedback!' :
@@ -299,7 +299,7 @@ function CompleteState({ data }: { data: LeadStatusResponse }) {
           </p>
         )}
         {selectedStar === 0 && (
-          <p className="text-xs text-slate-400 text-center mt-2">Tap a star to rate your experience</p>
+          <p className="text-xs text-muted-foreground/80 text-center mt-2">Tap a star to rate your experience</p>
         )}
       </div>
 
@@ -320,10 +320,10 @@ function RefundedState({ data }: { data: LeadStatusResponse }) {
         <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
           <span className="text-2xl">💸</span>
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-1">Refund Processed</h2>
-        <p className="text-sm text-slate-500 leading-relaxed">
+        <h2 className="text-xl font-bold text-foreground mb-1">Refund Processed</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
           We were unable to find an available plumber in your area. Your deposit of{' '}
-          <strong className="text-slate-700">${data.depositPaid?.toFixed(2)}</strong> has been refunded.
+          <strong className="text-foreground">${data.depositPaid?.toFixed(2)}</strong> has been refunded.
         </p>
       </div>
 
@@ -364,15 +364,15 @@ function ProgressBar({ status }: { status: LeadStatus }) {
                 ? isCurrent
                   ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 scale-110'
                   : 'bg-blue-500 text-white'
-                : 'bg-slate-100 text-slate-300'
+                : 'bg-muted text-slate-300'
             }`}>
               {step.key === 'matching' ? '🔍' : step.key === 'en_route' ? '🚛' : isActive && step.key !== 'arrived' ? '✓' : step.icon}
             </div>
-            <span className={`text-[10px] font-medium text-center ${isActive ? 'text-blue-600 font-semibold' : 'text-slate-400'}`}>
+            <span className={`text-[10px] font-medium text-center ${isActive ? 'text-primary font-semibold' : 'text-muted-foreground/80'}`}>
               {LABELS[step.key] || step.key}
             </span>
             {i < STEPS.length - 1 && (
-              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-blue-500' : 'bg-slate-200'}`} />
+              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-blue-500' : 'bg-muted'}`} />
             )}
           </div>
         );
@@ -418,19 +418,19 @@ export default function TrackPage() {
   }, [leadId, fetchStatus]);
 
   const renderContent = () => {
-    if (!leadId) return <p className="text-sm text-slate-500">No lead ID provided.</p>;
+    if (!leadId) return <p className="text-sm text-muted-foreground">No lead ID provided.</p>;
     if (loading) return (
       <div className="flex flex-col items-center gap-3 py-20">
         <div className="w-10 h-10 border-[3px] border-blue-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-slate-500">Loading tracking info...</p>
+        <p className="text-sm text-muted-foreground">Loading tracking info...</p>
       </div>
     );
     if (error && !data) return (
       <div className="text-center py-12">
         <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3"><span className="text-xl">⚠️</span></div>
-        <h2 className="text-lg font-bold text-slate-900 mb-1">Something went wrong</h2>
-        <p className="text-sm text-slate-500 mb-4">{error}</p>
-        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-blue-500 text-white font-medium text-sm hover:bg-blue-600 active:scale-[0.98] transition-all">Try Again</button>
+        <h2 className="text-lg font-bold text-foreground mb-1">Something went wrong</h2>
+        <p className="text-sm text-muted-foreground mb-4">{error}</p>
+        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-blue-500 text-white font-medium text-sm hover:bg-primary active:scale-[0.98] transition-all">Try Again</button>
       </div>
     );
     if (!data) return null;
@@ -446,11 +446,11 @@ export default function TrackPage() {
          status === 'complete' ? <CompleteState data={data} /> :
          status === 'refunded' ? <RefundedState data={data} /> :
          <MatchingState data={data} />}
-        <div className="text-center mt-6 pt-6 border-t border-slate-100">
-          <p className="text-xs text-slate-400">
-            Need help? <a href="tel:+155****4567" className="text-blue-600 font-medium">(555) 123-4567</a>
+        <div className="text-center mt-6 pt-6 border-t border-border/50">
+          <p className="text-xs text-muted-foreground/80">
+            Need help? <a href="tel:+155****4567" className="text-primary font-medium">(555) 123-4567</a>
             {' · '}
-            <button onClick={fetchStatus} className="text-blue-600 font-medium hover:underline">Refresh</button>
+            <button onClick={fetchStatus} className="text-primary font-medium hover:underline">Refresh</button>
           </p>
         </div>
       </>
@@ -462,7 +462,7 @@ export default function TrackPage() {
       <header className="bg-white/80 backdrop-blur-xl ring-1 ring-black/5 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           <PlumbCoreLogo size="sm" showText={true} />
-          <a href="tel:+155****4567" className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-all active:scale-95">
+          <a href="tel:+155****4567" className="flex items-center gap-1.5 text-sm font-semibold text-primary bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-all active:scale-95">
             <I.Phone /> Call
           </a>
         </div>
