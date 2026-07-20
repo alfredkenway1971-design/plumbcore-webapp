@@ -24,10 +24,10 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
       </a>
       <div className="flex items-center gap-3">
         <div className="hidden md:flex items-center gap-5 mr-3">
-          <a href="#pricing" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-blue)] transition-colors">{t('home.navPricing')}</a>
-          <a href="#features" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-blue)] transition-colors">{t('home.navFeatures')}</a>
-          <a href="#testimonials" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-blue)] transition-colors">{t('home.navTestimonials')}</a>
-          <a href="/login" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-blue)] transition-colors">{t('home.navSignIn')}</a>
+          <a href="#pricing" className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navPricing')}</a>
+          <a href="#features" className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navFeatures')}</a>
+          <a href="#testimonials" className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navTestimonials')}</a>
+          <a href="/login" className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navSignIn')}</a>
         </div>
         <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
         <button onClick={() => setOpen(!open)} className="md:hidden w-5 h-[14px] relative" aria-label={t('home.navMenu')}>
@@ -53,7 +53,7 @@ function HeroSection({ t }: { t: (key: string) => string }) {
         <span className="text-[var(--color-blue-bright)]">{t('home.heroLineHighlight')}</span><br />
         {t('home.heroLine2')}
       </h1>
-      <p className="text-[15px] text-[var(--color-muted)] leading-relaxed max-w-[36ch] mb-6">
+      <p className="text-[15px] text-[var(--color-muted-text)] leading-relaxed max-w-[36ch] mb-6">
         {t('home.heroSub')}
       </p>
       <div className="flex flex-col gap-2.5 mb-5">
@@ -64,7 +64,7 @@ function HeroSection({ t }: { t: (key: string) => string }) {
           {t('home.heroDemo')}
         </a>
       </div>
-      <p className="text-[12px] text-[var(--color-muted)] text-center"><b className="text-[var(--color-ink)]">{t('home.heroShops')}</b> {t('home.heroShopsLabel')}</p>
+      <p className="text-[12px] text-[var(--color-muted-text)] text-center"><b className="text-[var(--color-ink)]">{t('home.heroShops')}</b> {t('home.heroShopsLabel')}</p>
     </section>
   );
 }
@@ -73,13 +73,13 @@ function HeroSection({ t }: { t: (key: string) => string }) {
 function TrustBar({ t }: { t: (key: string) => string }) {
   return (
     <div className="px-5 py-4 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
-      <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-muted)] font-semibold flex items-center gap-2 mb-2.5">
-        <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-muted)] inline-block" />
+      <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-muted-text)] font-semibold flex items-center gap-2 mb-2.5">
+        <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-muted-text)] inline-block" />
         {t('home.trustLabel')}
       </span>
       <div className="grid grid-cols-3 gap-2">
         {[t('home.trustRegion1'), t('home.trustRegion2'), t('home.trustRegion3')].map((r, i) => (
-          <div key={i} className="border border-[var(--color-line)] rounded-lg py-2.5 px-1.5 text-center font-mono text-[10px] text-[var(--color-muted)] tracking-[0.04em] bg-white">{r}</div>
+          <div key={i} className="border border-[var(--color-line)] rounded-lg py-2.5 px-1.5 text-center font-mono text-[10px] text-[var(--color-muted-text)] tracking-[0.04em] bg-white">{r}</div>
         ))}
       </div>
     </div>
@@ -109,7 +109,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-jakarta font-bold text-[18px] text-[var(--color-ink)] mb-1">{s.title}</h3>
-            <p className="text-[13.5px] text-[var(--color-muted)] leading-relaxed">{s.desc}</p>
+            <p className="text-[13.5px] text-[var(--color-muted-text)] leading-relaxed">{s.desc}</p>
           </div>
         </div>
       ))}
@@ -145,7 +145,7 @@ function ComparisonSection({ t }: { t: (key: string) => string }) {
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.compTitle')}</h2>
       </div>
       <div className="border border-[var(--color-line)] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted)] bg-[var(--color-bg-alt)]">
+        <div className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted-text)] bg-[var(--color-bg-alt)]">
           <div>{t('home.compMetric')}</div><div className="text-center">{t('home.compOldHeader')}</div><div className="text-center">{t('home.compNewHeader')}</div>
         </div>
         {rows.map((r, i) => (
@@ -172,11 +172,11 @@ function PricingCard({ plan, featured, scarcity, t }: {
       )}
       <h3 className="font-jakarta text-[21px] text-[var(--color-ink)] mb-0.5">{plan.name}</h3>
       <div className="font-jakarta font-extrabold text-[32px] text-[var(--color-blue-deep)] mt-2 mb-1">
-        {plan.price}<span className="font-inter text-[13px] text-[var(--color-muted)] font-normal">{plan.per || '/mo'}</span>
+        {plan.price}<span className="font-inter text-[13px] text-[var(--color-muted-text)] font-normal">{plan.per || '/mo'}</span>
       </div>
       <ul className="list-none my-3.5 space-y-1.5">
         {plan.features.map((f, i) => (
-          <li key={i} className="text-[13px] text-[var(--color-muted)] flex gap-2 items-start">
+          <li key={i} className="text-[13px] text-[var(--color-muted-text)] flex gap-2 items-start">
             <span className="text-[var(--color-blue)] font-bold flex-none">✓</span> {f}
           </li>
         ))}
@@ -299,10 +299,10 @@ function DepositSection({ t }: { t: (key: string) => string }) {
           {t('home.depositBadge')}
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.depositTitle')}</h2>
-        <p className="text-[13.5px] text-[var(--color-muted)] mt-2 leading-relaxed">{t('home.depositSub')}</p>
+        <p className="text-[13.5px] text-[var(--color-muted-text)] mt-2 leading-relaxed">{t('home.depositSub')}</p>
       </div>
       <div className="border border-[var(--color-line)] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted)] bg-[var(--color-bg-alt)]">
+        <div className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted-text)] bg-[var(--color-bg-alt)]">
           <div>{t('home.depositColJobValue')}</div><div className="text-center">{t('home.depositColDeposit')}</div><div className="text-center">{t('home.depositColYouKeep')}</div>
         </div>
         {rows.map((r, i) => (
@@ -327,10 +327,10 @@ function PrioritySection({ t }: { t: (key: string) => string }) {
           {t('home.priorityBadge')}
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.priorityTitle')}</h2>
-        <p className="text-[13.5px] text-[var(--color-muted)] mt-2 leading-relaxed">{t('home.prioritySub')}</p>
+        <p className="text-[13.5px] text-[var(--color-muted-text)] mt-2 leading-relaxed">{t('home.prioritySub')}</p>
       </div>
       <div className="border border-[var(--color-line)] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[1fr_2fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted)] bg-[var(--color-bg-alt)]">
+        <div className="grid grid-cols-[1fr_2fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted-text)] bg-[var(--color-bg-alt)]">
           <div>{t('home.priorityColJobValue')}</div><div className="text-center">{t('home.priorityColWhoGets')}</div>
         </div>
         {[
@@ -357,7 +357,7 @@ function PrioritySection({ t }: { t: (key: string) => string }) {
           { label: t('home.scoreRating'), val: '15%' },
           { label: t('home.scoreResponse'), val: '10%' },
         ].map((s, i) => (
-          <div key={i} className="flex justify-between text-[13px] text-[var(--color-muted)] py-1.5">
+          <div key={i} className="flex justify-between text-[13px] text-[var(--color-muted-text)] py-1.5">
             <span>{s.label}</span>
             <span className="font-mono text-[12px] text-[var(--color-ink)] font-semibold">{s.val}</span>
           </div>
@@ -387,9 +387,9 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
           <div className="w-[42px] h-[42px] rounded-full bg-[var(--color-blue-tint)] flex items-center justify-center font-jakarta font-bold text-[15px] text-[var(--color-blue)] flex-none">{item.initials}</div>
           <div className="min-w-0">
             <div className="text-[13px] font-bold text-[var(--color-ink)]">{item.name}</div>
-            <div className="text-[11px] text-[var(--color-muted)] mb-1.5">{item.role}</div>
+            <div className="text-[11px] text-[var(--color-muted-text)] mb-1.5">{item.role}</div>
             <div className="text-[var(--color-amber)] text-[12px] mb-1">★★★★★</div>
-            <div className="text-[13px] text-[var(--color-muted)] leading-relaxed">"{item.quote}"</div>
+            <div className="text-[13px] text-[var(--color-muted-text)] leading-relaxed">"{item.quote}"</div>
           </div>
         </div>
       ))}
@@ -421,7 +421,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
             <span className={`text-[var(--color-blue)] transition-transform duration-200 ${openIdx === i ? 'rotate-45' : ''}`}>+</span>
           </button>
           {openIdx === i && (
-            <div className="text-[13px] text-[var(--color-muted)] mt-2 leading-relaxed">{f.a}</div>
+            <div className="text-[13px] text-[var(--color-muted-text)] mt-2 leading-relaxed">{f.a}</div>
           )}
         </div>
       ))}
@@ -449,7 +449,7 @@ function FinalCtaSection({ t }: { t: (key: string) => string }) {
 /* ─── Footer ─── */
 function Footer({ t }: { t: (key: string) => string }) {
   return (
-    <footer className="px-5 py-6 border-t border-[var(--color-line)] text-center text-[11px] text-[var(--color-muted)]">
+    <footer className="px-5 py-6 border-t border-[var(--color-line)] text-center text-[11px] text-[var(--color-muted-text)]">
       <a href="/dashboard" className="flex items-center justify-center gap-2 mb-2.5 no-underline">
         <span className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-bright)] flex items-center justify-center font-mono text-[11px] font-bold text-white">PC</span>
         <span className="font-jakarta font-extrabold text-[19px] text-[var(--color-ink)]">PlumbCore</span>

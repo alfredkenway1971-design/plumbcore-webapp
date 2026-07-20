@@ -15,7 +15,7 @@
 
 :root {
   --color-ink: #12203D;
-  --color-muted: #4A5A74;
+  --color-muted-text: #4A5A74;
   --color-blue-deep: #12336B;
   --color-blue: #1E56D6;
   --color-blue-bright: #2F7CF6;
@@ -32,49 +32,50 @@
   --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
 
-  --color-background: #FFFFFF;
-  --color-foreground: #12203D;
+  /* PlumbCore brand tokens */
+  --color-ink: #12203D;
+  --color-muted-text: #4A5A74;
   --color-blue-deep: #12336B;
   --color-blue: #1E56D6;
   --color-blue-bright: #2F7CF6;
   --color-blue-tint: #EAF1FE;
   --color-blue-tint2: #F4F8FF;
-  --color-muted: #4A5A74;
   --color-line: #E3E9F4;
   --color-green: #1E9E6B;
   --color-amber: #C77E12;
   --color-bg-alt: #F7F9FD;
 
+  /* Shadcn UI theme — PlumbCore white/blue */
   --color-background: #FFFFFF;
-  --color-foreground: #0F172A;
+  --color-foreground: #12203D;
   --color-card: #FFFFFF;
-  --color-card-foreground: #0F172A;
+  --color-card-foreground: #12203D;
   --color-popover: #FFFFFF;
-  --color-popover-foreground: #0F172A;
-  --color-primary: #3B82F6;
+  --color-popover-foreground: #12203D;
+  --color-primary: #1E56D6;
   --color-primary-foreground: #FFFFFF;
-  --color-secondary: #F8FAFC;
-  --color-secondary-foreground: #0F172A;
-  --color-muted: #F8FAFC;
-  --color-muted-foreground: #64748B;
-  --color-accent: #06B6D4;
+  --color-secondary: #F4F8FF;
+  --color-secondary-foreground: #12203D;
+  --color-muted: #F4F8FF;
+  --color-muted-foreground: #4A5A74;
+  --color-accent: #2F7CF6;
   --color-accent-foreground: #FFFFFF;
   --color-destructive: #EF4444;
   --color-destructive-foreground: #FFFFFF;
 
-  /* 2025-2026 Design System */
-  --color-border: #E2E8F0;
-  --color-input: #E2E8F0;
-  --color-ring: #3B82F6;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
+  /* Borders & inputs */
+  --color-border: #E3E9F4;
+  --color-input: #E3E9F4;
+  --color-ring: #1E56D6;
+  --color-success: #1E9E6B;
+  --color-warning: #C77E12;
   --color-error: #EF4444;
-  --color-info: #3B82F6;
-  --color-neutral: #64748B;
-  --color-app-surface: #F8FAFC;
-  --color-app-border-light: #E2E8F0;
-  --color-app-text-secondary: #64748B;
-  --color-app-text-muted: #94A3B8;
+  --color-info: #1E56D6;
+  --color-neutral: #5B6B85;
+  --color-app-surface: #F7F9FD;
+  --color-app-border-light: #E3E9F4;
+  --color-app-text-secondary: #4A5A74;
+  --color-app-text-muted: #5B6B85;
 
   /* Radius */
   --radius-sm: 6px;
@@ -86,8 +87,8 @@
   /* Shadows */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --shadow-button: 0 4px 14px rgba(59, 130, 246, 0.25);
-  --shadow-button-hover: 0 6px 20px rgba(59, 130, 246, 0.4);
+  --shadow-button: 0 4px 14px rgba(30, 86, 214, 0.25);
+  --shadow-button-hover: 0 6px 20px rgba(30, 86, 214, 0.4);
   --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.04);
 
   /* Animations */
@@ -142,14 +143,14 @@ input, select, textarea { font-size: 16px !important; }
 
 /* ── Gradient text utility ── */
 .gradient-text {
-  background: linear-gradient(to right, #2563EB, #06B6D4);
+  background: linear-gradient(to right, #1E56D6, #2F7CF6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-hero {
-  background: linear-gradient(to right, #3B82F6, #06B6D4);
+  background: linear-gradient(to right, #1E56D6, #2F7CF6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -253,14 +254,14 @@ input, select, textarea { font-size: 16px !important; }
 
 /* ── Button gradient ── */
 .btn-gradient {
-  background: linear-gradient(to right, #2563EB, #06B6D4);
+  background: linear-gradient(to right, #1E56D6, #2F7CF6);
   color: white;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 4px 14px rgba(30, 86, 214, 0.25);
   transition: all 0.2s ease;
 }
 .btn-gradient:hover {
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 6px 20px rgba(30, 86, 214, 0.4);
   transform: scale(1.02);
 }
 .btn-gradient:active {
@@ -278,9 +279,9 @@ input, select, textarea { font-size: 16px !important; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(59, 130, 246, 0.06), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(6, 182, 212, 0.04), transparent),
-    radial-gradient(ellipse 50% 30% at 50% 0%, rgba(59, 130, 246, 0.03), transparent);
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(30, 86, 214, 0.06), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(47, 124, 246, 0.04), transparent),
+    radial-gradient(ellipse 50% 30% at 50% 0%, rgba(30, 86, 214, 0.03), transparent);
   animation: mesh-shift 20s ease-in-out infinite;
   pointer-events: none;
 }
@@ -326,7 +327,7 @@ input, select, textarea { font-size: 16px !important; }
 
 /* ── Gradient text glow ── */
 .gradient-text-glow {
-  background: linear-gradient(to right, #2563EB, #06B6D4, #2563EB);
+  background: linear-gradient(to right, #1E56D6, #2F7CF6, #2563EB);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -348,7 +349,7 @@ input, select, textarea { font-size: 16px !important; }
   position: absolute;
   inset: -1px;
   border-radius: 16px;
-  background: linear-gradient(135deg, transparent 40%, #3B82F6 50%, transparent 60%);
+  background: linear-gradient(135deg, transparent 40%, #1E56D6 50%, transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: -1;
@@ -359,25 +360,25 @@ input, select, textarea { font-size: 16px !important; }
 
 /* ── Pricing pulse ring ── */
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
-  70% { box-shadow: 0 0 0 12px rgba(59,130,246,0); }
-  100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  0% { box-shadow: 0 0 0 0 rgba(30,86,214,0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(30,86,214,0); }
+  100% { box-shadow: 0 0 0 0 rgba(30,86,214,0); }
 }
 .animate-pulse-ring { animation: pulse-ring 2s ease-in-out infinite; }
 
 /* ── Mesh bg enhanced ── */
 .mesh-bg-enhanced {
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(6,182,212,0.05) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(99,102,241,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30,86,214,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(47,124,246,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(30,86,214,0.04) 0%, transparent 50%),
     linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 50%, #F8FAFC 100%);
 }
 
 
 /* ── Hero image container ── */
 .hero-img-shadow {
-  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15), 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 60px rgba(30, 86, 214, 0.15), 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 /* ── Stat card improvements ── */
