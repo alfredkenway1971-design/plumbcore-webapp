@@ -17,7 +17,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   primary:
     'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98]',
   secondary:
-    'bg-slate-800 text-slate-300 ring-1 ring-white/10 hover:bg-slate-700 hover:text-white',
+    'bg-slate-800 text-slate-300 ring-1 ring-white/10 hover:bg-muted hover:text-white',
   destructive:
     'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
   ghost:

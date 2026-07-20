@@ -532,7 +532,7 @@ export default function JobDetailPage() {
                             isStatusChange
                               ? 'bg-accent-amber/20 text-amber-600'
                               : isOwnNote
-                              ? 'bg-blue-100 text-primary'
+                              ? 'bg-blue-tint text-primary'
                               : 'bg-muted text-muted-foreground/80'
                           }`}
                         >

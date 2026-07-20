@@ -35,7 +35,7 @@ export default function LanguageSwitcher({ locale, onLocaleChange }: { locale: s
                 onClick={() => { onLocaleChange(l.code); setOpen(false); }}
                 className={`flex items-center gap-2.5 w-full px-3.5 py-2.5 text-sm text-left transition-colors ${
                   l.code === locale
-                    ? 'bg-blue-50 text-blue-700 font-semibold'
+                    ? 'bg-blue-tint text-primary/90 font-semibold'
                     : 'text-muted-foreground hover:bg-muted'
                 }`}
               >

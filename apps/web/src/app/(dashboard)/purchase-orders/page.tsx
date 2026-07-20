@@ -42,7 +42,7 @@ function SkeletonRow() {
 
 const STATUS_COLORS: Record<POStatus, string> = {
   Draft: 'bg-muted text-muted-foreground border border-border',
-  Sent: 'bg-blue-50 text-primary border border-blue-200',
+  Sent: 'bg-blue-tint text-primary border border-primary/20',
   Received: 'bg-green-50 text-green-600 border border-green-200',
   Cancelled: 'bg-red-50 text-red-600 border border-red-200',
 };
@@ -299,7 +299,7 @@ export default function PurchaseOrdersPage() {
                 <div key={String(status)} className={`flex items-center ${idx < arr.length - 1 ? 'flex-1' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                      isCurrent ? 'bg-blue-500 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-muted text-muted-foreground'
+                      isCurrent ? 'bg-blue-tint0 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-muted text-muted-foreground'
                     }`}>
                       {isActive ? '✓' : idx + 1}
                     </div>
@@ -391,7 +391,7 @@ export default function PurchaseOrdersPage() {
               onClick={() => setStatusFilter(s as POStatus | 'All')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 statusFilter === s
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-blue-tint0 text-white'
                   : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-muted'
               }`}
             >
@@ -449,7 +449,7 @@ export default function PurchaseOrdersPage() {
                         <>
                           <button
                             onClick={() => updatePOStatus(po.id, 'Sent')}
-                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-primary hover:bg-blue-50 transition-colors"
+                            className="rounded-xl px-2 py-1 text-[10px] font-medium text-primary hover:bg-blue-tint transition-colors"
                           >
                             Send
                           </button>
@@ -506,7 +506,7 @@ export default function PurchaseOrdersPage() {
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-foreground mb-1">Supplier</label>
             <select
-              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
               value={form.supplierId}
               onChange={(e) => {
                 setForm({ ...form, supplierId: e.target.value, items: [] });
@@ -524,7 +524,7 @@ export default function PurchaseOrdersPage() {
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-foreground mb-1">Items</label>
               <select
-                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
                 value=""
                 onChange={(e) => { addItemToForm(e.target.value); e.target.value = ''; }}
               >
@@ -561,7 +561,7 @@ export default function PurchaseOrdersPage() {
                           min={1}
                           value={item.quantity}
                           onChange={(e) => updateFormItem(item.itemId, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-16 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-16 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2">
@@ -571,7 +571,7 @@ export default function PurchaseOrdersPage() {
                           step="0.01"
                           value={item.unitPrice}
                           onChange={(e) => updateFormItem(item.itemId, 'unitPrice', parseFloat(e.target.value) || 0)}
-                          className="w-20 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                          className="w-20 h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                         />
                       </td>
                       <td className="px-3 py-2 text-right text-foreground text-xs font-medium">
@@ -608,7 +608,7 @@ export default function PurchaseOrdersPage() {
               type="date"
               value={form.expectedDelivery}
               onChange={(e) => setForm({ ...form, expectedDelivery: e.target.value })}
-              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
             />
           </div>
 
@@ -619,7 +619,7 @@ export default function PurchaseOrdersPage() {
               placeholder="Optional notes for this purchase order..."
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+              className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               rows={2}
             />
           </div>

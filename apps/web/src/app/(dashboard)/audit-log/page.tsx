@@ -280,7 +280,7 @@ export default function AuditLogPage() {
               {filteredEntries.map((entry) => {
                 const actionColors: Record<string, string> = {
                   Created: 'bg-green-50 text-green-600',
-                  Updated: 'bg-blue-50 text-primary',
+                  Updated: 'bg-blue-tint text-primary',
                   Deleted: 'bg-red-50 text-red-600',
                 };
                 return (

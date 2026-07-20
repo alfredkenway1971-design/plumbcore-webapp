@@ -15,7 +15,7 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 const baseInputStyles = `
-  w-full rounded-xl bg-white border-0 ring-1 ring-slate-200
+  w-full rounded-xl bg-white border-0 ring-1 ring-border
   px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none
   transition-all duration-200
   focus:ring-primary/50 focus:bg-white

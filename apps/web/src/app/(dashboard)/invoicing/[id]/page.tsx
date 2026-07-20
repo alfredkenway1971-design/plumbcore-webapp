@@ -530,7 +530,7 @@ export default function InvoiceDetailPage() {
                             setEditLineItems(next);
                           }}
                           placeholder="Description"
-                          className="w-full h-9 px-3 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-full h-9 px-3 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20"
                         />
                       </td>
                       <td className="py-2 px-4">
@@ -543,7 +543,7 @@ export default function InvoiceDetailPage() {
                             next[idx] = { ...next[idx], quantity: q, total: q * next[idx].unitPrice };
                             setEditLineItems(next);
                           }}
-                          className="w-16 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-16 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20"
                         />
                       </td>
                       <td className="py-2 px-4">
@@ -556,7 +556,7 @@ export default function InvoiceDetailPage() {
                             next[idx] = { ...next[idx], unitPrice: p, total: next[idx].quantity * p };
                             setEditLineItems(next);
                           }}
-                          className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                          className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-right outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20"
                         />
                       </td>
                       <td className="py-2 pl-4 text-right">
@@ -600,7 +600,7 @@ export default function InvoiceDetailPage() {
                 type="number" min="0" max="100" step="0.5"
                 value={editTaxRate}
                 onChange={(e) => setEditTaxRate(parseFloat(e.target.value) || 0)}
-                className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-center outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+                className="w-20 h-9 px-2 bg-white border border-border rounded-xl text-sm text-foreground text-center outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20"
               />
             </div>
             <div className="flex items-center gap-3">

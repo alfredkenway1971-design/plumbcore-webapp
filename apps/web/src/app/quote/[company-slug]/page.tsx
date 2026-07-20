@@ -51,10 +51,10 @@ function StepIndicator({ current, total, t }: { current: number; total: number; 
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} className="flex items-center">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-blue-500 text-white shadow-sm' : 'bg-muted text-muted-foreground/80'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-blue-tint0 text-white shadow-sm' : 'bg-muted text-muted-foreground/80'}`}>
             {i + 1 < current ? <Check className="w-4 h-4" /> : i + 1}
           </div>
-          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-blue-500' : 'bg-muted'}`} />}
+          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-blue-tint0' : 'bg-muted'}`} />}
         </div>
       ))}
     </div>
@@ -69,7 +69,7 @@ const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext, t
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-2">{t('quote.uploadTitle')}</h1>
         <p className="text-sm text-muted-foreground">{t('quote.uploadSubtitle')}</p>
       </div>
-      <label className="relative block w-full aspect-[4/3] rounded-2xl ring-2 ring-dashed ring-slate-200 bg-muted/50 cursor-pointer hover:ring-blue-400 hover:bg-blue-50/30 transition-all overflow-hidden group">
+      <label className="relative block w-full aspect-[4/3] rounded-2xl ring-2 ring-dashed ring-border bg-muted/50 cursor-pointer hover:ring-blue-400 hover:bg-blue-tint/30 transition-all overflow-hidden group">
         <input type="file" accept="image/*" multiple onChange={onAdd} className="absolute inset-0 opacity-0 cursor-pointer z-10" aria-label="Upload photos" />
         {photos.length === 0 ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 transition-transform group-hover:scale-105">
@@ -112,17 +112,17 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
       </div>
       <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 space-y-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
         {/* Name — Title Case, spaces allowed */}
-        <Input type="text" placeholder={t('quote.namePlaceholder')} value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-border focus:border-blue-400 h-12" autoComplete="name" maxLength={50} />
+        <Input type="text" placeholder={t('quote.namePlaceholder')} value={form.name} onChange={(e: any) => { const raw = e.target.value; if (!validateNameChar(raw)) return; setForm((p: any) => ({ ...p, name: formatName(raw) })); }} className="rounded-xl border-border focus:border-primary/50 h-12" autoComplete="name" maxLength={50} />
         
         {/* Phone — US/CA format */}
         <div className="relative">
-          <Input type="tel" inputMode="numeric" placeholder={t('quote.phonePlaceholder')} value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-border focus:border-blue-400 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
+          <Input type="tel" inputMode="numeric" placeholder={t('quote.phonePlaceholder')} value={phoneDisplay} onChange={onPhoneChange} className={`rounded-xl border-border focus:border-primary/50 h-12 pl-8 ${phoneDisplay.length > 0 && !phoneValid ? 'border-red-300' : ''}`} autoComplete="tel-national" />
           {phoneDisplay.length > 0 && !phoneValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.validPhone')}</p>}
         </div>
 
         {/* Email — REQUIRED */}
         <div className="relative">
-          <Input type="email" inputMode="email" placeholder={t('quote.emailPlaceholder')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-border focus:border-blue-400 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
+          <Input type="email" inputMode="email" placeholder={t('quote.emailPlaceholder')} value={form.email} onChange={(e: any) => setForm((p: any) => ({ ...p, email: e.target.value }))} className={`rounded-xl border-border focus:border-primary/50 h-12 ${form.email.length > 0 && !emailValid ? 'border-red-300' : ''}`} autoComplete="email" />
           {form.email.length > 0 && !emailValid && <p className="text-xs text-red-500 mt-1.5 ml-1">{t('quote.emailValidation')}</p>}
         </div>
 
@@ -131,9 +131,9 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
         
         {/* City / State / Zip */}
         <div className="grid grid-cols-2 gap-3">
-          <Input type="text" placeholder={t('quote.cityPlaceholder')} value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 h-11" />
+          <Input type="text" placeholder={t('quote.cityPlaceholder')} value={form.city} onChange={(e: any) => setForm((p: any) => ({ ...p, city: e.target.value }))} className="rounded-xl border-border focus:border-primary/50 h-11" />
           <div className="grid grid-cols-2 gap-2">
-            <Input type="text" placeholder={t('quote.statePlaceholder')} value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 h-11" maxLength={20} />
+            <Input type="text" placeholder={t('quote.statePlaceholder')} value={form.state} onChange={(e: any) => setForm((p: any) => ({ ...p, state: e.target.value }))} className="rounded-xl border-border focus:border-primary/50 h-11" maxLength={20} />
             <Input type="text" placeholder={t('quote.zipPlaceholder')} value={form.zip} onChange={(e: any) => {
               let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
               // Canadian postal: auto-space after 3rd char
@@ -141,19 +141,19 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
               // US ZIP: max 10 chars (5+4 with dash)
               if (form.country === 'US' && val.length > 5 && !val.includes('-') && val.length <= 10) val = val.slice(0,5) + '-' + val.slice(5,9);
               setForm((p: any) => ({ ...p, zip: val.slice(0, form.country === 'CA' ? 7 : 10) }));
-            }} className="rounded-xl border-border focus:border-blue-400 h-11" maxLength={form.country === 'CA' ? 7 : 10} />
+            }} className="rounded-xl border-border focus:border-primary/50 h-11" maxLength={form.country === 'CA' ? 7 : 10} />
           </div>
         </div>
         
         {/* Country */}
-        <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-border bg-white px-3 text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
+        <select value={form.country} onChange={(e: any) => setForm((p: any) => ({ ...p, country: e.target.value, zip: '' }))} className="w-full h-11 rounded-xl border border-border bg-white px-3 text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20">
           <option value="US">{t('quote.countryUS')}</option>
           <option value="CA">{t('quote.countryCA')}</option>
         </select>
 
         {/* Description — with mic voice input + AI enhance */}
         <div className="relative">
-          <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-border focus:border-blue-400 resize-none pr-20" />
+          <Textarea placeholder={t('quote.describeProblem')} rows={2} value={form.desc} onChange={(e: any) => setForm((p: any) => ({ ...p, desc: e.target.value }))} className="rounded-xl border-border focus:border-primary/50 resize-none pr-20" />
           <div className="absolute right-2 bottom-2 flex items-center gap-1">
             {/* Voice mic button */}
             <button type="button" onClick={onToggleVoice} title={isListening ? t('quote.stopListening') : t('quote.voiceInput')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-muted hover:bg-muted text-muted-foreground'}`}>
@@ -170,7 +170,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
                 if (data.reply) setForm((p: any) => ({ ...p, desc: data.reply.trim(), _enhancing: false }));
                 else setForm((p: any) => ({ ...p, _enhancing: false }));
               } catch { setForm((p: any) => ({ ...p, _enhancing: false })); }
-            }} disabled={form._enhancing} title={t('quote.enhanceWithAI')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${form._enhancing ? 'bg-blue-100 text-blue-400' : 'bg-blue-50 hover:bg-blue-100 text-blue-500'}`}>
+            }} disabled={form._enhancing} title={t('quote.enhanceWithAI')} className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${form._enhancing ? 'bg-blue-tint text-primary/80' : 'bg-blue-tint hover:bg-blue-tint text-primary'}`}>
               <Sparkles className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -234,7 +234,7 @@ function StepLoading({ t }: { t: (key: string) => string }) {
   useEffect(() => { if (idx >= messages.length - 1) return; const tmr = setTimeout(() => setIdx(i => i + 1), 2000); return () => clearTimeout(tmr); }, [idx]);
   return (
     <div className="space-y-6 text-center">
-      <div className="w-16 h-16 mx-auto mb-4 relative"><div className="absolute inset-0 rounded-full border-4 border-border/50" /><div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" /></div>
+      <div className="w-16 h-16 mx-auto mb-4 relative"><div className="absolute inset-0 rounded-full border-4 border-border/50" /><div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" /></div>
       <h3 className="text-lg font-semibold text-foreground mb-1">{messages[idx]}</h3>
       <p className="text-sm text-muted-foreground/80">{t('quote.analyzingDuration')}</p>
       <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 space-y-4 text-left">
@@ -276,7 +276,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
         </div>
         <div className="text-center space-y-3">
-          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-all shadow-sm">
+          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-all shadow-sm">
             <RefreshCcw className="w-4 h-4" /> {t('quote.tryAgain')}
           </button>
         </div>
@@ -344,7 +344,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </span>
           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
           <span className="flex items-center gap-1.5">
-            <svg className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+            <svg className="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
             <span>12,400+ {t('quote.repairsThisWeek')}</span>
           </span>
           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
@@ -390,7 +390,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
 
       {/* Plumber Card (placeholder for when routing is live) */}
       <div className="bg-white rounded-2xl ring-1 ring-blue-100 p-4 flex items-center gap-3 shadow-sm">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-xl font-bold text-blue-500 shrink-0">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-tint to-blue-200 flex items-center justify-center text-xl font-bold text-primary shrink-0">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         </div>
         <div className="flex-1">
@@ -421,7 +421,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
           <p className="text-sm text-foreground leading-relaxed font-medium">{result.diagnosis}</p>
           <div className="flex items-center gap-2 mt-3">
-            <span className="text-[11px] bg-blue-50 text-primary px-2 py-0.5 rounded-full font-medium">{t('quote.aiConfidenceHigh')}</span>
+            <span className="text-[11px] bg-blue-tint text-primary px-2 py-0.5 rounded-full font-medium">{t('quote.aiConfidenceHigh')}</span>
             <span className="text-[11px] text-muted-foreground/80">{result.confidence}% {t('quote.matchTo')} 847 {t('quote.similarRepairs')}</span>
           </div>
         </div>
@@ -509,7 +509,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           <p className="text-sm text-muted-foreground/80">{t('quote.confirmDeposit')}</p>
           <div className="flex items-center justify-center gap-2">
             <span className="text-3xl font-bold text-white">{depositDollars(result.depositAmount)}</span>
-            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-600 text-[10px] text-slate-300 cursor-help font-bold" 
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-muted/80 text-[10px] text-slate-300 cursor-help font-bold" 
                   title={t('quote.depositTooltip')}>?</span>
           </div>
         </div>
@@ -821,7 +821,7 @@ export default function QuotePage() {
             {isWhiteLabel && wlBrand ? (
               <div><p className="text-sm font-bold text-foreground">{wlBrand.name || companySlug}</p><p className="text-[11px] text-muted-foreground/80">{t('quote.plumbingServices')}</p></div>
             ) : (
-              <div><p className="text-sm font-bold text-foreground">PlumbCore <span className="text-blue-500">AI</span></p><p className="text-[11px] text-muted-foreground/80">{t('quote.premiumPlumbingServices')}</p></div>
+              <div><p className="text-sm font-bold text-foreground">PlumbCore <span className="text-primary">AI</span></p><p className="text-[11px] text-muted-foreground/80">{t('quote.premiumPlumbingServices')}</p></div>
             )}
           </a>
           <div className="flex items-center gap-2">
@@ -832,7 +832,7 @@ export default function QuotePage() {
       </header>
       <section className="bg-gradient-to-b from-slate-50 to-white py-10 sm:py-14">
         <div className="max-w-5xl mx-auto px-4 text-center">
-          <span className="inline-flex items-center gap-2 bg-blue-50 ring-1 ring-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-primary mb-4"><Clock className="w-3 h-3" /> {t('quote.badge')}</span>
+          <span className="inline-flex items-center gap-2 bg-blue-tint ring-1 ring-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold text-primary mb-4"><Clock className="w-3 h-3" /> {t('quote.badge')}</span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-3">{t('quote.heroTitle')}</h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">{t('quote.heroSubtitle')}</p>
         </div>

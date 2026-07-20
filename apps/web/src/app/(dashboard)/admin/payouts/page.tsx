@@ -58,7 +58,7 @@ export default function PayoutsPage() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-blue-50 border border-blue-500/20 px-4 py-3">
+        <div className="rounded-xl bg-blue-tint border border-primary/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-primary">Total Owed</p>
           <p className="text-lg font-bold text-foreground mt-1">${(pendingTotal / 100).toLocaleString()}</p>
         </div>
@@ -87,7 +87,7 @@ export default function PayoutsPage() {
           ) : (
             pending.map(p => (
               <div key={p.id} className="flex items-center py-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 mr-3 shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-tint to-blue-tint2 flex items-center justify-center text-xs font-bold text-primary/90 mr-3 shrink-0">
                   {p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('')}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -164,7 +164,7 @@ export default function PayoutsPage() {
                   <td className="px-4 py-3">
                     <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                       p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
-                      p.status === 'processing' ? 'bg-blue-50 text-primary' :
+                      p.status === 'processing' ? 'bg-blue-tint text-primary' :
                       p.status === 'failed' ? 'bg-red-50 text-red-600' :
                       'bg-amber-50 text-amber-600'
                     }`}>
@@ -189,7 +189,7 @@ export default function PayoutsPage() {
               const initials = p.plumber_name?.split(' ').map(w => w[0]).slice(0, 2).join('') || '—';
               const statusClass =
                 p.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
-                p.status === 'processing' ? 'bg-blue-50 text-primary' :
+                p.status === 'processing' ? 'bg-blue-tint text-primary' :
                 p.status === 'failed' ? 'bg-red-50 text-red-600' :
                 'bg-amber-50 text-amber-600';
               return (
@@ -197,7 +197,7 @@ export default function PayoutsPage() {
                   {/* Row 1: Avatar + Name + Status */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-blue-700 shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-tint to-blue-tint2 flex items-center justify-center text-xs font-bold text-primary/90 shrink-0">
                         {initials}
                       </div>
                       <span className="text-sm font-semibold text-foreground truncate">{p.plumber_name || '—'}</span>

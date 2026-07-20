@@ -162,7 +162,7 @@ export default function RouteOptimizerMap() {
           <select
             value={selectedTechFilter || ''}
             onChange={(e) => setSelectedTechFilter(e.target.value || null)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 outline-none focus:border-electric/50"
+            className="rounded-lg border border-border bg-white px-3 py-1.5 text-xs font-medium text-gray-600 outline-none focus:border-electric/50"
           >
             <option value="">All Technicians</option>
             {teamMembers.map((tm) => (
@@ -176,7 +176,7 @@ export default function RouteOptimizerMap() {
             className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
               showAllJobs
                 ? 'bg-electric text-[#0a0e2a] border-electric'
-                : 'text-gray-500 border-gray-200 hover:border-gray-300'
+                : 'text-gray-500 border-border hover:border-gray-300'
             }`}
           >
             {showAllJobs ? 'All Jobs' : `${filteredJobs.length} Jobs`}
@@ -210,17 +210,17 @@ export default function RouteOptimizerMap() {
       {/* ── Route summary ── */}
       {routeData && routeData.optimized && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="rounded-lg bg-blue-50/50 px-4 py-3">
+          <div className="rounded-lg bg-blue-tint/50 px-4 py-3">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Stops</p>
-            <p className="text-lg font-bold text-gray-900">{routeData.stops.length}</p>
+            <p className="text-lg font-bold text-foreground">{routeData.stops.length}</p>
           </div>
           <div className="rounded-lg bg-green-50/50 px-4 py-3">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Total Time</p>
-            <p className="text-lg font-bold text-gray-900">{formatDuration(routeData.totalDuration)}</p>
+            <p className="text-lg font-bold text-foreground">{formatDuration(routeData.totalDuration)}</p>
           </div>
           <div className="rounded-lg bg-amber-50/50 px-4 py-3">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Total Distance</p>
-            <p className="text-lg font-bold text-gray-900">{formatDistance(routeData.totalDistance)}</p>
+            <p className="text-lg font-bold text-foreground">{formatDistance(routeData.totalDistance)}</p>
           </div>
           <div className="rounded-lg bg-purple-50/50 px-4 py-3">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Optimized</p>
@@ -237,7 +237,7 @@ export default function RouteOptimizerMap() {
       )}
 
       {/* ── Map ── */}
-      <div className="rounded-xl overflow-hidden border border-gray-200">
+      <div className="rounded-xl overflow-hidden border border-border">
         {loading ? (
           <div className="h-[400px] sm:h-[500px] flex items-center justify-center bg-gray-50">
             <div className="flex flex-col items-center gap-2">
@@ -245,7 +245,7 @@ export default function RouteOptimizerMap() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
               </svg>
-              <p className="text-sm text-gray-400">Loading map...</p>
+              <p className="text-sm text-muted-foreground/80">Loading map...</p>
             </div>
           </div>
         ) : (
@@ -260,10 +260,10 @@ export default function RouteOptimizerMap() {
       {/* ── Stop list ── */}
       {routeData && routeData.stops.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-900">
+          <h3 className="text-sm font-semibold text-foreground">
             {routeData.optimized ? 'Optimized Route Order' : 'Stop Locations'}
           </h3>
-          <div className="divide-y divide-gray-100 border border-gray-200 rounded-xl overflow-hidden bg-white">
+          <div className="divide-y divide-gray-100 border border-border rounded-xl overflow-hidden bg-white">
             {routeData.stops.map((stop) => {
               const job = jobs.find((j) => j.id === stop.id);
               return (
@@ -272,14 +272,14 @@ export default function RouteOptimizerMap() {
                     {stop.stopOrder + 1}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-sm font-medium text-foreground truncate">
                       {job?.title || 'Unknown Job'}
                     </p>
                     <p className="text-xs text-gray-500 truncate">
                       {stop.address}, {stop.city}
                     </p>
                     {stop.durationFromPrev > 0 && (
-                      <p className="text-[11px] text-gray-400 mt-0.5">
+                      <p className="text-[11px] text-muted-foreground/80 mt-0.5">
                         ← {formatDuration(stop.durationFromPrev)} drive ({formatDistance(stop.distanceFromPrev)})
                       </p>
                     )}
@@ -287,7 +287,7 @@ export default function RouteOptimizerMap() {
                   {stop.stopOrder > 0 && (
                     <div className="text-right shrink-0">
                       <p className="text-xs font-medium text-gray-700">{formatDuration(stop.cumulativeDuration)}</p>
-                      <p className="text-[10px] text-gray-400">{formatDistance(stop.cumulativeDistance)}</p>
+                      <p className="text-[10px] text-muted-foreground/80">{formatDistance(stop.cumulativeDistance)}</p>
                     </div>
                   )}
                 </div>

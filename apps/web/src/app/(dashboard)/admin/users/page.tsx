@@ -51,7 +51,7 @@ export default function AdminUsersPage() {
       {users.length === 0 ? (
         <Card variant="bordered" padding="none">
           <div className="px-6 py-16 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">👤</span>
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-1">No admin users yet</h3>
@@ -77,7 +77,7 @@ export default function AdminUsersPage() {
                   <tr key={u.id} className="hover:bg-muted">
                     <td className="px-4 py-3 font-medium text-foreground">{u.name}</td>
                     <td className="px-4 py-3 text-muted-foreground/80">{u.email}</td>
-                    <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.role === 'super_admin' ? 'bg-purple-50 text-purple-600' : 'bg-blue-50 text-primary'}`}>{u.role}</span></td>
+                    <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.role === 'super_admin' ? 'bg-purple-50 text-purple-600' : 'bg-blue-tint text-primary'}`}>{u.role}</span></td>
                     <td className="px-4 py-3 text-muted-foreground text-xs">{u.lastLogin}</td>
                     <td className="px-4 py-3"><button onClick={() => deleteUser(u.id)} className="text-xs text-red-600 hover:text-red-600">Remove</button></td>
                   </tr>
@@ -96,10 +96,10 @@ export default function AdminUsersPage() {
               <button onClick={() => setShowAdd(false)} className="text-muted-foreground/80 hover:text-muted-foreground text-xl">&times;</button>
             </div>
             <div className="space-y-4 p-5">
-              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Name <span className="text-red-600">*</span></label><input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
-              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Email <span className="text-red-600">*</span></label><input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
+              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Name <span className="text-red-600">*</span></label><input value={editForm.name} onChange={(e: any) => setEditForm(f => ({...f, name: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20" /></div>
+              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Email <span className="text-red-600">*</span></label><input value={editForm.email} onChange={(e: any) => setEditForm(f => ({...f, email: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20" /></div>
               <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Role</label>
-                <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
+                <select value={editForm.role} onChange={(e: any) => setEditForm(f => ({...f, role: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20">
                   <option value="admin">Admin</option><option value="super_admin">Super Admin</option>
                 </select>
               </div>

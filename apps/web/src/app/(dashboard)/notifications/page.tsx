@@ -305,7 +305,7 @@ export default function NotificationsPage() {
               >
                 {/* Icon */}
                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                  !notif.read ? 'bg-blue-50' : 'bg-white/5'
+                  !notif.read ? 'bg-blue-tint' : 'bg-white/5'
                 }`}>
                   <Icon className={`h-4 w-4 ${config.color}`} />
                 </div>

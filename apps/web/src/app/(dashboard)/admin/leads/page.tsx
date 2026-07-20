@@ -350,7 +350,7 @@ export default function LeadsMarketplacePage() {
   const statusBadge = (status: Lead['status']) => {
     const styles: Record<string, string> = {
       matching: 'bg-purple-50 text-purple-700 border-purple-200',
-      assigned: 'bg-blue-50 text-blue-700 border-blue-200',
+      assigned: 'bg-blue-tint text-primary/90 border-primary/20',
       en_route: 'bg-cyan-50 text-cyan-700 border-cyan-200',
       arrived: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       complete: 'bg-green-50 text-green-700 border-green-200',
@@ -379,7 +379,7 @@ export default function LeadsMarketplacePage() {
   /* ── Deposit Badge Helper ── */
   const depositBadge = (amount: number) => {
     const color = amount >= 149 ? 'bg-amber-50 text-amber-700 border-amber-200'
-      : amount >= 99 ? 'bg-blue-50 text-blue-700 border-blue-200'
+      : amount >= 99 ? 'bg-blue-tint text-primary/90 border-primary/20'
       : 'bg-muted text-muted-foreground border-border';
     return (
       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${color}`}>
@@ -414,7 +414,7 @@ export default function LeadsMarketplacePage() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search by name, ID, phone, location..."
-                className="w-full pl-9 pr-2.5 py-2 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400 transition-all"
+                className="w-full pl-9 pr-2.5 py-2 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
               />
               {searchQuery && (
                 <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/80 hover:text-muted-foreground">
@@ -426,7 +426,7 @@ export default function LeadsMarketplacePage() {
               <button
                 onClick={() => setShowStatusFilter(!showStatusFilter)}
                 className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all ${
-                  filter !== 'all' ? 'bg-blue-50 border-blue-200 text-primary' : 'border-border text-muted-foreground/80 hover:border-border'
+                  filter !== 'all' ? 'bg-blue-tint border-primary/20 text-primary' : 'border-border text-muted-foreground/80 hover:border-border'
                 }`}
                 title="Status filters"
               >
@@ -442,14 +442,14 @@ export default function LeadsMarketplacePage() {
                         key={f}
                         onClick={() => setFilter(filter === f ? 'all' : f)}
                         className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-medium transition-all ${
-                          filter === f ? 'bg-blue-50 text-blue-700' : 'text-muted-foreground hover:bg-muted'
+                          filter === f ? 'bg-blue-tint text-primary/90' : 'text-muted-foreground hover:bg-muted'
                         }`}
                       >
                         {f === 'en_route' ? 'En Route' : f.charAt(0).toUpperCase() + f.slice(1)}
                       </button>
                     ))}
                     {filter !== 'all' && (
-                      <button onClick={() => setFilter('all')} className="w-full text-left px-2.5 py-2 text-xs text-primary font-medium hover:bg-blue-50 rounded-lg">
+                      <button onClick={() => setFilter('all')} className="w-full text-left px-2.5 py-2 text-xs text-primary font-medium hover:bg-blue-tint rounded-lg">
                         Clear filter
                       </button>
                     )}
@@ -468,7 +468,7 @@ export default function LeadsMarketplacePage() {
                 className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                   quickFilter === qf
                     ? 'bg-primary text-white border-primary shadow-sm'
-                    : 'bg-white text-muted-foreground border-border hover:border-blue-300 hover:text-foreground'
+                    : 'bg-white text-muted-foreground border-border hover:border-primary/30 hover:text-foreground'
                 }`}
               >
                 {qf === 'all' ? 'All Leads' : qf === 'us' ? 'US' : qf === 'canada' ? 'Canada' : qf === '149+' ? '$149+' : qf === '49' ? '$49' : qf === '99' ? '$99' : qf}
@@ -511,7 +511,7 @@ export default function LeadsMarketplacePage() {
 
       {/* ── Stats ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-white border border-blue-100 shadow-sm px-4 py-3.5">
+        <div className="rounded-xl bg-white border border-primary/10 shadow-sm px-4 py-3.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Total Revenue</p>
           <p className="text-lg font-bold text-primary mt-1">${revenue.toLocaleString()}</p>
         </div>
@@ -534,7 +534,7 @@ export default function LeadsMarketplacePage() {
         {loading ? (
           <Card padding="lg" variant="bordered" className="text-center py-16">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               <div>
                 <h3 className="text-base font-semibold text-foreground">Loading leads...</h3>
                 <p className="text-sm text-muted-foreground mt-1">Fetching from database</p>
@@ -693,7 +693,7 @@ export default function LeadsMarketplacePage() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-foreground">ZIP Prefix:</span>
-                    <span className="font-mono text-sm font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-md">
+                    <span className="font-mono text-sm font-bold text-primary bg-blue-tint px-2 py-0.5 rounded-md">
                       {config.zipGroupPrefix}***
                     </span>
                   </div>
@@ -712,7 +712,7 @@ export default function LeadsMarketplacePage() {
                         className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-muted hover:bg-muted transition-colors group"
                       >
                         {/* Order */}
-                        <span className="w-5 h-5 rounded-full bg-blue-100 text-primary flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                        <span className="w-5 h-5 rounded-full bg-blue-tint text-primary flex items-center justify-center text-[10px] font-bold flex-shrink-0">
                           {ri + 1}
                         </span>
 
@@ -772,7 +772,7 @@ export default function LeadsMarketplacePage() {
                 </div>
 
                 {/* Add Plumber */}
-                <button className="w-full mt-3 py-2.5 rounded-lg border-2 border-dashed border-border text-xs font-medium text-muted-foreground/80 hover:text-primary hover:border-blue-300 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1.5">
+                <button className="w-full mt-3 py-2.5 rounded-lg border-2 border-dashed border-border text-xs font-medium text-muted-foreground/80 hover:text-primary hover:border-primary/30 hover:bg-blue-tint/30 transition-all flex items-center justify-center gap-1.5">
                   <Plus className="w-3.5 h-3.5" />
                   Add Plumber to Zone
                 </button>
@@ -921,7 +921,7 @@ export default function LeadsMarketplacePage() {
                     key={p.id}
                     className={`flex items-start gap-3 p-3 rounded-xl border-2 transition-all cursor-pointer ${
                       selectedPlumberId === p.id
-                        ? 'border-blue-400 bg-blue-50/50 shadow-sm'
+                        ? 'border-primary/50 bg-blue-tint/50 shadow-sm'
                         : 'border-border/50 hover:border-border hover:bg-muted'
                     }`}
                   >
@@ -968,7 +968,7 @@ export default function LeadsMarketplacePage() {
             <div className="px-5 py-3 border-t border-border/50 flex items-center justify-between gap-3">
               <button
                 onClick={autoFindBestMatch}
-                className="text-xs text-primary hover:text-primary/80 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+                className="text-xs text-primary hover:text-primary/80 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-tint transition-colors"
               >
                 🤖 Auto-Pick Best Match
               </button>
@@ -1000,7 +1000,7 @@ export default function LeadsMarketplacePage() {
             {/* Header */}
             <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-blue-tint flex items-center justify-center text-2xl">
                   {detailLead.photo || '📸'}
                 </div>
                 <div>
@@ -1024,7 +1024,7 @@ export default function LeadsMarketplacePage() {
                   {depositBadge(detailLead.depositAmount)}
                 </div>
                 {detailLead.assignedPlumber && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-xs font-medium text-blue-700">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-tint border border-primary/20 text-xs font-medium text-primary/90">
                     <User className="w-3 h-3" />
                     {detailLead.assignedPlumber}
                   </div>

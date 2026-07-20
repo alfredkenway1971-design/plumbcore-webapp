@@ -38,7 +38,7 @@ const I = {
    STATUS CONFIG
    ═══════════════════════════════════════════ */
 const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
-  scheduled: { label: 'Scheduled', bg: 'bg-blue-50', text: 'text-blue-700' },
+  scheduled: { label: 'Scheduled', bg: 'bg-blue-tint', text: 'text-primary/90' },
   'in-progress': { label: 'In Progress', bg: 'bg-cyan-50', text: 'text-cyan-700' },
   completed: { label: 'Completed', bg: 'bg-emerald-50', text: 'text-emerald-700' },
   urgent: { label: 'Urgent', bg: 'bg-red-50', text: 'text-red-700' },
@@ -105,11 +105,11 @@ function RevenueGoalBar() {
                 type="number"
                 value={editValue}
                 onChange={e => setEditValue(e.target.value)}
-                className="w-20 h-7 rounded-lg border border-border px-2 text-xs font-medium text-foreground outline-none focus:border-blue-400"
+                className="w-20 h-7 rounded-lg border border-border px-2 text-xs font-medium text-foreground outline-none focus:border-primary/50"
                 autoFocus
               />
               <button onClick={() => { setGoal(Number(editValue) || 50000); setEditing(false); }}
-                className="h-7 px-2 rounded-lg bg-blue-500 text-white text-[10px] font-semibold hover:bg-primary transition-colors">Set</button>
+                className="h-7 px-2 rounded-lg bg-blue-tint0 text-white text-[10px] font-semibold hover:bg-primary transition-colors">Set</button>
             </div>
           ) : (
             <button onClick={() => { setEditValue(String(goal)); setEditing(true); }}
@@ -192,7 +192,7 @@ function DepositsThisWeek() {
           <p className="text-xs text-muted-foreground/80 mt-1">{depositCount} {t('dashboard.depositsCollected')}</p>
         </div>
       </div>
-      <div className="flex items-center gap-4 mt-2 pt-3 border-t border-slate-50 text-xs text-muted-foreground/80">
+      <div className="flex items-center gap-4 mt-2 pt-3 border-t border-border/50 text-xs text-muted-foreground/80">
         <span>{t('dashboard.vsLastWeek')}: ${lastWeekDeposits.toLocaleString()}</span>
       </div>
     </div>
@@ -272,7 +272,7 @@ function RevenueChart() {
         ))}
       </svg>
       <div className="flex items-center gap-4 mt-2">
-        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-500 rounded-full" /><span className="text-[10px] text-muted-foreground/80">This month</span></div>
+        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-tint0 rounded-full" /><span className="text-[10px] text-muted-foreground/80">This month</span></div>
         <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-muted-foreground/80">{t('dashboard.lastMonth')}</span></div>
       </div>
     </div>
@@ -385,7 +385,7 @@ function WeeklyTechChart() {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.weeklyPerformance')}</h3>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-500" /><span className="text-[10px] text-muted-foreground/80">Jobs</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-tint0" /><span className="text-[10px] text-muted-foreground/80">Jobs</span></div>
           <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /><span className="text-[10px] text-muted-foreground/80">Revenue</span></div>
           <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
         </div>
@@ -406,7 +406,7 @@ function WeeklyTechChart() {
                 <span className="text-xs text-muted-foreground">{tech.jobs} jobs · ${(tech.revenue / 100).toFixed(1)}K</span>
               </div>
               <div className="flex gap-1.5 items-center h-4">
-                <div className="h-3 bg-blue-500 rounded-full transition-all duration-500" style={{ width: `${jobsPct}%` }} />
+                <div className="h-3 bg-blue-tint0 rounded-full transition-all duration-500" style={{ width: `${jobsPct}%` }} />
                 <div className="h-3 bg-emerald-400 rounded-full transition-all duration-500" style={{ width: `${revPct}%` }} />
               </div>
             </div>
@@ -450,7 +450,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
             {demoJobs.map((job) => {
               const cfg = statusConfig[job.status];
               return (
-                <tr key={job.id} className="border-b border-slate-50 hover:bg-muted transition-colors cursor-pointer" onClick={() => router.push(`/jobs/${job.id}`)}>
+                <tr key={job.id} className="border-b border-border/50 hover:bg-muted transition-colors cursor-pointer" onClick={() => router.push(`/jobs/${job.id}`)}>
                   <td className="px-5 py-3.5 whitespace-nowrap">
                     <div className="flex items-center gap-1.5">
                       <I.Clock className="w-3.5 h-3.5 text-muted-foreground/80" />
@@ -499,7 +499,7 @@ const techStatusData: any[] = [];
 
 const statusDotColors: Record<string, string> = {
   online: 'bg-emerald-400',
-  busy: 'bg-blue-500',
+  busy: 'bg-blue-tint0',
   away: 'bg-amber-400',
   offline: 'bg-slate-300',
 };
@@ -579,7 +579,7 @@ const AlertsPanel = memo(function AlertsPanel() {
 const QuickActionsBar = memo(function QuickActionsBar() {
   const router = useRouter();
   const actions = [
-    { label: 'New Job', icon: I.Wrench, href: '/jobs/new', color: 'bg-blue-500' },
+    { label: 'New Job', icon: I.Wrench, href: '/jobs/new', color: 'bg-blue-tint0' },
     { label: 'New Client', icon: I.Users, href: '/clients/new', color: 'bg-emerald-500' },
     { label: 'Create Invoice', icon: I.File, href: '/invoicing', color: 'bg-violet-500' },
     { label: 'AI Photo Estimate', icon: I.Camera, href: '/pricebook', color: 'bg-cyan-500' },
@@ -668,7 +668,7 @@ const UpgradeCard = memo(function UpgradeCard() {
           <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm"><I.Zap className="w-4 h-4 text-white" /></div>
           <h3 className="text-base font-bold text-foreground mb-1.5">Start Your Free Trial!</h3>
           <p className="text-xs text-blue-100 leading-relaxed mb-4">Unlock AI photo estimates, voice receptionist, and advanced analytics.</p>
-          <button onClick={() => router.push('/pricing')} className="h-9 px-4 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-50 transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
+          <button onClick={() => router.push('/pricing')} className="h-9 px-4 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-tint transition-colors shadow-sm active:scale-[0.97]">View Plans</button>
         </div>
       </div>
     );
@@ -692,7 +692,7 @@ const UpgradeCard = memo(function UpgradeCard() {
           <button onClick={openBilling} disabled={billingLoading} className="h-8 px-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-semibold backdrop-blur-sm transition-all active:scale-[0.97] border border-white/10">
             {billingLoading ? 'Opening...' : 'Manage Plan'}
           </button>
-          <button onClick={() => router.push('/billing')} className="h-8 px-3.5 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-50 transition-all active:scale-[0.97]">Billing</button>
+          <button onClick={() => router.push('/billing')} className="h-8 px-3.5 rounded-xl bg-white text-primary text-xs font-semibold hover:bg-blue-tint transition-all active:scale-[0.97]">Billing</button>
         </div>
       </div>
     </div>
@@ -760,7 +760,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'bg-blue-500 text-white rounded-br-md'
+                  ? 'bg-blue-tint0 text-white rounded-br-md'
                   : 'bg-muted text-foreground rounded-bl-md border border-border/50'
               }`}>
                 {msg.content}
@@ -800,7 +800,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
         </div>
       )}
 
-      <div className="p-5 pt-3 border-t border-slate-50 mt-auto">
+      <div className="p-5 pt-3 border-t border-border/50 mt-auto">
         <div className="relative">
           <input
             type="text"
@@ -809,10 +809,10 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={loading}
-            className="w-full h-10 pl-4 pr-10 bg-muted rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white border border-border transition-all disabled:opacity-50"
+            className="w-full h-10 pl-4 pr-10 bg-muted rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white border border-border transition-all disabled:opacity-50"
           />
           <button onClick={() => sendMessage(input)} disabled={loading || !input.trim()}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-500 text-white flex items-center justify-center hover:bg-primary transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-tint0 text-white flex items-center justify-center hover:bg-primary transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
             <I.Send className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -895,7 +895,7 @@ function PlanInfoWidget() {
       <div className="flex gap-2">
         <button
           onClick={() => window.location.href = '/settings?tab=billing'}
-          className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-primary transition-all active:scale-[0.97]"
+          className="flex-1 h-9 rounded-xl bg-blue-tint0 text-white text-xs font-semibold hover:bg-primary transition-all active:scale-[0.97]"
         >
           Upgrade
         </button>

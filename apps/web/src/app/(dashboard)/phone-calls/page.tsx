@@ -201,7 +201,7 @@ export default function PhoneCallsPage() {
                 <div className="flex flex-col items-center text-center space-y-4">
                   <div className={`flex h-16 w-16 items-center justify-center rounded-full ${
                     currentCall.status === 'ringing' ? 'bg-green-100 animate-pulse' :
-                    currentCall.status === 'in-progress' ? 'bg-blue-100' :
+                    currentCall.status === 'in-progress' ? 'bg-blue-tint' :
                     'bg-muted'
                   }`}>
                     <svg className={`h-8 w-8 ${
@@ -357,7 +357,7 @@ export default function PhoneCallsPage() {
                       <td className="px-4 py-3 text-center whitespace-nowrap">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           entry.direction === 'incoming'
-                            ? 'bg-blue-50 text-blue-700'
+                            ? 'bg-blue-tint text-primary/90'
                             : 'bg-purple-50 text-purple-700'
                         }`}>
                           {entry.direction === 'incoming' ? 'Incoming' : 'Outgoing'}

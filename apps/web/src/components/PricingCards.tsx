@@ -86,7 +86,7 @@ export default function PricingPage() {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
           Simple, transparent pricing
         </h1>
         <p className="text-gray-500 max-w-xl mx-auto text-sm sm:text-base">
@@ -108,14 +108,14 @@ export default function PricingPage() {
               key={tier}
               className={`relative flex flex-col rounded-2xl border transition-all duration-200 ${
                 isPro
-                  ? 'border-blue-500/50 shadow-lg shadow-blue-500/10 scale-[1.02]'
-                  : 'border-gray-200 hover:border-gray-300 shadow-sm'
+                  ? 'border-primary/50 shadow-lg shadow-blue-500/10 scale-[1.02]'
+                  : 'border-border hover:border-gray-300 shadow-sm'
               } bg-white`}
             >
               {/* Most Popular Badge */}
               {isPro && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-blue-tint0 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -126,15 +126,15 @@ export default function PricingPage() {
 
               {/* Card Header */}
               <div className="p-6 pb-0">
-                <h3 className="text-lg font-bold text-gray-900">{plan.label}</h3>
+                <h3 className="text-lg font-bold text-foreground">{plan.label}</h3>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-3xl sm:text-4xl font-bold text-gray-900">{plan.priceLabel}</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-foreground">{plan.priceLabel}</span>
                   <span className="text-sm text-gray-500">/month</span>
                 </div>
                 <p className="mt-1 text-sm text-gray-500">{techCount}</p>
                 <p className="text-sm text-gray-500">{aiHours} AI receptionist</p>
                 <p className="text-sm text-gray-500">{LEADS_LABELS[tier]}</p>
-                <p className="text-xs text-gray-400 mt-1">{LEAD_PRIORITY[tier]}</p>
+                <p className="text-xs text-muted-foreground/80 mt-1">{LEAD_PRIORITY[tier]}</p>
               </div>
 
               {/* Feature List */}
@@ -153,7 +153,7 @@ export default function PricingPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         )}
-                        <span className={has ? 'text-gray-700' : 'text-gray-400'}>{feat.label}</span>
+                        <span className={has ? 'text-gray-700' : 'text-muted-foreground/80'}>{feat.label}</span>
                       </li>
                     );
                   })}
@@ -168,7 +168,7 @@ export default function PricingPage() {
                   className={`w-full h-11 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
                     isPro
                       ? 'bg-primary text-white hover:bg-primary/90 shadow-sm'
-                      : 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50'
+                      : 'bg-white text-foreground border border-gray-300 hover:bg-gray-50'
                   } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >
                   {loading === tier ? 'Redirecting...' : 'Start Free Trial →'}
@@ -180,13 +180,13 @@ export default function PricingPage() {
       </div>
 
       {/* Enterprise CTA */}
-      <div id="enterprise-cta" className="relative rounded-2xl border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50/40 p-8 sm:p-10 text-center shadow-sm">
+      <div id="enterprise-cta" className="relative rounded-2xl border border-border bg-gradient-to-r from-gray-50 to-blue-50/40 p-8 sm:p-10 text-center shadow-sm">
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
           <span className="inline-flex items-center gap-1 rounded-full bg-gray-900 px-4 py-1 text-xs font-semibold text-white">
             Enterprise
           </span>
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Need more power?</h3>
+        <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Need more power?</h3>
         <p className="text-sm text-gray-500 max-w-xl mx-auto mb-6">
           25+ technicians, custom integrations, white-label portal, dedicated account manager, API access, and volume pricing.
         </p>
@@ -203,16 +203,16 @@ export default function PricingPage() {
 
       {/* Feature Comparison Table (mobile-friendly) */}
       <div className="mt-12">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Full Feature Comparison</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4 text-center">Full Feature Comparison</h3>
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <table className="w-full min-w-[500px] text-sm border-collapse">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-900">Feature</th>
+              <tr className="border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-foreground">Feature</th>
                 {PLAN_ORDER.slice(0, 3).map(t => (
-                  <th key={t} className="px-4 py-3 text-center font-semibold text-gray-900">{PLAN_PRICING[t].label}</th>
+                  <th key={t} className="px-4 py-3 text-center font-semibold text-foreground">{PLAN_PRICING[t].label}</th>
                 ))}
-                <th className="px-4 py-3 text-center font-semibold text-gray-900">Enterprise</th>
+                <th className="px-4 py-3 text-center font-semibold text-foreground">Enterprise</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -272,9 +272,9 @@ export default function PricingPage() {
               <tr className="hover:bg-gray-50/50">
                 <td className="px-4 py-2.5 text-gray-700">Price</td>
                 {(['solo', 'pro', 'business'] as const).map(t => (
-                  <td key={t} className="px-4 py-2.5 text-center font-semibold text-gray-900">{PLAN_PRICING[t].priceLabel}</td>
+                  <td key={t} className="px-4 py-2.5 text-center font-semibold text-foreground">{PLAN_PRICING[t].priceLabel}</td>
                 ))}
-                <td className="px-4 py-2.5 text-center font-semibold text-gray-900">Contact Us</td>
+                <td className="px-4 py-2.5 text-center font-semibold text-foreground">Contact Us</td>
               </tr>
             </tbody>
           </table>
@@ -283,14 +283,14 @@ export default function PricingPage() {
 
       {/* ── How Lead Priority Works ── */}
       <div className="mt-10">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">How Lead Priority Works</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4 text-center">How Lead Priority Works</h3>
         <p className="text-sm text-gray-500 text-center mb-6 max-w-2xl mx-auto">When a homeowner submits a job, our AI scores and routes leads based on plan tier and job value. Higher-tier plans get earlier access to high-value jobs.</p>
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <table className="w-full min-w-[400px] text-sm border-collapse">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-900">Job Value</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-900">Who Gets Notified First</th>
+              <tr className="border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-foreground">Job Value</th>
+                <th className="text-left px-4 py-3 font-semibold text-foreground">Who Gets Notified First</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -309,7 +309,7 @@ export default function PricingPage() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-gray-400 text-center mt-4">Enterprise plans with exclusive zone rights receive all leads from their territory immediately.</p>
+        <p className="text-xs text-muted-foreground/80 text-center mt-4">Enterprise plans with exclusive zone rights receive all leads from their territory immediately.</p>
       </div>
     </div>
   );

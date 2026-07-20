@@ -34,8 +34,8 @@ function ChatSkeleton() {
       </div>
       <div className="flex items-start gap-2 justify-end">
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-2/3 rounded bg-blue-50 ml-auto" />
-          <div className="h-4 w-1/3 rounded bg-blue-50 ml-auto" />
+          <div className="h-4 w-2/3 rounded bg-blue-tint ml-auto" />
+          <div className="h-4 w-1/3 rounded bg-blue-tint ml-auto" />
         </div>
       </div>
     </div>
@@ -277,7 +277,7 @@ export default function AIChatPage() {
               {/* Phone Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-white/80">
                 <div className="flex items-center gap-2">
-                  <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold" style={{ color: primaryColor }}>
+                  <div className="h-6 w-6 rounded-full bg-blue-tint flex items-center justify-center text-[10px] font-bold" style={{ color: primaryColor }}>
                     P
                   </div>
                   <span className="text-xs font-semibold text-foreground">{widgetName}</span>

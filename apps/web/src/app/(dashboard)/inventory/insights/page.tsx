@@ -267,7 +267,7 @@ export default function InventoryInsightsPage() {
                       <td className="px-3 py-3 text-center">
                         <a
                           href="/purchase-orders"
-                          className="inline-flex items-center gap-1 rounded-xl bg-blue-50 px-2.5 py-1 text-xs font-medium text-primary hover:bg-blue-100 transition-colors"
+                          className="inline-flex items-center gap-1 rounded-xl bg-blue-tint px-2.5 py-1 text-xs font-medium text-primary hover:bg-blue-tint transition-colors"
                         >
                           Create PO
                         </a>
@@ -386,7 +386,7 @@ export default function InventoryInsightsPage() {
                     ? 'bg-red-50'
                     : insight.severity === 'warning'
                     ? 'bg-amber-400/10'
-                    : 'bg-blue-50'
+                    : 'bg-blue-tint'
                 }`}>
                   {insight.icon}
                 </div>

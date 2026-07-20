@@ -7,7 +7,7 @@ import type { Client } from '@/lib/mock-data';
 
 /* ── Tag colors ── */
 const TAG_COLORS = [
-  'bg-blue-100 text-blue-700 border-blue-200',
+  'bg-blue-tint text-primary/90 border-primary/20',
   'bg-emerald-100 text-emerald-700 border-emerald-200',
   'bg-purple-100 text-purple-700 border-purple-200',
   'bg-amber-100 text-amber-700 border-amber-200',
@@ -102,7 +102,7 @@ function AddressAutocomplete({ value, onChange, onSelect, error }: {
           onChange={e => { onChange(e.target.value); search(e.target.value); }}
           onFocus={() => suggestions.length > 0 && setOpen(true)}
           className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${
-            error ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+            error ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'
           }`}
         />
       </div>
@@ -113,7 +113,7 @@ function AddressAutocomplete({ value, onChange, onSelect, error }: {
             <button
               key={i}
               type="button"
-              className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-blue-50 hover:text-primary/80 transition-colors border-b border-slate-50 last:border-0"
+              className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-blue-tint hover:text-primary/80 transition-colors border-b border-border/50 last:border-0"
               onClick={() => {
                 const addr = s.address?.road || s.display_name.split(',')[0];
                 const city = s.address?.city || s.address?.town || s.address?.village || '';
@@ -149,14 +149,14 @@ function getClientType(name: string, company?: string): 'residential' | 'commerc
   const lower = name.toLowerCase(), comp = (company ?? '').toLowerCase();
   return kw.some(k => lower.includes(k) || comp.includes(k)) ? 'commercial' : 'residential';
 }
-const typeColors: Record<string, string> = { residential: 'bg-blue-50 text-primary', commercial: 'bg-amber-50 text-amber-600' };
+const typeColors: Record<string, string> = { residential: 'bg-blue-tint text-primary', commercial: 'bg-amber-50 text-amber-600' };
 
 /* ═══════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════ */
 const sortIcon = (field: SortField, sf: SortField, sd: SortDir) => {
   if (sf !== field) return <span className="text-slate-300">↕</span>;
-  return <span className="text-blue-500">{sd === 'asc' ? '↑' : '↓'}</span>;
+  return <span className="text-primary">{sd === 'asc' ? '↑' : '↓'}</span>;
 };
 
 function EditIcon(p: any) { return <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>; }
@@ -290,7 +290,7 @@ export default function ClientsPage() {
           <h1 className="text-xl font-bold text-foreground">Clients</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{list.length} total clients</p>
         </div>
-        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors shadow-sm">
+        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors shadow-sm">
           <PlusIcon className="w-4 h-4" /> Add Client
         </button>
       </div>
@@ -298,7 +298,7 @@ export default function ClientsPage() {
       {/* ── Search ── */}
       <div className="relative max-w-sm mb-5">
         <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
-        <input type="text" placeholder="Search clients..." value={search} onChange={e => { setSearch(e.target.value); setPage(0); }} className="w-full h-10 pl-10 pr-4 bg-white border border-border rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+        <input type="text" placeholder="Search clients..." value={search} onChange={e => { setSearch(e.target.value); setPage(0); }} className="w-full h-10 pl-10 pr-4 bg-white border border-border rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
       </div>
 
       {/* ── Table ── */}
@@ -354,7 +354,7 @@ export default function ClientsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-xl bg-blue-500 text-white text-xs font-semibold flex items-center justify-center hover:bg-primary transition-colors">Call</a>
+                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-xl bg-blue-tint0 text-white text-xs font-semibold flex items-center justify-center hover:bg-primary transition-colors">Call</a>
                           <a href={`mailto:${c.email}`} className="flex-1 h-9 rounded-xl border border-border text-muted-foreground text-xs font-semibold flex items-center justify-center hover:bg-muted transition-colors">Email</a>
                           <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="flex-1 h-9 rounded-xl border border-border text-muted-foreground text-xs font-semibold hover:bg-muted transition-colors">Edit</button>
                         </div>
@@ -386,7 +386,7 @@ export default function ClientsPage() {
                     const tags = clientTags[c.id] ?? [];
                     return (
                       <>
-                      <tr className="border-b border-slate-50 transition-colors hover:bg-muted cursor-pointer" onClick={() => setExpandedId(expandedId === c.id ? null : c.id)}>
+                      <tr className="border-b border-border/50 transition-colors hover:bg-muted cursor-pointer" onClick={() => setExpandedId(expandedId === c.id ? null : c.id)}>
                         <td className="py-3.5 px-4">
                           <a
                             href={`/clients/${c.id}`}
@@ -471,7 +471,7 @@ export default function ClientsPage() {
               <div className="flex items-center gap-1">
                 <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={safePage === 0} className="h-8 px-3 rounded-xl text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed">← Prev</button>
                 {Array.from({ length: totalPages }).map((_, i) => (
-                  <button key={i} onClick={() => setPage(i)} className={`h-8 min-w-[32px] rounded-xl text-xs font-medium transition-colors ${i === safePage ? 'bg-blue-50 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>{i + 1}</button>
+                  <button key={i} onClick={() => setPage(i)} className={`h-8 min-w-[32px] rounded-xl text-xs font-medium transition-colors ${i === safePage ? 'bg-blue-tint text-primary' : 'text-muted-foreground hover:bg-muted'}`}>{i + 1}</button>
                 ))}
                 <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={safePage >= totalPages - 1} className="h-8 px-3 rounded-xl text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed">Next →</button>
               </div>
@@ -506,20 +506,20 @@ export default function ClientsPage() {
                       type="text" placeholder="John"
                       value={fName}
                       onChange={e => { setFName(capitalizeName(e.target.value)); setTouched(t => ({...t, fName: true})); }}
-                      className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`}
+                      className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`}
                     />
                     {errors.fName && <p className="text-xs text-red-500 mt-1">{errors.fName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Last Name</label>
-                    <input type="text" placeholder="Smith" value={fLName} onChange={e => setFLName(capitalizeName(e.target.value))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" placeholder="Smith" value={fLName} onChange={e => setFLName(capitalizeName(e.target.value))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                 </div>
 
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Email *</label>
-                  <input type="email" placeholder="john@example.com" value={fEmail} onChange={e => { setFEmail(e.target.value); setTouched(t => ({...t, fEmail: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fEmail ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                  <input type="email" placeholder="john@example.com" value={fEmail} onChange={e => { setFEmail(e.target.value); setTouched(t => ({...t, fEmail: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fEmail ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                   {errors.fEmail && <p className="text-xs text-red-500 mt-1">{errors.fEmail}</p>}
                 </div>
 
@@ -529,7 +529,7 @@ export default function ClientsPage() {
                     <label className="block text-sm font-medium text-foreground mb-1">Phone</label>
                     <div className="flex gap-2">
                       <div className="relative shrink-0">
-                        <select value={fCountry} onChange={e => { setFCountry(e.target.value); setFPhoneDisp(''); }} className="h-11 pl-3 pr-7 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none cursor-pointer">
+                        <select value={fCountry} onChange={e => { setFCountry(e.target.value); setFPhoneDisp(''); }} className="h-11 pl-3 pr-7 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer">
                           {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
                         </select>
                       </div>
@@ -537,13 +537,13 @@ export default function ClientsPage() {
                         type="tel" inputMode="numeric" placeholder="(555) 000-0000"
                         value={fPhoneDisp}
                         onChange={e => { const raw = e.target.value.replace(/\D/g, '').slice(0, 10); setFPhoneDisp(formatPhone(raw, fCountry)); setFPhone(raw); }}
-                        className="flex-1 h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                        className="flex-1 h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                       />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Company</label>
-                    <input type="text" placeholder="Company name (optional)" value={fCompany} onChange={e => setFCompany(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" placeholder="Company name (optional)" value={fCompany} onChange={e => setFCompany(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                 </div>
 
@@ -562,17 +562,17 @@ export default function ClientsPage() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">City *</label>
-                    <input type="text" placeholder="Austin" value={fCity} onChange={e => { setFCity(e.target.value); setTouched(t => ({...t, fCity: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fCity ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                    <input type="text" placeholder="Austin" value={fCity} onChange={e => { setFCity(e.target.value); setTouched(t => ({...t, fCity: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fCity ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                     {errors.fCity && <p className="text-xs text-red-500 mt-1">{errors.fCity}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">State/Province *</label>
-                    <input type="text" placeholder="TX" value={fState} onChange={e => { setFState(e.target.value.toUpperCase().slice(0, 2)); setTouched(t => ({...t, fState: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fState ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                    <input type="text" placeholder="TX" value={fState} onChange={e => { setFState(e.target.value.toUpperCase().slice(0, 2)); setTouched(t => ({...t, fState: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fState ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                     {errors.fState && <p className="text-xs text-red-500 mt-1">{errors.fState}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">ZIP/Postal Code *</label>
-                    <input type="text" inputMode="numeric" placeholder="73301" value={fZip} onChange={e => { setFZip(e.target.value.replace(/\D/g, '').slice(0, 5)); setTouched(t => ({...t, fZip: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fZip ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                    <input type="text" inputMode="numeric" placeholder="73301" value={fZip} onChange={e => { setFZip(e.target.value.replace(/\D/g, '').slice(0, 5)); setTouched(t => ({...t, fZip: true})); }} className={`w-full h-11 px-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${errors.fZip ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                     {errors.fZip && <p className="text-xs text-red-500 mt-1">{errors.fZip}</p>}
                   </div>
                 </div>
@@ -580,7 +580,7 @@ export default function ClientsPage() {
                 {/* Tags */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Tags</label>
-                  <input type="text" placeholder="Comma-separated tags (e.g. vip, referral, commercial)" value={fTagsInput} onChange={e => setFTagsInput(e.target.value)} onBlur={() => { const parsed = fTagsInput.split(',').map(t => t.trim()).filter(Boolean); setFTags(parsed); }} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                  <input type="text" placeholder="Comma-separated tags (e.g. vip, referral, commercial)" value={fTagsInput} onChange={e => setFTagsInput(e.target.value)} onBlur={() => { const parsed = fTagsInput.split(',').map(t => t.trim()).filter(Boolean); setFTags(parsed); }} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   {fTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {fTags.map((tag, i) => (
@@ -598,14 +598,14 @@ export default function ClientsPage() {
                 {/* Notes */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Notes</label>
-                  <textarea rows={3} placeholder="Additional notes about this client..." value={fNotes} onChange={e => setFNotes(e.target.value)} className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none" />
+                  <textarea rows={3} placeholder="Additional notes about this client..." value={fNotes} onChange={e => setFNotes(e.target.value)} className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all resize-none" />
                 </div>
               </div>
 
               {/* Sticky Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowModal(false); resetForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {saving ? 'Saving...' : editingId ? 'Update Client' : 'Save Client'}
                 </button>
               </div>

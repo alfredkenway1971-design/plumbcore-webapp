@@ -284,7 +284,7 @@ export default function SuppliersPage() {
                     type="text" placeholder="e.g. Plumbing Supply Co"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
                 <div>
@@ -293,7 +293,7 @@ export default function SuppliersPage() {
                     type="text" placeholder="e.g. John Smith"
                     value={form.contactPerson}
                     onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -303,7 +303,7 @@ export default function SuppliersPage() {
                       type="tel" placeholder="e.g. (800) 555-0100"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                   <div>
@@ -312,7 +312,7 @@ export default function SuppliersPage() {
                       type="email" placeholder="e.g. contact@supplier.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
@@ -333,7 +333,7 @@ export default function SuppliersPage() {
                         onClick={() => toggleCategory(cat)}
                         className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                           form.categories.includes(cat)
-                            ? 'bg-blue-500 text-white'
+                            ? 'bg-blue-tint0 text-white'
                             : 'bg-muted text-muted-foreground hover:bg-muted hover:text-foreground'
                         }`}
                       >
@@ -347,7 +347,7 @@ export default function SuppliersPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setModalOpen(false); setForm(initialForm); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   Add Supplier
                 </button>
               </div>

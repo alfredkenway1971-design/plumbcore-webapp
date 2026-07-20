@@ -17,7 +17,7 @@ export default function AdminAtRiskAccountsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">At-Risk Accounts</h1>
           <p className="text-sm text-muted-foreground mt-1">Accounts showing signs of potential churn</p>
         </div>
-        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all shadow-sm ring-1 ring-black/5">
+        <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-border text-sm font-medium text-foreground hover:bg-muted transition-all shadow-sm ring-1 ring-black/5">
           <Download className="w-4 h-4" /> Export
         </button>
       </div>
@@ -27,9 +27,9 @@ export default function AdminAtRiskAccountsPage() {
           { label: 'At-Risk Accounts', value: 0, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
           { label: 'MRR at Risk', value: '$0', icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'Avg Churn Probability', value: '0%', icon: AlertTriangle, color: 'text-orange-600', bg: 'bg-orange-50' },
-          { label: 'Reps Assigned', value: 0, icon: AlertTriangle, color: 'text-primary', bg: 'bg-blue-50' },
+          { label: 'Reps Assigned', value: 0, icon: AlertTriangle, color: 'text-primary', bg: 'bg-blue-tint' },
         ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm ring-1 ring-black/5">
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-border p-5 shadow-sm ring-1 ring-black/5">
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}><s.icon className={`w-5 h-5 ${s.color}`} /></div>
             <p className="text-2xl font-bold text-foreground">{s.value}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
@@ -37,7 +37,7 @@ export default function AdminAtRiskAccountsPage() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 border-b border-border/50">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />

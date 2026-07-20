@@ -101,7 +101,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
                 isDone
                   ? 'bg-electric text-[#0a0e2a]'
                   : isActive
-                  ? 'bg-blue-100 text-primary border-2 border-electric'
+                  ? 'bg-blue-tint text-primary border-2 border-electric'
                   : 'bg-muted text-muted-foreground/80'
               }`}
             >
@@ -407,7 +407,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
       <div className="mx-auto max-w-lg px-4 py-8 sm:py-12">
         {/* Branding */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-blue-100 text-2xl mb-3">
+          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-blue-tint text-2xl mb-3">
             {scenario.companyLogo}
           </div>
           <h1 className="text-lg font-semibold text-foreground">{scenario.companyName}</h1>
@@ -486,7 +486,7 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                   {/* Analysis Results */}
                   <div className="rounded-xl bg-electric/5 border border-electric/20 p-4 space-y-3">
                     <div className="flex items-start gap-3">
-                      <div className="mt-0.5 shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-primary">
+                      <div className="mt-0.5 shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-blue-tint text-primary">
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                         </svg>
@@ -521,13 +521,13 @@ export default function PublicQuotePage({ params }: { params: { slug: string } }
                             </div>
                           </div>
                           {apiAnalysisResult && (
-                            <div className="rounded-xl bg-blue-50 p-3 border border-electric/20">
+                            <div className="rounded-xl bg-blue-tint p-3 border border-electric/20">
                               <p className="text-xs text-muted-foreground uppercase tracking-wider">AI Description</p>
                               <p className="text-sm text-foreground mt-1">{apiAnalysisResult.description}</p>
                             </div>
                           )}
                           {!apiAnalysisResult && (
-                            <div className="rounded-xl bg-blue-50 p-3 border border-electric/20">
+                            <div className="rounded-xl bg-blue-tint p-3 border border-electric/20">
                               <p className="text-xs text-muted-foreground uppercase tracking-wider">Total Estimate Range</p>
                               <p className="text-2xl font-bold text-primary">{scenario.totalRange}</p>
                             </div>

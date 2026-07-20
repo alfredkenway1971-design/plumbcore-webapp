@@ -25,7 +25,7 @@ const planColors: Record<string, string> = {
 
 const statusStyles: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   active: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Active' },
-  trialing: { bg: 'bg-blue-50', text: 'text-primary', dot: 'bg-blue-500', label: 'Trialing' },
+  trialing: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', label: 'Trialing' },
   past_due: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Past Due' },
   cancelled: { bg: 'bg-muted', text: 'text-muted-foreground/80', dot: 'bg-slate-400', label: 'Cancelled' },
 };
@@ -158,7 +158,7 @@ export default function AdminCustomersPage() {
                 placeholder="Search by name, email, or city..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-xl border border-border text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400 transition-all"
+                className="w-full h-10 pl-9 pr-3 rounded-xl border border-border text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
               />
             </div>
             <div className="flex items-center gap-2">

@@ -696,7 +696,7 @@ export default function ReportsPage() {
                   <tr key={tech.name} className={`border-b border-border/50 hover:bg-white/[0.02] transition-colors ${i === 0 ? 'bg-electric/5' : ''}`}>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-[10px] font-semibold text-primary">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-tint text-[10px] font-semibold text-primary">
                           {tech.name.split(' ').map(n => n[0]).join('')}
                         </div>
                         <span className="font-medium text-foreground">{tech.name}</span>

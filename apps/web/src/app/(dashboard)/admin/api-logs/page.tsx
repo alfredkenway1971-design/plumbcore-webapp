@@ -71,25 +71,25 @@ export default function AdminApiLogsPage() {
           <p className="text-sm text-muted-foreground mt-1">Monitor API requests and diagnose issues</p>
         </div>
         <div className="flex gap-2">
-          <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all">
+          <button className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-border text-sm font-medium text-foreground hover:bg-muted transition-all">
             <Filter className="w-4 h-4" /> Filters
           </button>
-          <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-foreground hover:bg-muted transition-all">
+          <button onClick={handleExport} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-white ring-1 ring-border text-sm font-medium text-foreground hover:bg-muted transition-all">
             <Download className="w-4 h-4" /> Export
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-        {[ { label: 'Total Requests', value: totalRequests, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Error Rate', value: errorRate + '%', color: errorRate > 5 ? 'text-red-500' : 'text-emerald-500', bg: errorRate > 5 ? 'bg-red-50' : 'bg-emerald-50' }, { label: 'Avg Latency', value: avgLatency + 'ms', color: 'text-purple-500', bg: 'bg-purple-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-4 shadow-sm ring-1 ring-black/5 text-center">
+        {[ { label: 'Total Requests', value: totalRequests, color: 'text-primary', bg: 'bg-blue-tint' }, { label: 'Error Rate', value: errorRate + '%', color: errorRate > 5 ? 'text-red-500' : 'text-emerald-500', bg: errorRate > 5 ? 'bg-red-50' : 'bg-emerald-50' }, { label: 'Avg Latency', value: avgLatency + 'ms', color: 'text-purple-500', bg: 'bg-purple-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-border p-4 shadow-sm ring-1 ring-black/5 text-center">
             <p className="text-2xl font-bold text-foreground">{s.value}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />

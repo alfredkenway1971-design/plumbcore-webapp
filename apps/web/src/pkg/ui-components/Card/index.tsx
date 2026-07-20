@@ -15,8 +15,8 @@ interface CardProps {
 
 const variantStyles: Record<CardVariant, string> = {
   default: 'bg-white ring-1 ring-black/5',
-  elevated: 'bg-white ring-1 ring-slate-200 shadow-lg shadow-black/5',
-  bordered: 'bg-white ring-1 ring-slate-200',
+  elevated: 'bg-white ring-1 ring-border shadow-lg shadow-black/5',
+  bordered: 'bg-white ring-1 ring-border',
 };
 
 const paddingStyles: Record<string, string> = {

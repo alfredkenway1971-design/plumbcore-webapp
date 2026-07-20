@@ -34,7 +34,7 @@ const I = {
 /* ── Status Config ── */
 const statusConfig: Record<string, { label: string; bg: string; text: string; icon: any }> = {
   pending: { label: 'Pending', bg: 'bg-amber-50', text: 'text-amber-700', icon: I.Clock },
-  sent: { label: 'Sent', bg: 'bg-blue-50', text: 'text-blue-700', icon: I.Send },
+  sent: { label: 'Sent', bg: 'bg-blue-tint', text: 'text-primary/90', icon: I.Send },
   clicked: { label: 'Clicked', bg: 'bg-cyan-50', text: 'text-cyan-700', icon: I.External },
   submitted: { label: 'Submitted', bg: 'bg-emerald-50', text: 'text-emerald-700', icon: I.Check },
 };
@@ -185,7 +185,7 @@ export default function ReviewsPage() {
           <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-muted-foreground">Reviews This Month</p>
-              <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blue-tint0 flex items-center justify-center">
                 <I.Star className="w-5 h-5 text-foreground" />
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function ReviewsPage() {
                     {/* Progress bar for response rate */}
                     <div className="mt-2 w-full h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                        className="h-full bg-blue-tint0 rounded-full transition-all duration-500"
                         style={{ width: `${tech.responseRate}%` }}
                       />
                     </div>
@@ -345,13 +345,13 @@ export default function ReviewsPage() {
                         placeholder="Search..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full sm:w-48 pl-9 pr-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400"
+                        className="w-full sm:w-48 pl-9 pr-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                       />
                     </div>
                     <select
                       value={filterStatus}
                       onChange={e => setFilterStatus(e.target.value)}
-                      className="text-sm border border-border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400"
+                      className="text-sm border border-border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                     >
                       <option value="all">All Status</option>
                       <option value="pending">Pending</option>
@@ -367,7 +367,7 @@ export default function ReviewsPage() {
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-slate-50">
+                    <tr className="border-b border-border/50">
                       <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Customer</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Job</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">Tech</th>
@@ -504,12 +504,12 @@ export default function ReviewsPage() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 rounded-xl p-4">
+              <div className="bg-blue-tint rounded-xl p-4">
                 <div className="flex items-start gap-2">
-                  <I.Sparkles className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+                  <I.Sparkles className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-xs font-medium text-blue-700 mb-1">AI-Generated Message</p>
-                    <p className="text-sm text-blue-900">
+                    <p className="text-xs font-medium text-primary/90 mb-1">AI-Generated Message</p>
+                    <p className="text-sm text-foreground">
                       {generateReviewMessage(selectedJob.title, selectedJob.clientName, selectedJob.techName)}
                     </p>
                   </div>

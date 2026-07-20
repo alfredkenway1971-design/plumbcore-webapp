@@ -51,7 +51,7 @@ export default function CampaignsPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="rounded-lg bg-blue-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Total Sent</p><p className="text-lg font-bold text-primary">0</p></div>
+        <div className="rounded-lg bg-blue-tint px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Total Sent</p><p className="text-lg font-bold text-primary">0</p></div>
         <div className="rounded-lg bg-green-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Avg Open Rate</p><p className="text-lg font-bold text-green-600">0%</p></div>
         <div className="rounded-lg bg-amber-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Drafts</p><p className="text-lg font-bold text-amber-600">0</p></div>
         <div className="rounded-lg bg-muted px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Scheduled</p><p className="text-lg font-bold text-muted-foreground/80">0</p></div>
@@ -60,7 +60,7 @@ export default function CampaignsPage() {
       {campaigns.length === 0 ? (
         <Card variant="bordered" padding="none">
           <div className="px-6 py-16 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">📧</span>
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-1">No campaigns yet</h3>
@@ -88,7 +88,7 @@ export default function CampaignsPage() {
                   <tr key={c.id} className="hover:bg-muted">
                     <td className="px-4 py-3 font-medium text-foreground max-w-[200px] truncate">{c.subject}</td>
                     <td className="px-4 py-3 capitalize text-muted-foreground/80">{c.segment}</td>
-                    <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.status === 'sent' ? 'bg-green-50 text-green-700' : c.status === 'scheduled' ? 'bg-blue-50 text-primary' : 'bg-muted text-muted-foreground/80'}`}>{c.status}</span></td>
+                    <td className="px-4 py-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.status === 'sent' ? 'bg-green-50 text-green-700' : c.status === 'scheduled' ? 'bg-blue-tint text-primary' : 'bg-muted text-muted-foreground/80'}`}>{c.status}</span></td>
                     <td className="px-4 py-3 text-muted-foreground/80">{c.sentCount || '—'}</td>
                     <td className="px-4 py-3 text-muted-foreground/80">{c.openRate ? `${c.openRate}%` : '—'}</td>
                     <td className="px-4 py-3 text-muted-foreground/80">{c.clickRate ? `${c.clickRate}%` : '—'}</td>
@@ -119,25 +119,25 @@ export default function CampaignsPage() {
                   )}
                 </div>
               </div>
-              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Subject <span className="text-red-600">*</span></label><input value={form.subject} onChange={(e: any) => setForm(f => ({...f, subject: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
-              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Body</label><textarea value={form.body} onChange={(e: any) => setForm(f => ({...f, body: e.target.value}))} rows={8} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100 font-mono" /></div>
+              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Subject <span className="text-red-600">*</span></label><input value={form.subject} onChange={(e: any) => setForm(f => ({...f, subject: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20" /></div>
+              <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Body</label><textarea value={form.body} onChange={(e: any) => setForm(f => ({...f, body: e.target.value}))} rows={8} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20 font-mono" /></div>
               <div className="grid grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Segment</label>
-                  <select value={form.segment} onChange={(e: any) => setForm(f => ({...f, segment: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
+                  <select value={form.segment} onChange={(e: any) => setForm(f => ({...f, segment: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20">
                     {segments.map((s: any) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
-                <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Schedule Date (optional)</label><input type="date" value={form.scheduledDate} onChange={(e: any) => setForm(f => ({...f, scheduledDate: e.target.value}))} className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100" /></div>
+                <div><label className="text-xs font-medium text-muted-foreground/80 uppercase tracking-wider">Schedule Date (optional)</label><input type="date" value={form.scheduledDate} onChange={(e: any) => setForm(f => ({...f, scheduledDate: e.target.value}))} className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20" /></div>
               </div>
               <div className="flex justify-end gap-2 pt-2">
                 <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
                 <Button onClick={createCampaign}>Save Campaign</Button>
               </div>
               {preview && form.body && (
-                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <div className="rounded-xl border border-border bg-gray-50 p-4">
                   <p className="text-xs font-semibold text-gray-500 mb-2">Preview:</p>
                   <div className="bg-white rounded-lg p-4 shadow-sm max-w-md mx-auto border border-gray-100">
-                    <p className="text-sm whitespace-pre-wrap text-gray-900">{form.body.replace(/\{\{name\}\}/g, 'John').replace(/\{\{days\}\}/g, '3').replace(/\{\{feature\}\}/g, 'Predictive Maintenance')}</p>
+                    <p className="text-sm whitespace-pre-wrap text-foreground">{form.body.replace(/\{\{name\}\}/g, 'John').replace(/\{\{days\}\}/g, '3').replace(/\{\{feature\}\}/g, 'Predictive Maintenance')}</p>
                   </div>
                 </div>
               )}

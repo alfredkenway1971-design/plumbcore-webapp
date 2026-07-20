@@ -37,7 +37,7 @@ export default function EarningsPage() {
 
   if (loading) return (
     <div className="p-6 flex items-center justify-center min-h-[400px]">
-      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -61,7 +61,7 @@ export default function EarningsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 px-4 py-3">
+        <div className="rounded-xl bg-blue-tint0/10 border border-primary/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-primary">This Week</p>
           <p className="text-xl font-bold text-foreground mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
         </div>
@@ -113,7 +113,7 @@ export default function EarningsPage() {
           <div className="bg-muted rounded-xl p-4">
             <p className="text-xs text-muted-foreground mb-1">Next Payout</p>
             <div className="flex items-center gap-2">
-              <I.Clock className="w-4 h-4 text-blue-500" />
+              <I.Clock className="w-4 h-4 text-primary" />
               <p className="text-sm font-semibold text-foreground">{summary.nextPayoutDate}</p>
             </div>
             <p className="text-xs text-muted-foreground mt-1">Weekly payout — every Sunday</p>
@@ -171,7 +171,7 @@ export default function EarningsPage() {
                     <td className="px-4 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                         p.status === 'paid' ? 'bg-emerald-50 text-emerald-700' :
-                        p.status === 'processing' ? 'bg-blue-50 text-blue-700' :
+                        p.status === 'processing' ? 'bg-blue-tint text-primary/90' :
                         p.status === 'failed' ? 'bg-red-50 text-red-700' :
                         'bg-amber-50 text-amber-700'
                       }`}>

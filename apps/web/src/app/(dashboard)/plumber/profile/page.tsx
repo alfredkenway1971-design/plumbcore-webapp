@@ -74,7 +74,7 @@ export default function PlumberProfilePage() {
 
   if (loading) return (
     <div className="p-6 flex items-center justify-center min-h-[400px]">
-      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -95,7 +95,7 @@ export default function PlumberProfilePage() {
         <div className="flex-1">
           <h1 className="text-xl sm:text-2xl font-bold text-foreground">{plumber.company_name}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-primary">{tierLabel}</span>
+            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-tint text-primary">{tierLabel}</span>
             <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${plumber.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{plumber.status}</span>
           </div>
         </div>
@@ -337,12 +337,12 @@ function ComplianceTab({ plumber, onUpdate }: { plumber: PlumberProfile; onUpdat
           <div>
             <label className="block text-xs text-muted-foreground mb-1">License Number</label>
             <input value={license} onChange={e => setLicense(e.target.value)}
-              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-blue-500" />
+              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-primary" />
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1">Insurance Info</label>
             <textarea value={insurance} onChange={e => setInsurance(e.target.value)} rows={2}
-              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-blue-500 resize-none" />
+              className="w-full rounded-xl bg-white border border-border px-3 py-2 text-sm text-foreground outline-none focus:border-primary resize-none" />
           </div>
           <Button size="sm" onClick={() => onUpdate({ license_number: license, insurance_info: insurance })}>Save Changes</Button>
         </div>

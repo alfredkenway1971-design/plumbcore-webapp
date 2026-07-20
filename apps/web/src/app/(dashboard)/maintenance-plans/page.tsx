@@ -45,7 +45,7 @@ function daysUntil(d: string): number {
 /* ── Tier Colors ── */
 const tierColors: Record<string, string> = {
   basic: 'bg-muted text-foreground border-border',
-  standard: 'bg-blue-100 text-blue-700 border-blue-200',
+  standard: 'bg-blue-tint text-primary/90 border-primary/20',
   premium: 'bg-amber-100 text-amber-700 border-amber-200',
   custom: 'bg-purple-100 text-purple-700 border-purple-200',
 };
@@ -58,7 +58,7 @@ const statusColors: Record<string, string> = {
 };
 
 const visitStatusColors: Record<string, string> = {
-  scheduled: 'bg-blue-100 text-blue-700 border-blue-200',
+  scheduled: 'bg-blue-tint text-primary/90 border-primary/20',
   'in-progress': 'bg-amber-100 text-amber-700 border-amber-200',
   completed: 'bg-emerald-100 text-emerald-700 border-emerald-200',
   missed: 'bg-red-100 text-red-700 border-red-200',
@@ -156,7 +156,7 @@ function CreatePlanForm({ onClose, onCreated }: { onClose: () => void; onCreated
               <select
                 value={intervalMonths}
                 onChange={(e) => setIntervalMonths(e.target.value)}
-                className="w-full h-10 px-3 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300"
+                className="w-full h-10 px-3 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
               >
                 <option value="1">Every 1 month</option>
                 <option value="3">Every 3 months (Quarterly)</option>
@@ -171,7 +171,7 @@ function CreatePlanForm({ onClose, onCreated }: { onClose: () => void; onCreated
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe what this plan includes..."
-              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 resize-none"
+              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 resize-none"
             />
           </div>
           <div>
@@ -179,7 +179,7 @@ function CreatePlanForm({ onClose, onCreated }: { onClose: () => void; onCreated
             <select
               value={planTier}
               onChange={(e) => setPlanTier(e.target.value as PlanTierDb)}
-              className="w-full h-10 px-3 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300"
+              className="w-full h-10 px-3 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
             >
               <option value="basic">Basic</option>
               <option value="standard">Standard</option>
@@ -193,7 +193,7 @@ function CreatePlanForm({ onClose, onCreated }: { onClose: () => void; onCreated
               value={benefits}
               onChange={(e) => setBenefits(e.target.value)}
               placeholder="Priority scheduling&#10;10% off repairs&#10;Free emergency call-out"
-              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 resize-none"
+              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 resize-none"
             />
           </div>
           <div>
@@ -202,7 +202,7 @@ function CreatePlanForm({ onClose, onCreated }: { onClose: () => void; onCreated
               value={services}
               onChange={(e) => setServices(e.target.value)}
               placeholder="Drain inspection&#10;Water heater check&#10;Leak detection"
-              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 resize-none"
+              className="w-full h-20 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 resize-none"
             />
           </div>
           <div className="flex justify-end gap-3 pt-2">
@@ -274,7 +274,7 @@ function UpsellModal({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="What was done during this visit?"
-              className="w-full h-24 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 resize-none"
+              className="w-full h-24 px-3 py-2 rounded-xl border border-border bg-white text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 resize-none"
             />
           </div>
 
@@ -465,7 +465,7 @@ export default function MaintenancePlansPage() {
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Included Services</p>
                     <div className="flex flex-wrap gap-1.5">
                       {plan.included_services.map((s, i) => (
-                        <span key={i} className="text-[11px] bg-blue-50 text-primary px-2 py-0.5 rounded-full">{s}</span>
+                        <span key={i} className="text-[11px] bg-blue-tint text-primary px-2 py-0.5 rounded-full">{s}</span>
                       ))}
                     </div>
                   </div>
@@ -502,7 +502,7 @@ export default function MaintenancePlansPage() {
                     const plan = mockPlans.find(p => p.id === sub.plan_id);
                     const daysToBill = daysUntil(sub.next_billing_date);
                     return (
-                      <tr key={sub.id} className="border-b border-slate-50 hover:bg-muted transition-colors">
+                      <tr key={sub.id} className="border-b border-border/50 hover:bg-muted transition-colors">
                         <td className="px-5 py-3.5">
                           <span className="font-medium text-slate-800">{sub.customerName}</span>
                         </td>
@@ -571,7 +571,7 @@ export default function MaintenancePlansPage() {
                     <span>{formatDate(visit.scheduled_date)}</span>
                     {days >= 0 && (
                       <span className={`text-xs font-semibold px-1.5 py-0.5 rounded-full ${
-                        days <= 7 ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-primary'
+                        days <= 7 ? 'bg-amber-50 text-amber-600' : 'bg-blue-tint text-primary'
                       }`}>
                         {days === 0 ? 'Today' : `${days}d away`}
                       </span>

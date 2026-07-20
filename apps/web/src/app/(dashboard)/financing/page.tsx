@@ -55,7 +55,7 @@ const statusConfig: Record<string, { label: string; color: string; bg: string; i
   pending: { label: 'Pending', color: 'text-amber-600', bg: 'bg-amber-50', icon: Clock },
   approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: CheckCircle },
   declined: { label: 'Declined', color: 'text-red-600', bg: 'bg-red-50', icon: XCircle },
-  active: { label: 'Active', color: 'text-primary', bg: 'bg-blue-50', icon: CreditCard },
+  active: { label: 'Active', color: 'text-primary', bg: 'bg-blue-tint', icon: CreditCard },
   paid_off: { label: 'Paid Off', color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle },
   cancelled: { label: 'Cancelled', color: 'text-muted-foreground', bg: 'bg-muted', icon: XCircle },
 };
@@ -426,7 +426,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
 
       {step === 'simulating' && (
         <div className="flex flex-col items-center justify-center py-8">
-          <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mb-3" />
+          <RefreshCw className="w-8 h-8 text-primary animate-spin mb-3" />
           <p className="text-sm text-muted-foreground">Evaluating application...</p>
         </div>
       )}
@@ -476,7 +476,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-blue-50 text-blue-700 text-sm">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-blue-tint text-primary/90 text-sm">
             <CheckCircle className="w-4 h-4 shrink-0" />
             <span>Application {createdApp.id} created — status: {statusConfig[createdApp.status]?.label}</span>
           </div>
@@ -551,7 +551,7 @@ function FinancingFormModal({ open, onClose, onCreated }: {
 
       {step === 'submitting' && (
         <div className="flex flex-col items-center justify-center py-8">
-          <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mb-3" />
+          <RefreshCw className="w-8 h-8 text-primary animate-spin mb-3" />
           <p className="text-sm text-muted-foreground">Submitting application...</p>
         </div>
       )}
@@ -593,7 +593,7 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
           <button
             onClick={() => setLocal({ ...local, enabled: !local.enabled })}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              local.enabled ? 'bg-blue-500' : 'bg-gray-300'
+              local.enabled ? 'bg-blue-tint0' : 'bg-gray-300'
             }`}
           >
             <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -614,7 +614,7 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Provider</label>
           <select
-            className="w-full rounded-xl ring-1 ring-slate-200 bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500 focus:ring-1 focus:ring-primary/20"
+            className="w-full rounded-xl ring-1 ring-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
             value={local.provider}
             onChange={(e) => setLocal({ ...local, provider: e.target.value as FinancingProvider })}
           >
@@ -800,7 +800,7 @@ export default function FinancingPage() {
             label="Total Approved"
             value={`$${summary.totalApproved.toLocaleString()}`}
             sub={`Out of $${summary.totalFinanced.toLocaleString()} total`}
-            color="bg-blue-500"
+            color="bg-blue-tint0"
           />
           <StatCard
             icon={CreditCard}
@@ -885,7 +885,7 @@ export default function FinancingPage() {
       {/* Info section */}
       <Card padding="md" className="bg-muted border-border/50">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-blue-tint flex items-center justify-center shrink-0">
             <TrendingUp className="w-4 h-4 text-primary" />
           </div>
           <div className="text-sm text-muted-foreground">

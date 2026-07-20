@@ -78,19 +78,19 @@ export default function LoginPage() {
               {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">{t('auth.login.emailLabel')}</label>
-                <input type="email" placeholder={t('auth.login.emailPlaceholder')} value={email} onChange={e => { setEmail(e.target.value); setTouched(t => ({...t, email: true})); }} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${emailError ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} disabled={loading} />
+                <input type="email" placeholder={t('auth.login.emailPlaceholder')} value={email} onChange={e => { setEmail(e.target.value); setTouched(t => ({...t, email: true})); }} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${emailError ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} disabled={loading} />
                 {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">{t('auth.login.passwordLabel')}</label>
                 <div className="relative">
-                  <input type={showPw ? 'text' : 'password'} placeholder={t('auth.login.passwordPlaceholder')} value={password} onChange={e => { setPassword(e.target.value); setTouched(t => ({...t, password: true})); }} className={`w-full h-11 rounded-xl border bg-white px-4 pr-12 text-sm outline-none transition-all ${passwordError ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} disabled={loading} />
+                  <input type={showPw ? 'text' : 'password'} placeholder={t('auth.login.passwordPlaceholder')} value={password} onChange={e => { setPassword(e.target.value); setTouched(t => ({...t, password: true})); }} className={`w-full h-11 rounded-xl border bg-white px-4 pr-12 text-sm outline-none transition-all ${passwordError ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} disabled={loading} />
                   <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 hover:text-muted-foreground text-xs font-medium">{showPw ? t('auth.login.hide') : t('auth.login.show')}</button>
                 </div>
                 {passwordError && <p className="text-xs text-red-500 mt-1">{passwordError}</p>}
               </div>
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded border-border text-primary focus:ring-blue-100" /><span className="text-sm text-muted-foreground">{t('auth.login.rememberMe')}</span></label>
+                <label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20" /><span className="text-sm text-muted-foreground">{t('auth.login.rememberMe')}</span></label>
                 <a href="/reset-password" className="text-sm text-primary hover:text-primary/80 transition-colors">{t('auth.login.forgotPassword')}</a>
               </div>
               <button type="submit" disabled={loading || !isValid} className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm">{loading ? t('auth.login.submitting') : t('auth.login.submit')}</button>

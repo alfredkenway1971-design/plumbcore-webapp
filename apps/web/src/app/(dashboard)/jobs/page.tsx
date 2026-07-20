@@ -814,7 +814,7 @@ export default function JobsPage() {
               <div className="flex items-center gap-4 px-4 py-2 border-t border-border bg-whiteer flex-wrap">
                 <span className="text-[11px] text-muted-foreground">Legend:</span>
                 <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
-                  <span className="inline-block w-3 h-3 rounded bg-blue-100 border-l-2 border-electric" /> In Progress
+                  <span className="inline-block w-3 h-3 rounded bg-blue-tint border-l-2 border-electric" /> In Progress
                 </span>
                 <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-accent-amber/20 border-l-2 border-accent-amber" /> Scheduled
@@ -850,7 +850,7 @@ export default function JobsPage() {
                     type="text" placeholder="Kitchen sink repair"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
                 <div>
@@ -860,7 +860,7 @@ export default function JobsPage() {
                       rows={3} placeholder="Tap the mic and describe the job..."
                       value={newDescription}
                       onChange={(e) => setNewDescription(e.target.value)}
-                      className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none pr-12"
+                      className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all resize-none pr-12"
                     />
                     <button
                       type="button"
@@ -922,7 +922,7 @@ export default function JobsPage() {
                           if (!newZip) setNewZip(c.zip);
                         }
                       }}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
                     >
                       <option value="">Select a client</option>
                       {clients.map((c) => (
@@ -935,7 +935,7 @@ export default function JobsPage() {
                     <select
                       value={newPriority}
                       onChange={(e) => setNewPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -964,26 +964,26 @@ export default function JobsPage() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">City</label>
-                    <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" placeholder="Austin" value={newCity} onChange={(e) => setNewCity(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">State/Province</label>
-                    <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" placeholder="TX" value={newState} onChange={(e) => setNewState(e.target.value.toUpperCase().slice(0, 2))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">ZIP/Postal Code</label>
-                    <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="text" inputMode="numeric" placeholder="73301" value={newZip} onChange={(e) => setNewZip(e.target.value.replace(/\D/g, '').slice(0, 5))} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Scheduled Date</label>
-                    <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Scheduled Time</label>
-                    <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                 </div>
 
@@ -993,7 +993,7 @@ export default function JobsPage() {
                     <select
                       value={newTechId}
                       onChange={(e) => setNewTechId(e.target.value)}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
                     >
                       <option value="">Unassigned</option>
                       {teamMembers.map((tm) => (
@@ -1003,7 +1003,7 @@ export default function JobsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Estimated Cost ($)</label>
-                    <input type="number" placeholder="0" value={newEstimatedCost} onChange={(e) => setNewEstimatedCost(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
+                    <input type="number" placeholder="0" value={newEstimatedCost} onChange={(e) => setNewEstimatedCost(e.target.value)} className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
                   </div>
                 </div>
               </div>
@@ -1011,7 +1011,7 @@ export default function JobsPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {creating ? 'Creating...' : 'Create Job'}
                 </button>
               </div>
@@ -1058,7 +1058,7 @@ export default function JobsPage() {
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -1093,7 +1093,7 @@ export default function JobsPage() {
             <select
               value={editTechId}
               onChange={(e) => setEditTechId(e.target.value)}
-              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+              className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
             >
               <option value="">Unassigned</option>
               {teamMembers.map((tm) => (

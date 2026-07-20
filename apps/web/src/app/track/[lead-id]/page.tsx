@@ -68,7 +68,7 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
       <div className="flex justify-center">
         <div className="relative w-20 h-20">
           <div className="absolute inset-0 rounded-full border-[3px] border-border/50" />
-          <div className="absolute inset-0 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
+          <div className="absolute inset-0 rounded-full border-[3px] border-primary border-t-transparent animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-2xl">🔍</span>
           </div>
@@ -85,7 +85,7 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
       </div>
 
       {/* Estimate Card */}
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm overflow-hidden">
         <div className="px-4 py-3 bg-muted border-b border-border/50">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estimate Details</p>
         </div>
@@ -104,10 +104,10 @@ function MatchingState({ data }: { data: LeadStatusResponse }) {
       </div>
 
       {/* Refund Badge */}
-      <div className="bg-blue-50 rounded-2xl px-4 py-3 flex items-start gap-2.5 ring-1 ring-blue-200">
+      <div className="bg-blue-tint rounded-2xl px-4 py-3 flex items-start gap-2.5 ring-1 ring-blue-200">
         <span className="text-lg shrink-0 mt-0.5">🔒</span>
         <div>
-          <p className="text-sm font-semibold text-blue-800">48-Hour Refund Guarantee</p>
+          <p className="text-sm font-semibold text-primary/80">48-Hour Refund Guarantee</p>
           <p className="text-xs text-primary mt-0.5">Fully refundable if we can&apos;t find a plumber in your area.</p>
         </div>
       </div>
@@ -126,10 +126,10 @@ function Row({ label, value, highlight, valueClass }: { label: string; value: st
 
 function PlumberCard({ plumber, actionLabel, actionHref }: { plumber: PlumberInfo; actionLabel: string; actionHref: string }) {
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm overflow-hidden">
       <div className="p-5">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-xl font-bold text-primary shrink-0 ring-2 ring-white shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-tint to-blue-tint2 flex items-center justify-center text-xl font-bold text-primary shrink-0 ring-2 ring-white shadow-sm">
             {plumber.logoUrl ? (
               <img src={plumber.logoUrl} alt={plumber.companyName} className="w-14 h-14 rounded-full object-cover" />
             ) : (
@@ -150,7 +150,7 @@ function PlumberCard({ plumber, actionLabel, actionHref }: { plumber: PlumberInf
         </div>
 
         {plumber.licenseNumber && (
-          <div className="bg-blue-50 rounded-xl px-3 py-2 text-xs text-blue-700 font-medium inline-flex items-center gap-1.5 mb-4">
+          <div className="bg-blue-tint rounded-xl px-3 py-2 text-xs text-primary/90 font-medium inline-flex items-center gap-1.5 mb-4">
             <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
             Licensed & Insured
           </div>
@@ -212,7 +212,7 @@ function EnRouteState({ data }: { data: LeadStatusResponse }) {
       </div>
 
       {/* ETA */}
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm p-4">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm p-4">
         <div className="flex items-center justify-center gap-3">
           <span className="text-2xl">⏱️</span>
           <div>
@@ -271,7 +271,7 @@ function CompleteState({ data }: { data: LeadStatusResponse }) {
         <p className="text-sm text-muted-foreground">Thank you for choosing PlumbCore AI. We hope everything went smoothly!</p>
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm p-5">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm p-5">
         <p className="text-sm font-semibold text-foreground text-center mb-3">How did we do?</p>
         <div className="flex items-center justify-center gap-2">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -362,8 +362,8 @@ function ProgressBar({ status }: { status: LeadStatus }) {
             <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
               isActive
                 ? isCurrent
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 scale-110'
-                  : 'bg-blue-500 text-white'
+                  ? 'bg-blue-tint0 text-white shadow-lg shadow-blue-500/30 scale-110'
+                  : 'bg-blue-tint0 text-white'
                 : 'bg-muted text-slate-300'
             }`}>
               {step.key === 'matching' ? '🔍' : step.key === 'en_route' ? '🚛' : isActive && step.key !== 'arrived' ? '✓' : step.icon}
@@ -372,7 +372,7 @@ function ProgressBar({ status }: { status: LeadStatus }) {
               {LABELS[step.key] || step.key}
             </span>
             {i < STEPS.length - 1 && (
-              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-blue-500' : 'bg-muted'}`} />
+              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-blue-tint0' : 'bg-muted'}`} />
             )}
           </div>
         );
@@ -421,7 +421,7 @@ export default function TrackPage() {
     if (!leadId) return <p className="text-sm text-muted-foreground">No lead ID provided.</p>;
     if (loading) return (
       <div className="flex flex-col items-center gap-3 py-20">
-        <div className="w-10 h-10 border-[3px] border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-primary border-t-transparent rounded-full animate-spin" />
         <p className="text-sm text-muted-foreground">Loading tracking info...</p>
       </div>
     );
@@ -430,7 +430,7 @@ export default function TrackPage() {
         <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3"><span className="text-xl">⚠️</span></div>
         <h2 className="text-lg font-bold text-foreground mb-1">Something went wrong</h2>
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
-        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-blue-500 text-white font-medium text-sm hover:bg-primary active:scale-[0.98] transition-all">Try Again</button>
+        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-blue-tint0 text-white font-medium text-sm hover:bg-primary active:scale-[0.98] transition-all">Try Again</button>
       </div>
     );
     if (!data) return null;
@@ -462,7 +462,7 @@ export default function TrackPage() {
       <header className="bg-white/80 backdrop-blur-xl ring-1 ring-black/5 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           <PlumbCoreLogo size="sm" showText={true} />
-          <a href="tel:+155****4567" className="flex items-center gap-1.5 text-sm font-semibold text-primary bg-blue-50 px-3 py-1.5 rounded-xl hover:bg-blue-100 transition-all active:scale-95">
+          <a href="tel:+155****4567" className="flex items-center gap-1.5 text-sm font-semibold text-primary bg-blue-tint px-3 py-1.5 rounded-xl hover:bg-blue-tint transition-all active:scale-95">
             <I.Phone /> Call
           </a>
         </div>

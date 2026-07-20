@@ -113,7 +113,7 @@ export default function PredictiveMaintenancePage() {
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Good</p>
             <p className="text-xl font-bold text-green-600">{stats.good}</p>
           </div>
-          <div className="rounded-xl bg-blue-50 px-4 py-3">
+          <div className="rounded-xl bg-blue-tint px-4 py-3">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Prev. Revenue</p>
             <p className="text-xl font-bold text-primary">${stats.preventiveRevenue.toLocaleString()}</p>
           </div>

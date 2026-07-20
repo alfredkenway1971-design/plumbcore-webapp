@@ -647,7 +647,7 @@ export default function InventoryPage() {
                   placeholder="e.g. 1/2 in Brass Fitting"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                 />
               </div>
               <div>
@@ -656,7 +656,7 @@ export default function InventoryPage() {
                   placeholder="e.g. BRZ-12-FIT"
                   value={form.sku}
                   onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                 />
               </div>
               <div className="space-y-1.5">
@@ -664,7 +664,7 @@ export default function InventoryPage() {
                 <select
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground"
+                  className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                 >
                   {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
                     <option key={cat} value={cat.toLowerCase()}>{cat}</option>
@@ -679,7 +679,7 @@ export default function InventoryPage() {
                     min={0}
                     value={form.quantity || ''}
                     onChange={(e) => setForm({ ...form, quantity: parseInt(e.target.value) || 0 })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                   />
                 </div>
                 <div>
@@ -689,7 +689,7 @@ export default function InventoryPage() {
                     min={0}
                     value={form.minQuantity || ''}
                     onChange={(e) => setForm({ ...form, minQuantity: parseInt(e.target.value) || 0 })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                   />
                 </div>
                 <div>
@@ -700,7 +700,7 @@ export default function InventoryPage() {
                     step="0.01"
                     value={form.unitPrice || ''}
                     onChange={(e) => setForm({ ...form, unitPrice: parseFloat(e.target.value) || 0 })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                   />
                 </div>
               </div>
@@ -714,7 +714,7 @@ export default function InventoryPage() {
                       placeholder="e.g. SupplyHouse.com"
                       value={form.supplierName}
                       onChange={(e) => setForm({ ...form, supplierName: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                     />
                   </div>
                   <div>
@@ -723,7 +723,7 @@ export default function InventoryPage() {
                       placeholder="e.g. (800) 555-0100"
                       value={form.supplierContact}
                       onChange={(e) => setForm({ ...form, supplierContact: e.target.value })}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                     />
                   </div>
                 </div>
@@ -735,7 +735,7 @@ export default function InventoryPage() {
                     placeholder="e.g. Bay A-1"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                   />
                 </div>
                 <div>
@@ -744,7 +744,7 @@ export default function InventoryPage() {
                     placeholder="Brief description"
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-foreground placeholder-gray-400"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground placeholder:text-muted-foreground/80"
                   />
                 </div>
               </div>

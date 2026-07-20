@@ -30,7 +30,7 @@ const priorityConfig: Record<string, { bg: string; text: string; dot: string; ic
 };
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  open: { bg: 'bg-blue-50', text: 'text-primary', dot: 'bg-blue-500', label: 'Open' },
+  open: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', label: 'Open' },
   in_progress: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', label: 'In Progress' },
   resolved: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Resolved' },
   closed: { bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-slate-400', label: 'Closed' },
@@ -88,7 +88,7 @@ function SupportError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -105,7 +105,7 @@ function SupportKPIs({ tickets }: { tickets: SupportTicket[] }) {
   const resolvedCount = tickets.filter((t) => t.status === 'resolved').length;
 
   const cards = [
-    { label: 'Open Tickets', value: String(openCount), change: `${tickets.filter((t) => t.status === 'open').length} awaiting assignment`, trend: 'up' as const, icon: MessageSquare, color: 'bg-blue-500' },
+    { label: 'Open Tickets', value: String(openCount), change: `${tickets.filter((t) => t.status === 'open').length} awaiting assignment`, trend: 'up' as const, icon: MessageSquare, color: 'bg-blue-tint0' },
     { label: 'Critical Priority', value: String(criticalCount), change: 'requires immediate attention', trend: criticalCount > 0 ? ('up' as const) : ('down' as const), icon: AlertTriangle, color: 'bg-red-500' },
     { label: 'Resolved This Week', value: String(resolvedCount), change: 'avg — resolution time', trend: 'up' as const, icon: CheckCircle, color: 'bg-emerald-500' },
     { label: 'Total Tickets', value: String(tickets.length), change: `${tickets.filter((t) => t.status === 'closed').length} closed`, trend: 'up' as const, icon: Clock, color: 'bg-violet-500' },
@@ -139,8 +139,8 @@ function SupportKPIs({ tickets }: { tickets: SupportTicket[] }) {
 function EmptyState() {
   return (
     <div className="px-5 py-16 text-center">
-      <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-        <MessageSquare className="w-7 h-7 text-blue-500" />
+      <div className="w-14 h-14 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
+        <MessageSquare className="w-7 h-7 text-primary" />
       </div>
       <h3 className="text-lg font-semibold text-foreground mb-1">No support tickets yet</h3>
       <p className="text-sm text-muted-foreground max-w-md mx-auto">
@@ -228,7 +228,7 @@ function TicketsTable({ tickets, filters }: {
                     </td>
                     <td className="px-4 py-3.5 hidden md:table-cell">
                       <div className="flex items-center gap-1.5">
-                        <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center"><User className="w-3 h-3 text-muted-foreground" /></div>
+                        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center"><User className="w-3 h-3 text-muted-foreground" /></div>
                         <span className="text-xs text-muted-foreground/80">{ticket.assignedAgent}</span>
                       </div>
                     </td>
@@ -328,7 +328,7 @@ export default function AdminSupportPage() {
             <Reply className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">New Ticket</span>
           </button>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors shadow-sm ring-1 ring-black/5">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors shadow-sm ring-1 ring-black/5">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>
@@ -346,7 +346,7 @@ export default function AdminSupportPage() {
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" placeholder="Search tickets..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full h-10 pl-9 pr-3 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-blue-400 transition-all" />
+              <input type="text" placeholder="Search tickets..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full h-10 pl-9 pr-3 rounded-lg border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" />
               {search && (
                 <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground hover:text-muted-foreground"><XCircle className="w-4 h-4" /></button>
               )}
@@ -392,11 +392,11 @@ export default function AdminSupportPage() {
       {/* Quick Actions */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-xs text-muted-foreground font-medium mr-1">Quick Actions:</span>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-50 text-primary text-[11px] font-semibold hover:bg-blue-100 transition-colors"><MessageSquare className="w-3 h-3" />View Open</button>
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-blue-tint text-primary text-[11px] font-semibold hover:bg-blue-tint transition-colors"><MessageSquare className="w-3 h-3" />View Open</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-red-50 text-red-700 text-[11px] font-semibold hover:bg-red-100 transition-colors"><AlertTriangle className="w-3 h-3" />Critical Only</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-amber-50 text-amber-600 text-[11px] font-semibold hover:bg-amber-100 transition-colors"><Clock className="w-3 h-3" />In Progress</button>
         <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-semibold hover:bg-emerald-100 transition-colors"><CheckCircle className="w-3 h-3" />Resolved</button>
-        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-muted text-muted-foreground/80 text-[11px] font-semibold hover:bg-slate-700 transition-colors"><User className="w-3 h-3" />My Tickets</button>
+        <button className="inline-flex items-center gap-1 h-7 px-3 rounded-full bg-muted text-muted-foreground/80 text-[11px] font-semibold hover:bg-muted transition-colors"><User className="w-3 h-3" />My Tickets</button>
       </div>
 
       {/* Tickets Table */}

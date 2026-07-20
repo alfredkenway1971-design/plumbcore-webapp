@@ -38,7 +38,7 @@ const roleConfig: Record<TeamRole, { label: string; color: string }> = {
   'lead-tech': { label: 'Lead Tech', color: 'bg-green-500/15 text-green-600' },
   'senior-tech': { label: 'Senior Tech', color: 'bg-green-50 text-green-600' },
   tech: { label: 'Tech', color: 'bg-white/10 text-muted-foreground/80' },
-  accountant: { label: 'Accountant', color: 'bg-blue-500/15 text-blue-400' },
+  accountant: { label: 'Accountant', color: 'bg-blue-tint0/15 text-primary/80' },
 };
 
 const statusConfig: Record<string, { label: string; dotColor: string }> = {

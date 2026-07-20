@@ -63,8 +63,8 @@ export default function AdminInvoicesPage() {
           </div>
         </div>
         <div className="px-5 py-16 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-            <FileText className="w-7 h-7 text-blue-500" />
+          <div className="w-14 h-14 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
+            <FileText className="w-7 h-7 text-primary" />
           </div>
           <h3 className="text-lg font-semibold text-foreground mb-1">No invoices yet</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">

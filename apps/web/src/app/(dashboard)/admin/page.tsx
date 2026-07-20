@@ -61,7 +61,7 @@ const activityColorMap: Record<string, string> = {
   success: 'bg-emerald-50 text-emerald-600',
   warning: 'bg-amber-50 text-amber-600',
   error: 'bg-red-50 text-red-600',
-  info: 'bg-blue-50 text-primary',
+  info: 'bg-blue-tint text-primary',
 };
 
 /* ═══════════════════════════════════════════
@@ -76,7 +76,7 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
       change: `+${activeKPIs.mrrGrowth}%`,
       trend: 'up' as const,
       icon: DollarSign,
-      color: 'bg-blue-500',
+      color: 'bg-blue-tint0',
     },
     {
       label: 'Active Plumbers',

@@ -48,7 +48,7 @@ function RevenueError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -81,7 +81,7 @@ export default function AdminRevenuePage() {
       {/* KPI Cards - all zeros */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Monthly Recurring Revenue', value: '$0', icon: DollarSign, color: 'bg-blue-500' },
+          { label: 'Monthly Recurring Revenue', value: '$0', icon: DollarSign, color: 'bg-blue-tint0' },
           { label: 'Annual Run Rate (ARR)', value: '$0', icon: TrendingUp, color: 'bg-violet-500' },
           { label: 'Avg Rev / Customer', value: '$0', icon: Users, color: 'bg-emerald-500' },
           { label: 'Churn Rate', value: '0%', icon: TrendingDown, color: 'bg-red-500' },
@@ -106,8 +106,8 @@ export default function AdminRevenuePage() {
 
       {/* Empty State */}
       <div className="bg-white rounded-2xl border border-border/50 shadow-sm ring-1 ring-black/5 p-16 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-          <DollarSign className="w-8 h-8 text-blue-500" />
+        <div className="w-16 h-16 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
+          <DollarSign className="w-8 h-8 text-primary" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">No revenue data yet</h3>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto">

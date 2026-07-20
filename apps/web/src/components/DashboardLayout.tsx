@@ -125,7 +125,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 ref={searchRef}
                 type="text"
                 placeholder={t('common.search')}
-                className="w-full h-9 pl-10 pr-12 bg-white rounded-xl ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-primary/50 focus:bg-white transition-all"
+                className="w-full h-9 pl-10 pr-12 bg-white rounded-xl ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-primary/50 focus:bg-white transition-all"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted text-[10px] font-medium text-muted-foreground">
                 ⌘K

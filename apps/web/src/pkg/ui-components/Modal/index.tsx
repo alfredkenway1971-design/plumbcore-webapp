@@ -47,7 +47,7 @@ export function Modal({ open, onClose, title, description, children, footer, siz
 
       {/* Panel — dark glass */}
       <div
-        className={`relative w-full ${sizeStyles[size]} rounded-2xl bg-white ring-1 ring-slate-200 shadow-2xl shadow-black/10 animate-in fade-in zoom-in-95`}
+        className={`relative w-full ${sizeStyles[size]} rounded-2xl bg-white ring-1 ring-border shadow-2xl shadow-black/10 animate-in fade-in zoom-in-95`}
       >
         {/* Close button */}
         {onClose && (

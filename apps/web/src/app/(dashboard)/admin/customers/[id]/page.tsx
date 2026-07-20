@@ -77,7 +77,7 @@ function DetailSkeleton() {
       {/* Info Cards Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+          <div key={i} className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
             <Skeleton className="h-5 w-28 mb-3" />
             <Skeleton className="h-4 w-40 mb-2" />
             <Skeleton className="h-4 w-32 mb-2" />
@@ -89,7 +89,7 @@ function DetailSkeleton() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+          <div key={i} className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
             <Skeleton className="h-4 w-20 mb-3" />
             <Skeleton className="h-8 w-24" />
           </div>
@@ -97,7 +97,7 @@ function DetailSkeleton() {
       </div>
 
       {/* Activity */}
-      <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+      <div className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
         <Skeleton className="h-5 w-32 mb-4" />
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="flex items-start gap-3 mb-4">
@@ -133,11 +133,11 @@ function ActivityIcon({ type }: { type: string }) {
     estimate_accepted: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
     job_completed: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
     invoice_paid: { icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    ai_estimate: { icon: BrainCircuit, color: 'text-primary', bg: 'bg-blue-50' },
-    tech_assigned: { icon: User, color: 'text-primary', bg: 'bg-blue-50' },
+    ai_estimate: { icon: BrainCircuit, color: 'text-primary', bg: 'bg-blue-tint' },
+    tech_assigned: { icon: User, color: 'text-primary', bg: 'bg-blue-tint' },
     payment_failed: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
-    scheduled: { icon: Clock, color: 'text-primary', bg: 'bg-blue-50' },
-    estimate_sent: { icon: Activity, color: 'text-primary', bg: 'bg-blue-50' },
+    scheduled: { icon: Clock, color: 'text-primary', bg: 'bg-blue-tint' },
+    estimate_sent: { icon: Activity, color: 'text-primary', bg: 'bg-blue-tint' },
     ai_alert: { icon: AlertTriangle, color: 'text-amber-600', bg: 'bg-amber-50' },
     support_ticket: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
     job_urgent: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
@@ -162,7 +162,7 @@ function StatCard({ label, value, sub, icon: Icon, color }: {
   color: string;
 }) {
   return (
-    <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md hover:ring-slate-300">
+    <div className="rounded-2xl ring-1 ring-border bg-white p-5 shadow-sm transition-shadow hover:shadow-md hover:ring-slate-300">
       <div className="flex items-start justify-between">
         <p className="text-sm font-medium text-muted-foreground/80">{label}</p>
         <div className={cn('rounded-lg p-2', color)}>
@@ -217,7 +217,7 @@ export default function CompanyDetailPage() {
   if (error) {
     return (
       <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-        <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-8 shadow-sm text-center">
+        <div className="rounded-2xl ring-1 ring-border bg-white p-8 shadow-sm text-center">
           <AlertTriangle className="mx-auto h-12 w-12 text-red-600" />
           <h2 className="mt-4 text-lg font-semibold text-foreground">Failed to load company</h2>
           <p className="mt-1 text-sm text-muted-foreground">{error}</p>
@@ -242,7 +242,7 @@ export default function CompanyDetailPage() {
   if (notFound || !company) {
     return (
       <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-        <div className="rounded-2xl ring-1 ring-slate-200 bg-white p-8 shadow-sm text-center">
+        <div className="rounded-2xl ring-1 ring-border bg-white p-8 shadow-sm text-center">
           <Building2 className="mx-auto h-12 w-12 text-muted-foreground" />
           <h2 className="mt-4 text-lg font-semibold text-foreground">Company not found</h2>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -278,7 +278,7 @@ export default function CompanyDetailPage() {
       {/* ── Header Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-tint">
             <Building2 className="h-6 w-6 text-primary" />
           </div>
           <div>
@@ -309,7 +309,7 @@ export default function CompanyDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* Plan & Health */}
-        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-muted-foreground" />
             Plan &amp; Health
@@ -335,7 +335,7 @@ export default function CompanyDetailPage() {
         </div>
 
         {/* Owner Info */}
-        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <User className="h-4 w-4 text-muted-foreground" />
             Owner Info
@@ -358,7 +358,7 @@ export default function CompanyDetailPage() {
         </div>
 
         {/* Billing */}
-        <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+        <div className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-muted-foreground" />
             Billing
@@ -395,7 +395,7 @@ export default function CompanyDetailPage() {
           value={String(company.techs)}
           sub="Licensed technicians"
           icon={Users}
-          color="bg-blue-500"
+          color="bg-blue-tint0"
         />
         <StatCard
           label="Jobs This Month"
@@ -421,7 +421,7 @@ export default function CompanyDetailPage() {
       </div>
 
       {/* ── Recent Activity Feed ── */}
-      <div className="rounded-2xl ring-1 ring-slate-200 p-5 shadow-sm">
+      <div className="rounded-2xl ring-1 ring-border p-5 shadow-sm">
         <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
           <Activity className="h-4 w-4 text-muted-foreground" />
           Recent Activity

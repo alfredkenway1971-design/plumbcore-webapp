@@ -115,9 +115,9 @@ export default function AdminSystemSettingsPage() {
         {sections.map(section => {
           const Icon = section.icon;
           return (
-            <div key={section.title} className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
+            <div key={section.title} className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 overflow-hidden">
               <div className="px-6 py-4 border-b border-border/50 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center"><Icon className="w-5 h-5 text-blue-500" /></div>
+                <div className="w-9 h-9 rounded-xl bg-blue-tint flex items-center justify-center"><Icon className="w-5 h-5 text-primary" /></div>
                 <h2 className="text-sm font-semibold text-foreground">{section.title}</h2>
               </div>
               <div className="px-6 py-4 space-y-4">
@@ -128,7 +128,7 @@ export default function AdminSystemSettingsPage() {
                       <label className="text-sm font-medium text-foreground">{field.label}</label>
                       <div className="shrink-0">
                         {field.type === 'toggle' ? (
-                          <button onClick={() => update(field.key, !value)} className={`relative w-11 h-6 rounded-full transition-colors ${value ? 'bg-blue-500' : 'bg-slate-700'}`}>
+                          <button onClick={() => update(field.key, !value)} className={`relative w-11 h-6 rounded-full transition-colors ${value ? 'bg-blue-tint0' : 'bg-muted'}`}>
                             <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform ${value ? 'translate-x-5' : ''}`} />
                           </button>
                         ) : field.type === 'select' ? (

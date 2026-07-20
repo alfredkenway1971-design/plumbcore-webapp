@@ -21,8 +21,8 @@ const I = {
 function EmptyPlumberState() {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center mb-4 shadow-sm">
-        <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-tint to-blue-tint border border-primary/10 flex items-center justify-center mb-4 shadow-sm">
+        <svg className="w-8 h-8 text-primary/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
         </svg>
       </div>
@@ -34,7 +34,7 @@ function EmptyPlumberState() {
 
 const planColors: Record<string, string> = {
   solo: 'bg-amber-50 text-amber-600 border-amber-500/20',
-  pro: 'bg-blue-50 text-primary border-blue-500/20',
+  pro: 'bg-blue-tint text-primary border-primary/20',
   business: 'bg-violet-50 text-violet-600 border-violet-500/20',
   enterprise: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
 };
@@ -149,7 +149,7 @@ export default function AdminPlumbersPage() {
         <div className="relative w-full sm:max-w-xs">
           <I.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search plumbers..."
-            className="w-full rounded-xl bg-white border border-border pl-9 pr-3 py-2.5 text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-primary/20 transition-all" />
+            className="w-full rounded-xl bg-white border border-border pl-9 pr-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all" />
         </div>
         <div className="flex gap-1.5 overflow-x-auto pb-1 w-full sm:w-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {['all', 'solo', 'pro', 'business', 'enterprise'].map(t => (
@@ -157,7 +157,7 @@ export default function AdminPlumbersPage() {
               className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium border transition-all ${
                 filterTier === t
                   ? 'bg-primary text-white border-primary shadow-sm'
-                  : 'bg-white text-muted-foreground border-border hover:border-blue-300 hover:text-primary'
+                  : 'bg-white text-muted-foreground border-border hover:border-primary/30 hover:text-primary'
               }`}>
               {t === 'all' ? 'All' : PLAN_LABELS_PRETTY[t] || t}
             </button>
@@ -168,7 +168,7 @@ export default function AdminPlumbersPage() {
       {/* Mobile cards */}
       <div className="sm:hidden space-y-3">
         {filtered.map(p => (
-          <div key={p.id} className="rounded-xl bg-white border border-border p-4 cursor-pointer hover:border-blue-300 transition-colors"
+          <div key={p.id} className="rounded-xl bg-white border border-border p-4 cursor-pointer hover:border-primary/30 transition-colors"
             onClick={() => router.push(`/admin/plumbers/${p.id}`)}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2.5">

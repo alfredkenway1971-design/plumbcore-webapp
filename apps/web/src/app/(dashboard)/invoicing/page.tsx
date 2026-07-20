@@ -506,7 +506,7 @@ export default function InvoicingPage() {
                   <select
                     value={invoiceForm.selectedJobId}
                     onChange={(e) => handleJobSelect(e.target.value)}
-                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 appearance-none transition-all"
+                    className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 appearance-none transition-all"
                   >
                     <option value="">Choose a job...</option>
                     {jobs
@@ -532,7 +532,7 @@ export default function InvoicingPage() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-medium text-foreground">Line Items</label>
-                    <button onClick={addLineItem} className="h-8 px-3 rounded-xl text-xs font-semibold text-primary hover:bg-blue-50 transition-colors">
+                    <button onClick={addLineItem} className="h-8 px-3 rounded-xl text-xs font-semibold text-primary hover:bg-blue-tint transition-colors">
                       + Add Item
                     </button>
                   </div>
@@ -547,7 +547,7 @@ export default function InvoicingPage() {
                               placeholder="Description"
                               value={item.description}
                               onChange={(e) => updateLineItem(idx, 'description', e.target.value)}
-                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                             />
                           </div>
                           <div className="w-16 shrink-0">
@@ -555,7 +555,7 @@ export default function InvoicingPage() {
                               type="number" min="0" step="0.5" placeholder="Qty"
                               value={item.quantity}
                               onChange={(e) => updateLineItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                             />
                           </div>
                           <div className="w-20 shrink-0">
@@ -563,7 +563,7 @@ export default function InvoicingPage() {
                               type="number" min="0" step="0.01" placeholder="Price"
                               value={item.unitPrice}
                               onChange={(e) => updateLineItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
-                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                              className="w-full h-9 px-3 bg-white border border-border rounded-xl text-xs text-foreground text-right placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                             />
                           </div>
                           <div className="w-20 shrink-0 text-right pt-2">
@@ -591,7 +591,7 @@ export default function InvoicingPage() {
                       type="number" min="0" max="100" step="0.5"
                       value={invoiceForm.taxRate}
                       onChange={(e) => setInvoiceForm((prev) => ({ ...prev, taxRate: parseFloat(e.target.value) || 0 }))}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                   <div>
@@ -600,7 +600,7 @@ export default function InvoicingPage() {
                       type="number" min="0" max="100" step="0.5"
                       value={invoiceForm.serviceFeePercent}
                       onChange={(e) => setInvoiceForm((prev) => ({ ...prev, serviceFeePercent: parseFloat(e.target.value) || 0 }))}
-                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full h-11 px-4 bg-white border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
@@ -631,7 +631,7 @@ export default function InvoicingPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleGenerateInvoice} disabled={generating || !invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0} className="h-10 px-5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleGenerateInvoice} disabled={generating || !invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {generating ? 'Generating...' : 'Generate Invoice'}
                 </button>
               </div>

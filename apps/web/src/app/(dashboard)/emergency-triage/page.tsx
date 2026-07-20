@@ -33,7 +33,7 @@ const MOCK_CALLS: EmergencyCall[] = [
 ];
 
 const URGENCY_COLORS: Record<string, string> = {
-  Low: 'bg-blue-100 text-blue-700 border-blue-200',
+  Low: 'bg-blue-tint text-primary/90 border-primary/20',
   Medium: 'bg-amber-100 text-amber-700 border-amber-200',
   High: 'bg-orange-100 text-orange-700 border-orange-200',
   Critical: 'bg-red-100 text-red-700 border-red-200',
@@ -41,7 +41,7 @@ const URGENCY_COLORS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   Waiting: 'bg-yellow-100 text-yellow-700',
-  Dispatched: 'bg-blue-100 text-blue-700',
+  Dispatched: 'bg-blue-tint text-primary/90',
   Resolved: 'bg-green-100 text-green-700',
 };
 
@@ -254,7 +254,7 @@ export default function EmergencyTriagePage() {
             onChange={(e) => setTriageInput(e.target.value)}
             placeholder="Describe the customer's issue from the call..."
             rows={4}
-            className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-3 text-sm text-foreground placeholder-gray-400 outline-none transition-all focus:border-blue-500/50 focus:ring-1 focus:ring-primary/20 resize-none"
+            className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-1 focus:ring-primary/20 resize-none"
           />
           <div className="flex justify-between items-center">
             <p className="text-xs text-muted-foreground">{triageInput.length} characters</p>
@@ -280,9 +280,9 @@ export default function EmergencyTriagePage() {
         )}
 
         {triageResult && !triageLoading && (
-          <div className="mt-4 rounded-xl bg-blue-50 border border-blue-200 p-4 space-y-3">
+          <div className="mt-4 rounded-xl bg-blue-tint border border-primary/20 p-4 space-y-3">
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-primary">
+              <div className="mt-0.5 shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-blue-tint text-primary">
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                 </svg>

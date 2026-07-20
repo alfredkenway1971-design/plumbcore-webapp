@@ -78,7 +78,7 @@ function EditLineItemsModal({
             <input
               value={item.description}
               onChange={(e) => updateItem(i, 'description', e.target.value)}
-              className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-blue-500"
+              className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-primary"
             />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <div>
@@ -87,7 +87,7 @@ function EditLineItemsModal({
                   type="number"
                   value={item.quantity}
                   onChange={(e) => updateItem(i, 'quantity', e.target.value)}
-                  className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-blue-500"
+                  className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-primary"
                   min={0}
                   step={0.5}
                 />
@@ -98,7 +98,7 @@ function EditLineItemsModal({
                   type="number"
                   value={item.unitPrice}
                   onChange={(e) => updateItem(i, 'unitPrice', e.target.value)}
-                  className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-blue-500"
+                  className="w-full rounded ring-1 ring-black/5 px-2 py-1 text-sm text-foreground outline-none focus:border-primary"
                   min={0}
                   step={0.01}
                 />
@@ -256,7 +256,7 @@ export default function AIVoiceNotesPage() {
               onChange={(e) => setNote(e.target.value)}
               placeholder="Describe what was done on the job. Include parts used, labor time, and any issues encountered..."
               rows={14}
-              className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-3 text-sm text-foreground placeholder-gray-400 outline-none transition-all focus:border-blue-500/50 focus:ring-1 focus:ring-primary/20 resize-none"
+              className="w-full rounded-xl ring-1 ring-black/5 bg-white px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all focus:border-primary/50 focus:ring-1 focus:ring-primary/20 resize-none"
             />
             <div className="mt-4 flex items-center justify-between">
               <p className="text-xs text-muted-foreground">{note.length} characters</p>

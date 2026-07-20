@@ -142,12 +142,12 @@ export default function AddressAutocomplete({
           className={`w-full h-11 pl-10 pr-4 bg-white border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/80 outline-none transition-all ${
             error
               ? 'border-red-300 focus:ring-2 focus:ring-red-100'
-              : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+              : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'
           } ${className}`}
         />
         {loading && (
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2">
-            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         )}
       </div>
@@ -161,7 +161,7 @@ export default function AddressAutocomplete({
               key={i}
               type="button"
               onClick={() => handleSelect(s)}
-              className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-blue-50 hover:text-primary/80 transition-colors border-b border-slate-50 last:border-b-0 flex items-start gap-2.5"
+              className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-blue-tint hover:text-primary/80 transition-colors border-b border-border/50 last:border-b-0 flex items-start gap-2.5"
             >
               <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-muted-foreground/80" />
               <div>

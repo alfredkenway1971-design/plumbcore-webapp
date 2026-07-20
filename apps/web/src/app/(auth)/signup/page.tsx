@@ -195,7 +195,7 @@ function SignupForm() {
                   onClick={() => { setSelectedPlan(plan.id); setStep('form'); }}
                   className={`w-full text-left rounded-2xl border-2 p-5 transition-all hover:shadow-md ${
                     selectedPlan === plan.id
-                      ? 'border-blue-500 bg-blue-50/50 shadow-sm'
+                      ? 'border-primary bg-blue-tint/50 shadow-sm'
                       : 'border-border bg-white hover:border-border'
                   }`}
                 >
@@ -273,35 +273,35 @@ function SignupForm() {
               {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.companyLabel')}</label>
-                <input type="text" placeholder={t('auth.signup.companyPlaceholder')} value={form.companyName} onChange={update('companyName')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.companyName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                <input type="text" placeholder={t('auth.signup.companyPlaceholder')} value={form.companyName} onChange={update('companyName')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.companyName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                 {errors.companyName && <p className="text-xs text-red-500 mt-1">{errors.companyName}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.fullNameLabel')}</label>
-                <input type="text" placeholder={t('auth.signup.fullNamePlaceholder')} value={form.fullName} onChange={update('fullName')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.fullName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                <input type="text" placeholder={t('auth.signup.fullNamePlaceholder')} value={form.fullName} onChange={update('fullName')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.fullName ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                 {errors.fullName && <p className="text-xs text-red-500 mt-1">{errors.fullName}</p>}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.emailLabel')}</label>
-                  <input type="email" placeholder={t('auth.signup.emailPlaceholder')} value={form.email} onChange={update('email')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.email ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                  <input type="email" placeholder={t('auth.signup.emailPlaceholder')} value={form.email} onChange={update('email')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.email ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                   {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.phoneLabel')}</label>
-                  <input type="tel" inputMode="numeric" placeholder={t('auth.signup.phonePlaceholder')} value={phoneDisplay} onChange={update('phone')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.phone ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                  <input type="tel" inputMode="numeric" placeholder={t('auth.signup.phonePlaceholder')} value={phoneDisplay} onChange={update('phone')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.phone ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                   {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.passwordLabel')}</label>
-                  <input type="password" placeholder={t('auth.signup.passwordPlaceholder')} value={form.password} onChange={update('password')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.password ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                  <input type="password" placeholder={t('auth.signup.passwordPlaceholder')} value={form.password} onChange={update('password')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.password ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                   {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('auth.signup.confirmLabel')}</label>
-                  <input type="password" placeholder={t('auth.signup.confirmPlaceholder')} value={form.confirmPassword} onChange={update('confirmPassword')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.confirmPassword ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100'}`} />
+                  <input type="password" placeholder={t('auth.signup.confirmPlaceholder')} value={form.confirmPassword} onChange={update('confirmPassword')} disabled={loading} className={`w-full h-11 rounded-xl border bg-white px-4 text-sm outline-none transition-all ${errors.confirmPassword ? 'border-red-300 focus:ring-2 focus:ring-red-100' : 'border-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20'}`} />
                   {errors.confirmPassword && <p className="text-xs text-red-500 mt-1">{errors.confirmPassword}</p>}
                 </div>
               </div>

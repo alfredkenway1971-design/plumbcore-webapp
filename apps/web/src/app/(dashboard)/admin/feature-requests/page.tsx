@@ -40,7 +40,7 @@ const mockRequests: FeatureRequest[] = [];
 /* ── Status Config ── */
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; icon: any; label: string }> = {
-  'under-review': { bg: 'bg-blue-50', text: 'text-primary', dot: 'bg-blue-500', icon: Clock, label: 'Under Review' },
+  'under-review': { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', icon: Clock, label: 'Under Review' },
   planned: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', icon: Lightbulb, label: 'Planned' },
   'in-progress': { bg: 'bg-violet-50', text: 'text-violet-600', dot: 'bg-violet-500', icon: ArrowRight, label: 'In Progress' },
   completed: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', icon: CheckCircle2, label: 'Completed' },
@@ -133,14 +133,14 @@ export default function AdminFeatureRequestsPage() {
       {/* ── Stats Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Total Requests', value: stats.total, icon: Lightbulb, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total Requests', value: stats.total, icon: Lightbulb, color: 'text-primary', bg: 'bg-blue-tint' },
           { label: 'Under Review', value: stats.underReview, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'In Progress', value: stats.inProgress, icon: ArrowRight, color: 'text-violet-500', bg: 'bg-violet-50' },
           { label: 'Completed', value: stats.completed, icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50' },
         ].map((s, i) => (
           <div
             key={i}
-            className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 p-5"
+            className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 p-5"
           >
             <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}>
               <s.icon className={`w-5 h-5 ${s.color}`} />
@@ -153,10 +153,10 @@ export default function AdminFeatureRequestsPage() {
 
       {/* ── Submission Form ── */}
       {showForm && (
-        <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 p-5 sm:p-6 mb-6">
+        <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 p-5 sm:p-6 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-              <MessageSquarePlus className="w-5 h-5 text-blue-500" />
+            <div className="w-10 h-10 rounded-xl bg-blue-tint flex items-center justify-center">
+              <MessageSquarePlus className="w-5 h-5 text-primary" />
             </div>
             <div>
               <h2 className="text-base font-semibold text-foreground">Submit a Feature Request</h2>
@@ -177,7 +177,7 @@ export default function AdminFeatureRequestsPage() {
                     value={form.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     placeholder="e.g. John Smith"
-                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                   />
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function AdminFeatureRequestsPage() {
                     value={form.email}
                     onChange={(e) => updateField('email', e.target.value)}
                     placeholder="e.g. john@company.com"
-                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                    className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                   />
                 </div>
               </div>
@@ -210,7 +210,7 @@ export default function AdminFeatureRequestsPage() {
                   value={form.title}
                   onChange={(e) => updateField('title', e.target.value)}
                   placeholder="e.g. Offline mode for estimates"
-                  className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                  className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                 />
               </div>
             </div>
@@ -224,7 +224,7 @@ export default function AdminFeatureRequestsPage() {
                   required
                   value={form.category}
                   onChange={(e) => updateField('category', e.target.value)}
-                  className="w-full h-10 pl-10 pr-10 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground outline-none appearance-none focus:ring-2 focus:ring-primary/30 transition-all cursor-pointer"
+                  className="w-full h-10 pl-10 pr-10 rounded-xl bg-white ring-1 ring-border text-sm text-foreground outline-none appearance-none focus:ring-2 focus:ring-primary/30 transition-all cursor-pointer"
                 >
                   <option value="">Select a category</option>
                   {categories.map((c) => (
@@ -248,7 +248,7 @@ export default function AdminFeatureRequestsPage() {
                   value={form.description}
                   onChange={(e) => updateField('description', e.target.value)}
                   placeholder="Describe the feature and how it would help..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
                 />
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function AdminFeatureRequestsPage() {
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="h-10 px-5 rounded-xl bg-white ring-1 ring-slate-200 text-sm font-medium text-muted-foreground hover:bg-muted transition-all"
+                className="h-10 px-5 rounded-xl bg-white ring-1 ring-border text-sm font-medium text-muted-foreground hover:bg-muted transition-all"
               >
                 Cancel
               </button>
@@ -291,7 +291,7 @@ export default function AdminFeatureRequestsPage() {
       )}
 
       {/* ── Requests Table ── */}
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 overflow-hidden">
         {/* Filters */}
         <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
@@ -300,7 +300,7 @@ export default function AdminFeatureRequestsPage() {
               placeholder="Search requests..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-slate-200 text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -309,7 +309,7 @@ export default function AdminFeatureRequestsPage() {
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`h-8 px-3 rounded-xl text-xs font-semibold transition-all capitalize ${
-                  statusFilter === s ? 'bg-primary text-white' : 'bg-white ring-1 ring-slate-200 text-muted-foreground hover:bg-muted'
+                  statusFilter === s ? 'bg-primary text-white' : 'bg-white ring-1 ring-border text-muted-foreground hover:bg-muted'
                 }`}
               >
                 {s === 'under-review' ? 'Under Review' : s === 'in-progress' ? 'In Progress' : s}

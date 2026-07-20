@@ -63,7 +63,7 @@ const mockLeads: Lead[] = [
 ];
 
 const sevColors: Record<string, string> = {
-  low: 'bg-blue-500/10 text-blue-400', moderate: 'bg-amber-500/10 text-amber-400',
+  low: 'bg-blue-tint0/10 text-primary/80', moderate: 'bg-amber-500/10 text-amber-400',
   high: 'bg-orange-500/10 text-orange-400', emergency: 'bg-red-500/10 text-red-400',
 };
 
@@ -75,7 +75,7 @@ const declineReasons = [
 ];
 
 const tierColors: Record<string, string> = {
-  small: 'bg-blue-100 text-blue-700',
+  small: 'bg-blue-tint text-primary/90',
   medium: 'bg-amber-100 text-amber-700',
   large: 'bg-violet-100 text-violet-700',
   premium: 'bg-rose-100 text-rose-700',
@@ -205,7 +205,7 @@ export default function LeadsPage() {
         {[
           { label: 'Pending', value: pendingLeads.length, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'Accepted', value: acceptedLeads.length, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Avg Est.', value: leads.length ? `$${Math.round(leads.reduce((s,l) => s + l.total_estimate, 0) / leads.length)}` : '—', color: 'text-primary', bg: 'bg-blue-50' },
+          { label: 'Avg Est.', value: leads.length ? `$${Math.round(leads.reduce((s,l) => s + l.total_estimate, 0) / leads.length)}` : '—', color: 'text-primary', bg: 'bg-blue-tint' },
           { label: 'Deposits Collected', value: `$${(leads.reduce((s,l) => s + l.deposit_paid, 0) / 100).toFixed(0)}`, color: 'text-violet-600', bg: 'bg-violet-50' },
         ].map((s: any) => (
           <div key={s.label} className={`${s.bg} rounded-2xl p-3 md:p-4`}>
@@ -230,7 +230,7 @@ export default function LeadsPage() {
               const tierKey = lead.deposit_tier || getDepositLabel(lead.deposit_paid);
 
               return (
-                <Card key={lead.id} padding="lg" className="!bg-white !ring-1 !ring-slate-200 overflow-hidden">
+                <Card key={lead.id} padding="lg" className="!bg-white !ring-1 !ring-border overflow-hidden">
                   <div className="flex flex-col sm:flex-row gap-4">
                     {/* Photo Thumbnail */}
                     <div className="shrink-0">
@@ -320,7 +320,7 @@ export default function LeadsPage() {
                       <select
                         value={declineReason}
                         onChange={e => setDeclineReason(e.target.value)}
-                        className="w-full sm:w-auto h-9 px-3 rounded-xl bg-white border border-border text-xs text-foreground outline-none focus:border-blue-400"
+                        className="w-full sm:w-auto h-9 px-3 rounded-xl bg-white border border-border text-xs text-foreground outline-none focus:border-primary/50"
                       >
                         <option value="">Select reason...</option>
                         {declineReasons.map(r => (

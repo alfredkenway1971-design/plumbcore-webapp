@@ -21,16 +21,16 @@ function UsageLoading() {
         <Skeleton className="h-4 w-64" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
-        <div className="lg:col-span-3 rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30">
+        <div className="lg:col-span-3 rounded-2xl bg-white ring-1 ring-border p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-44 mb-4" />
           <Skeleton className="h-[220px] w-full" />
         </div>
-        <div className="lg:col-span-2 rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30">
+        <div className="lg:col-span-2 rounded-2xl bg-white ring-1 ring-border p-5 shadow-lg shadow-black/30">
           <Skeleton className="h-5 w-36 mb-4" />
           <Skeleton className="h-[200px] w-full" />
         </div>
       </div>
-      <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-lg shadow-black/30">
+      <div className="rounded-2xl bg-white ring-1 ring-border shadow-lg shadow-black/30">
         <Skeleton className="h-5 w-44 m-5" />
         <div className="overflow-x-auto px-5 pb-5">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -61,7 +61,7 @@ function UsageError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -95,7 +95,7 @@ export default function AdminUsagePage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
           { label: 'Avg Feature Adoption', value: '0%', icon: Zap, color: 'bg-violet-500' },
-          { label: 'Weekly Active Users', value: '0', icon: Activity, color: 'bg-blue-500' },
+          { label: 'Weekly Active Users', value: '0', icon: Activity, color: 'bg-blue-tint0' },
           { label: 'Features Trending Up', value: '0', icon: TrendingUp, color: 'bg-emerald-500' },
           { label: 'Active Plumbers', value: '0', icon: Users, color: 'bg-amber-500' },
         ].map((card) => {
@@ -103,7 +103,7 @@ export default function AdminUsagePage() {
           return (
             <div
               key={card.label}
-              className="rounded-2xl bg-white ring-1 ring-slate-200 p-5 shadow-lg shadow-black/30"
+              className="rounded-2xl bg-white ring-1 ring-border p-5 shadow-lg shadow-black/30"
             >
               <div className="flex items-start justify-between mb-3">
                 <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
@@ -118,9 +118,9 @@ export default function AdminUsagePage() {
       </div>
 
       {/* Empty State */}
-      <div className="rounded-2xl bg-white ring-1 ring-slate-200 p-16 text-center shadow-lg shadow-black/30">
-        <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-          <BarChart3 className="w-8 h-8 text-blue-500" />
+      <div className="rounded-2xl bg-white ring-1 ring-border p-16 text-center shadow-lg shadow-black/30">
+        <div className="w-16 h-16 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
+          <BarChart3 className="w-8 h-8 text-primary" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">No usage data yet</h3>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto">

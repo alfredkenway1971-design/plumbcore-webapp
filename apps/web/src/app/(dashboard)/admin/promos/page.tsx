@@ -67,7 +67,7 @@ export default function PromoCodesPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-lg bg-blue-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Active Codes</p><p className="text-lg font-bold text-primary">{activePromos}</p></div>
+        <div className="rounded-lg bg-blue-tint px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Active Codes</p><p className="text-lg font-bold text-primary">{activePromos}</p></div>
         <div className="rounded-lg bg-green-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Redemptions</p><p className="text-lg font-bold text-green-600">{totalRedemptions.toLocaleString()}</p></div>
         <div className="rounded-lg bg-amber-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase text-muted-foreground">Revenue Impact</p><p className="text-lg font-bold text-amber-600">$0</p></div>
       </div>
@@ -75,7 +75,7 @@ export default function PromoCodesPage() {
       {promos.length === 0 ? (
         <Card variant="bordered" padding="none">
           <div className="px-6 py-16 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-blue-tint flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">🏷️</span>
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-1">No promo codes yet</h3>

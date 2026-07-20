@@ -72,7 +72,7 @@ export default function BillingPage() {
               { icon: Shield, text: 'Update billing information' },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-                <item.icon className="w-4 h-4 text-blue-500 shrink-0" />
+                <item.icon className="w-4 h-4 text-primary shrink-0" />
                 {item.text}
               </div>
             ))}
@@ -106,7 +106,7 @@ export default function BillingPage() {
           <button
             onClick={openPortal}
             disabled={loading}
-            className="w-full h-11 rounded-xl bg-blue-500 hover:bg-primary disabled:bg-blue-300 text-white text-sm font-bold transition-all flex items-center justify-center gap-2"
+            className="w-full h-11 rounded-xl bg-blue-tint0 hover:bg-primary disabled:bg-blue-300 text-white text-sm font-bold transition-all flex items-center justify-center gap-2"
           >
             {loading ? 'Opening portal...' : 'Open Billing Portal'}
             <ArrowRight className="w-4 h-4" />

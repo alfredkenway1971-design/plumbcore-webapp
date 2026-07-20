@@ -351,7 +351,7 @@ const translations = {
       faqQ1: "Is there a free trial?",
       faqA1: "Yes! Every plan comes with a 14-day free trial. No credit card required.",
       faqQ2: "What's included in each plan?",
-      faqA2: 'Our plans scale from solo operators to enterprise teams. Check the <a href="#compare" class="text-blue-500 underline">compare table</a> for a full feature breakdown across all five plans.',
+      faqA2: 'Our plans scale from solo operators to enterprise teams. Check the <a href="#compare" class="text-primary underline">compare table</a> for a full feature breakdown across all five plans.',
       faqQ3: "Can I change plans?",
       faqA3: "Yes, upgrade or downgrade anytime. Changes take effect immediately and we'll prorate your billing.",
       faqQ4: "Is there a setup fee?",

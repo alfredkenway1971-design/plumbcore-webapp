@@ -128,7 +128,7 @@ export default function ChatWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-500 hover:bg-primary text-white shadow-lg hover:shadow-xl active:scale-90 transition-all flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-tint0 hover:bg-primary text-white shadow-lg hover:shadow-xl active:scale-90 transition-all flex items-center justify-center"
           aria-label="Open chat"
         >
           <MessageCircle className="w-6 h-6" />
@@ -177,12 +177,12 @@ export default function ChatWidget() {
                   <div
                     className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
                       msg.role === 'user'
-                        ? 'bg-blue-500 text-white rounded-br-sm'
+                        ? 'bg-blue-tint0 text-white rounded-br-sm'
                         : 'bg-white text-foreground border border-border/50 shadow-sm rounded-bl-sm'
                     }`}
                   >
                     {msg.text}
-                    <p className={`text-[10px] mt-1 ${msg.role === 'user' ? 'text-blue-200' : 'text-muted-foreground/80'}`}>
+                    <p className={`text-[10px] mt-1 ${msg.role === 'user' ? 'text-primary/30' : 'text-muted-foreground/80'}`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -224,12 +224,12 @@ export default function ChatWidget() {
                 placeholder="Type a message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 rounded-full border-border bg-muted h-10 text-sm px-4 focus:border-blue-400"
+                className="flex-1 rounded-full border-border bg-muted h-10 text-sm px-4 focus:border-primary/50"
               />
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="w-9 h-9 rounded-full bg-blue-500 hover:bg-primary disabled:bg-muted disabled:cursor-not-allowed flex items-center justify-center text-white active:scale-90 transition-all shrink-0"
+                className="w-9 h-9 rounded-full bg-blue-tint0 hover:bg-primary disabled:bg-muted disabled:cursor-not-allowed flex items-center justify-center text-white active:scale-90 transition-all shrink-0"
                 aria-label="Send message"
               >
                 <Send className="w-4 h-4" />

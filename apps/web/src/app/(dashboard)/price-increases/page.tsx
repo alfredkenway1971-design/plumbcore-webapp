@@ -323,16 +323,16 @@ export default function PriceIncreasesPage() {
 
       {/* AI Summary */}
       {aiSummary && (
-        <Card variant="bordered" padding="md" className="border-blue-200 bg-blue-50/50">
+        <Card variant="bordered" padding="md" className="border-primary/20 bg-blue-tint/50">
           <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-tint">
               <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-blue-900">AI Analysis Summary</p>
-              <p className="text-sm text-blue-700 mt-0.5">{aiSummary}</p>
+              <p className="text-sm font-medium text-foreground">AI Analysis Summary</p>
+              <p className="text-sm text-primary/90 mt-0.5">{aiSummary}</p>
             </div>
           </div>
         </Card>
@@ -400,12 +400,12 @@ export default function PriceIncreasesPage() {
                           step="0.01"
                           value={editValue}
                           onChange={(e) => setEditValue(parseFloat(e.target.value) || 0)}
-                          className="w-24 rounded border border-blue-300 px-2 py-1 text-sm text-right"
+                          className="w-24 rounded border border-primary/30 px-2 py-1 text-sm text-right"
                           autoFocus
                         />
                         <button
                           onClick={handleSaveManualEdit}
-                          className="text-primary hover:text-blue-800 text-xs font-medium"
+                          className="text-primary hover:text-primary/80 text-xs font-medium"
                         >
                           Save
                         </button>

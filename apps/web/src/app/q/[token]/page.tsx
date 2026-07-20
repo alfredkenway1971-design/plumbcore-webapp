@@ -13,10 +13,10 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const statusConfig: Record<string, { label: string; bg: string; color: string; border: string; icon: any }> = {
-  analyzing: { label: 'Analyzing', bg: 'bg-blue-50', color: 'text-blue-700', border: 'border-blue-200', icon: Clock },
+  analyzing: { label: 'Analyzing', bg: 'bg-blue-tint', color: 'text-primary/90', border: 'border-primary/20', icon: Clock },
   quoted: { label: 'Ready', bg: 'bg-emerald-50', color: 'text-emerald-700', border: 'border-emerald-200', icon: Check },
   deposit_paid: { label: 'Deposit Paid', bg: 'bg-amber-50', color: 'text-amber-700', border: 'border-amber-200', icon: Check },
-  scheduled: { label: 'Scheduled', bg: 'bg-blue-50', color: 'text-blue-700', border: 'border-blue-200', icon: Calendar },
+  scheduled: { label: 'Scheduled', bg: 'bg-blue-tint', color: 'text-primary/90', border: 'border-primary/20', icon: Calendar },
   completed: { label: 'Completed', bg: 'bg-emerald-50', color: 'text-emerald-700', border: 'border-emerald-200', icon: Check },
   expired: { label: 'Expired', bg: 'bg-red-50', color: 'text-red-700', border: 'border-red-200', icon: AlertTriangle },
 };
@@ -28,7 +28,7 @@ function StatusTimeline({ currentStatus }: { currentStatus: string }) {
     <div className="flex items-center gap-1">
       {steps.map((s, i) => (
         <div key={s} className="flex-1 flex flex-col items-center">
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${i <= idx ? 'bg-blue-500 text-white' : 'bg-muted text-muted-foreground/80'}`}>
+          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${i <= idx ? 'bg-blue-tint0 text-white' : 'bg-muted text-muted-foreground/80'}`}>
             {i <= idx ? <Check className="w-3 h-3" /> : i + 1}
           </div>
           <span className={`text-[10px] mt-1 ${i <= idx ? 'text-primary font-medium' : 'text-muted-foreground/80'}`}>{s.replace('_',' ')}</span>
@@ -68,7 +68,7 @@ export default function QuoteStatusPage() {
   if (loading) return (
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="w-10 h-10 mx-auto relative"><div className="absolute inset-0 rounded-full border-3 border-border/50" /><div className="absolute inset-0 rounded-full border-3 border-blue-500 border-t-transparent animate-spin" /></div>
+        <div className="w-10 h-10 mx-auto relative"><div className="absolute inset-0 rounded-full border-3 border-border/50" /><div className="absolute inset-0 rounded-full border-3 border-primary border-t-transparent animate-spin" /></div>
         <p className="text-sm text-muted-foreground">Loading your estimate...</p>
       </div>
     </div>
@@ -118,7 +118,7 @@ export default function QuoteStatusPage() {
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Photos</p>
                   <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
                     {data.photos.map((p: string, i: number) => (
-                      <button key={i} onClick={() => setPhotoPreview(p)} className="snap-start shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-muted border border-border hover:border-blue-400 transition-all active:scale-95"><img src={p} alt={`Photo ${i+1}`} className="w-full h-full object-cover" /></button>
+                      <button key={i} onClick={() => setPhotoPreview(p)} className="snap-start shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-muted border border-border hover:border-primary/50 transition-all active:scale-95"><img src={p} alt={`Photo ${i+1}`} className="w-full h-full object-cover" /></button>
                     ))}
                   </div>
                 </CardContent>
@@ -127,14 +127,14 @@ export default function QuoteStatusPage() {
             <Card className="border-border shadow-sm overflow-hidden">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-5 text-white text-center"><p className="text-xs font-semibold text-blue-100 uppercase tracking-wider mb-1">Total Estimated Price</p><p className="text-3xl sm:text-4xl font-extrabold">${data.totalPrice?.toFixed(2) || '0.00'}</p></div>
               <CardContent className="p-5 space-y-4">
-                {data.diagnosis && <><div className="flex items-start justify-between"><div><p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Diagnosis</p><p className="text-sm font-medium text-foreground">{data.diagnosis}</p></div>{data.confidence && <Badge className="bg-blue-50 text-blue-700 border-blue-200 text-xs font-medium px-2.5 py-0.5 shrink-0">{data.confidence}%</Badge>}</div><Separator className="bg-muted" /></>}
+                {data.diagnosis && <><div className="flex items-start justify-between"><div><p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Diagnosis</p><p className="text-sm font-medium text-foreground">{data.diagnosis}</p></div>{data.confidence && <Badge className="bg-blue-tint text-primary/90 border-primary/20 text-xs font-medium px-2.5 py-0.5 shrink-0">{data.confidence}%</Badge>}</div><Separator className="bg-muted" /></>}
                 {data.laborCost && <div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Labor {data.estimatedHours}h @ ${data.laborRate||120}/hr</span><span className="text-sm font-semibold text-foreground">${data.laborCost.toFixed(2)}</span></div>}
                 {data.parts?.length > 0 && <><Separator className="bg-muted" /><div><p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Parts</p>{data.parts.map((p:any,i:number) => <div key={i} className="flex items-center justify-between py-1"><span className="text-sm text-foreground">{p.qty}x {p.name}</span><span className="text-sm font-semibold text-foreground">${p.total?.toFixed(2)||'0.00'}</span></div>)}</div></>}
                 {data.tax && <div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Tax ({(data.taxRate||8.5)*100}%)</span><span className="text-sm font-semibold text-foreground">${data.tax.toFixed(2)}</span></div>}
                 <Separator className="bg-muted" /><div className="flex items-center justify-between"><span className="text-sm font-semibold text-foreground">Total</span><span className="text-xl font-extrabold text-primary">${data.totalPrice?.toFixed(2)||'0.00'}</span></div>
               </CardContent>
             </Card>
-            <Card className="border-border shadow-sm"><CardContent className="p-5"><p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Your Plumber</p><div className="flex items-center gap-4"><Avatar className="w-14 h-14"><AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-sm font-bold">MT</AvatarFallback></Avatar><div className="flex-1"><p className="text-base font-bold text-foreground">{plumber.name}</p><div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5"><span className="flex items-center gap-0.5"><Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />{plumber.rating}</span><span>&bull;</span><span>{plumber.jobs.toLocaleString()} jobs</span><span>&bull;</span><span>Lic. {plumber.license}</span></div></div><a href="tel:+155****4567" className="w-10 h-10 rounded-full bg-blue-50 text-primary flex items-center justify-center hover:bg-blue-100 active:scale-90 transition-all"><Phone className="w-5 h-5" /></a></div></CardContent></Card>
+            <Card className="border-border shadow-sm"><CardContent className="p-5"><p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Your Plumber</p><div className="flex items-center gap-4"><Avatar className="w-14 h-14"><AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-sm font-bold">MT</AvatarFallback></Avatar><div className="flex-1"><p className="text-base font-bold text-foreground">{plumber.name}</p><div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5"><span className="flex items-center gap-0.5"><Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />{plumber.rating}</span><span>&bull;</span><span>{plumber.jobs.toLocaleString()} jobs</span><span>&bull;</span><span>Lic. {plumber.license}</span></div></div><a href="tel:+155****4567" className="w-10 h-10 rounded-full bg-blue-tint text-primary flex items-center justify-center hover:bg-blue-tint active:scale-90 transition-all"><Phone className="w-5 h-5" /></a></div></CardContent></Card>
             <div className="space-y-3">
               {status === 'quoted' && <button className="w-full h-12 rounded-xl bg-amber-400 hover:bg-amber-500 text-foreground font-bold shadow-sm transition-all active:scale-[0.97]">Pay $49 Deposit &amp; Book</button>}
               {status === 'deposit_paid' && <button className="w-full h-12 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-sm transition-all active:scale-[0.97]"><Check className="w-4 h-4 inline mr-2" />Deposit Confirmed</button>}

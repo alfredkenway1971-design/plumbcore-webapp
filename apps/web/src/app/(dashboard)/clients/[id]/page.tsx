@@ -14,7 +14,7 @@ interface ClientProperty {
 
 /* ── Tag colors ── */
 const TAG_COLORS = [
-  'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  'bg-blue-tint0/10 text-primary/80 border-primary/20',
   'bg-green-500/10 text-green-400 border-green-500/20',
   'bg-purple-500/10 text-purple-400 border-purple-500/20',
   'bg-amber-500/10 text-amber-400 border-amber-500/20',
@@ -29,7 +29,7 @@ function SkeletonBlock({ className = '' }: { className?: string }) {
 
 /* ── Status color ── */
 const statusColor: Record<Job['status'], string> = {
-  scheduled: 'bg-blue-50 text-primary',
+  scheduled: 'bg-blue-tint text-primary',
   'in-progress': 'bg-accent-amber/10 text-amber-600',
   completed: 'bg-green-50 text-green-600',
   urgent: 'bg-red-50 text-red-600',
@@ -296,7 +296,7 @@ export default function ClientDetailPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span className="text-sm text-foreground">{prop.address}</span>
-                    <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${prop.type === 'commercial' ? 'bg-accent-amber/10 text-amber-600' : 'bg-blue-50 text-primary'}`}>
+                    <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${prop.type === 'commercial' ? 'bg-accent-amber/10 text-amber-600' : 'bg-blue-tint text-primary'}`}>
                       {prop.type}
                     </span>
                   </div>

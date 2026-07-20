@@ -294,7 +294,7 @@ export default function SMSPage() {
                   key={conv.id}
                   onClick={() => setSelectedConv(conv.id)}
                   className={`w-full text-left px-4 py-3 transition-colors hover:bg-muted ${
-                    selectedConv === conv.id ? 'bg-blue-50 border-l-2 border-blue-500' : ''
+                    selectedConv === conv.id ? 'bg-blue-tint border-l-2 border-primary' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -350,7 +350,7 @@ export default function SMSPage() {
                         }`}
                       >
                         <p>{msg.content}</p>
-                        <p className={`text-[10px] mt-1 ${msg.sent ? 'text-blue-200' : 'text-muted-foreground/80'}`}>
+                        <p className={`text-[10px] mt-1 ${msg.sent ? 'text-primary/30' : 'text-muted-foreground/80'}`}>
                           {msg.timestamp}
                         </p>
                       </div>
@@ -433,7 +433,7 @@ export default function SMSPage() {
             <button
               key={i}
               onClick={() => handleTemplateSelect(t.template)}
-              className="w-full text-left rounded-xl ring-1 ring-black/5 p-3 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+              className="w-full text-left rounded-xl ring-1 ring-black/5 p-3 hover:border-primary/30 hover:bg-blue-tint transition-colors"
             >
               <p className="text-sm font-medium text-foreground">{t.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{t.template}</p>

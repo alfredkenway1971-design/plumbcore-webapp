@@ -115,7 +115,7 @@ export default function LiveTrackingPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: 'Available', value: techLocs.filter(l => l.status === 'available').length, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'En Route', value: techLocs.filter(l => l.status === 'en_route').length, color: 'text-primary', bg: 'bg-blue-50' },
+          { label: 'En Route', value: techLocs.filter(l => l.status === 'en_route').length, color: 'text-primary', bg: 'bg-blue-tint' },
           { label: 'On Job', value: techLocs.filter(l => l.status === 'on_job').length, color: 'text-red-600', bg: 'bg-red-50' },
           { label: 'Notifications', value: notifs.length, color: 'text-muted-foreground', bg: 'bg-muted' },
         ].map((s: any) => (

@@ -356,7 +356,7 @@ export default function SchedulePage() {
           </button>
           <button
             onClick={goToday}
-            className="rounded-xl px-3 py-1.5 text-xs font-semibold text-primary border border-electric/30 hover:bg-blue-50 transition-colors"
+            className="rounded-xl px-3 py-1.5 text-xs font-semibold text-primary border border-electric/30 hover:bg-blue-tint transition-colors"
           >
             Today
           </button>

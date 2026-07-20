@@ -347,7 +347,7 @@ export default function OnboardingPage() {
     <div className="w-full">
       {/* Logo + Title */}
       <div className="mb-8 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 mb-4">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-tint mb-4">
           <svg className="h-7 w-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>

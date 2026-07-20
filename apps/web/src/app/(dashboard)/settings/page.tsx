@@ -167,7 +167,7 @@ const BILLING_HISTORY: InvoiceRecord[] = [
 /* ── Role Badge Component ── */
 function RoleBadge({ role }: { role: string }) {
   const config: Record<string, { label: string; bg: string; text: string; border: string }> = {
-    admin: { label: 'Admin', bg: 'bg-blue-50', text: 'text-primary', border: 'border-electric/20' },
+    admin: { label: 'Admin', bg: 'bg-blue-tint', text: 'text-primary', border: 'border-electric/20' },
     dispatcher: { label: 'Dispatcher', bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-status-warning/20' },
     'lead-tech': { label: 'Lead Tech', bg: 'bg-green-50', text: 'text-green-600', border: 'border-status-success/20' },
     'senior-tech': { label: 'Senior Tech', bg: 'bg-green-50', text: 'text-green-600', border: 'border-status-success/20' },
@@ -714,7 +714,7 @@ export default function SettingsPage() {
                         reader.readAsDataURL(file);
                       }}
                     />
-                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
+                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-tint0 text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
                       {company.logo_url ? 'Change Logo' : 'Upload Logo'}
                     </span>
                   </label>
@@ -1056,7 +1056,7 @@ export default function SettingsPage() {
                 <select
                   value={inviteForm.role}
                   onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}
-                  className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30"
                 >
                   <option value="admin">Admin</option>
                   <option value="dispatcher">Dispatcher</option>
@@ -1112,7 +1112,7 @@ export default function SettingsPage() {
                   <select
                     value={editMember.role}
                     onChange={(e) => setEditMember({ ...editMember, role: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-200"
+                    className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30"
                   >
                     <option value="admin">Admin</option>
                     <option value="dispatcher">Dispatcher</option>

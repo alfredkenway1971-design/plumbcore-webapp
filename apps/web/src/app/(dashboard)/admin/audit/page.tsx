@@ -8,7 +8,7 @@ const severityStyles: Record<string, { bg: string; text: string; icon: any; dot:
   success: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle, dot: 'bg-emerald-500' },
   warning: { bg: 'bg-amber-50', text: 'text-amber-600', icon: AlertTriangle, dot: 'bg-amber-500' },
   error: { bg: 'bg-red-50', text: 'text-red-700', icon: XCircle, dot: 'bg-red-500' },
-  info: { bg: 'bg-blue-50', text: 'text-primary', icon: Info, dot: 'bg-blue-500' },
+  info: { bg: 'bg-blue-tint', text: 'text-primary', icon: Info, dot: 'bg-blue-tint0' },
 };
 
 const typeLabels: Record<string, string> = {
@@ -48,15 +48,15 @@ export default function AdminAuditLogPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {[ { label: 'Total Events', value: 0, color: 'text-blue-500', bg: 'bg-blue-50' }, { label: 'Success', value: 0, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Warnings', value: 0, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Errors', value: 0, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
-          <div key={i} className="bg-white rounded-2xl ring-1 ring-slate-200 p-4 shadow-sm ring-1 ring-black/5 text-center">
+        {[ { label: 'Total Events', value: 0, color: 'text-primary', bg: 'bg-blue-tint' }, { label: 'Success', value: 0, color: 'text-emerald-500', bg: 'bg-emerald-50' }, { label: 'Warnings', value: 0, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Errors', value: 0, color: 'text-red-500', bg: 'bg-red-50' } ].map((s, i) => (
+          <div key={i} className="bg-white rounded-2xl ring-1 ring-border p-4 shadow-sm ring-1 ring-black/5 text-center">
             <p className="text-2xl font-bold text-foreground">{s.value}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl ring-1 ring-slate-200 shadow-sm ring-1 ring-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl ring-1 ring-border shadow-sm ring-1 ring-black/5 overflow-hidden">
         <div className="px-5 py-4 flex flex-col sm:flex-row gap-3 border-b border-border/50">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />

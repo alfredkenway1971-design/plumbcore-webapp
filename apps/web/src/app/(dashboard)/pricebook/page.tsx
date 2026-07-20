@@ -350,7 +350,7 @@ export default function PricebookPage() {
                     <div className="flex items-center gap-2">
                       {item.name}
                       {item.isRepairType && (
-                        <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-primary">Repair</span>
+                        <span className="inline-flex items-center rounded-full bg-blue-tint px-2 py-0.5 text-[10px] font-medium text-primary">Repair</span>
                       )}
                     </div>
                   </td>
@@ -844,7 +844,7 @@ function CsvImportModal({
           <div
             className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
               dragOver
-                ? 'border-blue-400 bg-blue-50'
+                ? 'border-primary/50 bg-blue-tint'
                 : 'border-gray-300 hover:border-gray-400 bg-muted/50'
             }`}
             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
@@ -874,7 +874,7 @@ function CsvImportModal({
             </label>
             <button
               onClick={downloadTemplate}
-              className="mt-3 text-xs text-primary hover:text-blue-800 underline"
+              className="mt-3 text-xs text-primary hover:text-primary/80 underline"
             >
               Download sample template
             </button>
@@ -915,7 +915,7 @@ function CsvImportModal({
                           return next;
                         });
                       }}
-                      className="flex-1 rounded-xl ring-1 ring-black/5 px-3 py-2 text-sm text-foreground outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200"
+                      className="flex-1 rounded-xl ring-1 ring-black/5 px-3 py-2 text-sm text-foreground outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30"
                     >
                       <option value="">— Select mapping —</option>
                       {mappingOptions.map(opt => (

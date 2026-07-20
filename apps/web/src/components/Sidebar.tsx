@@ -90,7 +90,7 @@ const plumberNav = [
     { labelKey: 'schedule', label: 'Schedule', icon: 'Calendar', href: '/schedule' },
     { labelKey: 'routeMap', label: 'Route Map', icon: 'MapPin', href: '/route-map', feature: 'routeOptimization' },
     { labelKey: 'liveTracking', label: 'Live Tracking', icon: 'Truck', href: '/live-tracking', feature: 'truckGps' },
-    { labelKey: 'leads', label: 'Leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-500' } },
+    { labelKey: 'leads', label: 'Leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-tint0' } },
   ]},
   { sectionKey: 'aiTools', items: [
     { labelKey: 'aiChat', label: 'AI Chat', icon: 'Chat', href: '/ai-chat' },
@@ -199,7 +199,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         `}
       >
         {/* Logo + Collapse toggle */}
-        <div className="flex h-14 md:h-16 shrink-0 items-center justify-between px-4 ring-1 ring-slate-200">
+        <div className="flex h-14 md:h-16 shrink-0 items-center justify-between px-4 ring-1 ring-border">
           <PlumbCoreLogo size="sm" showText={!collapsed} />
           <button
             onClick={() => setCollapsed(!collapsed)}
@@ -233,7 +233,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                       className={`
                         flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150
                         ${active
-                          ? 'bg-blue-50 text-primary ring-1 ring-blue-200'
+                          ? 'bg-blue-tint text-primary ring-1 ring-blue-200'
                           : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                         }
                         ${collapsed ? 'justify-center px-0' : ''}
@@ -258,7 +258,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* Profile */}
-        <div className="shrink-0 ring-1 ring-slate-200 p-3" ref={profileRef}>
+        <div className="shrink-0 ring-1 ring-border p-3" ref={profileRef}>
           <div
             className="flex items-center gap-3 rounded-xl px-2.5 py-2.5 hover:bg-muted transition-colors cursor-pointer group relative"
             onClick={() => setProfileOpen(!profileOpen)}
@@ -287,11 +287,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             )}
           </div>
           {profileOpen && (
-            <div className="mt-1 mx-1 rounded-xl ring-1 ring-slate-200 bg-white shadow-xl overflow-hidden">
+            <div className="mt-1 mx-1 rounded-xl ring-1 ring-border bg-white shadow-xl overflow-hidden">
               <button onClick={() => { setProfileOpen(false); router.push('/settings'); }} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-muted-foreground hover:bg-muted transition-colors">
                 <Icons.Cog className="w-4 h-4 text-muted-foreground" /> Settings
               </button>
-              <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors ring-1 ring-inset ring-slate-200">
+              <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors ring-1 ring-inset ring-border">
                 <Icons.Logout className="w-4 h-4" /> Logout
               </button>
             </div>
