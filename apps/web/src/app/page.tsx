@@ -604,14 +604,21 @@ function PricingSection({ t }: { t: (key: string) => string }) {
                 </div>
 
                 {/* Lead count — prominent */}
-                <div className="mb-3 text-center">
+                <div className="mb-2 text-center">
                   <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">{t('home.pricingLeadsLabel')}</span>
                   <div className="text-2xl font-bold text-amber-600 mt-0.5">{p.leads}</div>
                 </div>
-                <div className="flex items-center justify-center gap-3 mb-4 text-xs text-slate-500">
+                <div className="flex items-center justify-center gap-3 mb-3 text-xs text-slate-500">
                   <span className="flex items-center gap-1"><Wrench className="w-3.5 h-3.5" /> {p.techs}</span>
                   <span className="w-1 h-1 rounded-full bg-slate-300" />
                   <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {p.aiHours} {t('home.pricingAILabel')}</span>
+                </div>
+                {/* Priority badge */}
+                <div className="mb-4 text-center">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                    {t('home.pricingPriority')}: {p.priority}
+                  </span>
                 </div>
 
                 <ul className="space-y-2.5 text-left max-w-[200px] mx-auto">
@@ -682,6 +689,72 @@ function PricingSection({ t }: { t: (key: string) => string }) {
           <p className="text-sm text-slate-400 mt-3">
             {t('home.freeTrialSub')}
           </p>
+        </div>
+      </div>
+    </section>
+
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DEPOSIT TIERS — customer deposit table
+   ═══════════════════════════════════════════════════════════════ */
+function DepositTiersSection({ t }: { t: (key: string) => string }) {
+  return (
+    <section className="py-16 sm:py-20 bg-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">{t('home.depositTiersTitle')}</h2>
+          <p className="text-base text-slate-600">{t('home.depositTiersSub')}</p>
+        </div>
+        <div className="overflow-x-auto rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-amber-50">
+                <th className="text-left px-5 py-3.5 font-semibold text-slate-700">{t('home.depositColJobValue')}</th>
+                <th className="text-center px-4 py-3.5 font-bold text-amber-700">{t('home.depositColDeposit')}</th>
+                <th className="text-center px-4 py-3.5 font-semibold text-emerald-700">{t('home.depositColYouKeep')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.depositUnder1000')}</td><td className="px-4 py-3.5 text-center text-slate-700">$49</td><td className="px-4 py-3.5 text-center text-emerald-600 font-semibold">$49</td></tr>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.deposit1000to1499')}</td><td className="px-4 py-3.5 text-center text-slate-700">$99</td><td className="px-4 py-3.5 text-center text-emerald-600 font-semibold">$99</td></tr>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.deposit1500to1999')}</td><td className="px-4 py-3.5 text-center text-slate-700">$149</td><td className="px-4 py-3.5 text-center text-emerald-600 font-semibold">$149</td></tr>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.deposit2000plus')}</td><td className="px-4 py-3.5 text-center text-slate-700">$199</td><td className="px-4 py-3.5 text-center text-emerald-600 font-semibold">$199</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-slate-400 text-center mt-3">{t('home.depositNote')}</p>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LEAD PRIORITY — how lead routing works by plan tier
+   ═══════════════════════════════════════════════════════════════ */
+function LeadPrioritySection({ t }: { t: (key: string) => string }) {
+  return (
+    <section className="py-16 sm:py-20 bg-slate-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">{t('home.priorityTitle')}</h2>
+          <p className="text-base text-slate-600">{t('home.prioritySub')}</p>
+        </div>
+        <div className="overflow-x-auto rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-amber-50">
+                <th className="text-left px-5 py-3.5 font-semibold text-slate-700">{t('home.priorityColJobValue')}</th>
+                <th className="text-center px-4 py-3.5 font-semibold text-slate-700">{t('home.priorityColWhoGets')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.priorityUnder500')}</td><td className="px-4 py-3.5 text-center text-slate-600">{t('home.priorityUnder500Desc')}</td></tr>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.priority500to1999')}</td><td className="px-4 py-3.5 text-center text-slate-600">{t('home.priority500to1999Desc')}</td></tr>
+              <tr className="border-t border-slate-100"><td className="px-5 py-3.5 font-medium text-slate-700">{t('home.priority2000plus')}</td><td className="px-4 py-3.5 text-center text-slate-600">{t('home.priority2000plusDesc')}</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -1024,6 +1097,8 @@ export default function LandingPage() {
       <FeaturesSection t={t} />
       <ConsumerCtaSection t={t} />
       <PricingSection t={t} />
+      <DepositTiersSection t={t} />
+      <LeadPrioritySection t={t} />
       <CompetitionSection t={t} />
       <TestimonialsSection t={t} />
       <FaqSection t={t} />
