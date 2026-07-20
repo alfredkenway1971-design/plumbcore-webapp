@@ -394,7 +394,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
               className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out group"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br {f.gradient} flex items-center justify-center shadow-md shadow-black/5 shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110">
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center shadow-md shadow-black/5 shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110`}>
                   <f.icon className="w-5 h-5 text-white" />
                 </div>
                 <div>
