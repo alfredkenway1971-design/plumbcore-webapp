@@ -185,7 +185,7 @@ export default function ReviewsPage() {
           <div className="bg-white rounded-2xl border border-border/50 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-muted-foreground">Reviews This Month</p>
-              <div className="w-10 h-10 rounded-xl bg-blue-tint0 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <I.Star className="w-5 h-5 text-foreground" />
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function ReviewsPage() {
                     {/* Progress bar for response rate */}
                     <div className="mt-2 w-full h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-tint0 rounded-full transition-all duration-500"
+                        className="h-full bg-primary rounded-full transition-all duration-500"
                         style={{ width: `${tech.responseRate}%` }}
                       />
                     </div>

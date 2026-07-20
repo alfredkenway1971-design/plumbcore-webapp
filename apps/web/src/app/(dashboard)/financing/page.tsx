@@ -593,7 +593,7 @@ function FinancingSettingsModal({ open, onClose, settings, onSave }: {
           <button
             onClick={() => setLocal({ ...local, enabled: !local.enabled })}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              local.enabled ? 'bg-blue-tint0' : 'bg-gray-300'
+              local.enabled ? 'bg-primary' : 'bg-gray-300'
             }`}
           >
             <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -800,7 +800,7 @@ export default function FinancingPage() {
             label="Total Approved"
             value={`$${summary.totalApproved.toLocaleString()}`}
             sub={`Out of $${summary.totalFinanced.toLocaleString()} total`}
-            color="bg-blue-tint0"
+            color="bg-primary"
           />
           <StatCard
             icon={CreditCard}

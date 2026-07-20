@@ -156,7 +156,7 @@ function PlumberCard({ plumber, actionLabel, actionHref }: { plumber: PlumberInf
           </div>
         )}
 
-        <a href={actionHref} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-sm hover:from-blue-500 hover:to-cyan-400 active:scale-[0.98] transition-all shadow-md shadow-blue-500/20">
+        <a href={actionHref} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-primary to-blue-bright text-white font-semibold text-sm hover:from-primary hover:to-blue-bright active:scale-[0.98] transition-all shadow-md shadow-primary/20">
           <I.Phone /> {actionLabel}
         </a>
       </div>
@@ -223,7 +223,7 @@ function EnRouteState({ data }: { data: LeadStatusResponse }) {
       </div>
 
       {data.plumber && (
-        <a href={`tel:${data.plumber.phone}`} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-sm hover:from-blue-500 hover:to-cyan-400 active:scale-[0.98] transition-all shadow-md shadow-blue-500/20">
+        <a href={`tel:${data.plumber.phone}`} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-primary to-blue-bright text-white font-semibold text-sm hover:from-primary hover:to-blue-bright active:scale-[0.98] transition-all shadow-md shadow-primary/20">
           <I.Phone /> Call Plumber
         </a>
       )}
@@ -249,7 +249,7 @@ function ArrivedState({ data }: { data: LeadStatusResponse }) {
       </div>
 
       {data.plumber && (
-        <a href={`tel:${data.plumber.phone}`} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-sm hover:from-blue-500 hover:to-cyan-400 active:scale-[0.98] transition-all shadow-md shadow-blue-500/20">
+        <a href={`tel:${data.plumber.phone}`} className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-primary to-blue-bright text-white font-semibold text-sm hover:from-primary hover:to-blue-bright active:scale-[0.98] transition-all shadow-md shadow-primary/20">
           <I.Phone /> Contact Plumber
         </a>
       )}
@@ -362,8 +362,8 @@ function ProgressBar({ status }: { status: LeadStatus }) {
             <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
               isActive
                 ? isCurrent
-                  ? 'bg-blue-tint0 text-white shadow-lg shadow-blue-500/30 scale-110'
-                  : 'bg-blue-tint0 text-white'
+                  ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-110'
+                  : 'bg-primary text-white'
                 : 'bg-muted text-slate-300'
             }`}>
               {step.key === 'matching' ? '🔍' : step.key === 'en_route' ? '🚛' : isActive && step.key !== 'arrived' ? '✓' : step.icon}
@@ -372,7 +372,7 @@ function ProgressBar({ status }: { status: LeadStatus }) {
               {LABELS[step.key] || step.key}
             </span>
             {i < STEPS.length - 1 && (
-              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-blue-tint0' : 'bg-muted'}`} />
+              <div className={`absolute top-4 h-0.5 w-full left-1/2 -translate-y-1/2 -z-10 ${isActive ? 'bg-primary' : 'bg-muted'}`} />
             )}
           </div>
         );
@@ -430,7 +430,7 @@ export default function TrackPage() {
         <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3"><span className="text-xl">⚠️</span></div>
         <h2 className="text-lg font-bold text-foreground mb-1">Something went wrong</h2>
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
-        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-blue-tint0 text-white font-medium text-sm hover:bg-primary active:scale-[0.98] transition-all">Try Again</button>
+        <button onClick={fetchStatus} className="py-2.5 px-6 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary active:scale-[0.98] transition-all">Try Again</button>
       </div>
     );
     if (!data) return null;

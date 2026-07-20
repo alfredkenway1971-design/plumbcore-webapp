@@ -61,7 +61,7 @@ function UsageError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -95,7 +95,7 @@ export default function AdminUsagePage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
           { label: 'Avg Feature Adoption', value: '0%', icon: Zap, color: 'bg-violet-500' },
-          { label: 'Weekly Active Users', value: '0', icon: Activity, color: 'bg-blue-tint0' },
+          { label: 'Weekly Active Users', value: '0', icon: Activity, color: 'bg-primary' },
           { label: 'Features Trending Up', value: '0', icon: TrendingUp, color: 'bg-emerald-500' },
           { label: 'Active Plumbers', value: '0', icon: Users, color: 'bg-amber-500' },
         ].map((card) => {

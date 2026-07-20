@@ -490,7 +490,7 @@ export default function LeadsMarketplacePage() {
             onClick={() => setDispatchMode(mode.key)}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all ${
               dispatchMode === mode.key
-                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm'
+                ? 'bg-gradient-to-r from-primary to-blue-bright text-white shadow-sm'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
           >

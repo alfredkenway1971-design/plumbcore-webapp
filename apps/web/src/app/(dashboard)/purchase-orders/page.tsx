@@ -299,7 +299,7 @@ export default function PurchaseOrdersPage() {
                 <div key={String(status)} className={`flex items-center ${idx < arr.length - 1 ? 'flex-1' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                      isCurrent ? 'bg-blue-tint0 text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-muted text-muted-foreground'
+                      isCurrent ? 'bg-primary text-white' : isActive ? 'bg-green-50 text-green-600' : 'bg-muted text-muted-foreground'
                     }`}>
                       {isActive ? '✓' : idx + 1}
                     </div>
@@ -391,7 +391,7 @@ export default function PurchaseOrdersPage() {
               onClick={() => setStatusFilter(s as POStatus | 'All')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 statusFilter === s
-                  ? 'bg-blue-tint0 text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-muted'
               }`}
             >

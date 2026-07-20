@@ -14,7 +14,7 @@ interface ClientProperty {
 
 /* ── Tag colors ── */
 const TAG_COLORS = [
-  'bg-blue-tint0/10 text-primary/80 border-primary/20',
+  'bg-primary/10 text-primary/80 border-primary/20',
   'bg-green-500/10 text-green-400 border-green-500/20',
   'bg-purple-500/10 text-purple-400 border-purple-500/20',
   'bg-amber-500/10 text-amber-400 border-amber-500/20',

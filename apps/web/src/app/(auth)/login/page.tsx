@@ -93,7 +93,7 @@ export default function LoginPage() {
                 <label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20" /><span className="text-sm text-muted-foreground">{t('auth.login.rememberMe')}</span></label>
                 <a href="/reset-password" className="text-sm text-primary hover:text-primary/80 transition-colors">{t('auth.login.forgotPassword')}</a>
               </div>
-              <button type="submit" disabled={loading || !isValid} className="w-full h-11 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm">{loading ? t('auth.login.submitting') : t('auth.login.submit')}</button>
+              <button type="submit" disabled={loading || !isValid} className="w-full h-11 rounded-full bg-gradient-to-r from-primary to-blue-bright text-white font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm">{loading ? t('auth.login.submitting') : t('auth.login.submit')}</button>
 
               <div className="relative my-3">
                 <div className="absolute inset-0 flex items-center">

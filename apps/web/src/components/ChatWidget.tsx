@@ -37,7 +37,7 @@ function TypingIndicator() {
   return (
     <div className="flex items-start gap-2.5 max-w-[85%]">
       <Avatar className="w-7 h-7 mt-0.5">
-        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-[10px] font-bold">AI</AvatarFallback>
+        <AvatarFallback className="bg-gradient-to-br from-primary to-blue-bright text-white text-[10px] font-bold">AI</AvatarFallback>
       </Avatar>
       <div className="bg-muted rounded-2xl rounded-bl-sm px-4 py-3">
         <div className="flex gap-1.5">
@@ -128,7 +128,7 @@ export default function ChatWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-tint0 hover:bg-primary text-white shadow-lg hover:shadow-xl active:scale-90 transition-all flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary hover:bg-primary text-white shadow-lg hover:shadow-xl active:scale-90 transition-all flex items-center justify-center"
           aria-label="Open chat"
         >
           <MessageCircle className="w-6 h-6" />
@@ -171,13 +171,13 @@ export default function ChatWidget() {
                 <div className="flex items-start gap-2.5 max-w-[85%]">
                   {msg.role === 'ai' && (
                     <Avatar className="w-7 h-7 mt-0.5 shrink-0">
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-[10px] font-bold">AI</AvatarFallback>
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-blue-bright text-white text-[10px] font-bold">AI</AvatarFallback>
                     </Avatar>
                   )}
                   <div
                     className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
                       msg.role === 'user'
-                        ? 'bg-blue-tint0 text-white rounded-br-sm'
+                        ? 'bg-primary text-white rounded-br-sm'
                         : 'bg-white text-foreground border border-border/50 shadow-sm rounded-bl-sm'
                     }`}
                   >
@@ -229,7 +229,7 @@ export default function ChatWidget() {
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="w-9 h-9 rounded-full bg-blue-tint0 hover:bg-primary disabled:bg-muted disabled:cursor-not-allowed flex items-center justify-center text-white active:scale-90 transition-all shrink-0"
+                className="w-9 h-9 rounded-full bg-primary hover:bg-primary disabled:bg-muted disabled:cursor-not-allowed flex items-center justify-center text-white active:scale-90 transition-all shrink-0"
                 aria-label="Send message"
               >
                 <Send className="w-4 h-4" />

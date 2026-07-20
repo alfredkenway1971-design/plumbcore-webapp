@@ -8,7 +8,7 @@ const severityStyles: Record<string, { bg: string; text: string; icon: any; dot:
   success: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle, dot: 'bg-emerald-500' },
   warning: { bg: 'bg-amber-50', text: 'text-amber-600', icon: AlertTriangle, dot: 'bg-amber-500' },
   error: { bg: 'bg-red-50', text: 'text-red-700', icon: XCircle, dot: 'bg-red-500' },
-  info: { bg: 'bg-blue-tint', text: 'text-primary', icon: Info, dot: 'bg-blue-tint0' },
+  info: { bg: 'bg-blue-tint', text: 'text-primary', icon: Info, dot: 'bg-primary' },
 };
 
 const typeLabels: Record<string, string> = {

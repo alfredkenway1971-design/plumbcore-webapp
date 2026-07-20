@@ -55,7 +55,7 @@ export default function BillingPage() {
     <main className="min-h-screen bg-muted">
       <div className="max-w-lg mx-auto px-4 py-20">
         <div className="text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center mx-auto mb-4 shadow-lg">
             <CreditCard className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-extrabold text-foreground">Billing & Subscription</h1>
@@ -106,7 +106,7 @@ export default function BillingPage() {
           <button
             onClick={openPortal}
             disabled={loading}
-            className="w-full h-11 rounded-xl bg-blue-tint0 hover:bg-primary disabled:bg-blue-300 text-white text-sm font-bold transition-all flex items-center justify-center gap-2"
+            className="w-full h-11 rounded-xl bg-primary hover:bg-primary disabled:bg-blue-300 text-white text-sm font-bold transition-all flex items-center justify-center gap-2"
           >
             {loading ? 'Opening portal...' : 'Open Billing Portal'}
             <ArrowRight className="w-4 h-4" />

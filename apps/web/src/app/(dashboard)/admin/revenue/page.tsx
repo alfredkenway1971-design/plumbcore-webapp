@@ -48,7 +48,7 @@ function RevenueError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -81,7 +81,7 @@ export default function AdminRevenuePage() {
       {/* KPI Cards - all zeros */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Monthly Recurring Revenue', value: '$0', icon: DollarSign, color: 'bg-blue-tint0' },
+          { label: 'Monthly Recurring Revenue', value: '$0', icon: DollarSign, color: 'bg-primary' },
           { label: 'Annual Run Rate (ARR)', value: '$0', icon: TrendingUp, color: 'bg-violet-500' },
           { label: 'Avg Rev / Customer', value: '$0', icon: Users, color: 'bg-emerald-500' },
           { label: 'Churn Rate', value: '0%', icon: TrendingDown, color: 'bg-red-500' },

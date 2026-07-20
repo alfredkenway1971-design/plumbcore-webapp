@@ -25,7 +25,7 @@ const planColors: Record<string, string> = {
 
 const statusStyles: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   active: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Active' },
-  trialing: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', label: 'Trialing' },
+  trialing: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-primary', label: 'Trialing' },
   past_due: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Past Due' },
   cancelled: { bg: 'bg-muted', text: 'text-muted-foreground/80', dot: 'bg-slate-400', label: 'Cancelled' },
 };

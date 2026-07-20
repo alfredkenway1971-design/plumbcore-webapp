@@ -333,7 +333,7 @@ export default function SuppliersPage() {
                         onClick={() => toggleCategory(cat)}
                         className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                           form.categories.includes(cat)
-                            ? 'bg-blue-tint0 text-white'
+                            ? 'bg-primary text-white'
                             : 'bg-muted text-muted-foreground hover:bg-muted hover:text-foreground'
                         }`}
                       >
@@ -347,7 +347,7 @@ export default function SuppliersPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setModalOpen(false); setForm(initialForm); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleAddSupplier} disabled={!form.name || !form.contactPerson} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   Add Supplier
                 </button>
               </div>

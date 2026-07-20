@@ -61,7 +61,7 @@ export default function EarningsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="rounded-xl bg-blue-tint0/10 border border-primary/20 px-4 py-3">
+        <div className="rounded-xl bg-primary/10 border border-primary/20 px-4 py-3">
           <p className="text-[10px] font-semibold uppercase text-primary">This Week</p>
           <p className="text-xl font-bold text-foreground mt-1">${(summary.thisWeek / 100).toFixed(2)}</p>
         </div>

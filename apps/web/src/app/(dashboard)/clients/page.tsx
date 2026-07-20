@@ -290,7 +290,7 @@ export default function ClientsPage() {
           <h1 className="text-xl font-bold text-foreground">Clients</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{list.length} total clients</p>
         </div>
-        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors shadow-sm">
+        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors shadow-sm">
           <PlusIcon className="w-4 h-4" /> Add Client
         </button>
       </div>
@@ -354,7 +354,7 @@ export default function ClientsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-xl bg-blue-tint0 text-white text-xs font-semibold flex items-center justify-center hover:bg-primary transition-colors">Call</a>
+                          <a href={`tel:${c.phone}`} className="flex-1 h-9 rounded-xl bg-primary text-white text-xs font-semibold flex items-center justify-center hover:bg-primary transition-colors">Call</a>
                           <a href={`mailto:${c.email}`} className="flex-1 h-9 rounded-xl border border-border text-muted-foreground text-xs font-semibold flex items-center justify-center hover:bg-muted transition-colors">Email</a>
                           <button onClick={e => { e.stopPropagation(); openEdit(c); }} className="flex-1 h-9 rounded-xl border border-border text-muted-foreground text-xs font-semibold hover:bg-muted transition-colors">Edit</button>
                         </div>
@@ -605,7 +605,7 @@ export default function ClientsPage() {
               {/* Sticky Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowModal(false); resetForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {saving ? 'Saving...' : editingId ? 'Update Client' : 'Save Client'}
                 </button>
               </div>

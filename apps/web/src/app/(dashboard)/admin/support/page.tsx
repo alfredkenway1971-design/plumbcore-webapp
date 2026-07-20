@@ -30,7 +30,7 @@ const priorityConfig: Record<string, { bg: string; text: string; dot: string; ic
 };
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  open: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', label: 'Open' },
+  open: { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-primary', label: 'Open' },
   in_progress: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', label: 'In Progress' },
   resolved: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Resolved' },
   closed: { bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-slate-400', label: 'Closed' },
@@ -88,7 +88,7 @@ function SupportError({ error }: { error: string }) {
         <p className="text-sm text-muted-foreground mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary transition-colors"
         >
           Retry
         </button>
@@ -105,7 +105,7 @@ function SupportKPIs({ tickets }: { tickets: SupportTicket[] }) {
   const resolvedCount = tickets.filter((t) => t.status === 'resolved').length;
 
   const cards = [
-    { label: 'Open Tickets', value: String(openCount), change: `${tickets.filter((t) => t.status === 'open').length} awaiting assignment`, trend: 'up' as const, icon: MessageSquare, color: 'bg-blue-tint0' },
+    { label: 'Open Tickets', value: String(openCount), change: `${tickets.filter((t) => t.status === 'open').length} awaiting assignment`, trend: 'up' as const, icon: MessageSquare, color: 'bg-primary' },
     { label: 'Critical Priority', value: String(criticalCount), change: 'requires immediate attention', trend: criticalCount > 0 ? ('up' as const) : ('down' as const), icon: AlertTriangle, color: 'bg-red-500' },
     { label: 'Resolved This Week', value: String(resolvedCount), change: 'avg — resolution time', trend: 'up' as const, icon: CheckCircle, color: 'bg-emerald-500' },
     { label: 'Total Tickets', value: String(tickets.length), change: `${tickets.filter((t) => t.status === 'closed').length} closed`, trend: 'up' as const, icon: Clock, color: 'bg-violet-500' },
@@ -328,7 +328,7 @@ export default function AdminSupportPage() {
             <Reply className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">New Ticket</span>
           </button>
-          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-blue-tint0 text-white text-sm font-medium hover:bg-primary transition-colors shadow-sm ring-1 ring-black/5">
+          <button className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary transition-colors shadow-sm ring-1 ring-black/5">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline text-xs">Export</span>
           </button>

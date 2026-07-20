@@ -76,7 +76,7 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
       change: `+${activeKPIs.mrrGrowth}%`,
       trend: 'up' as const,
       icon: DollarSign,
-      color: 'bg-blue-tint0',
+      color: 'bg-primary',
     },
     {
       label: 'Active Plumbers',

@@ -670,7 +670,7 @@ export default function SettingsPage() {
                   {company.logo_url ? (
                     <img src={company.logo_url} alt="Company logo" className="w-20 h-20 rounded-xl object-cover border-2 border-border" />
                   ) : (
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-xl font-bold text-white border-2 border-border">
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-bright to-primary/80 flex items-center justify-center text-xl font-bold text-white border-2 border-border">
                       {company.name.charAt(0) || 'P'}
                     </div>
                   )}
@@ -714,7 +714,7 @@ export default function SettingsPage() {
                         reader.readAsDataURL(file);
                       }}
                     />
-                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-blue-tint0 text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
+                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
                       {company.logo_url ? 'Change Logo' : 'Upload Logo'}
                     </span>
                   </label>

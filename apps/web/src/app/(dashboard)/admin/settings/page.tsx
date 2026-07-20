@@ -128,7 +128,7 @@ export default function AdminSystemSettingsPage() {
                       <label className="text-sm font-medium text-foreground">{field.label}</label>
                       <div className="shrink-0">
                         {field.type === 'toggle' ? (
-                          <button onClick={() => update(field.key, !value)} className={`relative w-11 h-6 rounded-full transition-colors ${value ? 'bg-blue-tint0' : 'bg-muted'}`}>
+                          <button onClick={() => update(field.key, !value)} className={`relative w-11 h-6 rounded-full transition-colors ${value ? 'bg-primary' : 'bg-muted'}`}>
                             <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform ${value ? 'translate-x-5' : ''}`} />
                           </button>
                         ) : field.type === 'select' ? (

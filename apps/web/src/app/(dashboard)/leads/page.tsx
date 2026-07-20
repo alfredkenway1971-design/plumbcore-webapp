@@ -63,7 +63,7 @@ const mockLeads: Lead[] = [
 ];
 
 const sevColors: Record<string, string> = {
-  low: 'bg-blue-tint0/10 text-primary/80', moderate: 'bg-amber-500/10 text-amber-400',
+  low: 'bg-primary/10 text-primary/80', moderate: 'bg-amber-500/10 text-amber-400',
   high: 'bg-orange-500/10 text-orange-400', emergency: 'bg-red-500/10 text-red-400',
 };
 

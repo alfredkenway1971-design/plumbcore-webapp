@@ -51,10 +51,10 @@ function StepIndicator({ current, total, t }: { current: number; total: number; 
     <div className="flex items-center justify-center gap-0 mb-10">
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} className="flex items-center">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-blue-tint0 text-white shadow-sm' : 'bg-muted text-muted-foreground/80'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i + 1 <= current ? 'bg-primary text-white shadow-sm' : 'bg-muted text-muted-foreground/80'}`}>
             {i + 1 < current ? <Check className="w-4 h-4" /> : i + 1}
           </div>
-          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-blue-tint0' : 'bg-muted'}`} />}
+          {i < total - 1 && <div className={`w-10 sm:w-16 h-0.5 mx-1 transition-colors ${i + 1 < current ? 'bg-primary' : 'bg-muted'}`} />}
         </div>
       ))}
     </div>
@@ -95,7 +95,7 @@ const StepUpload = memo(function StepUpload({ photos, onAdd, onRemove, onNext, t
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustUpfrontPrice')}</span>
         <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> {t('quote.trustLicensed')}</span>
       </div>
-      <button onClick={onNext} disabled={photos.length === 0} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center justify-center gap-2">
+      <button onClick={onNext} disabled={photos.length === 0} className="w-full h-12 rounded-xl bg-gradient-to-r from-primary to-blue-bright hover:from-primary hover:to-blue-bright disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center justify-center gap-2">
         {photos.length > 0 ? t('quote.continueBtn') : t('quote.selectPhotos')} <ChevronRight className="w-4 h-4" />
       </button>
     </div>
@@ -219,7 +219,7 @@ const StepInfo = memo(function StepInfo({ form, setForm, phoneDisplay, onPhoneCh
       </div>
       <div className="grid grid-cols-2 gap-3">
         <button onClick={onBack} className="h-12 rounded-xl ring-1 ring-black/5 text-foreground font-medium active:scale-[0.97] transition-all hover:bg-muted flex items-center justify-center gap-1"><ChevronLeft className="w-4 h-4" /> {t('quote.back')}</button>
-        <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+        <button onClick={onEstimate} disabled={!canSubmit} className="h-12 rounded-xl bg-gradient-to-r from-primary to-blue-bright hover:from-primary hover:to-blue-bright disabled:bg-slate-300 text-white font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
           {canSubmit ? t('quote.getMyPrice') : t('quote.enterPhone')} <ChevronRight className="w-4 h-4" />
         </button>
       </div>
@@ -276,7 +276,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
         </div>
         <div className="text-center space-y-3">
-          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-all shadow-sm">
+          <button onClick={onReset} className="inline-flex items-center gap-1 h-12 px-6 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-all shadow-sm">
             <RefreshCcw className="w-4 h-4" /> {t('quote.tryAgain')}
           </button>
         </div>
@@ -514,7 +514,7 @@ function StepResult({ result, onReset, onStripeCheckout, stripeLoading, t }: any
           </div>
         </div>
         
-        <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white font-bold shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] text-base">
+        <button onClick={onStripeCheckout} disabled={stripeLoading} className="w-full h-14 rounded-xl bg-gradient-to-r from-primary to-blue-bright hover:from-primary hover:to-blue-bright disabled:opacity-50 text-white font-bold shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] text-base">
           {stripeLoading ? t('quote.redirecting') : `${ctaCopy} →`}
         </button>
         

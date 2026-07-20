@@ -74,7 +74,7 @@ export default function FeatureFlagsPage() {
                       </div>
                     )}
                   </div>
-                  <button onClick={() => toggleFlag(flag.id)} className={`relative w-10 h-5 rounded-full transition-colors ${flag.enabled ? 'bg-blue-tint0' : 'bg-muted/80'}`}>
+                  <button onClick={() => toggleFlag(flag.id)} className={`relative w-10 h-5 rounded-full transition-colors ${flag.enabled ? 'bg-primary' : 'bg-muted/80'}`}>
                     <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform ${flag.enabled ? 'translate-x-5' : 'translate-x-0.5'}`} />
                   </button>
                 </div>

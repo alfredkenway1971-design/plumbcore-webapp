@@ -1011,7 +1011,7 @@ export default function JobsPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-blue-tint0 text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {creating ? 'Creating...' : 'Create Job'}
                 </button>
               </div>

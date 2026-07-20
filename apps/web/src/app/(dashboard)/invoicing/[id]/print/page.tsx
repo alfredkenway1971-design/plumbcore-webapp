@@ -162,7 +162,7 @@ export default function InvoicePrintPage() {
             {companyLogo ? (
               <img src={companyLogo} alt="Company Logo" className="h-16 w-auto object-contain" />
             ) : (
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">P</div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center text-white font-bold text-lg">P</div>
             )}
             <div>
               <h1 className="text-2xl font-bold text-foreground">{companyName}</h1>

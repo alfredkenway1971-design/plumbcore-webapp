@@ -40,7 +40,7 @@ const mockRequests: FeatureRequest[] = [];
 /* ── Status Config ── */
 
 const statusConfig: Record<string, { bg: string; text: string; dot: string; icon: any; label: string }> = {
-  'under-review': { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-blue-tint0', icon: Clock, label: 'Under Review' },
+  'under-review': { bg: 'bg-blue-tint', text: 'text-primary', dot: 'bg-primary', icon: Clock, label: 'Under Review' },
   planned: { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', icon: Lightbulb, label: 'Planned' },
   'in-progress': { bg: 'bg-violet-50', text: 'text-violet-600', dot: 'bg-violet-500', icon: ArrowRight, label: 'In Progress' },
   completed: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', icon: CheckCircle2, label: 'Completed' },
@@ -362,7 +362,7 @@ export default function AdminFeatureRequestsPage() {
                       </td>
                       <td className="px-4 py-4 hidden sm:table-cell">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center text-[10px] font-bold text-white shrink-0">
                             {req.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                           </div>
                           <div className="min-w-0">

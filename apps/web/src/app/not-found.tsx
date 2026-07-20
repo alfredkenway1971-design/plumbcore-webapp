@@ -13,7 +13,7 @@ export default function NotFound() {
         <p className="text-base text-muted-foreground mb-8">This page doesn&apos;t exist. It might have been moved or deleted.</p>
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-blue-tint0 hover:bg-primary text-white text-sm font-bold shadow-sm transition-all active:scale-[0.97]"
+          className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-primary hover:bg-primary text-white text-sm font-bold shadow-sm transition-all active:scale-[0.97]"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />

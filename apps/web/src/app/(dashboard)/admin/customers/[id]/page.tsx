@@ -395,7 +395,7 @@ export default function CompanyDetailPage() {
           value={String(company.techs)}
           sub="Licensed technicians"
           icon={Users}
-          color="bg-blue-tint0"
+          color="bg-primary"
         />
         <StatCard
           label="Jobs This Month"
