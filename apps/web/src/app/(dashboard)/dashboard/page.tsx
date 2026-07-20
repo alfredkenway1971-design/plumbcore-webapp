@@ -109,7 +109,7 @@ function RevenueGoalBar() {
                 autoFocus
               />
               <button onClick={() => { setGoal(Number(editValue) || 50000); setEditing(false); }}
-                className="h-7 px-2 rounded-lg bg-blue-tint0 text-white text-[10px] font-semibold hover:bg-primary transition-colors">Set</button>
+                className="h-7 px-2 rounded-lg bg-primary text-white text-[10px] font-semibold hover:bg-primary transition-colors">Set</button>
             </div>
           ) : (
             <button onClick={() => { setEditValue(String(goal)); setEditing(true); }}
@@ -122,7 +122,7 @@ function RevenueGoalBar() {
       <div className="relative h-3 rounded-full bg-muted overflow-hidden mb-2">
         <div
           className={`h-full rounded-full transition-all duration-700 ease-out ${
-            pct >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+            pct >= 100 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-primary to-blue-bright'
           }`}
           style={{ width: `${Math.max(pct, 2)}%` }}
         />
@@ -272,7 +272,7 @@ function RevenueChart() {
         ))}
       </svg>
       <div className="flex items-center gap-4 mt-2">
-        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-blue-tint0 rounded-full" /><span className="text-[10px] text-muted-foreground/80">This month</span></div>
+        <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-primary rounded-full" /><span className="text-[10px] text-muted-foreground/80">This month</span></div>
         <div className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-slate-400 rounded-full" style={{borderTop: '2px dashed #94A3B8'}} /><span className="text-[10px] text-muted-foreground/80">{t('dashboard.lastMonth')}</span></div>
       </div>
     </div>
@@ -385,7 +385,7 @@ function WeeklyTechChart() {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.weeklyPerformance')}</h3>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-blue-tint0" /><span className="text-[10px] text-muted-foreground/80">Jobs</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-primary" /><span className="text-[10px] text-muted-foreground/80">Jobs</span></div>
           <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /><span className="text-[10px] text-muted-foreground/80">Revenue</span></div>
           <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
         </div>
@@ -398,7 +398,7 @@ function WeeklyTechChart() {
             <div key={tech.name}>
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[8px] font-bold text-white shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-bright to-blue-tint flex items-center justify-center text-[8px] font-bold text-white shrink-0">
                     {tech.initials}
                   </div>
                   <span className="text-sm font-medium text-foreground">{tech.name}</span>
@@ -406,7 +406,7 @@ function WeeklyTechChart() {
                 <span className="text-xs text-muted-foreground">{tech.jobs} jobs · ${(tech.revenue / 100).toFixed(1)}K</span>
               </div>
               <div className="flex gap-1.5 items-center h-4">
-                <div className="h-3 bg-blue-tint0 rounded-full transition-all duration-500" style={{ width: `${jobsPct}%` }} />
+                <div className="h-3 bg-primary rounded-full transition-all duration-500" style={{ width: `${jobsPct}%` }} />
                 <div className="h-3 bg-emerald-400 rounded-full transition-all duration-500" style={{ width: `${revPct}%` }} />
               </div>
             </div>
@@ -468,7 +468,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-bright to-blue-tint flex items-center justify-center text-[9px] font-bold text-white shrink-0">
                         {job.tech.split(' ').map((n: string) => n[0]).join('')}
                       </div>
                       <span className="text-sm text-muted-foreground">{job.tech}</span>
@@ -499,7 +499,7 @@ const techStatusData: any[] = [];
 
 const statusDotColors: Record<string, string> = {
   online: 'bg-emerald-400',
-  busy: 'bg-blue-tint0',
+  busy: 'bg-primary',
   away: 'bg-amber-400',
   offline: 'bg-slate-300',
 };
@@ -579,7 +579,7 @@ const AlertsPanel = memo(function AlertsPanel() {
 const QuickActionsBar = memo(function QuickActionsBar() {
   const router = useRouter();
   const actions = [
-    { label: 'New Job', icon: I.Wrench, href: '/jobs/new', color: 'bg-blue-tint0' },
+    { label: 'New Job', icon: I.Wrench, href: '/jobs/new', color: 'bg-primary' },
     { label: 'New Client', icon: I.Users, href: '/clients/new', color: 'bg-emerald-500' },
     { label: 'Create Invoice', icon: I.File, href: '/invoicing', color: 'bg-violet-500' },
     { label: 'AI Photo Estimate', icon: I.Camera, href: '/pricebook', color: 'bg-cyan-500' },
@@ -661,7 +661,7 @@ const UpgradeCard = memo(function UpgradeCard() {
 
   if (!tier || status === 'none') {
     return (
-      <div className="relative rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 shadow-[0_8px_32px_rgba(59,130,246,0.15)] p-5 overflow-hidden shadow-md">
+      <div className="relative rounded-2xl bg-gradient-to-br from-primary via-blue-deep to-blue-bright shadow-[0_8px_32px_rgba(59,130,246,0.15)] p-5 overflow-hidden shadow-md">
         <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/5" />
         <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5" />
         <div className="relative z-10">
@@ -744,7 +744,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
     <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col h-full">
       <div className="flex items-center justify-between p-5 pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center shadow-sm">
             <I.Sparkles className="w-4 h-4 text-foreground" />
           </div>
           <h3 className="text-sm font-semibold tracking-tight text-foreground">PlumbCore AI</h3>
@@ -760,7 +760,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'bg-blue-tint0 text-white rounded-br-md'
+                  ? 'bg-primary text-white rounded-br-md'
                   : 'bg-muted text-foreground rounded-bl-md border border-border/50'
               }`}>
                 {msg.content}
@@ -812,7 +812,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
             className="w-full h-10 pl-4 pr-10 bg-muted rounded-xl text-sm text-muted-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white border border-border transition-all disabled:opacity-50"
           />
           <button onClick={() => sendMessage(input)} disabled={loading || !input.trim()}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-blue-tint0 text-white flex items-center justify-center hover:bg-primary transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary transition-colors active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed">
             <I.Send className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -861,7 +861,7 @@ function PlanInfoWidget() {
     <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center">
             <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
@@ -895,7 +895,7 @@ function PlanInfoWidget() {
       <div className="flex gap-2">
         <button
           onClick={() => window.location.href = '/settings?tab=billing'}
-          className="flex-1 h-9 rounded-xl bg-blue-tint0 text-white text-xs font-semibold hover:bg-primary transition-all active:scale-[0.97]"
+          className="flex-1 h-9 rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary transition-all active:scale-[0.97]"
         >
           Upgrade
         </button>
