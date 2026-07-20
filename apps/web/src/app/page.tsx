@@ -342,40 +342,66 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
             {t('home.featuresSubtitle')}
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => (
+        {/* Hero feature card — spans 2 cols */}
+        <div className="grid lg:grid-cols-3 gap-5">
+          {features.slice(0, 2).map((f, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group text-center sm:text-left relative overflow-hidden"
+              className={i === 0 ? "lg:col-span-2 bg-white rounded-2xl ring-1 ring-black/5 shadow-sm overflow-hidden hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-300 group" : "bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 ease-out group"}
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-md shadow-black/5 mx-auto sm:mx-0 transition-transform duration-300 group-hover:scale-110`}>
-                <f.icon className="w-6 h-6 text-white" />
+              {i === 0 ? (
+                <div className="flex flex-col sm:flex-row h-full">
+                  <div className="flex-1 p-6 sm:p-8">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-4 shadow-md shadow-black/5 transition-transform duration-300 group-hover:scale-110">
+                      <Camera className="w-7 h-7 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-slate-900 mb-3 transition-colors duration-300 group-hover:text-amber-600">
+                      {features[0].title}
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{features[0].desc}</p>
+                  </div>
+                  <div className="sm:w-56 shrink-0 overflow-hidden">
+                    <img
+                      src="/images/feature-estimate.jpg"
+                      alt={t('home.featureImgEstimateAlt')}
+                      className="w-full h-full object-cover sm:h-full"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-4 shadow-md shadow-black/5 transition-transform duration-300 group-hover:scale-110">
+                    <MessageCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2 transition-colors duration-300 group-hover:text-amber-600">
+                    {f.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Remaining 4 features in 2x2 grid */}
+        <div className="grid sm:grid-cols-2 gap-5 mt-5">
+          {features.slice(2).map((f, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out group"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br {f.gradient} flex items-center justify-center shadow-md shadow-black/5 shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110">
+                  <f.icon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-slate-900 mb-1 transition-colors duration-300 group-hover:text-amber-600">
+                    {f.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                </div>
               </div>
-              {/* Image thumbnail for featured cards */}
-              {i === 0 && (
-                <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
-                  <img
-                    src="/images/feature-estimate.jpg"
-                    alt={t('home.featureImgEstimateAlt')}
-                    className="w-full h-24 object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </div>
-              )}
-              {i === 2 && (
-                <div className="mb-4 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
-                  <img
-                    src="/images/feature-route.jpg"
-                    alt={t('home.featureImgRouteAlt')}
-                    className="w-full h-24 object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </div>
-              )}
-              <h3 className="text-lg font-semibold text-slate-900 mb-2 transition-colors duration-300 group-hover:text-amber-600">
-                {f.title}
-              </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
