@@ -9,7 +9,7 @@ import HTMLText from '@/components/HTMLText';
 import {
   Camera, Mic, MapPin, Package, Calendar, MessageCircle,
   ChevronRight, Menu, Star, Check, ArrowRight, Phone, Clock,
-  Shield, Wrench, X, Minus, Play
+  Shield, Wrench, X, Minus, Play, ChevronDown
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -220,27 +220,29 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
           <HTMLText html={t('home.howSubtitle')} className="text-base text-slate-600 max-w-2xl mx-auto" />
         </div>
 
-        {/* 3-step visual */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+        {/* 3-step visual — modern card layout */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
           {steps.map((s, i) => (
-            <div key={i} className="relative text-center">
-              <div className="w-20 h-20 rounded-2xl bg-white ring-1 ring-black/5 shadow-sm flex items-center justify-center mx-auto mb-5 overflow-hidden">
-                <img
-                  src={s.img}
-                  alt={s.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
+            <div key={i} className="relative group">
+              {/* Step number — clean, no overlapping images */}
+              <div className="flex items-center gap-4 mb-4">
+                <span className="w-10 h-10 rounded-full bg-amber-500 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/15">
+                  {s.num}
+                </span>
+                {i < 2 && <div className="h-px flex-1 bg-gradient-to-r from-amber-300 to-transparent hidden md:block" />}
               </div>
-              {/* Connector line (desktop only) */}
-              {i < 2 && (
-                <div className="absolute top-10 left-[calc(50%+2.5rem)] w-[calc(100%-5rem)] border-t border-dashed border-blue-200 hidden md:block" />
-              )}
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-white font-semibold text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-amber-500/15 -mt-14 relative z-10">
-                {s.num}
+              <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-5 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] group-hover:-translate-y-0.5 transition-all duration-300">
+                <div className="w-full h-32 rounded-xl overflow-hidden ring-1 ring-black/5 mb-4">
+                  <img
+                    src={s.img}
+                    alt={s.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+                <h3 className="text-base font-semibold text-slate-900 mb-2">{s.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{s.desc}</p>
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">{s.title}</h3>
-              <p className="text-sm text-slate-600 max-w-xs mx-auto">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -262,11 +264,11 @@ function HowPlumbCoreMakesYouMoney({ t }: { t: (key: string) => string }) {
           <div className="overflow-x-auto rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
             <table className="w-full text-sm min-w-[500px]">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-5 py-3.5 font-semibold text-slate-700">{t('home.compFeatureHeader')}</th>
-                  <th className="text-center px-4 py-3.5 font-bold text-amber-600">{t('home.compPlumbcoreHeader')}</th>
-                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">{t('home.compHomeadvisorHeader')}</th>
-                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600">{t('home.compServicetitanHeader')}</th>
+                <tr>
+                  <th className="text-left px-5 py-3.5 font-semibold text-slate-700 bg-slate-50/50">{t('home.compFeatureHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-bold text-white bg-amber-600">{t('home.compPlumbcoreHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600 bg-slate-50">{t('home.compHomeadvisorHeader')}</th>
+                  <th className="text-center px-4 py-3.5 font-semibold text-slate-600 bg-slate-50">{t('home.compServicetitanHeader')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -855,9 +857,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
                 className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-semibold text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 <span>{f.q}</span>
-                <span className={`shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-200 ${openIdx === i ? 'rotate-45 bg-amber-100' : ''}`}>
-                  <span className={`text-sm font-bold ${openIdx === i ? 'text-amber-600' : 'text-slate-400'}`}>+</span>
-                </span>
+                <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0 ${openIdx === i ? 'rotate-180 text-amber-600' : ''}`} />
               </button>
               <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
