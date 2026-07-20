@@ -53,20 +53,20 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
   icon: any; iconBg: string; sub?: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center`}>
-          <Icon className="w-5 h-5 text-foreground" />
+    <div className="bg-white rounded-xl border border-border/50 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className="flex items-start justify-between mb-2.5">
+        <p className="text-[13px] font-medium text-muted-foreground">{label}</p>
+        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shadow-sm`}>
+          <Icon className="w-[18px] h-[18px] text-white" />
         </div>
       </div>
-      <p className="text-3xl font-semibold tracking-tight text-foreground mb-1.5">{value}</p>
+      <p className="text-2xl font-bold tracking-tight text-foreground mb-1.5">{value}</p>
       <div className="flex items-center gap-2">
-        <span className={`inline-flex items-center gap-0.5 text-xs font-semibold ${trend.color} bg-opacity-10 px-1.5 py-0.5 rounded-full ${trend.direction === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+        <span className={`inline-flex items-center gap-0.5 text-[11px] font-semibold px-1.5 py-0.5 rounded-md ${trend.direction === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
           <I.ArrowUp className={`w-3 h-3 ${trend.direction === 'down' ? 'rotate-180' : ''}`} />
           {change}
         </span>
-        <span className="text-xs text-muted-foreground/80">{trend.label}</span>
+        <span className="text-[11px] text-muted-foreground/70">{trend.label}</span>
       </div>
     </div>
   );
@@ -952,12 +952,12 @@ export default function DashboardPage() {
   const status = company?.subscription_status || '';
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-[1440px] mx-auto px-4 py-6 space-y-5">
       {/* ── Subscription Warning Banner ── */}
       {status === 'past_due' && !dismissed && (
-        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
               </svg>
@@ -968,7 +968,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <a href="/billing" className="h-8 px-4 rounded-xl bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition-colors flex items-center active:scale-[0.97]">Update Billing</a>
+            <a href="/billing" className="h-8 px-4 rounded-lg bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition-colors flex items-center active:scale-[0.97]">Update Billing</a>
             <button onClick={handleDismiss} className="text-amber-400 hover:text-amber-600 transition-colors" aria-label="Dismiss">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
@@ -976,9 +976,9 @@ export default function DashboardPage() {
         </div>
       )}
       {(status === 'cancelled' || status === 'none') && !dismissed && company && profile?.role !== 'super_admin' && (
-        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
               </svg>
@@ -993,7 +993,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <a href="/pricing" className="h-8 px-4 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors flex items-center active:scale-[0.97]">{status === 'cancelled' ? 'Reactivate' : 'View Plans'}</a>
+            <a href="/pricing" className="h-8 px-4 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors flex items-center active:scale-[0.97]">{status === 'cancelled' ? 'Reactivate' : 'View Plans'}</a>
             <button onClick={handleDismiss} className="text-red-400 hover:text-red-600 transition-colors" aria-label="Dismiss">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
@@ -1001,44 +1001,37 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ── Row 1: Stats — Field-Service KPIs ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-blue-500 to-cyan-400" />
+      {/* ── Row 1: KPI Stats ── */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-primary to-blue-bright" />
         <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-gradient-to-br from-violet-500 to-purple-400" />
         <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-gradient-to-br from-amber-500 to-orange-400" />
         <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-gradient-to-br from-cyan-500 to-teal-400" />
       </div>
 
-      {/* ── Revenue Goal Progress Bar ── */}
-      <RevenueGoalBar />
-
-      {/* ── Deposits This Week Card ── */}
-      <DepositsThisWeek />
-
-      {/* ── Plan Info Widget ── */}
-      {company && (
-        <div className="mb-6">
-          <PlanInfoWidget />
-        </div>
-      )}
+      {/* ── Revenue Goal + Deposits + Plan Info row ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2"><RevenueGoalBar /><DepositsThisWeek /></div>
+        <div className="lg:col-span-1">{company && <PlanInfoWidget />}</div>
+      </div>
 
       {/* ── Row 2: Revenue Chart + Job Donut ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3"><RevenueChart /></div>
         <div className="lg:col-span-2"><JobDonutChart /></div>
       </div>
 
       {/* ── Row 3: Weekly Tech Performance ── */}
-      <div className="mb-6"><WeeklyTechChart /></div>
+      <div><WeeklyTechChart /></div>
 
       {/* ── Row 4: Upcoming Jobs + Tech Status ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3"><UpcomingJobsTable /></div>
         <div className="lg:col-span-2"><TechStatusTable /></div>
       </div>
 
       {/* ── Row 5: Alerts + Quick Actions + Upgrade + AI ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-2"><AlertsPanel /></div>
         <div className="lg:col-span-1 flex flex-col gap-4">
           <QuickActionsBar />
@@ -1046,7 +1039,6 @@ export default function DashboardPage() {
         </div>
         <div className="lg:col-span-2"><AIAssistantWidget /></div>
       </div>
-      <div className="h-4 md:hidden" />
     </div>
   );
 }
