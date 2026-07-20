@@ -94,7 +94,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
     { num: '03', title: t('home.step3Title'), desc: t('home.step3Desc') },
   ];
   return (
-    <section className="px-5 py-11">
+    <section className="scroll-reveal px-5 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -120,7 +120,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
 /* ─── Stat Strip ─── */
 function StatStrip({ t }: { t: (key: string) => string }) {
   return (
-    <div className="mx-5 rounded-2xl bg-[var(--color-blue)] text-white text-center py-7 px-5">
+    <div className="scroll-reveal mx-5 rounded-2xl bg-[var(--color-blue)] text-white text-center py-7 px-5">
       <div className="font-jakarta font-extrabold text-[46px] leading-none">{t('home.statAmount')}</div>
       <div className="font-mono text-[11px] tracking-[0.06em] uppercase mt-2 opacity-90">{t('home.statLabel')}</div>
     </div>
@@ -136,7 +136,7 @@ function ComparisonSection({ t }: { t: (key: string) => string }) {
     { metric: t('home.compSetup'), old: t('home.compOldSetup'), new_: t('home.compNewSetup') },
   ];
   return (
-    <section className="px-5 py-11">
+    <section className="scroll-reveal px-5 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -257,7 +257,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
   };
 
   return (
-    <section className="px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -265,6 +265,10 @@ function PricingSection({ t }: { t: (key: string) => string }) {
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.pricingTitle')}</h2>
       </div>
+      <div
+        className="pricing-grid"
+        style={{ containerType: 'inline-size' as any, containerName: 'pricing' as any }}
+      >
       {plans.map((p, i) => (
         <PricingCard
           key={i}
@@ -274,6 +278,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
           t={t}
         />
       ))}
+      </div>
     </section>
   );
 }
@@ -287,7 +292,7 @@ function DepositSection({ t }: { t: (key: string) => string }) {
     { label: t('home.deposit2000plus'), deposit: '$199', keep: '$199' },
   ];
   return (
-    <section className="px-5 py-11">
+    <section className="scroll-reveal px-5 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -315,7 +320,7 @@ function DepositSection({ t }: { t: (key: string) => string }) {
 /* ─── Lead Priority ─── */
 function PrioritySection({ t }: { t: (key: string) => string }) {
   return (
-    <section className="px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -369,7 +374,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
     { initials: 'SR', name: t('home.testi2Name'), role: t('home.testi2Role'), quote: t('home.testi2Quote') },
   ];
   return (
-    <section className="px-5 py-11">
+    <section className="scroll-reveal px-5 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -401,7 +406,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
   ];
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   return (
-    <section className="px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -427,7 +432,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
 /* ─── Final CTA ─── */
 function FinalCtaSection({ t }: { t: (key: string) => string }) {
   return (
-    <div className="bg-[var(--color-blue-deep)] text-center px-5 py-10 text-white">
+    <div className="scroll-reveal bg-[var(--color-blue-deep)] text-center px-5 py-10 text-white">
       <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#B9CCF4] font-semibold flex items-center gap-2 justify-center">
         <span className="w-[6px] h-[6px] rounded-[1px] bg-[#B9CCF4] inline-block" />
         {t('home.ctaBadge')}

@@ -390,3 +390,71 @@ input, select, textarea { font-size: 16px !important; }
 section {
   transition: background-color 0.3s ease;
 }
+
+/* ════════════════════════════════════════════════
+   SCROLL-REVEAL ANIMATIONS (pure CSS, no JS)
+   ════════════════════════════════════════════════ */
+
+/* Fade-up when element scrolls into view */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade-left for alternate entries */
+@keyframes fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply to sections: fades in as the element enters the viewport */
+.scroll-reveal {
+  animation: fade-up 0.6s ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 25%;
+}
+
+/* Variant: slide in from left (for alternating sections) */
+.scroll-reveal-left {
+  animation: fade-left 0.6s ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 25%;
+}
+
+/* ════════════════════════════════════════════════
+   CONTAINER QUERIES
+   ════════════════════════════════════════════════ */
+
+/* Container for pricing section — cards reflow based on container width */
+@container style(--is-pricing: true) {
+  .pricing-grid {
+    container-type: inline-size;
+    container-name: pricing;
+  }
+
+  @container pricing (min-width: 360px) {
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+  }
+
+  @container pricing (min-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+}
