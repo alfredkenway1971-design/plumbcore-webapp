@@ -194,6 +194,41 @@ function PricingCard({ plan, featured, scarcity, t }: {
   );
 }
 
+/* ─── Estimate Banner (Consumer CTA) ─── */
+function EstimateBanner({ t }: { t: (key: string) => string }) {
+  return (
+    <section className="scroll-reveal px-5 py-11 bg-white">
+      <div className="bg-gradient-to-br from-[var(--color-blue-tint)] to-white rounded-2xl p-6 border border-[var(--color-line)] text-center">
+        <div className="w-14 h-14 rounded-full bg-[var(--color-blue)] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[var(--color-blue)]/20">
+          <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.16a15.53 15.53 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+          </svg>
+        </div>
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">
+          {t('home.estimateBadge')}
+        </span>
+        <h2 className="font-jakarta font-extrabold text-[23px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2 mb-2">
+          {t('home.estimateTitle')}
+        </h2>
+        <p className="text-[13.5px] text-[var(--color-muted-text)] leading-relaxed mb-5 max-w-[30ch] mx-auto">
+          {t('home.estimateSub')}
+        </p>
+        <a
+          href="/quote"
+          className="inline-flex items-center gap-2 bg-[var(--color-blue)] text-white font-jakarta font-bold text-[15px] py-3.5 px-6 rounded-[10px] shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110 transition-all active:scale-[0.98]"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.16a15.53 15.53 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+          </svg>
+          {t('home.estimateCta')}
+        </a>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Pricing Section ─── */
 function PricingSection({ t }: { t: (key: string) => string }) {
   const r = useRouter();
@@ -472,6 +507,7 @@ export default function LandingPage() {
       <HowItWorksSection t={t} />
       <StatStrip t={t} />
       <ComparisonSection t={t} />
+      <EstimateBanner t={t} />
       <PricingSection t={t} />
       <DepositSection t={t} />
       <PrioritySection t={t} />
