@@ -397,57 +397,56 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-[1440px] mx-auto px-4 py-6 space-y-5">
       {/* Page Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Platform Overview</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-xl font-bold tracking-tight text-foreground">Platform Overview</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             Super Admin — {displayKPIs.activePlumbers} plumbers · ${displayKPIs.totalMRR.toLocaleString()} MRR
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border text-sm text-muted-foreground hover:bg-muted transition-colors cursor-pointer">
+          <button className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors cursor-pointer">
             <span className="text-xs">📅</span>
             <span className="text-xs font-medium">This Month</span>
             <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
-          </div>
-
+          </button>
         </div>
       </div>
 
       {/* Row 1 — KPI Cards */}
-      <div className="mb-6"><KPICards kpis={displayKPIs} /></div>
+      <div><KPICards kpis={displayKPIs} /></div>
 
-      {/* Row 2 — MRR Growth + Customer Funnel (60/40) */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+      {/* Row 2 — MRR Growth + Customer Funnel */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3"><MRRGrowthChart /></div>
         <div className="lg:col-span-2"><CustomerFunnel /></div>
       </div>
 
-      {/* Row 3 — Trial Pipeline + At-Risk Customers (50/50) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      {/* Row 3 — Trial Pipeline + At-Risk Customers */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <TrialPipelineTable />
         <AtRiskCustomers />
       </div>
 
       {/* Row 3b — Unfulfilled Leads */}
-      <div className="mb-6"><UnfulfilledLeads /></div>
+      <div><UnfulfilledLeads /></div>
 
-      {/* Row 4 — Top Customers + Activity Feed (50/50) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      {/* Row 4 — Top Customers + Activity Feed */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <TopCustomersTable />
         <ActivityFeed />
       </div>
 
       {/* Row 4b — Marketing & Growth */}
-      <div className="mb-6"><MarketingGrowth /></div>
+      <div><MarketingGrowth /></div>
 
       {/* Row 5 — Feature Usage Heatmap */}
-      <div className="mb-6"><FeatureUsageHeatmap /></div>
+      <div><FeatureUsageHeatmap /></div>
 
-      {/* Row 6 — Revenue by Plan Donut + Geographic Map (50/50) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      {/* Row 6 — Revenue by Plan + Geographic Map */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <RevenueByPlanDonut />
         <GeographicMap />
       </div>
