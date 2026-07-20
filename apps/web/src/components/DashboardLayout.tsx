@@ -79,7 +79,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return (
       <div className="flex min-h-screen w-full bg-muted items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
+          <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
           <p className="text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="flex items-center gap-1.5 h-9 px-3 md:px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-medium shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center gap-1.5 h-9 px-3 md:px-4 rounded-xl bg-gradient-to-r from-primary to-blue-bright text-white text-sm font-medium shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]"
             >
               <DownloadIcon className="w-4 h-4" />
               <span className="hidden sm:inline text-xs">Export</span>
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               return url ? (
                 <img src={url} alt="" className="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover shrink-0 ring-2 ring-white/10" />
               ) : (
-                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">
+                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-primary/25">
                   {inits}
                 </div>
               );

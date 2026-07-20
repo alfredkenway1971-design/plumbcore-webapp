@@ -90,7 +90,7 @@ const plumberNav = [
     { labelKey: 'schedule', label: 'Schedule', icon: 'Calendar', href: '/schedule' },
     { labelKey: 'routeMap', label: 'Route Map', icon: 'MapPin', href: '/route-map', feature: 'routeOptimization' },
     { labelKey: 'liveTracking', label: 'Live Tracking', icon: 'Truck', href: '/live-tracking', feature: 'truckGps' },
-    { labelKey: 'leads', label: 'Leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-blue-tint0' } },
+    { labelKey: 'leads', label: 'Leads', icon: 'Star', href: '/leads', badge: { count: 12, color: 'bg-primary' } },
   ]},
   { sectionKey: 'aiTools', items: [
     { labelKey: 'aiChat', label: 'AI Chat', icon: 'Chat', href: '/ai-chat' },
@@ -233,7 +233,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                       className={`
                         flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150
                         ${active
-                          ? 'bg-blue-tint text-primary ring-1 ring-blue-200'
+                          ? 'bg-primary/10 text-primary ring-1 ring-primary/20'
                           : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                         }
                         ${collapsed ? 'justify-center px-0' : ''}
@@ -266,7 +266,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             {avatarUrl ? (
               <img src={avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 ring-2 ring-white/10" />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/25">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-primary/25">
                 {initials}
               </div>
             )}
