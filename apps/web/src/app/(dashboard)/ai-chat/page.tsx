@@ -46,13 +46,13 @@ function ChatSkeleton() {
 function TypingIndicator() {
   return (
     <div className="flex items-start gap-2 px-3 py-2">
-      <div className="h-7 w-7 rounded-full bg-whiteer flex items-center justify-center text-[10px] font-bold text-primary shrink-0">
+      <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-primary shrink-0">
         AI
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-whiteer">
-        <span className="h-1.5 w-1.5 rounded-full bg-steel animate-bounce" style={{ animationDelay: '0ms' }} />
-        <span className="h-1.5 w-1.5 rounded-full bg-steel animate-bounce" style={{ animationDelay: '150ms' }} />
-        <span className="h-1.5 w-1.5 rounded-full bg-steel animate-bounce" style={{ animationDelay: '300ms' }} />
+      <div className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-muted">
+        <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: '0ms' }} />
+        <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: '150ms' }} />
+        <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: '300ms' }} />
       </div>
     </div>
   );
@@ -297,7 +297,7 @@ export default function AIChatPage() {
                   >
                     {/* Avatar */}
                     {msg.role === 'ai' ? (
-                      <div className="h-7 w-7 rounded-full bg-whiteer flex items-center justify-center text-[10px] font-bold shrink-0" style={{ color: primaryColor }}>
+                      <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold shrink-0" style={{ color: primaryColor }}>
                         AI
                       </div>
                     ) : (
@@ -310,7 +310,7 @@ export default function AIChatPage() {
                     <div
                       className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm leading-relaxed whitespace-pre-line ${
                         msg.role === 'ai'
-                          ? 'bg-whiteer text-foreground rounded-tl-sm'
+                          ? 'bg-muted text-foreground rounded-tl-sm'
                           : 'text-foreground rounded-tr-sm'
                       }`}
                       style={msg.role === 'user' ? { backgroundColor: primaryColor } : {}}
@@ -355,7 +355,7 @@ export default function AIChatPage() {
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Describe your plumbing issue..."
-                    className="flex-1 rounded-xl border border-white/10 bg-whiteer px-3 py-2 text-sm text-foreground placeholder-steel/50 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                    className="flex-1 rounded-xl border border-white/10 bg-muted px-3 py-2 text-sm text-foreground placeholder-steel/50 outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
                   />
 
                   {/* Send Button */}
@@ -395,7 +395,7 @@ export default function AIChatPage() {
                   value={greeting}
                   onChange={(e) => setGreeting(e.target.value)}
                   rows={3}
-                  className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+                  className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground placeholder-steel/50 outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
                 />
               </div>
 
@@ -447,7 +447,7 @@ export default function AIChatPage() {
           {/* Embed Code */}
           <Card variant="default" padding="md">
             <h3 className="text-sm font-semibold text-foreground mb-3">Embed Code</h3>
-            <div className="rounded-xl bg-whiteer ring-1 ring-black/5 p-3 text-[11px] font-mono text-muted-foreground/80 break-all leading-relaxed">
+            <div className="rounded-xl bg-muted ring-1 ring-black/5 p-3 text-[11px] font-mono text-muted-foreground/80 break-all leading-relaxed">
               {`<iframe src="https://app.plumbcore.ai/embed/chat" width="400" height="600" frameborder="0" style="border: none; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.15);"></iframe>`}
             </div>
             <div className="mt-3">

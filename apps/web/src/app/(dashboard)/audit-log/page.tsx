@@ -207,8 +207,8 @@ export default function AuditLogPage() {
               onClick={() => setDateFilter(key)}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dateFilter === key
-                  ? 'bg-electric text-[#0a0e2a]'
-                  : 'text-muted-foreground/80 hover:text-foreground hover:bg-white/5'
+                  ? 'bg-primary text-white'
+                  : 'text-muted-foreground/80 hover:text-foreground hover:bg-muted/50'
               }`}
             >
               {label}
@@ -224,8 +224,8 @@ export default function AuditLogPage() {
               onClick={() => setActionFilter(key)}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 actionFilter === key
-                  ? 'bg-electric text-[#0a0e2a]'
-                  : 'text-muted-foreground/80 hover:text-foreground hover:bg-white/5'
+                  ? 'bg-primary text-white'
+                  : 'text-muted-foreground/80 hover:text-foreground hover:bg-muted/50'
               }`}
             >
               {label}
@@ -238,7 +238,7 @@ export default function AuditLogPage() {
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value)}
-            className="appearance-none rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-1.5 pr-8 text-xs text-muted-foreground/80 focus:outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 cursor-pointer"
+            className="appearance-none rounded-xl ring-1 ring-black/5 bg-muted px-3 py-1.5 pr-8 text-xs text-muted-foreground/80 focus:outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 cursor-pointer"
           >
             <option value="all">All Users</option>
             {uniqueUsers.map(name => (

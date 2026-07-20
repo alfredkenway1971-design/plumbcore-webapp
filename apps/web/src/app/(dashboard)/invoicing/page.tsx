@@ -280,7 +280,7 @@ export default function InvoicingPage() {
           ))}
         </div>
         <Card variant="default" padding="sm">
-          <div className="divide-y divide-white-border">
+          <div className="divide-y divide-border/50">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>
         </Card>
@@ -341,7 +341,7 @@ export default function InvoicingPage() {
       </div>
 
       {/* Filter Tabs with status counts */}
-      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-muted p-1 w-fit">
         {filterTabs.map((tab) => {
           const count = statusCounts[tab] || 0;
           return (
@@ -350,13 +350,13 @@ export default function InvoicingPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === tab
-                  ? 'bg-electric text-[#0a0e2a] shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-muted-foreground/80 hover:text-foreground'
               }`}
             >
               {tab}
               <span className={`ml-1.5 text-xs ${
-                activeTab === tab ? 'text-[#0a0e2a]/60' : 'text-steel-dark'
+                activeTab === tab ? 'text-foreground/60' : 'text-muted-foreground-dark'
               }`}>
                 ({count})
               </span>
@@ -381,7 +381,7 @@ export default function InvoicingPage() {
             <div key={status} className="flex items-center gap-1.5 text-xs text-muted-foreground/80">
               <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: colorMap[status] || '#6b7280' }} />
               <span className="capitalize">{status}</span>
-              <span className="text-steel-dark">({count})</span>
+              <span className="text-muted-foreground-dark">({count})</span>
             </div>
           );
         })}
@@ -414,7 +414,7 @@ export default function InvoicingPage() {
                 <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white-border">
+            <tbody className="divide-y divide-border/50">
               {filteredInvoices.map((inv) => (
                 <tr
                   key={inv.id}
@@ -631,7 +631,7 @@ export default function InvoicingPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setCreateModalOpen(false); setInvoiceForm({ selectedJobId: '', lineItems: [], taxRate: 8, serviceFeePercent: 0 }); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleGenerateInvoice} disabled={generating || !invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleGenerateInvoice} disabled={generating || !invoiceForm.selectedJobId || invoiceForm.lineItems.length === 0} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {generating ? 'Generating...' : 'Generate Invoice'}
                 </button>
               </div>

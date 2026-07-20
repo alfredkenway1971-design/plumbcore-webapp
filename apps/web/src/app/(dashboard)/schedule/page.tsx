@@ -20,11 +20,11 @@ const DAY_NAMES_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 
 const HOUR_SLOTS = Array.from({ length: 14 }, (_, i) => i + 6); // 6 AM to 7 PM
 
 const STATUS_COLORS: Record<string, string> = {
-  'in-progress': 'border-l-2 border-electric bg-electric/8',
+  'in-progress': 'border-l-2 border-electric bg-primary/8',
   scheduled: 'border-l-2 border-accent-amber bg-accent-amber/8',
   completed: 'border-l-2 border-status-success bg-green-500/8',
   urgent: 'border-l-2 border-status-error bg-red-500/8',
-  cancelled: 'border-l-2 border-steel-dark bg-muted opacity-60',
+  cancelled: 'border-l-2 border-border-dark bg-muted opacity-60',
 };
 
 const TEXT_COLORS: Record<string, string> = {
@@ -32,7 +32,7 @@ const TEXT_COLORS: Record<string, string> = {
   scheduled: 'text-amber-600',
   completed: 'text-green-600',
   urgent: 'text-red-600',
-  cancelled: 'text-steel-dark',
+  cancelled: 'text-muted-foreground-dark',
 };
 
 /* ── Helpers ── */
@@ -162,7 +162,7 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
         <select
           value={clientId}
           onChange={(e) => setClientId(e.target.value)}
-          className="w-full rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="w-full rounded-xl ring-1 ring-black/5 bg-muted px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           <option value="">Select a client...</option>
           {clients.map((c) => (
@@ -185,7 +185,7 @@ function NewJobForm({ onClose }: { onClose: () => void }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="w-full rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground placeholder-steel-dark outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
+          className="w-full rounded-xl ring-1 ring-black/5 bg-muted px-3 py-2.5 text-sm text-foreground placeholder-steel-dark outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20 resize-none"
         />
       </div>
       <div className="flex items-center justify-end gap-3 pt-2">
@@ -328,14 +328,14 @@ export default function SchedulePage() {
       {/* View Toggle + Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         {/* View toggles */}
-        <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
+        <div className="flex items-center gap-1 rounded-xl bg-muted p-1 w-fit">
           {(['day', 'week', 'month'] as const).map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all capitalize ${
                 view === v
-                  ? 'bg-electric text-[#0a0e2a] shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-muted-foreground/80 hover:text-foreground'
               }`}
             >
@@ -398,12 +398,12 @@ export default function SchedulePage() {
               </div>
 
               {/* Grid */}
-              <div className="divide-y divide-white-border">
+              <div className="divide-y divide-border/50">
                 {monthGrid.map((week, wi) => (
-                  <div key={wi} className="grid grid-cols-7 divide-x divide-white-border">
+                  <div key={wi} className="grid grid-cols-7 divide-x divide-border/50">
                     {week.map((day, di) => {
                       if (day === null) {
-                        return <div key={`empty-${di}`} className="min-h-[100px] bg-whiteer/30" />;
+                        return <div key={`empty-${di}`} className="min-h-[100px] bg-muted/30" />;
                       }
                       const dateStr = formatDateStr(currentDate.getFullYear(), currentDate.getMonth(), day);
                       const dayJobs = getJobsForDate(jobs, dateStr);
@@ -418,7 +418,7 @@ export default function SchedulePage() {
                           }`}
                         >
                           <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold mb-1 ${
-                            today ? 'bg-electric text-[#0a0e2a]' : 'text-muted-foreground/80'
+                            today ? 'bg-primary text-white' : 'text-muted-foreground/80'
                           }`}>
                             {day}
                           </div>
@@ -430,7 +430,7 @@ export default function SchedulePage() {
                                   e.stopPropagation();
                                   router.push(`/jobs/${job.id}`);
                                 }}
-                                className={`rounded px-1.5 py-0.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-muted'}`}
+                                className={`rounded px-1.5 py-0.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-border bg-muted'}`}
                               >
                                 <p className="text-[10px] font-semibold text-foreground truncate">{job.title}</p>
                                 <p className="text-[9px] text-muted-foreground/80 truncate">{job.clientName}</p>
@@ -451,10 +451,10 @@ export default function SchedulePage() {
           )}
 
           {/* Legend */}
-          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-muted flex-wrap">
             <span className="text-[11px] text-muted-foreground">Legend:</span>
             <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
-              <span className="inline-block w-2.5 h-2.5 rounded-sm bg-electric/30" /> In Progress
+              <span className="inline-block w-2.5 h-2.5 rounded-sm bg-primary/30" /> In Progress
             </span>
             <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-accent-amber/30" /> Scheduled
@@ -492,7 +492,7 @@ export default function SchedulePage() {
                     <div
                       key={date}
                       className={`px-2 py-3 text-center border-r border-border last:border-r-0 ${
-                        isTodayDate ? 'bg-electric/8' : ''
+                        isTodayDate ? 'bg-primary/8' : ''
                       }`}
                     >
                       <p className="text-[10px] font-semibold uppercase text-muted-foreground">{DAY_NAMES_SHORT[i]}</p>
@@ -506,7 +506,7 @@ export default function SchedulePage() {
               </div>
 
               {/* Body */}
-              <div className="grid grid-cols-7 divide-x divide-white-border">
+              <div className="grid grid-cols-7 divide-x divide-border/50">
                 {weekDates.map((date) => {
                   const dayJobs = getJobsForDate(jobs, date);
                   return (
@@ -529,7 +529,7 @@ export default function SchedulePage() {
                               e.stopPropagation();
                               router.push(`/jobs/${job.id}`);
                             }}
-                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-muted'}`}
+                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-border bg-muted'}`}
                           >
                             <p className="text-[11px] font-semibold text-foreground truncate">{job.title}</p>
                             <p className="text-[10px] text-muted-foreground/80 truncate">{job.clientName}</p>
@@ -537,7 +537,7 @@ export default function SchedulePage() {
                               {job.scheduledTime && (
                                 <span className="text-[9px] text-muted-foreground">{formatTime(job.scheduledTime)}</span>
                               )}
-                              <span className={`text-[9px] font-medium ${TEXT_COLORS[job.status] || 'text-steel'}`}>
+                              <span className={`text-[9px] font-medium ${TEXT_COLORS[job.status] || 'text-muted-foreground'}`}>
                                 {job.status}
                               </span>
                             </div>
@@ -553,10 +553,10 @@ export default function SchedulePage() {
           )}
 
           {/* Legend */}
-          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+          <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-muted flex-wrap">
             <span className="text-[11px] text-muted-foreground">Legend:</span>
             <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
-              <span className="inline-block w-2.5 h-2.5 rounded bg-electric/30" /> In Progress
+              <span className="inline-block w-2.5 h-2.5 rounded bg-primary/30" /> In Progress
             </span>
             <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
               <span className="inline-block w-2.5 h-2.5 rounded bg-accent-amber/30" /> Scheduled
@@ -590,7 +590,7 @@ export default function SchedulePage() {
                 ) : (
                   <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden">
                     {/* Timeline */}
-                    <div className="divide-y divide-white-border">
+                    <div className="divide-y divide-border/50">
                       {HOUR_SLOTS.map((hour) => {
                         const hourStr = `${String(hour).padStart(2, '0')}:00`;
                         const jobsAtHour = dayJobs.filter(
@@ -627,7 +627,7 @@ export default function SchedulePage() {
                                       e.stopPropagation();
                                       router.push(`/jobs/${job.id}`);
                                     }}
-                                    className={`rounded-xl px-3 py-2 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-steel bg-muted'}`}
+                                    className={`rounded-xl px-3 py-2 cursor-pointer transition-all hover:brightness-110 ${STATUS_COLORS[job.status] || 'border-l-2 border-border bg-muted'}`}
                                   >
                                     <div className="flex items-center justify-between">
                                       <p className="text-sm font-semibold text-foreground">{job.title}</p>
@@ -652,10 +652,10 @@ export default function SchedulePage() {
                 )}
 
                 {/* Legend */}
-                <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-whiteer flex-wrap">
+                <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-muted flex-wrap">
                   <span className="text-[11px] text-muted-foreground">Legend:</span>
                   <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
-                    <span className="inline-block w-2.5 h-2.5 rounded bg-electric/30" /> In Progress
+                    <span className="inline-block w-2.5 h-2.5 rounded bg-primary/30" /> In Progress
                   </span>
                   <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                     <span className="inline-block w-2.5 h-2.5 rounded bg-accent-amber/30" /> Scheduled

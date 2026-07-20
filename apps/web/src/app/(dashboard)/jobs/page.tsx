@@ -52,18 +52,18 @@ const statusMap: Record<string, JobStatus | 'all'> = {
 };
 
 const priorityStyles: Record<string, string> = {
-  low: 'bg-steel/10 text-muted-foreground/80',
+  low: 'bg-muted/10 text-muted-foreground/80',
   medium: 'bg-accent-amber/10 text-amber-600',
   high: 'bg-red-50 text-red-600',
   critical: 'bg-red-500/20 text-red-600',
 };
 
 const calendarColorMap: Record<string, string> = {
-  'in-progress': 'border-l-2 border-electric bg-electric/5',
+  'in-progress': 'border-l-2 border-electric bg-primary/5',
   'scheduled': 'border-l-2 border-accent-amber bg-accent-amber/5',
   'completed': 'border-l-2 border-status-success bg-green-500/5',
   'urgent': 'border-l-2 border-status-error bg-red-500/5',
-  'cancelled': 'border-l-2 border-steel-dark bg-muted opacity-60',
+  'cancelled': 'border-l-2 border-border-dark bg-muted opacity-60',
 };
 
 /* ── Skeleton Row ── */
@@ -491,7 +491,7 @@ export default function JobsPage() {
         <div className="h-10 w-full max-w-md rounded-xl bg-muted animate-pulse" />
         {/* Table skeleton */}
         <Card variant="default" padding="sm">
-          <div className="divide-y divide-white-border">
+          <div className="divide-y divide-border/50">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonRow key={i} />
             ))}
@@ -513,12 +513,12 @@ export default function JobsPage() {
       </div>
 
       {/* View Tabs */}
-      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-muted p-1 w-fit">
         <button
           onClick={() => setViewMode('list')}
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'list'
-              ? 'bg-electric text-[#0a0e2a] shadow-sm'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-muted-foreground/80 hover:text-foreground'
           }`}
         >
@@ -528,7 +528,7 @@ export default function JobsPage() {
           onClick={() => setViewMode('calendar')}
           className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
             viewMode === 'calendar'
-              ? 'bg-electric text-[#0a0e2a] shadow-sm'
+              ? 'bg-primary text-white shadow-sm'
               : 'text-muted-foreground/80 hover:text-foreground'
           }`}
         >
@@ -548,7 +548,7 @@ export default function JobsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-muted px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {statusFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Statuses' : opt}</option>
@@ -557,7 +557,7 @@ export default function JobsPage() {
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-muted px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {priorityFilterOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Priorities' : opt}</option>
@@ -566,7 +566,7 @@ export default function JobsPage() {
         <select
           value={techFilter}
           onChange={(e) => setTechFilter(e.target.value)}
-          className="rounded-xl ring-1 ring-black/5 bg-whiteer px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl ring-1 ring-black/5 bg-muted px-3 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           {techOptions.map((opt) => (
             <option key={opt} value={opt}>{opt === 'All' ? 'All Techs' : opt}</option>
@@ -611,7 +611,7 @@ export default function JobsPage() {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-muted-foreground/80'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-muted/10 text-muted-foreground/80'}`}
                           >
                             {job.priority}
                           </span>
@@ -670,7 +670,7 @@ export default function JobsPage() {
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white-border">
+                <tbody className="divide-y divide-border/50">
                   {filteredJobs.map((job) => {
                     const techNames = job.assignedTo
                       .map((t) => teamMembers.find((m) => m.id === t)?.name || t)
@@ -687,7 +687,7 @@ export default function JobsPage() {
                         <td className="px-4 py-3 text-sm text-muted-foreground/80 whitespace-nowrap">{formatDate(job.scheduledDate)}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-steel/10 text-muted-foreground/80'}`}
+                            className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${priorityStyles[job.priority] || 'bg-muted/10 text-muted-foreground/80'}`}
                           >
                             {job.priority}
                           </span>
@@ -768,7 +768,7 @@ export default function JobsPage() {
                     <div
                       key={day}
                       className={`px-2 py-3 text-center border-r border-border last:border-r-0 ${
-                        isToday ? 'bg-electric/5' : ''
+                        isToday ? 'bg-primary/5' : ''
                       }`}
                     >
                       <p className="text-xs font-semibold uppercase text-muted-foreground">{day}</p>
@@ -781,7 +781,7 @@ export default function JobsPage() {
               </div>
 
               {/* Calendar body */}
-              <div className="grid grid-cols-7 divide-x divide-white-border">
+              <div className="grid grid-cols-7 divide-x divide-border/50">
                 {calendarDates.map((date, i) => {
                   const dayJobs = jobsByDay[date] || [];
                   return (
@@ -797,7 +797,7 @@ export default function JobsPage() {
                           <div
                             key={job.id}
                             onClick={() => router.push(`/jobs/${job.id}`)}
-                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-steel bg-muted'}`}
+                            className={`rounded-xl px-2 py-1.5 cursor-pointer transition-all hover:brightness-110 ${calendarColorMap[job.status] || 'border-l-2 border-border bg-muted'}`}
                           >
                             <p className="text-[11px] font-semibold text-foreground truncate">{job.title}</p>
                             <p className="text-[10px] text-muted-foreground/80 truncate">{job.clientName}</p>
@@ -811,7 +811,7 @@ export default function JobsPage() {
               </div>
 
               {/* Legend */}
-              <div className="flex items-center gap-4 px-4 py-2 border-t border-border bg-whiteer flex-wrap">
+              <div className="flex items-center gap-4 px-4 py-2 border-t border-border bg-muted flex-wrap">
                 <span className="text-[11px] text-muted-foreground">Legend:</span>
                 <span className="flex items-center gap-1 text-[11px] text-muted-foreground/80">
                   <span className="inline-block w-3 h-3 rounded bg-blue-tint border-l-2 border-electric" /> In Progress
@@ -868,9 +868,9 @@ export default function JobsPage() {
                       disabled={voiceState === 'listening' || voiceState === 'processing'}
                       className={`absolute right-2 bottom-2 w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
                         voiceState === 'listening'
-                          ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-200'
+                          ? 'bg-red-500 text-foreground animate-pulse shadow-lg shadow-red-200'
                           : voiceState === 'processing'
-                          ? 'bg-blue-400 text-white'
+                          ? 'bg-blue-400 text-foreground'
                           : 'bg-muted text-muted-foreground/80 hover:bg-muted hover:text-muted-foreground'
                       }`}
                       title="Voice input"
@@ -1011,7 +1011,7 @@ export default function JobsPage() {
               {/* Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowCreateModal(false); resetCreateForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleCreateJob} disabled={creating || !createFormValid} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {creating ? 'Creating...' : 'Create Job'}
                 </button>
               </div>

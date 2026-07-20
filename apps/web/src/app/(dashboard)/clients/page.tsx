@@ -290,7 +290,7 @@ export default function ClientsPage() {
           <h1 className="text-xl font-bold text-foreground">Clients</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{list.length} total clients</p>
         </div>
-        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors shadow-sm">
+        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
           <PlusIcon className="w-4 h-4" /> Add Client
         </button>
       </div>
@@ -605,7 +605,7 @@ export default function ClientsPage() {
               {/* Sticky Footer */}
               <div className="sticky bottom-0 px-6 py-4 bg-white border-t border-border/50 flex items-center justify-end gap-3">
                 <button onClick={() => { setShowModal(false); resetForm(); }} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                <button onClick={handleSave} disabled={saving} className="h-10 px-5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                   {saving ? 'Saving...' : editingId ? 'Update Client' : 'Save Client'}
                 </button>
               </div>
@@ -631,7 +631,7 @@ export default function ClientsPage() {
             <p className="text-sm text-muted-foreground mb-5">Are you sure you want to delete this client? This action cannot be undone.</p>
             <div className="flex items-center justify-end gap-3">
               <button onClick={() => setShowDelete(null)} className="h-10 px-5 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Cancel</button>
-              <button onClick={() => handleDelete(showDelete)} className="h-10 px-5 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors shadow-sm">Delete</button>
+              <button onClick={() => handleDelete(showDelete)} className="h-10 px-5 rounded-xl bg-red-500 text-foreground text-sm font-semibold hover:bg-red-600 transition-colors shadow-sm">Delete</button>
             </div>
           </div>
         </div>

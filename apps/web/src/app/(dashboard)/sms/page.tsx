@@ -308,7 +308,7 @@ export default function SMSPage() {
                     <div className="flex flex-col items-end gap-1 shrink-0 ml-2">
                       <span className="text-[10px] text-muted-foreground/80 whitespace-nowrap">{conv.lastTime}</span>
                       {conv.unread > 0 && (
-                        <span className="inline-flex items-center justify-center h-5 min-w-[20px] rounded-full bg-primary px-1.5 text-[10px] font-bold text-white">
+                        <span className="inline-flex items-center justify-center h-5 min-w-[20px] rounded-full bg-primary px-1.5 text-[10px] font-bold text-foreground">
                           {conv.unread}
                         </span>
                       )}

@@ -316,7 +316,7 @@ export default function ReviewsPage() {
                       </div>
                       <button
                         onClick={() => handleSendReview(job)}
-                        className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors"
+                        className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-foreground bg-primary rounded-xl hover:bg-primary/90 transition-colors"
                       >
                         <I.Send className="w-3.5 h-3.5" />
                         Send
@@ -533,7 +533,7 @@ export default function ReviewsPage() {
                 <button
                   onClick={confirmSend}
                   disabled={sending}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-primary rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                 >
                   {sending ? (
                     <>

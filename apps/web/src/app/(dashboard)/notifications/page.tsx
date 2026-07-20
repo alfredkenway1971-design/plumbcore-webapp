@@ -221,7 +221,7 @@ export default function NotificationsPage() {
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-foreground">Notifications</h1>
           {unreadCount > 0 && (
-            <span className="inline-flex items-center justify-center rounded-full bg-electric/15 px-2.5 py-0.5 text-xs font-bold text-primary">
+            <span className="inline-flex items-center justify-center rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-bold text-primary">
               {unreadCount}
             </span>
           )}
@@ -270,7 +270,7 @@ export default function NotificationsPage() {
           >
             {tab.label}
             {tab.key === 'unread' && unreadCount > 0 && (
-              <span className="ml-1.5 inline-flex items-center justify-center rounded-full bg-electric/15 px-1.5 py-0.5 text-[10px] font-bold text-primary">
+              <span className="ml-1.5 inline-flex items-center justify-center rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-bold text-primary">
                 {unreadCount}
               </span>
             )}
@@ -290,7 +290,7 @@ export default function NotificationsPage() {
 
       {/* Notification List */}
       {filteredNotifications.length > 0 && (
-        <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden divide-y divide-white-border/50">
+        <div className="rounded-xl ring-1 ring-black/5 bg-white overflow-hidden divide-y divide-border/50/50">
           {filteredNotifications.map((notif) => {
             const config = typeConfig[notif.type];
             const Icon = config.icon;
@@ -300,7 +300,7 @@ export default function NotificationsPage() {
                 href={notif.href}
                 onClick={() => handleMarkAsRead(notif.id)}
                 className={`flex gap-3 px-4 py-3.5 transition-colors hover:bg-white/[0.02] cursor-pointer ${
-                  !notif.read ? 'bg-electric/[0.02]' : ''
+                  !notif.read ? 'bg-primary/[0.02]' : ''
                 }`}
               >
                 {/* Icon */}
@@ -328,7 +328,7 @@ export default function NotificationsPage() {
                 {/* Unread dot */}
                 {!notif.read && (
                   <div className="flex items-start pt-1.5">
-                    <span className="h-2 w-2 rounded-full bg-electric shrink-0" />
+                    <span className="h-2 w-2 rounded-full bg-primary shrink-0" />
                   </div>
                 )}
               </a>

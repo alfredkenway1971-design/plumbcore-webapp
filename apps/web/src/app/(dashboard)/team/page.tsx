@@ -33,19 +33,19 @@ interface TeamMemberData {
 /* ── Role config ── */
 
 const roleConfig: Record<TeamRole, { label: string; color: string }> = {
-  admin: { label: 'Admin', color: 'bg-electric/15 text-primary' },
+  admin: { label: 'Admin', color: 'bg-primary/15 text-primary' },
   dispatcher: { label: 'Dispatcher', color: 'bg-amber-500/15 text-amber-400' },
   'lead-tech': { label: 'Lead Tech', color: 'bg-green-500/15 text-green-600' },
   'senior-tech': { label: 'Senior Tech', color: 'bg-green-50 text-green-600' },
-  tech: { label: 'Tech', color: 'bg-white/10 text-muted-foreground/80' },
+  tech: { label: 'Tech', color: 'bg-muted text-muted-foreground/80' },
   accountant: { label: 'Accountant', color: 'bg-primary/15 text-primary/80' },
 };
 
 const statusConfig: Record<string, { label: string; dotColor: string }> = {
   online: { label: 'Active', dotColor: 'bg-green-500' },
-  offline: { label: 'Inactive', dotColor: 'bg-steel' },
+  offline: { label: 'Inactive', dotColor: 'bg-muted' },
   busy: { label: 'Busy', dotColor: 'bg-amber-500' },
-  away: { label: 'Away', dotColor: 'bg-steel-light' },
+  away: { label: 'Away', dotColor: 'bg-muted-light' },
 };
 
 /* ── Extended team data (adding accountant) ── */
@@ -438,35 +438,35 @@ export default function TeamPage() {
 
             <div className="space-y-2 text-sm">
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Email</span>
+                <span className="text-muted-foreground">Email</span>
                 <span className="text-foreground">{selectedMember.email}</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Phone</span>
+                <span className="text-muted-foreground">Phone</span>
                 <span className="text-foreground">{selectedMember.phone}</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Status</span>
+                <span className="text-muted-foreground">Status</span>
                 <span className="flex items-center gap-1.5 text-foreground">
                   <span className={`h-2 w-2 rounded-full ${statusConfig[selectedMember.status].dotColor}`} />
                   {statusConfig[selectedMember.status].label}
                 </span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Assigned Jobs</span>
+                <span className="text-muted-foreground">Assigned Jobs</span>
                 <span className="text-foreground font-medium">{getAssignedJobsCount(selectedMember.id)}</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Rating</span>
+                <span className="text-muted-foreground">Rating</span>
                 <span className="text-foreground">{selectedMember.rating > 0 ? `${selectedMember.rating}/5` : 'N/A'}</span>
               </div>
               <div className="flex justify-between border-b border-border/50 pb-2">
-                <span className="text-steel">Joined</span>
+                <span className="text-muted-foreground">Joined</span>
                 <span className="text-foreground">{new Date(selectedMember.joinedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               </div>
               {selectedMember.specialties.length > 0 && (
                 <div className="flex justify-between pb-2">
-                  <span className="text-steel">Specialties</span>
+                  <span className="text-muted-foreground">Specialties</span>
                   <div className="flex flex-wrap gap-1 justify-end">
                     {selectedMember.specialties.map((s: any) => (
                       <span key={s} className="inline-flex rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-muted-foreground/80">{s}</span>
@@ -503,7 +503,7 @@ export default function TeamPage() {
               <select
                 value={editRole}
                 onChange={(e) => setEditRole(e.target.value as TeamRole)}
-                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 <option value="admin">Admin</option>
                 <option value="dispatcher">Dispatcher</option>
@@ -522,7 +522,7 @@ export default function TeamPage() {
               <button
                 onClick={() => setEditActive(!editActive)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  editActive ? 'bg-green-500' : 'bg-white/10'
+                  editActive ? 'bg-green-500' : 'bg-muted'
                 }`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${

@@ -261,7 +261,7 @@ export default function PriceIncreasesPage() {
         <div className="h-5 w-72 rounded bg-muted animate-pulse" />
         <div className="h-10 w-40 rounded bg-muted animate-pulse" />
         <Card variant="default" padding="sm">
-          <div className="divide-y divide-white-border">
+          <div className="divide-y divide-border/50">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>
         </Card>
@@ -341,7 +341,7 @@ export default function PriceIncreasesPage() {
       {/* Results */}
       {loading ? (
         <Card variant="default" padding="sm">
-          <div className="divide-y divide-white-border">
+          <div className="divide-y divide-border/50">
             {Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>
         </Card>

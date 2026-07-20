@@ -299,7 +299,7 @@ export default function LeadsPage() {
                         size="sm"
                         onClick={() => handleAccept(lead.id)}
                         loading={accepting === lead.id}
-                        className="!bg-emerald-600 hover:!bg-emerald-700 !text-white"
+                        className="!bg-emerald-600 hover:!bg-emerald-700 !text-foreground"
                       >
                         <CheckCircle className="w-4 h-4 mr-1" />Accept
                       </Button>

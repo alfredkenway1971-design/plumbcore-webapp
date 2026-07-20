@@ -388,8 +388,8 @@ export default function InventoryPage() {
               onClick={() => setCategory(cat)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 category === cat
-                  ? 'bg-electric text-[#0a0e2a]'
-                  : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-white/10'
+                  ? 'bg-primary text-white'
+                  : 'bg-muted text-muted-foreground/80 hover:text-foreground hover:bg-muted'
               }`}
             >
               {cat}
@@ -400,7 +400,7 @@ export default function InventoryPage() {
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="flex items-center justify-between rounded-xl border border-electric/20 bg-electric/[0.04] px-4 py-2.5">
+        <div className="flex items-center justify-between rounded-xl border border-electric/20 bg-primary/[0.04] px-4 py-2.5">
           <p className="text-sm text-muted-foreground/80">
             <span className="font-semibold text-foreground">{selectedIds.size}</span> item{selectedIds.size > 1 ? 's' : ''} selected
           </p>
@@ -503,7 +503,7 @@ export default function InventoryPage() {
                     key={item.id}
                     className={`border-b border-border transition-colors hover:bg-white/[0.02] ${
                       isLowStock ? 'border-l-2 border-l-status-error' : ''
-                    } ${selectedIds.has(item.id) ? 'bg-electric/[0.03]' : ''}`}
+                    } ${selectedIds.has(item.id) ? 'bg-primary/[0.03]' : ''}`}
                   >
                     <td className="px-3 py-3">
                       <input
@@ -552,7 +552,7 @@ export default function InventoryPage() {
                           setUseJobQty(1);
                           setUseJobId('');
                         }}
-                        className="rounded-xl bg-white/5 px-2.5 py-1 text-[10px] font-medium text-muted-foreground/80 hover:bg-white/10 hover:text-foreground transition-colors"
+                        className="rounded-xl bg-white/5 px-2.5 py-1 text-[10px] font-medium text-muted-foreground/80 hover:bg-muted hover:text-foreground transition-colors"
                       >
                         Use in Job
                       </button>
@@ -777,7 +777,7 @@ export default function InventoryPage() {
                   setForm(initialForm);
                   showToast(`Part "${form.name}" added to inventory!`);
                 }}
-                className="h-10 px-5 text-sm font-medium text-white bg-primary rounded-xl hover:bg-primary/90 transition-colors"
+                className="h-10 px-5 text-sm font-medium text-foreground bg-primary rounded-xl hover:bg-primary/90 transition-colors"
               >
                 Add Part
               </button>
@@ -808,7 +808,7 @@ export default function InventoryPage() {
             <button
               onClick={() => setBulkMode('quantity')}
               className={`flex-1 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                bulkMode === 'quantity' ? 'bg-electric text-[#0a0e2a]' : 'bg-muted text-muted-foreground/80 hover:text-foreground'
+                bulkMode === 'quantity' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground/80 hover:text-foreground'
               }`}
             >
               Update Quantity
@@ -816,7 +816,7 @@ export default function InventoryPage() {
             <button
               onClick={() => setBulkMode('price')}
               className={`flex-1 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                bulkMode === 'price' ? 'bg-electric text-[#0a0e2a]' : 'bg-muted text-muted-foreground/80 hover:text-foreground'
+                bulkMode === 'price' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground/80 hover:text-foreground'
               }`}
             >
               Update Price
@@ -878,7 +878,7 @@ export default function InventoryPage() {
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-muted-foreground/80">Select Job</label>
             <select
-              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none transition-all focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               value={useJobId}
               onChange={(e) => setUseJobId(e.target.value)}
             >
@@ -899,7 +899,7 @@ export default function InventoryPage() {
           />
 
           {useJobId && useJobQty > 0 && useJobModal.item && (
-            <div className="rounded-xl bg-electric/[0.04] border border-electric/10 p-3">
+            <div className="rounded-xl bg-primary/[0.04] border border-electric/10 p-3">
               <p className="text-xs text-muted-foreground/80">
                 Total deduction value: <span className="font-semibold text-foreground">${(useJobQty * useJobModal.item.unitPrice).toFixed(2)}</span>
               </p>

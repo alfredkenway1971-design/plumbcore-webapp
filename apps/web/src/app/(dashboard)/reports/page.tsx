@@ -477,8 +477,8 @@ export default function ReportsPage() {
                 onClick={() => setDateRange(range)}
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                   dateRange === range
-                    ? 'bg-electric text-[#0a0e2a]'
-                    : 'text-muted-foreground/80 hover:text-foreground hover:bg-white/5'
+                    ? 'bg-primary text-white'
+                    : 'text-muted-foreground/80 hover:text-foreground hover:bg-muted/50'
                 }`}
               >
                 {range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : range === '90d' ? '90 Days' : 'This Year'}
@@ -508,7 +508,7 @@ export default function ReportsPage() {
                     </span>
                     <div className="flex-1 h-6 rounded-md bg-white/5 overflow-hidden">
                       <div
-                        className="h-full rounded-md bg-electric transition-all duration-500"
+                        className="h-full rounded-md bg-primary transition-all duration-500"
                         style={{ width: `${Math.max(pct, 2)}%` }}
                       />
                     </div>
@@ -660,11 +660,11 @@ export default function ReportsPage() {
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
                   <span className="text-[10px] text-muted-foreground/80 font-medium">{formatCurrency(val)}</span>
                   <div
-                    className={`w-full rounded-t-sm transition-all duration-500 ${isCurrent ? 'bg-electric' : 'bg-electric/60'}`}
+                    className={`w-full rounded-t-sm transition-all duration-500 ${isCurrent ? 'bg-primary' : 'bg-primary/60'}`}
                     style={{ height: `${Math.max(pct, 2)}%` }}
                     title={`${monthLabels[m]}: ${formatCurrency(val)}`}
                   />
-                  <span className={`text-[10px] ${isCurrent ? 'text-foreground font-semibold' : 'text-steel'}`}>{monthLabels[m]}</span>
+                  <span className={`text-[10px] ${isCurrent ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>{monthLabels[m]}</span>
                 </div>
               );
             })}
@@ -693,7 +693,7 @@ export default function ReportsPage() {
                 </tr>
               ) : (
                 sortedTech.map((tech, i) => (
-                  <tr key={tech.name} className={`border-b border-border/50 hover:bg-white/[0.02] transition-colors ${i === 0 ? 'bg-electric/5' : ''}`}>
+                  <tr key={tech.name} className={`border-b border-border/50 hover:bg-white/[0.02] transition-colors ${i === 0 ? 'bg-primary/5' : ''}`}>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-tint text-[10px] font-semibold text-primary">
@@ -757,7 +757,7 @@ export default function ReportsPage() {
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
                   <span className="text-[10px] text-muted-foreground/80">{val}</span>
                   <div
-                    className="w-full rounded-t-sm bg-electric transition-all duration-500"
+                    className="w-full rounded-t-sm bg-primary transition-all duration-500"
                     style={{ height: `${Math.max(pct, 2)}%` }}
                   />
                   <span className="text-[10px] text-muted-foreground">{monthLabels[m]}</span>
@@ -787,11 +787,11 @@ export default function ReportsPage() {
 
           <div className="space-y-2 mb-3">
             <div className="flex justify-between text-xs">
-              <span className="text-steel">Most Used:</span>
+              <span className="text-muted-foreground">Most Used:</span>
               <span className="text-foreground font-medium">{reportData!.mostUsedPart}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-steel">Least Used:</span>
+              <span className="text-muted-foreground">Least Used:</span>
               <span className="text-foreground font-medium">{reportData!.leastUsedPart}</span>
             </div>
           </div>
@@ -803,7 +803,7 @@ export default function ReportsPage() {
                 <span className="w-1/3 text-xs text-muted-foreground/80 truncate" title={part.name}>{part.name}</span>
                 <div className="flex-1 h-4 rounded bg-white/5 overflow-hidden">
                   <div
-                    className="h-full rounded bg-electric/70 transition-all"
+                    className="h-full rounded bg-primary/70 transition-all"
                     style={{ width: `${(part.uses / reportData!.maxUses) * 100}%` }}
                   />
                 </div>

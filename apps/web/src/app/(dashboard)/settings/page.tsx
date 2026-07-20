@@ -188,7 +188,7 @@ function StatusBadge({ active }: { active: boolean }) {
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
         active
           ? 'bg-green-50 text-green-600 border border-status-success/20'
-          : 'bg-steel/10 text-muted-foreground border border-steel/20'
+          : 'bg-muted/10 text-muted-foreground border border-border/20'
       }`}
     >
       {active ? 'Active' : 'Inactive'}
@@ -203,7 +203,7 @@ function ToggleSwitch({ enabled, onChange }: { enabled: boolean; onChange: (v: b
       type="button"
       onClick={() => onChange(!enabled)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-electric/40 ${
-        enabled ? 'bg-electric' : 'bg-white/10'
+        enabled ? 'bg-primary' : 'bg-muted'
       }`}
     >
       <span
@@ -293,7 +293,7 @@ function ProfileTab() {
                 className="h-20 w-20 rounded-full object-cover border-2 border-border"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-electric/10 text-lg font-bold text-electric border-2 border-border">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary border-2 border-border">
                 {initials}
               </div>
             )}
@@ -591,8 +591,8 @@ export default function SettingsPage() {
   const statusColor: Record<string, string> = {
     online: 'bg-green-500',
     busy: 'bg-amber-500',
-    away: 'bg-steel-light',
-    offline: 'bg-steel',
+    away: 'bg-muted-light',
+    offline: 'bg-muted',
   };
 
   const statusLabel: Record<string, string> = {
@@ -714,7 +714,7 @@ export default function SettingsPage() {
                         reader.readAsDataURL(file);
                       }}
                     />
-                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary transition-colors shadow-sm cursor-pointer">
+                    <span className="inline-flex h-9 px-4 items-center rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary/90 transition-colors shadow-sm cursor-pointer">
                       {company.logo_url ? 'Change Logo' : 'Upload Logo'}
                     </span>
                   </label>
@@ -937,7 +937,7 @@ export default function SettingsPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/80">
-                        <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-steel'}`} />
+                        <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-muted'}`} />
                         {statusLabel[member.status] || member.status}
                       </span>
                       <div className="flex items-center gap-2">
@@ -989,7 +989,7 @@ export default function SettingsPage() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/80">
-                          <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-steel'}`} />
+                          <span className={`h-2 w-2 rounded-full ${statusColor[member.status] || 'bg-muted'}`} />
                           {statusLabel[member.status] || member.status}
                         </span>
                       </td>
@@ -1175,7 +1175,7 @@ export default function SettingsPage() {
                 await useAuthStore.getState().logout();
                 window.location.href = '/login';
               }}
-              className="h-10 px-5 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2"
+              className="h-10 px-5 rounded-xl bg-red-500 text-foreground text-sm font-semibold hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -1449,7 +1449,7 @@ export default function SettingsPage() {
                   onClick={() => setCurrentPlan(plan.id)}
                   className={`w-full text-left rounded-xl border p-4 transition-all ${
                     currentPlan === plan.id
-                      ? 'border-electric bg-electric/5'
+                      ? 'border-electric bg-primary/5'
                       : 'border-border bg-white hover:border-border'
                   }`}
                 >
@@ -1463,11 +1463,11 @@ export default function SettingsPage() {
                       <span className="text-xs text-muted-foreground">/mo</span>
                       <div
                         className={`ml-1 flex h-4 w-4 items-center justify-center rounded-full border-2 ${
-                          currentPlan === plan.id ? 'border-electric bg-electric' : 'border-white/20'
+                          currentPlan === plan.id ? 'border-electric bg-primary' : 'border-white/20'
                         }`}
                       >
                         {currentPlan === plan.id && (
-                          <svg className="h-2.5 w-2.5 text-[#0a0e2a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                          <svg className="h-2.5 w-2.5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         )}

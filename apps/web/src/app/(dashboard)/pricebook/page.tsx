@@ -236,7 +236,7 @@ export default function PricebookPage() {
           ))}
         </div>
         <Card variant="default" padding="sm">
-          <div className="divide-y divide-white-border">
+          <div className="divide-y divide-border/50">
             {Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>
         </Card>
@@ -274,7 +274,7 @@ export default function PricebookPage() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+          className="rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
         >
           <option value="">All Categories</option>
           {pricebookCategories.map((cat) => (
@@ -284,7 +284,7 @@ export default function PricebookPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 rounded-xl bg-whiteer p-1 w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-muted p-1 w-fit">
         {tabs.map((tab) => {
           const count =
             tab === 'All'
@@ -298,13 +298,13 @@ export default function PricebookPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === tab
-                  ? 'bg-electric text-[#0a0e2a] shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-muted-foreground/80 hover:text-foreground'
               }`}
             >
               {tab}
               <span className={`ml-1.5 text-xs ${
-                activeTab === tab ? 'text-[#0a0e2a]/60' : 'text-steel-dark'
+                activeTab === tab ? 'text-foreground/60' : 'text-muted-foreground-dark'
               }`}>
                 ({count})
               </span>
@@ -340,7 +340,7 @@ export default function PricebookPage() {
                 <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white-border">
+            <tbody className="divide-y divide-border/50">
               {filteredItems.map((item) => (
                 <tr
                   key={item.id}
@@ -419,7 +419,7 @@ export default function PricebookPage() {
             <select
               value={form.category || ''}
               onChange={(e) => updateForm('category', e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="">Select a category</option>
               {pricebookCategories.map((cat) => (
@@ -443,7 +443,7 @@ export default function PricebookPage() {
               <select
                 value={form.unitType || 'each'}
                 onChange={(e) => updateForm('unitType', e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor', 'tube'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -465,7 +465,7 @@ export default function PricebookPage() {
                   updateForm('estimatedHours', undefined);
                 }
               }}
-              className="rounded border-white/10 bg-whiteer text-primary focus:ring-electric/30"
+              className="rounded border-white/10 bg-muted text-primary focus:ring-electric/30"
             />
             <span className="text-sm text-foreground">This is a repair type</span>
           </label>
@@ -519,7 +519,7 @@ export default function PricebookPage() {
             <select
               value={form.category || ''}
               onChange={(e) => updateForm('category', e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+              className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
             >
               <option value="">Select a category</option>
               {pricebookCategories.map((cat) => (
@@ -543,7 +543,7 @@ export default function PricebookPage() {
               <select
                 value={form.unitType || 'each'}
                 onChange={(e) => updateForm('unitType', e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-whiteer px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
+                className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
                 {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -565,7 +565,7 @@ export default function PricebookPage() {
                   updateForm('estimatedHours', undefined);
                 }
               }}
-              className="rounded border-white/10 bg-whiteer text-primary focus:ring-electric/30"
+              className="rounded border-white/10 bg-muted text-primary focus:ring-electric/30"
             />
             <span className="text-sm text-foreground">This is a repair type</span>
           </label>

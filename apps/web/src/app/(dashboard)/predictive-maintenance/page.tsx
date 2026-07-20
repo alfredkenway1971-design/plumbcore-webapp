@@ -154,7 +154,7 @@ export default function PredictiveMaintenancePage() {
                 <div className="flex items-start gap-4">
                   {/* Risk score circle */}
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full text-sm font-bold text-white" style={{ backgroundColor: riskColor }}>
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full text-sm font-bold text-foreground" style={{ backgroundColor: riskColor }}>
                       {pred.failureRiskScore}%
                     </div>
                     <span className="text-[10px] font-semibold mt-1" style={{ color: riskColor }}>{riskLabel}</span>
