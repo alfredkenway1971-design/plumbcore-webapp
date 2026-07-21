@@ -2260,3 +2260,4 @@ export async function GET(request: NextRequest) {
 
   return Response.json(translations[locale as keyof typeof translations] || {});
 }
+// last deploy: Tue Jul 21 08:01:51 CEST 2026
