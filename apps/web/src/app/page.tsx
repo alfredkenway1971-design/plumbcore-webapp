@@ -215,7 +215,7 @@ function EstimateBanner({ t }: { t: (key: string) => string }) {
           {t('home.estimateSub')}
         </p>
         <a
-          href="/quote"
+          href="/quote/plumbcore"
           className="inline-flex items-center gap-2 bg-[var(--color-blue)] text-white font-jakarta font-bold text-[15px] py-3.5 px-6 rounded-[10px] shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110 transition-all active:scale-[0.98]"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
