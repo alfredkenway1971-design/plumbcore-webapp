@@ -1017,43 +1017,50 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Row 1: KPI Stats ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
-        <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-primary to-blue-bright" />
-        <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-gradient-to-br from-violet-500 to-purple-400" />
-        <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-gradient-to-br from-amber-500 to-orange-400" />
-        <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-gradient-to-br from-cyan-500 to-teal-400" />
-      </div>
+      {/* ── KPI Stats + Right sidebar ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 sm:gap-6">
+        {/* Main content - 3 columns */}
+        <div className="lg:col-span-3 space-y-5 sm:space-y-6">
+          {/* KPI Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-primary to-blue-bright" />
+            <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-gradient-to-br from-violet-500 to-purple-400" />
+            <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-gradient-to-br from-amber-500 to-orange-400" />
+            <StatCard label={t('dashboard.jobs')} value={String(stats.totalJobs)} change={stats.completedJobs > 0 ? `${Math.round(stats.completedJobs / Math.max(stats.totalJobs, 1) * 100)}% complete` : '0%'} trend={{ direction: 'up', label: 'completion rate', color: 'text-emerald-600' }} icon={I.Sparkles} iconBg="bg-gradient-to-br from-cyan-500 to-teal-400" />
+          </div>
 
-      {/* ── Revenue Goal + Deposits + Plan Info row ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
-        <div className="lg:col-span-2"><RevenueGoalBar /><DepositsThisWeek /></div>
-        <div className="lg:col-span-1">{company && <PlanInfoWidget />}</div>
-      </div>
+          {/* Revenue + Donut row */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
+            <div className="lg:col-span-3"><RevenueChart /></div>
+            <div className="lg:col-span-2"><JobDonutChart /></div>
+          </div>
 
-      {/* ── Row 2: Revenue Chart + Job Donut ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
-        <div className="lg:col-span-3"><RevenueChart /></div>
-        <div className="lg:col-span-2"><JobDonutChart /></div>
-      </div>
+          {/* Weekly Performance */}
+          <div><WeeklyTechChart /></div>
 
-      {/* ── Row 3: Weekly Tech Performance ── */}
-      <div><WeeklyTechChart /></div>
+          {/* Revenue Goal + Deposits */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            <RevenueGoalBar />
+            <DepositsThisWeek />
+          </div>
 
-      {/* ── Row 4: Upcoming Jobs + Tech Status ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
-        <div className="lg:col-span-3"><UpcomingJobsTable /></div>
-        <div className="lg:col-span-2"><TechStatusTable /></div>
-      </div>
+          {/* Upcoming Jobs */}
+          <UpcomingJobsTable />
 
-      {/* ── Row 5: Alerts + Quick Actions + Upgrade + AI ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
-        <div className="lg:col-span-2"><AlertsPanel /></div>
-        <div className="lg:col-span-1 flex flex-col gap-4">
+          {/* Alerts + Tech Status */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            <AlertsPanel />
+            <TechStatusTable />
+          </div>
+        </div>
+
+        {/* Right sidebar - 1 column */}
+        <div className="lg:col-span-1 space-y-5">
+          {company && <PlanInfoWidget />}
           <QuickActionsBar />
           <UpgradeCard />
+          <AIAssistantWidget />
         </div>
-        <div className="lg:col-span-2"><AIAssistantWidget /></div>
       </div>
     </div>
   );
