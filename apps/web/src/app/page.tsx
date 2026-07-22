@@ -43,28 +43,31 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
 /* ─── Hero ─── */
 function HeroSection({ t }: { t: (key: string) => string }) {
   return (
-    <section className="px-5 lg:px-10 pt-10 pb-8 bg-gradient-to-b from-[var(--color-blue-tint)] to-white">
+    <section className="px-5 lg:px-10 pt-12 lg:pt-20 pb-10 lg:pb-14 bg-gradient-to-b from-[var(--color-blue-tint)] to-white">
       <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
         <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
         {t('home.heroBadge')}
       </span>
       <h1 className="font-jakarta font-extrabold text-[38px] lg:text-[52px] xl:text-[60px] leading-[1.08] tracking-tight text-[var(--color-blue-deep)] mt-3 mb-3">
-        {t('home.heroLine1')}<br className="lg:hidden" />
-        <span className="text-[var(--color-blue-bright)]">{t('home.heroLineHighlight')}</span><br className="lg:hidden" />
+        {t('home.heroLine1')}{' '}
+        <span className="text-[var(--color-blue-bright)]">{t('home.heroLineHighlight')}</span>{' '}
         {t('home.heroLine2')}
       </h1>
-      <p className="text-[15px] text-[var(--color-muted-text)] leading-relaxed max-w-[36ch] mb-6">
+      <p className="text-[15px] lg:text-[17px] text-[var(--color-muted-text)] leading-relaxed max-w-[40ch] mb-6">
         {t('home.heroSub')}
       </p>
-      <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
-        <a href="/signup" className="bg-[var(--color-blue)] text-white font-jakarta font-bold text-[16px] py-[15px] px-5 rounded-[10px] flex items-center justify-center gap-2 shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110 transition-all active:scale-[0.98]">
+      <div className="flex flex-col sm:flex-row items-center gap-3 mb-5">
+        <a href="/signup" className="bg-[var(--color-blue)] text-white font-jakarta font-bold text-[16px] py-[16px] px-8 rounded-[10px] flex items-center justify-center gap-2 shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110 transition-all active:scale-[0.98]">
           {t('home.heroCta')} <ArrowRight className="w-4 h-4" />
         </a>
-        <a href="#how-it-works" className="bg-white text-[var(--color-blue-deep)] border-2 border-[var(--color-line)] font-inter font-semibold text-[14px] py-[13px] px-5 rounded-[10px] text-center hover:bg-[var(--color-blue-tint)] transition-colors">
-          {t('home.heroDemo')}
+        <a href="#how-it-works" className="text-[var(--color-blue-deep)] font-medium text-[14px] py-[16px] px-4 hover:underline underline-offset-2 transition-all">
+          {t('home.heroDemo')} →
         </a>
       </div>
-      <p className="text-[12px] text-[var(--color-muted-text)] text-center"><b className="text-[var(--color-ink)]">{t('home.heroShops')}</b> {t('home.heroShopsLabel')}</p>
+      <div className="flex items-center gap-2 justify-center text-[13px] text-[var(--color-muted-text)]">
+        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-blue-tint)] text-[var(--color-blue)] font-semibold text-[12px]">{t('home.heroShops')}</span>
+        <span>{t('home.heroShopsLabel')}</span>
+      </div>
     </section>
   );
 }
@@ -72,15 +75,20 @@ function HeroSection({ t }: { t: (key: string) => string }) {
 /* ─── Trust Bar ─── */
 function TrustBar({ t }: { t: (key: string) => string }) {
   return (
-    <div className="px-5 lg:px-10 py-4 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
-      <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-muted-text)] font-semibold flex items-center gap-2 mb-2.5">
-        <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-muted-text)] inline-block" />
-        {t('home.trustLabel')}
-      </span>
-      <div className="grid grid-cols-3 gap-2">
-        {[t('home.trustRegion1'), t('home.trustRegion2'), t('home.trustRegion3')].map((r, i) => (
-          <div key={i} className="border border-[var(--color-line)] rounded-lg py-2.5 px-1.5 text-center font-mono text-[10px] text-[var(--color-muted-text)] tracking-[0.04em] bg-white">{r}</div>
-        ))}
+    <div className="px-5 lg:px-10 py-5 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-2 text-[13px] text-[var(--color-muted-text)]">
+          <span className="text-[var(--color-amber)] text-[14px]">★★★★★</span>
+          <span><b className="text-[var(--color-ink)]">4.9</b> (200+ reviews)</span>
+        </div>
+        <div className="hidden sm:block w-px h-4 bg-[var(--color-line)]" />
+        <div className="flex items-center gap-1.5">
+          {['TEXAS', 'OHIO', 'FLORIDA'].map((r, i) => (
+            <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-white border border-[var(--color-line)] text-[11px] font-mono font-semibold text-[var(--color-muted-text)] tracking-[0.04em]">{r}</span>
+          ))}
+        </div>
+        <div className="hidden sm:block w-px h-4 bg-[var(--color-line)]" />
+        <span className="text-[13px] text-[var(--color-muted-text)] font-medium">{t('home.trustLabel')}</span>
       </div>
     </div>
   );
@@ -94,24 +102,17 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
     { num: '03', title: t('home.step3Title'), desc: t('home.step3Desc') },
   ];
   return (
-    <section className="scroll-reveal px-5 lg:px-10 py-11">
-      <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.howBadge')}
-        </span>
-        <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.howTitle')}</h2>
+    <section className="scroll-reveal px-5 lg:px-10 py-11 lg:py-16">
+      <div className="text-center mb-8 lg:mb-10">
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.howBadge')}</span>
+        <h2 className="font-jakarta font-extrabold text-[27px] lg:text-[36px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.howTitle')}</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-8">
       {steps.map((s, i) => (
-        <div key={i} className="flex gap-3.5 p-3">
-          <div className="flex-none w-11 h-11 rounded-xl bg-[var(--color-blue-tint)] border border-[var(--color-line)] flex items-center justify-center">
-            <span className="font-mono font-semibold text-[15px] text-[var(--color-blue)]">{s.num}</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-jakarta font-bold text-[18px] text-[var(--color-ink)] mb-1">{s.title}</h3>
-            <p className="text-[13.5px] text-[var(--color-muted-text)] leading-relaxed">{s.desc}</p>
-          </div>
+        <div key={i} className="bg-white rounded-xl border border-[var(--color-line)] p-6 text-center hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.08)] transition-shadow">
+          <div className="w-12 h-12 rounded-xl bg-[var(--color-blue)] text-white flex items-center justify-center mx-auto mb-4 font-jakarta font-bold text-[18px]">{s.num}</div>
+          <h3 className="font-jakarta font-bold text-[18px] text-[var(--color-ink)] mb-2">{s.title}</h3>
+          <p className="text-[13.5px] text-[var(--color-muted-text)] leading-relaxed">{s.desc}</p>
         </div>
       ))}
       </div>
@@ -122,14 +123,14 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
 /* ─── Stat Strip ─── */
 function StatStrip({ t }: { t: (key: string) => string }) {
   return (
-    <div className="scroll-reveal mx-5 lg:mx-10 rounded-2xl bg-[var(--color-blue)] text-white text-center py-7 px-5">
-      <div className="font-jakarta font-extrabold text-[46px] leading-none">{t('home.statAmount')}</div>
-      <div className="font-mono text-[11px] tracking-[0.06em] uppercase mt-2 opacity-90">{t('home.statLabel')}</div>
+    <div className="scroll-reveal mx-5 lg:mx-10 rounded-2xl bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-deep)] text-white text-center py-8 px-6 shadow-lg">
+      <div className="font-jakarta font-extrabold text-[42px] lg:text-[52px] leading-none">{t('home.statAmount')}</div>
+      <div className="text-[12px] lg:text-[14px] font-semibold mt-2 opacity-90 uppercase tracking-[0.08em]">{t('home.statLabel')}</div>
     </div>
   );
 }
 
-/* ─── Comparison Table ─── */
+/* ─── Comparison Section ─── */
 function ComparisonSection({ t }: { t: (key: string) => string }) {
   const rows = [
     { metric: t('home.compMonthlyCost'), old: t('home.compOldCost'), new_: t('home.compNewCost') },
@@ -138,23 +139,19 @@ function ComparisonSection({ t }: { t: (key: string) => string }) {
     { metric: t('home.compSetup'), old: t('home.compOldSetup'), new_: t('home.compNewSetup') },
   ];
   return (
-    <section className="scroll-reveal px-5 lg:px-10 py-11">
-      <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.compBadge')}
-        </span>
-        <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.compTitle')}</h2>
+    <section className="scroll-reveal px-5 lg:px-10 py-11 lg:py-16 bg-[var(--color-bg-alt)]">
+      <div className="text-center mb-8 lg:mb-10">
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.compBadge')}</span>
+        <h2 className="font-jakarta font-extrabold text-[27px] lg:text-[36px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.compTitle')}</h2>
       </div>
-      <div className="border border-[var(--color-line)] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 border-b border-[var(--color-line)] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--color-muted-text)] bg-[var(--color-bg-alt)]">
-          <div>{t('home.compMetric')}</div><div className="text-center">{t('home.compOldHeader')}</div><div className="text-center">{t('home.compNewHeader')}</div>
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
         {rows.map((r, i) => (
-          <div key={i} className="grid grid-cols-[1.4fr_1fr_1fr] items-center px-3.5 py-3 text-[13px] border-b border-[var(--color-line)] last:border-b-0">
-            <div className="text-[var(--color-ink)] font-medium">{r.metric}</div>
-            <div className="text-center" style={{ color: '#C1544B' }}>{r.old}</div>
-            <div className="text-center font-semibold text-[var(--color-green)]">{r.new_}</div>
+          <div key={i} className="rounded-xl p-5 bg-white border border-[var(--color-line)] text-center">
+            <div className="text-[12px] font-mono uppercase tracking-[0.05em] text-[var(--color-muted-text)] mb-2">{r.metric}</div>
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex-1 bg-red-50 rounded-lg py-2 text-[13px] font-medium" style={{ color: '#C1544B' }}><s>{r.old}</s></div>
+              <div className="flex-1 bg-green-50 rounded-lg py-2 text-[13px] font-semibold text-[var(--color-green)]">{r.new_}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -168,7 +165,7 @@ function PricingCard({ plan, featured, scarcity, t }: {
   featured?: boolean; scarcity?: string; t: (key: string) => string;
 }) {
   return (
-    <div className={`rounded-xl px-5 py-5 ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border border-[var(--color-line)] bg-white'} relative`}>
+    <div className={`rounded-xl px-5 py-5 ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border border-[var(--color-line)] shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)] bg-white'} relative`}>
       {featured && (
         <div className="absolute -top-3 left-5 bg-[var(--color-blue)] text-white font-mono text-[10px] font-bold tracking-[0.05em] px-2.5 py-1 rounded-full uppercase">{t('home.pricingBadgeFeatured')}</div>
       )}
@@ -189,7 +186,7 @@ function PricingCard({ plan, featured, scarcity, t }: {
           {scarcity}
         </div>
       )}
-      <button onClick={plan.onClick} className={`w-full py-3 px-5 rounded-[10px] font-semibold text-[14px] transition-all active:scale-[0.98] ${featured ? 'bg-[var(--color-blue)] text-white font-jakarta font-bold shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110' : 'bg-white text-[var(--color-blue-deep)] border-2 border-[var(--color-line)] hover:bg-[var(--color-blue-tint)]'}`}>
+      <button onClick={plan.onClick} className={`w-full py-3 px-5 rounded-[10px] font-semibold text-[14px] transition-all active:scale-[0.98] ${featured ? 'bg-[var(--color-blue)] text-white font-jakarta font-bold shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110' : 'bg-white text-[var(--color-blue)] border-2 border-[var(--color-blue)]/30 hover:bg-[var(--color-blue-tint)] hover:border-[var(--color-blue)]'}`}>
         {plan.cta}
       </button>
     </div>
@@ -207,9 +204,7 @@ function EstimateBanner({ t }: { t: (key: string) => string }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
           </svg>
         </div>
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">
-          {t('home.estimateBadge')}
-        </span>
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.estimateBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[23px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2 mb-2">
           {t('home.estimateTitle')}
         </h2>
@@ -296,10 +291,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.pricingBadge')}
-        </span>
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.pricingBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.pricingTitle')}</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
@@ -327,11 +319,8 @@ function DepositSection({ t }: { t: (key: string) => string }) {
   ];
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11">
-      <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.depositBadge')}
-        </span>
+      <div className="mb-6">
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.depositBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.depositTitle')}</h2>
         <p className="text-[13.5px] text-[var(--color-muted-text)] mt-2 leading-relaxed">{t('home.depositSub')}</p>
       </div>
@@ -355,11 +344,8 @@ function DepositSection({ t }: { t: (key: string) => string }) {
 function PrioritySection({ t }: { t: (key: string) => string }) {
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
-      <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.priorityBadge')}
-        </span>
+      <div className="mb-6">
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.priorityBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.priorityTitle')}</h2>
         <p className="text-[13.5px] text-[var(--color-muted-text)] mt-2 leading-relaxed">{t('home.prioritySub')}</p>
       </div>
@@ -410,10 +396,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11">
       <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.testiBadge')}
-        </span>
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.testiBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.testiTitle')}</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -444,10 +427,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
-        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
-          <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
-          {t('home.faqBadge')}
-        </span>
+        <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.faqBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.faqTitle')}</h2>
       </div>
       {faqs.map((f, i) => (
