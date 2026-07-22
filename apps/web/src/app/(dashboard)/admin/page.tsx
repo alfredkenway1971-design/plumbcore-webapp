@@ -418,40 +418,42 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* Row 1 — KPI Cards */}
+      {/* KPI Cards */}
       <div><KPICards kpis={displayKPIs} /></div>
 
-      {/* Row 2 — MRR Growth + Customer Funnel */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
-        <div className="lg:col-span-3"><MRRGrowthChart /></div>
-        <div className="lg:col-span-2"><CustomerFunnel /></div>
-      </div>
+      {/* Main content + Right sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 sm:gap-6">
+        {/* Left - 3 columns */}
+        <div className="lg:col-span-3 space-y-5 sm:space-y-6">
+          {/* MRR Growth + Customer Funnel */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
+            <div className="lg:col-span-3"><MRRGrowthChart /></div>
+            <div className="lg:col-span-2"><CustomerFunnel /></div>
+          </div>
 
-      {/* Row 3 — Trial Pipeline + At-Risk Customers */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-        <TrialPipelineTable />
-        <AtRiskCustomers />
-      </div>
+          {/* Trial Pipeline + At-Risk Customers */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            <TrialPipelineTable />
+            <AtRiskCustomers />
+          </div>
 
-      {/* Row 3b — Unfulfilled Leads */}
-      <div><UnfulfilledLeads /></div>
+          {/* Unfulfilled Leads */}
+          <div><UnfulfilledLeads /></div>
 
-      {/* Row 4 — Top Customers + Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-        <TopCustomersTable />
-        <ActivityFeed />
-      </div>
+          {/* Top Customers + Activity Feed */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            <TopCustomersTable />
+            <ActivityFeed />
+          </div>
+        </div>
 
-      {/* Row 4b — Marketing & Growth */}
-      <div><MarketingGrowth /></div>
-
-      {/* Row 5 — Feature Usage Heatmap */}
-      <div><FeatureUsageHeatmap /></div>
-
-      {/* Row 6 — Revenue by Plan + Geographic Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-        <RevenueByPlanDonut />
-        <GeographicMap />
+        {/* Right sidebar - 1 column */}
+        <div className="lg:col-span-1 space-y-5">
+          <MarketingGrowth />
+          <FeatureUsageHeatmap />
+          <RevenueByPlanDonut />
+          <GeographicMap />
+        </div>
       </div>
     </div>
   );
