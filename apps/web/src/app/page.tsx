@@ -19,8 +19,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
   return (
     <header className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-line)] bg-white">
       <a href="/dashboard" className="flex items-center gap-2 no-underline">
-        <span className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-bright)] flex items-center justify-center font-mono text-[11px] font-bold text-white">PC</span>
-        <span className="font-jakarta font-extrabold text-[19px] text-[var(--color-ink)]">PlumbCore</span>
+        <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="h-7 w-auto" />
       </a>
       <div className="flex items-center gap-3">
         <div className="hidden md:flex items-center gap-5 mr-3">
@@ -438,9 +437,8 @@ function FinalCtaSection({ t }: { t: (key: string) => string }) {
 function Footer({ t }: { t: (key: string) => string }) {
   return (
     <footer className="px-5 py-6 border-t border-[var(--color-line)] text-center text-[11px] text-[var(--color-muted-text)]">
-      <a href="/dashboard" className="flex items-center justify-center gap-2 mb-2.5 no-underline">
-        <span className="w-[26px] h-[26px] rounded-[7px] bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-bright)] flex items-center justify-center font-mono text-[11px] font-bold text-white">PC</span>
-        <span className="font-jakarta font-extrabold text-[19px] text-[var(--color-ink)]">PlumbCore</span>
+      <a href="/dashboard" className="flex items-center justify-center mb-2.5 no-underline">
+        <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="h-6 w-auto" />
       </a>
       <div>{t('home.footerText')}</div>
     </footer>
