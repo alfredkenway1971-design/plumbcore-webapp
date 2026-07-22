@@ -72,28 +72,6 @@ function HeroSection({ t }: { t: (key: string) => string }) {
   );
 }
 
-/* ─── Trust Bar ─── */
-function TrustBar({ t }: { t: (key: string) => string }) {
-  return (
-    <div className="px-5 lg:px-10 py-5 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
-        <div className="flex items-center gap-2 text-[13px] text-[var(--color-muted-text)]">
-          <span className="text-[var(--color-amber)] text-[14px]">★★★★★</span>
-          <span><b className="text-[var(--color-ink)]">4.9</b> (200+ reviews)</span>
-        </div>
-        <div className="hidden sm:block w-px h-4 bg-[var(--color-line)]" />
-        <div className="flex items-center gap-1.5">
-          {['TEXAS', 'OHIO', 'FLORIDA'].map((r, i) => (
-            <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-white border border-[var(--color-line)] text-[11px] font-mono font-semibold text-[var(--color-muted-text)] tracking-[0.04em]">{r}</span>
-          ))}
-        </div>
-        <div className="hidden sm:block w-px h-4 bg-[var(--color-line)]" />
-        <span className="text-[13px] text-[var(--color-muted-text)] font-medium">{t('home.trustLabel')}</span>
-      </div>
-    </div>
-  );
-}
-
 /* ─── How It Works Steps ─── */
 function HowItWorksSection({ t }: { t: (key: string) => string }) {
   const steps = [
@@ -484,7 +462,6 @@ export default function LandingPage() {
     <main className="max-w-[430px] lg:max-w-5xl xl:max-w-6xl mx-auto bg-white min-h-screen">
       <Navbar locale={locale} onLocaleChange={(l) => changeLocale(l as 'en' | 'fr' | 'es' | 'de')} t={t} />
       <HeroSection t={t} />
-      <TrustBar t={t} />
       <HowItWorksSection t={t} />
       <StatStrip t={t} />
       <ComparisonSection t={t} />
