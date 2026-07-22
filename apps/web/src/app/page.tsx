@@ -100,7 +100,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
 /* ─── Stat Strip ─── */
 function StatStrip({ t }: { t: (key: string) => string }) {
   return (
-    <div className="scroll-reveal mx-5 lg:mx-10 rounded-2xl bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-deep)] text-white text-center py-8 px-6 shadow-lg">
+    <div className="scroll-reveal mx-5 lg:mx-auto lg:max-w-2xl rounded-2xl bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-blue-deep)] text-white text-center py-8 px-6 shadow-lg">
       <div className="font-jakarta font-extrabold text-[42px] lg:text-[52px] leading-none">{t('home.statAmount')}</div>
       <div className="text-[12px] lg:text-[14px] font-semibold mt-2 opacity-90 uppercase tracking-[0.08em]">{t('home.statLabel')}</div>
     </div>
@@ -425,7 +425,7 @@ function FinalCtaSection({ t }: { t: (key: string) => string }) {
         {t('home.ctaBadge')}
       </span>
       <h2 className="font-jakarta font-extrabold text-[26px] leading-[1.08] tracking-tight text-white mt-2 mb-4">{t('home.ctaTitle')}</h2>
-      <a href="/signup" className="w-full block bg-white text-[var(--color-blue-deep)] font-jakarta font-bold text-[16px] py-[15px] px-5 rounded-[10px] shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-95 transition-all active:scale-[0.98] mb-2.5">
+      <a href="/signup" className="w-full sm:w-auto inline-block bg-white text-[var(--color-blue-deep)] font-jakarta font-bold text-[16px] py-[15px] px-8 rounded-[10px] shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-95 transition-all active:scale-[0.98] mb-2.5">
         {t('home.ctaButton')} <ArrowRight className="w-4 h-4 inline" />
       </a>
       <p className="text-[12px] text-[#B9CCF4]">{t('home.ctaSub')}</p>
