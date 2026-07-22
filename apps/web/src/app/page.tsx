@@ -17,7 +17,7 @@ import { ArrowRight, Phone } from 'lucide-react';
 function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange: (l: string) => void; t: (key: string) => string }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-line)] bg-white">
+    <header className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-line)] bg-white relative">
       <a href="/dashboard" className="flex items-center gap-2 no-underline">
         <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="h-16 w-auto" />
       </a>
@@ -35,6 +35,17 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
           <span className={`absolute h-[2px] w-full bg-[var(--color-ink)] left-0 rounded-sm top-[12px] transition-transform ${open ? '-rotate-45 top-[6px]' : ''}`} />
         </button>
       </div>
+      {/* Mobile menu */}
+      {open && (
+        <div className="absolute top-full left-0 right-0 bg-white border-b border-[var(--color-line)] shadow-lg z-50 md:hidden">
+          <div className="flex flex-col px-5 py-4 gap-4">
+            <a href="#pricing" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navPricing')}</a>
+            <a href="#features" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navFeatures')}</a>
+            <a href="#testimonials" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-muted-text)] hover:text-[var(--color-blue)] transition-colors">{t('home.navTestimonials')}</a>
+            <a href="/login" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-blue)] font-semibold hover:text-[var(--color-blue-bright)] transition-colors">{t('home.navSignIn')}</a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
