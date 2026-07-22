@@ -158,12 +158,6 @@ function PricingCard({ plan, featured, scarcity, t }: {
           </li>
         ))}
       </ul>
-      {scarcity && (
-        <div className="flex items-center gap-1.5 bg-[#FFF6E9] border border-[#F1D9A8] rounded-lg py-2 px-3 text-[11.5px] text-[var(--color-amber)] mb-3.5">
-          <span className="w-[7px] h-[7px] rounded-full bg-[var(--color-amber)] inline-block animate-pulse flex-none" />
-          {scarcity}
-        </div>
-      )}
       <button onClick={plan.onClick} className={`w-full py-3 px-5 rounded-[10px] font-semibold text-[14px] transition-all active:scale-[0.98] ${featured ? 'bg-[var(--color-blue)] text-white font-jakarta font-bold shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110' : 'bg-white text-[var(--color-blue)] border-2 border-[var(--color-blue)]/30 hover:bg-[var(--color-blue-tint)] hover:border-[var(--color-blue)]'}`}>
         {plan.cta}
       </button>
