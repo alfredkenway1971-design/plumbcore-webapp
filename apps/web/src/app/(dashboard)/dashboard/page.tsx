@@ -53,20 +53,20 @@ const StatCard = memo(function StatCard({ label, value, change, trend, icon: Ico
   icon: any; iconBg: string; sub?: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-border/50 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex items-start justify-between mb-2.5">
-        <p className="text-[13px] font-medium text-muted-foreground">{label}</p>
-        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shadow-sm`}>
+    <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider">{label}</p>
+        <div className={`w-[38px] h-[38px] rounded-lg ${iconBg} flex items-center justify-center shadow-sm`}>
           <Icon className="w-[18px] h-[18px] text-white" />
         </div>
       </div>
-      <p className="text-2xl font-bold tracking-tight text-foreground mb-1.5">{value}</p>
+      <p className="text-[28px] font-bold tracking-tight text-gray-900 mb-2">{value}</p>
       <div className="flex items-center gap-2">
-        <span className={`inline-flex items-center gap-0.5 text-[11px] font-semibold px-1.5 py-0.5 rounded-md ${trend.direction === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+        <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md ${trend.direction === 'up' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
           <I.ArrowUp className={`w-3 h-3 ${trend.direction === 'down' ? 'rotate-180' : ''}`} />
           {change}
         </span>
-        <span className="text-[11px] text-muted-foreground/70">{trend.label}</span>
+        <span className="text-[11px] text-gray-400">{trend.label}</span>
       </div>
     </div>
   );
@@ -88,7 +88,7 @@ function RevenueGoalBar() {
   const remaining = Math.max(goal - totalThis, 0);
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
@@ -171,7 +171,7 @@ function DepositsThisWeek() {
   const isUp = Number(change) >= 0;
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
@@ -239,7 +239,7 @@ function RevenueChart() {
   const pctChange = ((totalThis - totalPrev) / totalPrev * 100).toFixed(1);
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -324,7 +324,7 @@ function JobDonutChart() {
   });
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 h-full">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 h-full">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.jobBreakdown')}</h3>
         <button className="text-muted-foreground/80 hover:text-muted-foreground transition-colors"><I.Dots className="w-5 h-5" /></button>
@@ -381,7 +381,7 @@ function WeeklyTechChart() {
   const maxRev = Math.max(...techs.map(t => t.revenue), 1);
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.weeklyPerformance')}</h3>
         <div className="flex items-center gap-3">
@@ -426,7 +426,7 @@ const UpcomingJobsTable = memo(function UpcomingJobsTable() {
   const { t } = useI18n();
   const router = useRouter();
   return (
-    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.upcomingJobs')}</h3>
         <div className="flex items-center gap-3">
@@ -507,7 +507,7 @@ const statusDotColors: Record<string, string> = {
 const TechStatusTable = memo(function TechStatusTable() {
   const { t } = useI18n();
   return (
-    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-foreground">{t('dashboard.techStatus')}</h3>
         <a href="/team" className="text-xs font-medium text-primary hover:text-primary/80">View All →</a>
@@ -544,7 +544,7 @@ const alerts: any[] = [];
 const AlertsPanel = memo(function AlertsPanel() {
   const router = useRouter();
   return (
-    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between p-5 pb-3">
         <h3 className="text-base font-semibold text-foreground">Alerts</h3>
         <span className="flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold">{alerts.length}</span>
@@ -586,7 +586,7 @@ const QuickActionsBar = memo(function QuickActionsBar() {
     { label: 'Dispatch Emergency', icon: I.Bolt, href: '/emergency-triage', color: 'bg-red-500' },
   ];
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <h3 className="text-base font-semibold text-foreground mb-4">Quick Actions</h3>
       <div className="space-y-2">
         {actions.map((a, i) => (
@@ -741,7 +741,7 @@ const AIAssistantWidget = memo(function AIAssistantWidget() {
   }, [input, sendMessage]);
 
   return (
-    <div className="bg-white rounded-2xl border border-border/50 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col h-full">
       <div className="flex items-center justify-between p-5 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center shadow-sm">
@@ -858,7 +858,7 @@ function PlanInfoWidget() {
   };
 
   return (
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center">
@@ -952,7 +952,7 @@ export default function DashboardPage() {
   const status = company?.subscription_status || '';
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 py-6 space-y-5">
+    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-6 bg-gray-50 min-h-screen">
       {/* ── Subscription Warning Banner ── */}
       {status === 'past_due' && !dismissed && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between shadow-sm">
@@ -1001,8 +1001,24 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* ── Page Header ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-sm text-gray-500 mt-1">Welcome back, {profile?.full_name?.split(' ')[0] || 'there'}!</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => {}} className="h-9 px-4 rounded-lg border border-gray-200 text-gray-600 text-xs font-medium hover:bg-gray-50 transition-colors active:scale-[0.97]">
+            Add Widget
+          </button>
+          <button onClick={() => {}} className="h-9 px-4 rounded-lg bg-primary text-white text-xs font-semibold hover:brightness-110 transition-all active:scale-[0.97]">
+            Export
+          </button>
+        </div>
+      </div>
+
       {/* ── Row 1: KPI Stats ── */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
         <StatCard label={t('dashboard.revenue')} value={`$${stats.totalRevenue.toLocaleString()}`} change={stats.totalRevenue > 0 ? '+12.5%' : '0%'} trend={{ direction: stats.totalRevenue > 0 ? 'up' : 'down', label: 'all time', color: 'text-emerald-600' }} icon={I.Eye} iconBg="bg-gradient-to-br from-primary to-blue-bright" />
         <StatCard label={t('dashboard.activeJobs')} value={String(stats.activeJobs)} change={stats.urgentJobs > 0 ? `${stats.urgentJobs} urgent` : '0 urgent'} trend={{ direction: 'up', label: 'this week', color: stats.urgentJobs > 0 ? 'text-red-600' : 'text-emerald-600' }} icon={I.Wrench} iconBg="bg-gradient-to-br from-violet-500 to-purple-400" />
         <StatCard label={t('dashboard.invoices')} value={`$${stats.outstandingRevenue.toLocaleString()}`} change={stats.completedJobs > 0 ? `${stats.completedJobs} paid` : '0 paid'} trend={{ direction: 'up', label: 'needs attention', color: 'text-amber-600' }} icon={I.File} iconBg="bg-gradient-to-br from-amber-500 to-orange-400" />
@@ -1010,13 +1026,13 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Revenue Goal + Deposits + Plan Info row ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         <div className="lg:col-span-2"><RevenueGoalBar /><DepositsThisWeek /></div>
         <div className="lg:col-span-1">{company && <PlanInfoWidget />}</div>
       </div>
 
       {/* ── Row 2: Revenue Chart + Job Donut ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
         <div className="lg:col-span-3"><RevenueChart /></div>
         <div className="lg:col-span-2"><JobDonutChart /></div>
       </div>
@@ -1025,13 +1041,13 @@ export default function DashboardPage() {
       <div><WeeklyTechChart /></div>
 
       {/* ── Row 4: Upcoming Jobs + Tech Status ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
         <div className="lg:col-span-3"><UpcomingJobsTable /></div>
         <div className="lg:col-span-2"><TechStatusTable /></div>
       </div>
 
       {/* ── Row 5: Alerts + Quick Actions + Upgrade + AI ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
         <div className="lg:col-span-2"><AlertsPanel /></div>
         <div className="lg:col-span-1 flex flex-col gap-4">
           <QuickActionsBar />
