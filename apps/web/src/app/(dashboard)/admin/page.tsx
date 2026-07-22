@@ -67,7 +67,7 @@ const activityColorMap: Record<string, string> = {
 /* ═══════════════════════════════════════════
    ROW 1 — KPI CARDS
    ═══════════════════════════════════════════ */
-function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: number; activePlumbers: number; plumberGrowth: number; activeTrials: number; trialConversionRate: number; churnRate: number; churnTrend: 'down' | 'up' } }) {
+function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: number; activePlumbers: number; plumberGrowth: number; activeTrials: number; trialConversionRate: number; churnRate: number; churnTrend: 'down' | 'up'; totalDeposits: number; depositGrowth: number } }) {
   const activeKPIs = kpiConfig || platformKPIs;
   const kpis = [
       {
@@ -102,10 +102,18 @@ function KPICards({ kpis: kpiConfig }: { kpis?: { totalMRR: number; mrrGrowth: n
       icon: TrendingDown,
       color: 'bg-red-500',
     },
+    {
+      label: 'Deposits Accumulated',
+      value: `$${(activeKPIs.totalDeposits || 0).toLocaleString()}`,
+      change: `+${activeKPIs.depositGrowth || 0}%`,
+      trend: 'up' as const,
+      icon: DollarSign,
+      color: 'bg-cyan-500',
+    },
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
       {kpis.map((kpi) => {
         const Icon = kpi.icon;
         const isGoodDown = kpi.label === 'Churn Rate' && kpi.trend === 'down';
@@ -371,6 +379,8 @@ export default function AdminPage() {
     activeTrials: (realKPIs as any).freeTrials ?? 0,
     churnRate: parseFloat(String((realKPIs as any).churnRate || '0')),
     churnTrend: (parseFloat(String((realKPIs as any).churnRate || '0')) < 2.5 ? 'down' : 'up') as 'down' | 'up',
+    totalDeposits: (realKPIs as any).totalDeposits ?? 0,
+    depositGrowth: (realKPIs as any).depositGrowth ?? 0,
   } : {
     ...platformKPIs,
     totalMRR: 0,
@@ -383,6 +393,8 @@ export default function AdminPage() {
     churnTrend: 'down' as const,
     leadsToday: 0,
     unfulfilledLeads: 0,
+    totalDeposits: 0,
+    depositGrowth: 0,
   };
 
   const handleExport = () => {

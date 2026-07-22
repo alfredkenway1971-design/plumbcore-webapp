@@ -94,6 +94,8 @@ export const platformKPIs = {
   trialConversionRate: 0,
   churnRate: 0,
   churnTrend: 'down' as const,
+  totalDeposits: 0,
+  depositGrowth: 0,
 };
 
 /* ── Trial Pipeline ── */

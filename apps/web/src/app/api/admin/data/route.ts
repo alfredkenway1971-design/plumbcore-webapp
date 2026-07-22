@@ -98,7 +98,18 @@ export async function GET(request: Request) {
         churnTrend: 'down',
         leadsToday: 0,
         unfulfilledLeads: 0,
+        totalDeposits: 0,
+        depositGrowth: 0,
       };
+
+      // Query deposits from leads table
+      const { data: leadDeposits } = await sb.from('leads').select('deposit_paid,deposit_charged,status');
+      const allLeads = leadDeposits || [];
+      const totalDeposits = allLeads.reduce((sum: number, l: any) => {
+        const d = parseFloat(l.deposit_paid) || parseFloat(l.deposit_charged) || 0;
+        return sum + d;
+      }, 0);
+      result.totalDeposits = totalDeposits;
     }
 
     return NextResponse.json(result);
