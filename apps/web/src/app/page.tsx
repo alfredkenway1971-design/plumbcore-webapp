@@ -43,20 +43,20 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
 /* ─── Hero ─── */
 function HeroSection({ t }: { t: (key: string) => string }) {
   return (
-    <section className="px-5 pt-10 pb-8 bg-gradient-to-b from-[var(--color-blue-tint)] to-white">
+    <section className="px-5 lg:px-10 pt-10 pb-8 bg-gradient-to-b from-[var(--color-blue-tint)] to-white">
       <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
         <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
         {t('home.heroBadge')}
       </span>
-      <h1 className="font-jakarta font-extrabold text-[38px] leading-[1.08] tracking-tight text-[var(--color-blue-deep)] mt-3 mb-3">
-        {t('home.heroLine1')}<br />
-        <span className="text-[var(--color-blue-bright)]">{t('home.heroLineHighlight')}</span><br />
+      <h1 className="font-jakarta font-extrabold text-[38px] lg:text-[52px] xl:text-[60px] leading-[1.08] tracking-tight text-[var(--color-blue-deep)] mt-3 mb-3">
+        {t('home.heroLine1')}<br className="lg:hidden" />
+        <span className="text-[var(--color-blue-bright)]">{t('home.heroLineHighlight')}</span><br className="lg:hidden" />
         {t('home.heroLine2')}
       </h1>
       <p className="text-[15px] text-[var(--color-muted-text)] leading-relaxed max-w-[36ch] mb-6">
         {t('home.heroSub')}
       </p>
-      <div className="flex flex-col gap-2.5 mb-5">
+      <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
         <a href="/signup" className="bg-[var(--color-blue)] text-white font-jakarta font-bold text-[16px] py-[15px] px-5 rounded-[10px] flex items-center justify-center gap-2 shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110 transition-all active:scale-[0.98]">
           {t('home.heroCta')} <ArrowRight className="w-4 h-4" />
         </a>
@@ -72,7 +72,7 @@ function HeroSection({ t }: { t: (key: string) => string }) {
 /* ─── Trust Bar ─── */
 function TrustBar({ t }: { t: (key: string) => string }) {
   return (
-    <div className="px-5 py-4 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
+    <div className="px-5 lg:px-10 py-4 border-t border-b border-[var(--color-line)] bg-[var(--color-bg-alt)]">
       <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-muted-text)] font-semibold flex items-center gap-2 mb-2.5">
         <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-muted-text)] inline-block" />
         {t('home.trustLabel')}
@@ -94,7 +94,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
     { num: '03', title: t('home.step3Title'), desc: t('home.step3Desc') },
   ];
   return (
-    <section className="scroll-reveal px-5 py-11">
+    <section className="scroll-reveal px-5 lg:px-10 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -102,8 +102,9 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.howTitle')}</h2>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
       {steps.map((s, i) => (
-        <div key={i} className="flex gap-3.5 mb-6 last:mb-0">
+        <div key={i} className="flex gap-3.5 p-3">
           <div className="flex-none w-11 h-11 rounded-xl bg-[var(--color-blue-tint)] border border-[var(--color-line)] flex items-center justify-center">
             <span className="font-mono font-semibold text-[15px] text-[var(--color-blue)]">{s.num}</span>
           </div>
@@ -113,6 +114,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
           </div>
         </div>
       ))}
+      </div>
     </section>
   );
 }
@@ -120,7 +122,7 @@ function HowItWorksSection({ t }: { t: (key: string) => string }) {
 /* ─── Stat Strip ─── */
 function StatStrip({ t }: { t: (key: string) => string }) {
   return (
-    <div className="scroll-reveal mx-5 rounded-2xl bg-[var(--color-blue)] text-white text-center py-7 px-5">
+    <div className="scroll-reveal mx-5 lg:mx-10 rounded-2xl bg-[var(--color-blue)] text-white text-center py-7 px-5">
       <div className="font-jakarta font-extrabold text-[46px] leading-none">{t('home.statAmount')}</div>
       <div className="font-mono text-[11px] tracking-[0.06em] uppercase mt-2 opacity-90">{t('home.statLabel')}</div>
     </div>
@@ -136,7 +138,7 @@ function ComparisonSection({ t }: { t: (key: string) => string }) {
     { metric: t('home.compSetup'), old: t('home.compOldSetup'), new_: t('home.compNewSetup') },
   ];
   return (
-    <section className="scroll-reveal px-5 py-11">
+    <section className="scroll-reveal px-5 lg:px-10 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -166,7 +168,7 @@ function PricingCard({ plan, featured, scarcity, t }: {
   featured?: boolean; scarcity?: string; t: (key: string) => string;
 }) {
   return (
-    <div className={`rounded-xl px-5 py-5 mb-4 border ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border-[var(--color-line)] bg-white'} relative`}>
+    <div className={`rounded-xl px-5 py-5 ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border border-[var(--color-line)] bg-white'} relative`}>
       {featured && (
         <div className="absolute -top-3 left-5 bg-[var(--color-blue)] text-white font-mono text-[10px] font-bold tracking-[0.05em] px-2.5 py-1 rounded-full uppercase">{t('home.pricingBadgeFeatured')}</div>
       )}
@@ -197,7 +199,7 @@ function PricingCard({ plan, featured, scarcity, t }: {
 /* ─── Estimate Banner (Consumer CTA) ─── */
 function EstimateBanner({ t }: { t: (key: string) => string }) {
   return (
-    <section className="scroll-reveal px-5 py-11 bg-white">
+    <section className="scroll-reveal px-5 lg:px-10 py-11 bg-white">
       <div className="bg-gradient-to-br from-[var(--color-blue-tint)] to-white rounded-2xl p-6 border border-[var(--color-line)] text-center">
         <div className="w-14 h-14 rounded-full bg-[var(--color-blue)] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[var(--color-blue)]/20">
           <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -292,7 +294,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
   };
 
   return (
-    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -300,10 +302,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.pricingTitle')}</h2>
       </div>
-      <div
-        className="pricing-grid"
-        style={{ containerType: 'inline-size' as any, containerName: 'pricing' as any }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
       {plans.map((p, i) => (
         <PricingCard
           key={i}
@@ -327,7 +326,7 @@ function DepositSection({ t }: { t: (key: string) => string }) {
     { label: t('home.deposit2000plus'), deposit: '$199', keep: '$199' },
   ];
   return (
-    <section className="scroll-reveal px-5 py-11">
+    <section className="scroll-reveal px-5 lg:px-10 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -355,7 +354,7 @@ function DepositSection({ t }: { t: (key: string) => string }) {
 /* ─── Lead Priority ─── */
 function PrioritySection({ t }: { t: (key: string) => string }) {
   return (
-    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -409,7 +408,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
     { initials: 'SR', name: t('home.testi2Name'), role: t('home.testi2Role'), quote: t('home.testi2Quote') },
   ];
   return (
-    <section className="scroll-reveal px-5 py-11">
+    <section className="scroll-reveal px-5 lg:px-10 py-11">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -417,8 +416,9 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
         </span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.testiTitle')}</h2>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {items.map((item, i) => (
-        <div key={i} className="flex gap-3 p-4 border border-[var(--color-line)] rounded-xl mb-3.5 bg-white">
+        <div key={i} className="flex gap-3 p-4 border border-[var(--color-line)] rounded-xl bg-white">
           <div className="w-[42px] h-[42px] rounded-full bg-[var(--color-blue-tint)] flex items-center justify-center font-jakarta font-bold text-[15px] text-[var(--color-blue)] flex-none">{item.initials}</div>
           <div className="min-w-0">
             <div className="text-[13px] font-bold text-[var(--color-ink)]">{item.name}</div>
@@ -428,6 +428,7 @@ function TestimonialsSection({ t }: { t: (key: string) => string }) {
           </div>
         </div>
       ))}
+      </div>
     </section>
   );
 }
@@ -441,7 +442,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
   ];
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   return (
-    <section className="scroll-reveal px-5 py-11 bg-[var(--color-bg-alt)]">
+    <section className="scroll-reveal px-5 lg:px-10 py-11 bg-[var(--color-bg-alt)]">
       <div className="mb-5">
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold flex items-center gap-2">
           <span className="w-[6px] h-[6px] rounded-[1px] bg-[var(--color-blue-bright)] inline-block" />
@@ -467,7 +468,7 @@ function FaqSection({ t }: { t: (key: string) => string }) {
 /* ─── Final CTA ─── */
 function FinalCtaSection({ t }: { t: (key: string) => string }) {
   return (
-    <div className="scroll-reveal bg-[var(--color-blue-deep)] text-center px-5 py-10 text-white">
+    <div className="scroll-reveal bg-[var(--color-blue-deep)] text-center px-5 lg:px-10 py-10 text-white">
       <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#B9CCF4] font-semibold flex items-center gap-2 justify-center">
         <span className="w-[6px] h-[6px] rounded-[1px] bg-[#B9CCF4] inline-block" />
         {t('home.ctaBadge')}
@@ -500,7 +501,7 @@ function Footer({ t }: { t: (key: string) => string }) {
 export default function LandingPage() {
   const { locale, changeLocale, t } = useI18n();
   return (
-    <main className="max-w-[430px] mx-auto bg-white min-h-screen">
+    <main className="max-w-[430px] lg:max-w-5xl xl:max-w-6xl mx-auto bg-white min-h-screen">
       <Navbar locale={locale} onLocaleChange={(l) => changeLocale(l as 'en' | 'fr' | 'es' | 'de')} t={t} />
       <HeroSection t={t} />
       <TrustBar t={t} />
