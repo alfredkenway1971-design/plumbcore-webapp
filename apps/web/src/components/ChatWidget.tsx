@@ -91,7 +91,10 @@ export default function ChatWidget() {
           ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
-          messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.text })),
+          messages: [...messages, userMsg].map(m => ({
+            role: m.role === 'ai' ? 'assistant' : 'user',
+            content: m.text,
+          })),
           companyId,
         }),
       });
