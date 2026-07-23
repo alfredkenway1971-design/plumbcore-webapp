@@ -81,14 +81,19 @@ export default function ChatWidget() {
     setIsTyping(true);
 
     try {
-      const token = useAuthStore.getState().token;
+      const state = useAuthStore.getState();
+      const token = state.token;
+      const companyId = state.company?.id;
       const res = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.text })) }),
+        body: JSON.stringify({
+          messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.text })),
+          companyId,
+        }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
