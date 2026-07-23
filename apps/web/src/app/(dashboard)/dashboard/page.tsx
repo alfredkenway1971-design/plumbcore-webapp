@@ -8,6 +8,7 @@ import { jobs, invoices, teamMembers, activities, getStats, loadDataFromSupabase
 import type { Job } from '@/lib/mock-data';
 import { useDebounce } from '@/hooks/useDebounce';
 import { PLAN_LABELS, PLAN_PRICES, PLAN_MAX_TECHS, PLAN_AI_RECEPTIONIST_HOURS } from '@/lib/plan-pricing';
+import DailyRouteOptimizer from '@/components/DailyRouteOptimizer';
 
 /* ═══════════════════════════════════════════
    ICONS
@@ -1088,6 +1089,9 @@ export default function DashboardPage() {
 
           {/* Weekly Performance */}
           <div><WeeklyTechChart /></div>
+
+          {/* Daily Route Optimizer */}
+          <DailyRouteOptimizer />
 
           {/* Revenue Goal + Deposits */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
