@@ -541,10 +541,56 @@ const TechStatusTable = memo(function TechStatusTable() {
 /* ═══════════════════════════════════════════
    ALERTS PANEL
    ═══════════════════════════════════════════ */
-const alerts: any[] = [];
 
 const AlertsPanel = memo(function AlertsPanel() {
   const router = useRouter();
+  const [lowStockItems, setLowStockItems] = useState<{ name: string; qty: number; min: number }[]>([]);
+  const [urgentJobs, setUrgentJobs] = useState(0);
+  const [overdueCount, setOverdueCount] = useState(0);
+
+  useEffect(() => {
+    import('@/lib/mock-data').then(mod => {
+      const inv = mod.inventory || [];
+      const low = inv
+        .filter((i: any) => i.quantity <= i.minQuantity)
+        .map((i: any) => ({ name: i.name, qty: i.quantity, min: i.minQuantity }))
+        .slice(0, 5);
+      setLowStockItems(low);
+      setUrgentJobs((mod.jobs || []).filter((j: any) => j.status === 'urgent').length);
+      setOverdueCount((mod.invoices || []).filter((i: any) => i.status === 'overdue').length);
+    });
+  }, []);
+
+  const alerts: any[] = [
+    ...lowStockItems.map(item => ({
+      message: `"${item.name}" is low stock — ${item.qty}/${item.min} remaining`,
+      icon: I.Alert,
+      iconBg: 'bg-red-50',
+      iconColor: 'text-red-500',
+      time: 'Reorder soon',
+      href: '/inventory',
+      action: 'View',
+    })),
+    ...(urgentJobs > 0 ? [{
+      message: `${urgentJobs} urgent job${urgentJobs > 1 ? 's' : ''} need attention`,
+      icon: I.Bolt,
+      iconBg: 'bg-orange-50',
+      iconColor: 'text-orange-500',
+      time: 'Action required',
+      href: '/jobs',
+      action: 'View',
+    }] : []),
+    ...(overdueCount > 0 ? [{
+      message: `${overdueCount} invoice${overdueCount > 1 ? 's' : ''} overdue`,
+      icon: I.Cart,
+      iconBg: 'bg-amber-50',
+      iconColor: 'text-amber-500',
+      time: 'Payment needed',
+      href: '/invoicing?filter=overdue',
+      action: 'View',
+    }] : []),
+  ];
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between p-5 pb-3">

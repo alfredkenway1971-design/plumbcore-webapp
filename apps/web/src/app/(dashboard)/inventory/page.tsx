@@ -12,6 +12,7 @@ import {
 } from '@/pkg/ui-components';
 import { inventory as mockInventory, jobs, getItemTransactions } from '@/lib/mock-data';
 import type { InventoryItem } from '@/lib/mock-data';
+import ReceiptUploadModal from '@/components/ReceiptUploadModal';
 
 type SortField = 'name' | 'sku' | 'category' | 'quantity' | 'minQuantity' | 'unitPrice';
 type SortDir = 'asc' | 'desc';
@@ -94,6 +95,11 @@ export default function InventoryPage() {
   const [useJobModal, setUseJobModal] = useState<{ open: boolean; item: InventoryItem | null }>({ open: false, item: null });
   const [useJobQty, setUseJobQty] = useState(1);
   const [useJobId, setUseJobId] = useState('');
+  const [autoDeductOnComplete, setAutoDeductOnComplete] = useState(false);
+  const [pendingDeductions, setPendingDeductions] = useState<{ jobId: string; itemId: string; itemName: string; qty: number }[]>([]);
+
+  // Receipt upload modal
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
 
   // Low stock filter
   const [lowStockOnly, setLowStockOnly] = useState(false);
@@ -102,6 +108,10 @@ export default function InventoryPage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
+    // Load pending deductions from localStorage
+    const saved = JSON.parse(localStorage.getItem('plumbcore_pending_deductions') || '[]');
+    setPendingDeductions(saved);
+
     const timer = setTimeout(() => {
       try {
         setLoading(false);
@@ -112,6 +122,8 @@ export default function InventoryPage() {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  const pendingCount = pendingDeductions.length;
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -249,16 +261,48 @@ export default function InventoryPage() {
       showToast(`Not enough stock! Only ${item.quantity} available.`, 'error');
       return;
     }
-    setInventory((prev) =>
-      prev.map((i) =>
-        i.id === item.id ? { ...i, quantity: i.quantity - useJobQty } : i
-      )
-    );
-    const job = jobs.find((j) => j.id === useJobId);
-    showToast(`Used ${useJobQty}x ${item.name} on ${job?.title || 'job'}`);
+    if (autoDeductOnComplete) {
+      // Queue deduction — will be processed when job is completed
+      const deduction = { jobId: useJobId, itemId: item.id, itemName: item.name, qty: useJobQty };
+      setPendingDeductions(prev => [...prev, deduction]);
+      // Save to localStorage for cross-page processing
+      const existing = JSON.parse(localStorage.getItem('plumbcore_pending_deductions') || '[]');
+      existing.push(deduction);
+      localStorage.setItem('plumbcore_pending_deductions', JSON.stringify(existing));
+      showToast(`Queued ${useJobQty}x ${item.name} — will deduct when job is marked complete`);
+    } else {
+      // Immediate deduction
+      setInventory((prev) =>
+        prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity - useJobQty } : i
+        )
+      );
+      const job = jobs.find((j) => j.id === useJobId);
+      showToast(`Deducted ${useJobQty}x ${item.name} on ${job?.title || 'job'}`);
+    }
     setUseJobModal({ open: false, item: null });
     setUseJobQty(1);
     setUseJobId('');
+    setAutoDeductOnComplete(false);
+  };
+
+  // Receipt import handler
+  const handleReceiptImport = (items: { name: string; quantity: number; unitPrice: number; category: string }[], supplier: string) => {
+    const now = new Date().toISOString().split('T')[0];
+    const newItems: InventoryItem[] = items.map((item, i) => ({
+      id: `INV-${String(inventory.length + i + 1).padStart(3, '0')}`,
+      name: item.name,
+      sku: `SKU-${String(inventory.length + i + 1).padStart(4, '0')}`,
+      category: item.category as any,
+      quantity: item.quantity,
+      minQuantity: Math.max(1, Math.floor(item.quantity * 0.2)),
+      unitPrice: item.unitPrice,
+      supplier: supplier || 'Unknown',
+      location: 'Main',
+      description: '',
+    }));
+    setInventory(prev => [...newItems, ...prev]);
+    setShowReceiptModal(false);
   };
 
   if (error) {
@@ -328,6 +372,10 @@ export default function InventoryPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-foreground">Inventory</h1>
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setShowReceiptModal(true)}>
+            <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg>
+            Upload Receipt
+          </Button>
           <Button variant="outline" size="sm" onClick={handleExportCSV}>
             <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -905,8 +953,28 @@ export default function InventoryPage() {
               </p>
             </div>
           )}
+
+          <label className="flex items-center gap-2.5 rounded-xl bg-muted/50 p-3 cursor-pointer hover:bg-muted transition-colors">
+            <input
+              type="checkbox"
+              checked={autoDeductOnComplete}
+              onChange={e => setAutoDeductOnComplete(e.target.checked)}
+              className="w-4 h-4 rounded border-muted-foreground/30 text-primary focus:ring-primary/30"
+            />
+            <div>
+              <p className="text-sm font-medium text-foreground">Deduct when job is completed</p>
+              <p className="text-xs text-muted-foreground">Queue deduction — stock deducts automatically when job is marked complete</p>
+            </div>
+          </label>
         </div>
       </Modal>
+
+      {/* ═══ RECEIPT UPLOAD ═══ */}
+      <ReceiptUploadModal
+        open={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+        onImport={handleReceiptImport}
+      />
     </div>
   );
 }
