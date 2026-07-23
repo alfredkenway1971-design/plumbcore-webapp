@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 
 type Locale = 'en' | 'fr' | 'es' | 'de';
@@ -449,11 +449,20 @@ const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const [locale, setLocale] = useState<Locale>('en');
+  const [locale, setLocale] = useState<Locale>(() => {
+    // Restore saved locale from localStorage on mount
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('plumbcore_locale') as Locale | null;
+      if (saved && ['en', 'fr', 'es', 'de'].includes(saved)) return saved;
+    }
+    return 'en';
+  });
   const [translations, setTranslations] = useState<Translations>(defaultTranslations);
 
-  // Detect locale from pathname
+  // Detect locale from pathname (only on first load, not on every pathname change)
+  const initialPathRef = useRef(pathname);
   useEffect(() => {
+    if (initialPathRef.current !== pathname) return; // only run on mount
     const pathLocale = pathname.split('/')[1] as Locale;
     if (['en', 'fr', 'es', 'de'].includes(pathLocale)) {
       setLocale(pathLocale);
@@ -469,12 +478,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     async function loadTranslations() {
       try {
         const response = await fetch(`/api/translations?locale=${locale}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        // Deep merge so missing keys fall back to English defaults
         setTranslations(deepMerge(defaultTranslations, data));
       } catch (error) {
         console.error('Failed to load translations:', error);
-        setTranslations(defaultTranslations); // Fallback to English
+        setTranslations(defaultTranslations);
       }
     }
     loadTranslations();
@@ -491,6 +500,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const changeLocale = (newLocale: Locale) => {
     setLocale(newLocale);
+    localStorage.setItem('plumbcore_locale', newLocale);
   };
 
   return (
