@@ -57,6 +57,8 @@ export default function RouteOptimizerMap() {
   const [error, setError] = useState<string | null>(null);
   const [showAllJobs, setShowAllJobs] = useState(false);
   const [selectedTechFilter, setSelectedTechFilter] = useState<string | null>(null);
+  const [startPoint, setStartPoint] = useState<'home' | 'business' | 'custom'>('business');
+  const [customStart, setCustomStart] = useState('');
 
   // Filter jobs for route optimization
   const activeJobs = jobs.filter(
@@ -89,7 +91,7 @@ export default function RouteOptimizerMap() {
       const res = await fetch('/api/optimize-route', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stops }),
+        body: JSON.stringify({ stops, startPoint, customStart }),
       });
 
       const data = await res.json();
@@ -169,6 +171,33 @@ export default function RouteOptimizerMap() {
               <option key={tm.id} value={tm.id}>{tm.name}</option>
             ))}
           </select>
+
+          {/* Starting point */}
+          <div className="flex items-center gap-1 rounded-lg border border-border px-2 py-1.5">
+            <span className="text-[10px] font-medium text-gray-500 mr-1">From:</span>
+            {(['business', 'home', 'custom'] as const).map((opt) => (
+              <button
+                key={opt}
+                onClick={() => { setStartPoint(opt); if (opt !== 'custom') setCustomStart(''); }}
+                className={`px-2 py-0.5 rounded text-[10px] font-semibold transition-colors ${
+                  startPoint === opt && (opt !== 'custom' || customStart)
+                    ? 'bg-primary text-white'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {opt === 'business' ? '🏢 Biz' : opt === 'home' ? '🏠 Home' : '📍 Custom'}
+              </button>
+            ))}
+            {startPoint === 'custom' && (
+              <input
+                type="text"
+                placeholder="Address..."
+                value={customStart}
+                onChange={e => setCustomStart(e.target.value)}
+                className="w-28 ml-1 px-2 py-0.5 rounded border border-border text-[10px] outline-none"
+              />
+            )}
+          </div>
 
           {/* Toggle all jobs */}
           <button

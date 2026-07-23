@@ -40,7 +40,7 @@ interface RouteResponse {
 
 export async function POST(request: Request) {
   try {
-    const { stops }: { stops: StopInput[] } = await request.json();
+    const { stops, startPoint, customStart }: { stops: StopInput[]; startPoint?: string; customStart?: string } = await request.json();
 
     if (!stops || stops.length < 2) {
       return NextResponse.json(
@@ -80,8 +80,38 @@ export async function POST(request: Request) {
       });
     }
 
-    // Call OSRM Trip API for optimal ordering
-    const coords = geocoded.map((s) => `${s.lng},${s.lat}`).join(';');
+    // Geocode start point
+    let startLat: number | null = null;
+    let startLng: number | null = null;
+    if (startPoint && startPoint !== 'business') {
+      let startAddr = '';
+      if (startPoint === 'home') {
+        startAddr = 'Austin, TX'; // Default home — user can set later
+      } else if (startPoint === 'custom' && customStart) {
+        startAddr = customStart;
+      }
+      if (startAddr) {
+        const q = encodeURIComponent(startAddr);
+        const geoRes = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`,
+          { headers: { 'User-Agent': 'PlumbCoreAI/1.0 (route-optimizer)' } }
+        );
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          if (geoData?.[0]) {
+            startLat = parseFloat(geoData[0].lat);
+            startLng = parseFloat(geoData[0].lon);
+          }
+        }
+      }
+    }
+
+    // Build coordinate string with start point as first
+    const coords = startLat && startLng
+      ? `${startLng},${startLat};${geocoded.map((s) => `${s.lng},${s.lat}`).join(';')}`
+      : geocoded.map((s) => `${s.lng},${s.lat}`).join(';');
+
+    // OSRM Trip API — source=first pins the first coord as start, destination=last pins the last coord as end
     const osrmUrl = `https://router.project-osrm.org/trip/v1/driving/${coords}?source=first&destination=last&steps=true&overview=full&geometries=geojson`;
 
     const osrmRes = await fetch(osrmUrl);
