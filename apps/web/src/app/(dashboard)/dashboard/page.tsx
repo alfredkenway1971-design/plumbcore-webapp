@@ -236,7 +236,9 @@ function RevenueChart() {
   const areaPoints = `0,${height} ${thisPoints} ${width},${height}`;
   const totalThis = chartThis.reduce((a, b) => a + b, 0);
   const totalPrev = chartPrev.reduce((a, b) => a + b, 0);
-  const pctChange = ((totalThis - totalPrev) / totalPrev * 100).toFixed(1);
+  const pctChange = totalPrev > 0
+    ? ((totalThis - totalPrev) / totalPrev * 100).toFixed(1)
+    : totalThis > 0 ? '100.0' : '0.0';
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
@@ -593,7 +595,7 @@ const QuickActionsBar = memo(function QuickActionsBar() {
           <button key={i} onClick={() => router.push(a.href)}
             className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-muted transition-colors active:scale-[0.98] group">
             <div className={`w-9 h-9 rounded-xl ${a.color} flex items-center justify-center shadow-sm group-hover:shadow transition-shadow`}>
-              <a.icon className="w-4 h-4 text-foreground" />
+              <a.icon className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm font-medium text-foreground">{a.label}</span>
             <I.ArrowUp className="w-3.5 h-3.5 text-slate-300 ml-auto rotate-45 group-hover:text-muted-foreground transition-colors" />
@@ -859,37 +861,40 @@ function PlanInfoWidget() {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center">
-            <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-bright flex items-center justify-center shadow-sm">
+            <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
           </div>
           <h3 className="text-sm font-semibold text-foreground">Plan Info</h3>
         </div>
-        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold ${
           status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
         }`}>
+          <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
           {status === 'active' ? 'Active' : status}
         </span>
       </div>
-      <div className="flex items-baseline gap-1 mb-1">
-        <h2 className="text-2xl font-bold text-foreground">{planLabel}</h2>
-        <span className="text-sm text-muted-foreground">· ${planPrice}/mo</span>
+      <div className="bg-gradient-to-br from-slate-50 to-blue-50/40 rounded-xl p-4 mb-4 -mx-0">
+        <div className="flex items-baseline gap-1">
+          <h2 className="text-2xl font-bold text-gray-900">{planLabel}</h2>
+          <span className="text-sm text-gray-500">· ${planPrice}/mo</span>
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-3 my-4">
-        <div className="bg-muted rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-foreground">{aiHours}h</p>
-          <p className="text-[10px] text-muted-foreground">AI Receptionist</p>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-white rounded-xl p-3 text-center ring-1 ring-gray-100">
+          <p className="text-lg font-bold text-gray-900">{aiHours}h</p>
+          <p className="text-[10px] text-gray-500">AI Receptionist</p>
         </div>
-        <div className="bg-muted rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-foreground">{maxTechs === 999 ? '∞' : maxTechs}</p>
-          <p className="text-[10px] text-muted-foreground">Max Techs</p>
+        <div className="bg-white rounded-xl p-3 text-center ring-1 ring-gray-100">
+          <p className="text-lg font-bold text-gray-900">{maxTechs === 999 ? '∞' : maxTechs}</p>
+          <p className="text-[10px] text-gray-500">Max Techs</p>
         </div>
-        <div className="bg-muted rounded-xl p-3 text-center">
-          <p className="text-lg font-bold text-foreground">${planPrice}</p>
-          <p className="text-[10px] text-muted-foreground">/mo</p>
+        <div className="bg-white rounded-xl p-3 text-center ring-1 ring-gray-100">
+          <p className="text-lg font-bold text-gray-900">${planPrice}</p>
+          <p className="text-[10px] text-gray-500">/mo</p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -1059,7 +1064,6 @@ export default function DashboardPage() {
           {company && <PlanInfoWidget />}
           <QuickActionsBar />
           <UpgradeCard />
-          <AIAssistantWidget />
         </div>
       </div>
     </div>

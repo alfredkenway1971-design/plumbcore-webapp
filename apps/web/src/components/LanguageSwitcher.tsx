@@ -21,8 +21,7 @@ export default function LanguageSwitcher({ locale, onLocaleChange }: { locale: s
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-all active:scale-95 border border-gray-200"
         aria-label="Change language"
       >
-        <span className="text-base leading-none">{current.flag}</span>
-        <span className="hidden sm:inline text-[11px] font-semibold uppercase tracking-wider">{current.short}</span>
+        <span className="text-lg leading-none">{current.flag}</span>
       </button>
 
       {open && (

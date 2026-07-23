@@ -153,7 +153,7 @@ function PricingCard({ plan, featured, scarcity, t }: {
   featured?: boolean; scarcity?: string; t: (key: string) => string;
 }) {
   return (
-    <div className={`rounded-xl px-5 py-5 ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border border-[var(--color-line)] shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)] bg-white'} relative`}>
+    <div className={`rounded-xl px-5 py-5 flex flex-col h-full ${featured ? 'border-2 border-[var(--color-blue)] bg-gradient-to-b from-[var(--color-blue-tint2)] to-white shadow-[0_14px_30px_-12px_rgba(30,86,214,0.35)]' : 'border border-[var(--color-line)] shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)] bg-white'} relative`}>
       {featured && (
         <div className="absolute -top-3 left-5 bg-[var(--color-blue)] text-white font-mono text-[10px] font-bold tracking-[0.05em] px-2.5 py-1 rounded-full uppercase">{t('home.pricingBadgeFeatured')}</div>
       )}
@@ -161,14 +161,14 @@ function PricingCard({ plan, featured, scarcity, t }: {
       <div className="font-jakarta font-extrabold text-[32px] text-[var(--color-blue-deep)] mt-2 mb-1">
         {plan.price}<span className="font-inter text-[13px] text-[var(--color-muted-text)] font-normal">{plan.per || '/mo'}</span>
       </div>
-      <ul className="list-none my-3.5 space-y-1.5">
+      <ul className="list-none my-3.5 space-y-1.5 flex-1">
         {plan.features.map((f, i) => (
           <li key={i} className="text-[13px] text-[var(--color-muted-text)] flex gap-2 items-start">
             <span className="text-[var(--color-blue)] font-bold flex-none">✓</span> {f}
           </li>
         ))}
       </ul>
-      <button onClick={plan.onClick} className={`w-full py-3 px-5 rounded-[10px] font-semibold text-[14px] transition-all active:scale-[0.98] ${featured ? 'bg-[var(--color-blue)] text-white font-jakarta font-bold shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110' : 'bg-white text-[var(--color-blue)] border-2 border-[var(--color-blue)]/30 hover:bg-[var(--color-blue-tint)] hover:border-[var(--color-blue)]'}`}>
+      <button onClick={plan.onClick} className={`w-full py-3 px-5 rounded-[10px] font-semibold text-[14px] transition-all active:scale-[0.98] mt-auto ${featured ? 'bg-[var(--color-blue)] text-white font-jakarta font-bold shadow-[0_10px_24px_-8px_rgba(30,86,214,0.45)] hover:brightness-110' : 'bg-white text-[var(--color-blue)] border-2 border-[var(--color-blue)]/30 hover:bg-[var(--color-blue-tint)] hover:border-[var(--color-blue)]'}`}>
         {plan.cta}
       </button>
     </div>
@@ -276,7 +276,7 @@ function PricingSection({ t }: { t: (key: string) => string }) {
         <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--color-blue)] font-semibold">{t('home.pricingBadge')}</span>
         <h2 className="font-jakarta font-extrabold text-[27px] leading-[1.08] tracking-tight text-[var(--color-ink)] mt-2">{t('home.pricingTitle')}</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
       {plans.map((p, i) => (
         <PricingCard
           key={i}

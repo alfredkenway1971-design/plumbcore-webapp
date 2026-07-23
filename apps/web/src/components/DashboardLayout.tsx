@@ -7,6 +7,7 @@ import { loadDataFromSupabase } from '@/lib/mock-data';
 import { useAuthStore } from '@/lib/store';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useI18n } from './i18n-provider';
+import ChatWidget from './ChatWidget';
 
 /* ── Icons ── */
 function SearchIcon(p: any) { return <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>; }
@@ -199,6 +200,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </div>
+
+      {/* Floating AI Chat */}
+      <ChatWidget />
 
       {/* Mobile bottom spacer */}
       <div className="md:hidden h-20" />

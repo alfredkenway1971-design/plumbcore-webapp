@@ -129,15 +129,16 @@ const data = {
 };
 
 // Exports matching the old mock-data API
-export const clients: any[] = [];
-export const jobs: any[] = [];
-export const invoices: any[] = [];
-export const teamMembers: any[] = [];
-export const inventory: any[] = [];
-export const suppliers: any[] = [];
-export const inventoryTransactions: any[] = [];
-export const purchaseOrders: any[] = [];
-export const activities: any[] = [];
+// Point directly to the internal data store so components see real data
+export const clients: any[] = data.clients;
+export const jobs: any[] = data.jobs;
+export const invoices: any[] = data.invoices;
+export const teamMembers: any[] = data.teamMembers;
+export const inventory: any[] = data.inventory;
+export const suppliers: any[] = data.suppliers;
+export const inventoryTransactions: any[] = data.inventoryTransactions;
+export const purchaseOrders: any[] = data.purchaseOrders;
+export const activities: any[] = data.activities;
 
 // ── Load data from Supabase ──
 export async function loadDataFromSupabase(companyId?: string) {
@@ -270,23 +271,46 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 // ── Helper functions ──
 export function getStats() {
+  const totalRevenue = data.invoices
+    .filter(inv => inv.status === 'paid')
+    .reduce((sum, inv) => sum + (inv.paidAmount ?? inv.amount ?? 0), 0);
+  const outstandingRevenue = data.invoices
+    .filter(inv => inv.status === 'sent' || inv.status === 'overdue')
+    .reduce((sum, inv) => sum + (inv.amount ?? 0), 0);
+  const activeJobs = data.jobs.filter(j => j.status === 'in-progress').length;
+  const scheduledJobs = data.jobs.filter(j => j.status === 'scheduled').length;
+  const completedJobs = data.jobs.filter(j => j.status === 'completed').length;
+  const urgentJobs = data.jobs.filter(j => j.status === 'urgent').length;
+  const totalJobs = data.jobs.length;
+  const totalInvoices = data.invoices.length;
+  const paidInvoices = data.invoices.filter(inv => inv.status === 'paid').length;
+  const overdueInvoices = data.invoices.filter(inv => inv.status === 'overdue');
+  const now = new Date();
+  const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const newClientsThisMonth = data.clients.filter(c => new Date(c.createdAt) >= thisMonthStart).length;
+
+  const totalAttempted = completedJobs + data.jobs.filter(j => j.status === 'cancelled').length;
+  const jobCompletionRate = totalAttempted > 0
+    ? Math.round((completedJobs / totalAttempted) * 100)
+    : 0;
+
   return {
-    totalRevenue: 0,
-    outstandingRevenue: 0,
+    totalRevenue,
+    outstandingRevenue,
     monthlyGoal: 50000,
-    activeJobs: 0,
-    scheduledJobs: 0,
-    completedJobs: 0,
-    urgentJobs: 0,
-    totalInvoices: 0,
-    paidInvoices: 0,
-    overdueInvoices: [],
-    overdueCount: 0,
+    activeJobs,
+    scheduledJobs,
+    completedJobs,
+    urgentJobs,
+    totalInvoices,
+    paidInvoices,
+    overdueInvoices,
+    overdueCount: overdueInvoices.length,
     averageResponseTime: '0m',
-    jobCompletionRate: 0,
-    newClientsThisMonth: 0,
-    activeProjects: 0,
-    totalJobs: 0,
+    jobCompletionRate,
+    newClientsThisMonth,
+    activeProjects: activeJobs,
+    totalJobs,
   };
 }
 

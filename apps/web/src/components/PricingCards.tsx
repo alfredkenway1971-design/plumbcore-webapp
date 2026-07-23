@@ -106,7 +106,7 @@ export default function PricingPage() {
           return (
             <div
               key={tier}
-              className={`relative flex flex-col rounded-2xl border transition-all duration-200 ${
+              className={`relative flex flex-col h-full rounded-2xl border transition-all duration-200 ${
                 isPro
                   ? 'border-primary/50 shadow-lg shadow-blue-500/10 scale-[1.02]'
                   : 'border-border hover:border-gray-300 shadow-sm'
