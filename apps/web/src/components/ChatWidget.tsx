@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useAuthStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -79,38 +80,48 @@ export default function ChatWidget() {
     setInput('');
     setIsTyping(true);
 
-    // Simulate AI response (in production, call /api/ai/chat)
-    setTimeout(() => {
-      const responses: Record<string, string> = {
-        leak: "Got it! A water leak can range from a simple pipe joint repair ($85–$150) to a more involved fix depending on location.\n\n**To get an exact price, could you:** \n1️⃣ Upload a photo of the leak\n2️⃣ Tell me where it is (under sink, ceiling, wall)\n3️⃣ Is it actively dripping or just stained?",
-        clog: "Clogs are one of our most common fixes! 🔧\n\n**Typical pricing:**\n• Sink clog: $95–$145\n• Toilet clog: $85–$135\n• Main drain clog: $195–$395\n\nWant to upload a photo for an AI estimate? I can tell you exactly what's needed.",
-        hot: "No hot water is usually a water heater issue. 🚿\n\n**Common causes:**\n• Pilot light out (gas) — $85–$125\n• Heating element failed (electric) — $145–$225\n• Thermostat issue — $95–$175\n\nWe can have a plumber out today if it's urgent!",
-        pricing: "Great question! Here's our pricing model:\n\n**Plans start at $79/mo** for up to 3 techs.\n\nEach plan includes:\n✅ AI photo estimates\n✅ Smart scheduling\n✅ Automated invoicing\n✅ Client portal\n\nWant to see a full breakdown? Check our [pricing page](/#pricing)!",
-      };
+    try {
+      const token = useAuthStore.getState().token;
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.text })) }),
+      });
 
-      let reply = '';
-      const lower = text.toLowerCase();
-      if (lower.includes('leak') || lower.includes('drip') || lower.includes('water')) {
-        reply = responses.leak;
-      } else if (lower.includes('clog') || lower.includes('drain') || lower.includes('toilet')) {
-        reply = responses.clog;
-      } else if (lower.includes('hot water') || lower.includes('heater')) {
-        reply = responses.hot;
-      } else if (lower.includes('price') || lower.includes('cost') || lower.includes('pricing') || lower.includes('plan')) {
-        reply = responses.pricing;
-      } else {
-        reply = "Thanks for reaching out! To give you the best answer, could you tell me a bit more?\n\n**I can help with:**\n• Free AI estimates for plumbing issues\n• Pricing & plans\n• Checking existing quote status\n• Scheduling an appointment\n\nJust describe what you need!";
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+      const data = await res.json();
       setIsTyping(false);
-      const aiMsg: Message = {
+      if (data.reply) {
+        const aiMsg: Message = {
+          id: `ai-${Date.now()}`,
+          role: 'ai',
+          text: data.reply,
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, aiMsg]);
+      } else {
+        const fallback: Message = {
+          id: `ai-${Date.now()}`,
+          role: 'ai',
+          text: "Sorry, I couldn't process that. Please try again.",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, fallback]);
+      }
+    } catch {
+      setIsTyping(false);
+      const errorMsg: Message = {
         id: `ai-${Date.now()}`,
         role: 'ai',
-        text: reply,
+        text: "Sorry, something went wrong. Please try again or check your connection.",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiMsg]);
-    }, 1500 + Math.random() * 1000);
+      setMessages((prev) => [...prev, errorMsg]);
+    }
   };
 
   const handleQuickReply = (query: string) => {
