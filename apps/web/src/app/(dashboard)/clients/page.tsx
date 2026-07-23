@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Button, Card, Input, TextArea, Modal, EmptyState, ErrorState } from '@/pkg/ui-components';
 import { clients } from '@/lib/mock-data';
 import type { Client } from '@/lib/mock-data';
+import CsvImportModal from '@/components/CsvImportModal';
 
 /* ── Tag colors ── */
 const TAG_COLORS = [
@@ -175,6 +176,7 @@ export default function ClientsPage() {
 
   /* ── Modal state ── */
   const [showModal, setShowModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showDelete, setShowDelete] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -257,6 +259,26 @@ export default function ClientsPage() {
     setList(prev => prev.filter((c: any) => c.id !== id)); setShowDelete(null);
   };
 
+  const handleImport = (importedClients: Record<string, string>[]) => {
+    const nextId = (n: number) => `CLT-${String(list.length + n + 1).padStart(3, '0')}`;
+    const clientsToAdd = importedClients.map((c, i) => ({
+      id: nextId(i),
+      name: c.name || '',
+      email: c.email || '',
+      phone: c.phone || '',
+      address: c.address || '',
+      city: c.city || '',
+      state: c.state || '',
+      zip: c.zip || '',
+      company: c.company || undefined,
+      notes: c.notes || undefined,
+      createdAt: new Date().toISOString().split('T')[0],
+      totalJobs: 0,
+      totalRevenue: 0,
+    }));
+    setList(prev => [...clientsToAdd, ...prev]);
+  };
+
   const toggleSort = (f: SortField) => {
     if (sortField === f) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); } else { setSortField(f); setSortDir('asc'); }
     setPage(0);
@@ -290,9 +312,15 @@ export default function ClientsPage() {
           <h1 className="text-xl font-bold text-foreground">Clients</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{list.length} total clients</p>
         </div>
-        <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowImportModal(true)} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
+            Import CSV
+          </button>
+          <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
           <PlusIcon className="w-4 h-4" /> Add Client
         </button>
+          </div>
       </div>
 
       {/* ── Search ── */}
@@ -636,6 +664,13 @@ export default function ClientsPage() {
           </div>
         </div>
       )}
+
+      {/* ═══ CSV IMPORT MODAL ═══ */}
+      <CsvImportModal
+        open={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImport={handleImport}
+      />
     </div>
   );
 }
