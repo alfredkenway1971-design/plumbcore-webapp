@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         'X-Title': 'PlumbCore AI',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4o-mini',
+        model: 'qwen/qwen3-vl-8b-instruct', // single cheap vision model, no cascade
         messages: [
           { role: 'system', content: AI_SYSTEM_PROMPT },
           {

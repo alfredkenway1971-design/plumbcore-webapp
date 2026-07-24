@@ -32,19 +32,15 @@ export async function analyzePlumbingPhoto(base64Image: string): Promise<{
   description: string;
   confidence: number; // 0 to 1
 }> {
-  const models = [
-    { id: 'qwen/qwen3-vl-8b-instruct', label: 'Qwen3 VL 8B' },
-    { id: 'openai/gpt-4o-mini', label: 'GPT-4o-mini' },
-    { id: 'openai/gpt-4o', label: 'GPT-4o' }
-  ];
+  // Single model — no cascade, no fallback. One call, done.
+  const model = { id: 'qwen/qwen3-vl-8b-instruct', label: 'Qwen3 VL 8B' };
 
   const client = getClient();
 
-  for (const model of models) {
-    try {
-      const response = await client.chat.completions.create({
-        model: model.id,
-        messages: [
+  try {
+    const response = await client.chat.completions.create({
+      model: model.id,
+      messages: [
           {
             role: 'system',
             content: `You are a master plumber AI that analyzes photos of plumbing issues.
@@ -75,88 +71,53 @@ Be honest about your confidence: if the image is blurry, missing key details, or
       });
 
       const text = response.choices[0]?.message?.content || '{}';
-      // Strip markdown code fences if present
       const cleaned = text.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
       const parsed = JSON.parse(cleaned);
 
-      // Validate required fields
       if (parsed.detectedIssue && parsed.severity && Array.isArray(parsed.estimatedParts) &&
           typeof parsed.estimatedLaborMin === 'number' && typeof parsed.estimatedLaborMax === 'number' &&
           typeof parsed.description === 'string' && typeof parsed.confidence === 'number') {
-        
-        // Confidence threshold: accept if >= 0.7
-        if (parsed.confidence >= 0.7) {
-          return parsed;
-        } else {
-          // Confidence too low, try next model (unless this is the last one)
-          if (model.id === models[models.length - 1].id) {
-            // Last model, return it anyway with low confidence
-            return parsed;
-          }
-          // Otherwise continue to next model
-          continue;
-        }
+        return parsed;
       } else {
-        // Invalid response format, try next model
-        if (model.id === models[models.length - 1].id) {
-          // Last model, throw error
-          throw new Error('Invalid response format from all models');
-        }
-        continue;
+        throw new Error('Invalid response format');
       }
     } catch (err) {
-      // If this model fails, try the next one
-      if (model.id === models[models.length - 1].id) {
-        // Last model failed, rethrow
-        throw err;
-      }
-      continue;
+      throw err;
     }
-  }
 
   // Should not reach here
-  throw new Error('Failed to analyze photo with all available models');
+  throw new Error('Failed to analyze photo');
 }
 
 export async function chatWithAI(
   messages: { role: 'user' | 'assistant'; content: string }[]
 ): Promise<string> {
-  const models = [
-    { id: 'qwen/qwen3.5-flash-02-23', label: 'Qwen3.5 Flash' },
-    { id: 'deepseek/deepseek-v4-flash', label: 'DeepSeek V4 Flash' },
-    { id: 'openai/gpt-4o-mini', label: 'GPT-4o-mini' }
-  ];
-
+  // Single cheap model — no cascade, no fallback
   const client = getClient();
 
-  for (const model of models) {
-    try {
-      const response = await client.chat.completions.create({
-        model: model.id,
-        messages: [
-          {
-            role: 'system',
-            content: `You are PlumbCore AI — an expert plumbing assistant for a SaaS platform.
+  try {
+    const response = await client.chat.completions.create({
+      model: CHAT_MODEL,
+      messages: [
+        {
+          role: 'system',
+          content: `You are PlumbCore AI — an expert plumbing assistant for a SaaS platform.
 Help customers describe their plumbing issues, provide rough estimates, and book service.
 Be friendly, professional, and clear. Ask clarifying questions when needed.
 Keep responses concise (2-3 sentences).`,
-          },
-          ...messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
-        ],
-        max_tokens: 300,
-        temperature: 0.7,
-      });
+        },
+        ...messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+      ],
+      max_tokens: 300,
+      temperature: 0.7,
+    });
 
-      const content = response.choices[0]?.message?.content;
-      if (content && content.trim().length > 0) {
-        return content;
-      }
-    } catch (err) {
-      if (model.id === models[models.length - 1].id) {
-        throw err;
-      }
-      continue;
+    const content = response.choices[0]?.message?.content;
+    if (content && content.trim().length > 0) {
+      return content;
     }
+  } catch (err) {
+    throw err;
   }
 
   return 'Sorry, I could not process that.';

@@ -1,5 +1,6 @@
-// AI Photo Analysis API Route — Single powerful model
-// Uses GPT-4o Mini as the primary model for accurate pricing
+// AI Photo Analysis API Route — Single cheap vision model
+// Uses Qwen3 VL 8B via OpenRouter ($0.117/M tokens)
+// NO cascade — one model, done. No fallbacks, no retries.
 // Caches results to avoid redundant AI calls
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -12,6 +13,8 @@ const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
 const CONFIDENCE_THRESHOLD = 70
 const MIN_CONFIDENCE_FOR_ESTIMATE = 80
+
+const VISION_MODEL = 'qwen/qwen3-vl-8b-instruct' // $0.117/M — single model, cheapest capable
 
 // Severity-based pricing tiers
 const SEVERITY_PRICING: Record<string, { laborRate: number; travelFee: number; validityDays: number; label: string }> = {
@@ -68,36 +71,32 @@ Parts pricing reference:
 
 Labor rate is $120/hr. Return ONLY the JSON object.`
 
-async function callOpenRouter(model: string, userMessage: string, photoBase64: string | null, openrouterKey: string, locale: string = 'en') {
-  // Build message content — with or without image
+async function callModel(userMessage: string, photoBase64: string | null, apiKey: string, locale: string = 'en') {
   const langInstruction = locale === 'fr' ? 'RÉPONDS EN FRANÇAIS. Write the diagnosis, parts names, and all text in French. '
     : locale === 'es' ? 'RESPONDE EN ESPAÑOL. Write the diagnosis, parts names, and all text in Spanish. '
     : locale === 'de' ? 'ANTWORTE AUF DEUTSCH. Write the diagnosis, parts names, and all text in German. '
-    : '';
+    : ''
   const userContent: any[] = [
     { type: 'text', text: `${langInstruction}${AI_SYSTEM_PROMPT}\n\nCustomer description: "${userMessage || 'Customer reported a plumbing issue'}"` }
-  ];
+  ]
 
-  // If photo provided, include it as a vision input
   if (photoBase64 && photoBase64.length > 100) {
     userContent.push({
       type: 'image_url',
       image_url: { url: `data:image/jpeg;base64,${photoBase64}` }
-    });
+    })
   }
 
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${openrouterKey}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': 'https://plumbcore-ai.vercel.app',
     },
     body: JSON.stringify({
-      model,
-      messages: [
-        { role: 'user', content: userContent }
-      ],
+      model: VISION_MODEL, // single model — no cascade, no fallback
+      messages: [{ role: 'user', content: userContent }],
       temperature: 0.3,
       max_tokens: 1024,
     })
@@ -105,7 +104,7 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
 
   if (!response.ok) {
     const text = await response.text()
-    console.error(`${model} returned ${response.status}: ${text.slice(0, 300)}`)
+    console.error(`Vision model returned ${response.status}: ${text.slice(0, 300)}`)
     return null
   }
 
@@ -113,21 +112,19 @@ async function callOpenRouter(model: string, userMessage: string, photoBase64: s
   const content = data.choices?.[0]?.message?.content || ''
   const jsonMatch = content.match(/\{[\s\S]*\}/)
   if (!jsonMatch) {
-    console.error(`${model} returned non-JSON: ${content.slice(0, 200)}`)
+    console.error(`Non-JSON response: ${content.slice(0, 200)}`)
     return null
   }
 
   try {
     return JSON.parse(jsonMatch[0])
   } catch {
-    console.error(`${model} JSON parse failed: ${jsonMatch[0].slice(0, 200)}`)
+    console.error(`JSON parse failed: ${jsonMatch[0].slice(0, 200)}`)
     return null
   }
 }
 
 function buildResult(parsed: any, severity: string = 'moderate', urgency: string = 'routine', customerState?: string, customerCountry?: string) {
-  // Determine pricing tier from urgency (user selection) — COMPLETELY overrides severity
-  // Routine → always standard pricing regardless of what AI says
   const pricingTier = urgency === 'emergency' ? 'emergency' : 
                        urgency === 'urgent' ? 'urgent' : 
                        urgency === 'routine' ? 'moderate' :
@@ -143,20 +140,19 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
     qty: p.qty || 1,
     unitPrice: p.unitPrice || 0,
     total: Math.round((p.qty * p.unitPrice) * 100) / 100
-  }));
+  }))
   
   if (parts.length === 0 || parts.every((p: any) => p.unitPrice === 0)) {
     parts = [
       { name: 'Diagnostic assessment & inspection', qty: 1, unitPrice: 49, total: 49 },
       { name: 'Service call fee', qty: 1, unitPrice: 29, total: 29 },
-    ];
+    ]
   }
   const partsTotal = Math.round(parts.reduce((s: number, p: any) => s + p.total, 0) * 100) / 100
   const estimatedHours = parsed.estimatedHours || 1.0
   const laborCost = Math.round(estimatedHours * laborRate * 100) / 100
   const travelFeeAmount = travelFee
   const subtotal = laborCost + partsTotal + travelFeeAmount
-  // Dynamic tax rate based on customer's state/province
   const taxInfo = getTaxRate(customerState || '', customerCountry || 'US')
   const taxRate = taxInfo.rate
   const taxLabel = taxInfo.label
@@ -210,37 +206,23 @@ export async function POST(request: NextRequest) {
 
     const openrouterKey = process.env.OPENROUTER_API_KEY || ''
     if (!openrouterKey) {
-      console.error('OPENROUTER_API_KEY not configured')
       return NextResponse.json({ success: false, error: 'AI not configured' }, { status: 500 })
     }
 
-    // ── PRIMARY: GPT-4o Mini (more accurate pricing) ──
-    const primaryResult = await callOpenRouter('openai/gpt-4o-mini', customerDescription || '', photoBase64 || null, openrouterKey, locale)
-    
-    let finalParsed = primaryResult
-    let modelUsed = 'openai/gpt-4o-mini'
+    // Single model call — no cascade, no fallback
+    const result = await callModel(customerDescription || '', photoBase64 || null, openrouterKey, locale)
 
-    // ── FALLBACK: Qwen3 VL 8B (if GPT-4o Mini fails) ──
-    if (!primaryResult) {
-      console.log('GPT-4o Mini failed — trying Qwen3 VL 8B as fallback')
-      const fallbackResult = await callOpenRouter('qwen/qwen3-vl-8b-instruct', customerDescription || '', photoBase64 || null, openrouterKey, locale)
-      if (fallbackResult) {
-        finalParsed = fallbackResult
-        modelUsed = 'qwen/qwen3-vl-8b-instruct'
-      }
-    }
-
-    if (!finalParsed) {
+    if (!result) {
       return NextResponse.json({ success: false, error: 'Analysis failed' }, { status: 500 })
     }
 
-    const result = buildResult(finalParsed, finalParsed?.severity || 'moderate', urgency || 'routine', customerState, customerCountry)
-    responseCache.set(cacheKey, { data: result, expiry: Date.now() + CACHE_TTL })
+    const finalResult = buildResult(result, result?.severity || 'moderate', urgency || 'routine', customerState, customerCountry)
+    responseCache.set(cacheKey, { data: finalResult, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
       success: true,
-      result,
-      model: modelUsed,
+      result: finalResult,
+      model: VISION_MODEL,
     })
 
   } catch (error) {
