@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/api-auth'
 
-const AI_MODEL = 'qwen/qwen3-8b' // cheapest capable model
+const AI_MODEL = 'qwen/qwen3-vl-8b-instruct'; // single model — vision + text
 
 async function callQwen(userMessage: string, openrouterKey: string) {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {

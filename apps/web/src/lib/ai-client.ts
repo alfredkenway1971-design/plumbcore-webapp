@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 
 const VISION_MODEL = 'qwen/qwen3-vl-8b-instruct';
-const CHAT_MODEL = 'qwen/qwen3.5-flash-02-23';
+const CHAT_MODEL = 'qwen/qwen3-vl-8b-instruct';
 
 let client: OpenAI | null = null;
 
