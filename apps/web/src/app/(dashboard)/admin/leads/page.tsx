@@ -95,14 +95,15 @@ export default function LeadsMarketplacePage() {
   const [poolActive, setPoolActive] = useState(false);
   const [stats, setStats] = useState<{ matching: number; assigned: number; complete: number; en_route: number; arrived: number; unfulfilled: number; refunded: number } | null>(null);
 
-  // Fetch leads and stats from API on mount
+  // Fetch leads, plumbers, and stats from API on mount
   useEffect(() => {
     let cancelled = false;
 
     async function fetchData() {
       try {
-        const [leadsRes, statsRes] = await Promise.all([
+        const [leadsRes, plumbersRes, statsRes] = await Promise.all([
           fetch('/api/admin/data?endpoint=leads'),
+          fetch('/api/admin/data?endpoint=plumbers'),
           fetch('/api/admin/data?endpoint=leads-stats'),
         ]);
 
@@ -112,24 +113,38 @@ export default function LeadsMarketplacePage() {
             const mapped: Lead[] = (leadsData.leads || []).map((item: any) => ({
               id: item.id,
               customer: item.customer_name || '',
-              photo: '',
+              photo: item.photo_url || item.customer_photo || '',
               estimate: item.total_estimate || 0,
               depositAmount: item.deposit_paid || 0,
               depositTier: item.deposit_tier || 'basic',
               location: [item.customer_city, item.customer_address].filter(Boolean).join(', '),
-              zip: '',
+              zip: item.customer_zip || '',
               depositPaid: (item.deposit_paid || 0) > 0,
               status: item.status || 'matching',
-              assignedPlumber: item.assigned_plumber_id || '',
+              assignedPlumber: item.assigned_plumber_name || item.assigned_plumber_id || '',
               date: item.created_at || '',
               diagnosis: item.diagnosis || '',
               address: item.customer_address || '',
             }));
             setLeads(mapped);
           } else {
-            // API returned error — show it
             const errData = await leadsRes.json().catch(() => ({ error: `HTTP ${leadsRes.status}` }));
             setError(errData.error || `Request failed (${leadsRes.status})`);
+          }
+
+          if (plumbersRes.ok) {
+            const plumbersData = await plumbersRes.json();
+            const mappedPlumbers: Plumber[] = (plumbersData.plumbers || plumbersData.data || []).map((item: any) => ({
+              id: item.id,
+              name: item.name || item.full_name || '',
+              specialties: item.specialties || [],
+              rating: item.rating || item.avg_rating || 4.5,
+              jobsCompleted: item.jobs_completed || item.jobsCompleted || 0,
+              available: item.available !== false,
+              serviceZips: item.service_zips || item.serviceZips || [],
+              rotationOrder: item.rotation_order || item.rotationOrder || 0,
+            }));
+            setPlumbers(mappedPlumbers);
           }
 
           if (statsRes.ok) {

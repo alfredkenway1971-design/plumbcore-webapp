@@ -22,11 +22,42 @@ export async function GET(
 
     if (admin) {
       try {
-        const { data: lead, error } = await (admin as any)
-          .from('leads')
-          .select('*')
-          .eq('id', leadId)
-          .maybeSingle();
+        // Try lookup by ID first (UUID), then by tracking_token (PC-XXXXXX)
+        let lead = null;
+        let error = null;
+        
+        // Check if the leadId looks like a UUID or a tracking token
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(leadId);
+        
+        if (isUUID) {
+          const result = await (admin as any)
+            .from('leads')
+            .select('*')
+            .eq('id', leadId)
+            .maybeSingle();
+          lead = result.data;
+          error = result.error;
+        } else {
+          // Lookup by tracking_token
+          const result = await (admin as any)
+            .from('leads')
+            .select('*')
+            .eq('tracking_token', leadId)
+            .maybeSingle();
+          lead = result.data;
+          error = result.error;
+          
+          // If not found by tracking_token, try by short code (PC-XXXXXX without full token)
+          if (!lead) {
+            const result2 = await (admin as any)
+              .from('leads')
+              .select('*')
+              .eq('id', leadId)
+              .maybeSingle();
+            lead = result2.data;
+            error = result2.error;
+          }
+        }
 
         if (error) {
           // Table might not exist — fall through to mock

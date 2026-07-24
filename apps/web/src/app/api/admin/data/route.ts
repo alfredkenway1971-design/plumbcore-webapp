@@ -63,7 +63,7 @@ export async function GET(request: Request) {
     if (endpoint === 'leads') {
       const { data: leads, error: leadsError } = await sb
         .from('leads')
-        .select('id,customer_name,customer_email,customer_phone,customer_address,customer_city,diagnosis,severity,total_estimate,deposit_paid,deposit_charged,deposit_tier,estimated_job_value,status,tracking_token,assigned_plumber_id,assigned_plumber_name,created_at,updated_at')
+        .select('id,customer_name,customer_email,customer_phone,customer_address,customer_city,customer_zip,diagnosis,severity,total_estimate,deposit_paid,deposit_charged,deposit_tier,estimated_job_value,status,tracking_token,assigned_plumber_id,assigned_plumber_name,created_at,updated_at')
         .order('created_at', { ascending: false });
       if (leadsError) console.error('Leads query error:', leadsError);
       result.leads = leads || [];
@@ -78,6 +78,45 @@ export async function GET(request: Request) {
         unfulfilled: (allData?.filter((l: any) => l.status === 'unfulfilled').length) || 0,
         refunded: (allData?.filter((l: any) => l.status === 'refunded').length) || 0,
       };
+    }
+
+    // Fetch plumbers for the admin leads marketplace
+    if (endpoint === 'plumbers') {
+      const { data: plumbers, error: plumbersError } = await sb
+        .from('profiles')
+        .select('id,full_name,name,specialties,rating,avg_rating,jobs_completed,jobsCompleted,available,service_zips,serviceZips,rotation_order,rotationOrder,phone,email')
+        .eq('role', 'plumber')
+        .limit(100);
+      if (plumbersError) {
+        console.error('Plumbers query error:', plumbersError);
+        // Try auth_users as fallback
+        const { data: users } = await sb
+          .from('auth_users')
+          .select('id,full_name,email,role')
+          .eq('role', 'plumber')
+          .limit(100);
+        result.plumbers = (users || []).map((u: any) => ({
+          id: u.id,
+          name: u.full_name || u.email?.split('@')[0] || 'Plumber',
+          specialties: [],
+          rating: 4.5,
+          jobsCompleted: 0,
+          available: true,
+          serviceZips: [],
+          rotationOrder: 0,
+        }));
+      } else {
+        result.plumbers = (plumbers || []).map((p: any) => ({
+          id: p.id,
+          name: p.full_name || p.name || 'Plumber',
+          specialties: p.specialties || [],
+          rating: p.rating || p.avg_rating || 4.5,
+          jobsCompleted: p.jobs_completed || p.jobsCompleted || 0,
+          available: p.available !== false,
+          serviceZips: p.service_zips || p.serviceZips || [],
+          rotationOrder: p.rotation_order || p.rotationOrder || 0,
+        }));
+      }
     }
 
     // Summary endpoint for admin overview page
