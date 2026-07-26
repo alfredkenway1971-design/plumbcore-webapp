@@ -119,6 +119,7 @@ export default function LeadsMarketplacePage() {
               id: item.id,
               customer: item.customer_name || '',
               photo: item.photo_url || item.customer_photo || '',
+              phone: item.customer_phone || '',
               estimate: item.total_estimate || 0,
               depositAmount: item.deposit_paid || 0,
               depositTier: item.deposit_tier || 'basic',
