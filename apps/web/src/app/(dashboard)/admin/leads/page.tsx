@@ -31,6 +31,7 @@ interface Lead {
   depositTier: string;
   location: string;
   zip: string;
+  city: string;
   depositPaid: boolean;
   status: 'matching' | 'assigned' | 'en_route' | 'arrived' | 'complete' | 'unfulfilled' | 'refunded';
   assignedPlumber: string;
@@ -134,6 +135,7 @@ export default function LeadsMarketplacePage() {
               depositTier: item.deposit_tier || 'basic',
               location: [item.customer_city, item.customer_address].filter(Boolean).join(', '),
               zip: item.customer_zip || item.customer_address?.match(/\d{5}/)?.[0] || '',
+              city: item.customer_city || '',
               depositPaid: (item.deposit_paid || 0) > 0,
               status: item.status || 'matching',
               assignedPlumber: item.assigned_plumber_name || item.assigned_plumber_id || '',
@@ -1128,14 +1130,23 @@ export default function LeadsMarketplacePage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div>
-                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Location</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Address</p>
                     <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
                       <MapPin className="w-3.5 h-3.5 text-muted-foreground/80" />
-                      {detailLead.location}
+                      {detailLead.address || detailLead.location || '—'}
                     </p>
-                    {detailLead.address && (
-                      <p className="text-xs text-muted-foreground mt-0.5 ml-5">{detailLead.address}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {detailLead.city && (
+                      <div>
+                        <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">City</p>
+                        <p className="text-sm text-slate-800 mt-0.5">{detailLead.city}</p>
+                      </div>
                     )}
+                    <div>
+                      <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">ZIP Code</p>
+                      <p className="text-sm text-slate-800 mt-0.5">{detailLead.zip || '—'}</p>
+                    </div>
                   </div>
                   {detailLead.phone && (
                     <div>
