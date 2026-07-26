@@ -123,7 +123,7 @@ export default function LeadsMarketplacePage() {
               depositAmount: item.deposit_paid || 0,
               depositTier: item.deposit_tier || 'basic',
               location: [item.customer_city, item.customer_address].filter(Boolean).join(', '),
-              zip: item.customer_zip || '',
+              zip: item.customer_zip || item.customer_address?.match(/\d{5}/)?.[0] || '',
               depositPaid: (item.deposit_paid || 0) > 0,
               status: item.status || 'matching',
               assignedPlumber: item.assigned_plumber_name || item.assigned_plumber_id || '',

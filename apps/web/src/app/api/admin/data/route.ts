@@ -63,7 +63,7 @@ export async function GET(request: Request) {
     if (endpoint === 'leads') {
       const { data: leads, error: leadsError } = await sb
         .from('leads')
-        .select('id,customer_name,customer_email,customer_phone,customer_address,customer_city,customer_zip,diagnosis,severity,total_estimate,deposit_paid,deposit_charged,deposit_tier,estimated_job_value,status,tracking_token,assigned_plumber_id,assigned_plumber_name,created_at,updated_at')
+        .select('id,customer_name,customer_email,customer_phone,customer_address,customer_city,diagnosis,severity,total_estimate,deposit_paid,deposit_charged,deposit_tier,estimated_job_value,status,tracking_token,assigned_plumber_id,assigned_plumber_name,created_at,updated_at')
         .order('created_at', { ascending: false });
       if (leadsError) console.error('Leads query error:', leadsError);
       result.leads = leads || [];
