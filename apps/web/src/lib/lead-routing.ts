@@ -194,18 +194,23 @@ export async function findBestPlumbers(
   radiusMiles: number = ROUTING_CONFIG.INITIAL_RADIUS_MILES,
 ): Promise<PlumberScore[]> {
   try {
-    // Query plumbers from auth_users (profiles table has RLS issues)
-    const { data: plumbers, error } = await (supabaseAdmin as any)
-      .from('auth_users')
-      .select('id, full_name, email, phone, role')
-      .in('role', ['tech', 'admin'])
-      .limit(50);
+    // Fallback: use direct REST API to query auth_users
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '';
+    
+    let plumbers: any[] = [];
 
-    if (error) {
-      console.error('[LeadRouting] Failed to fetch plumbers:', error.message);
-      console.error('[LeadRouting] Error details:', JSON.stringify(error));
-      // Return error info so we can see what went wrong
-      throw new Error(`auth_users query failed: ${error.message} - ${JSON.stringify(error)}`);
+    if (supabaseUrl && serviceKey) {
+      const apiUrl = `${supabaseUrl}/rest/v1/auth_users?select=id,full_name,email,phone,role&role=in.(tech,admin)&limit=50`;
+      const response = await fetch(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${serviceKey}`,
+          'apikey': serviceKey,
+        },
+      });
+      if (response.ok) {
+        plumbers = await response.json();
+      }
     }
 
     console.log(`[LeadRouting] Found ${plumbers?.length || 0} plumbers from auth_users`);
