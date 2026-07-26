@@ -73,9 +73,27 @@ export async function POST(req: Request) {
       .update({ status: 'routing', updated_at: new Date().toISOString() })
       .eq('id', leadId);
 
+    // DEBUG: Test auth_users query from this exact code location
+    const { data: testPlumbers, error: testError } = await (admin as any)
+      .from('auth_users')
+      .select('id, full_name, email, role')
+      .in('role', ['tech', 'admin'])
+      .limit(50);
+    console.log('[DEBUG] auth_users test:', testPlumbers?.length || 0, 'plumbers, error:', testError?.message || 'none');
+
     const result = await routeLead(leadData, admin);
 
-    return NextResponse.json(result);
+    // Add debug info to response
+    return NextResponse.json({
+      ...result,
+      _debug: {
+        testPlumbersCount: testPlumbers?.length || 0,
+        testError: testError?.message || null,
+        adminExists: !!admin,
+        supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        serviceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY || !!process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE,
+      }
+    });
   } catch (err: any) {
     console.error('[/api/leads/route] Error:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
