@@ -124,7 +124,7 @@ export async function GET(
             updated_at: new Date().toISOString(),
           })
           .eq('id', leadId)
-          .eq('status', 'matching');
+          .in('status', ['matching', 'routing', 'assigned'])
 
         // Create job
         await (admin as any).from('jobs').insert({
