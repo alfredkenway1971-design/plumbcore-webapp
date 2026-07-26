@@ -197,7 +197,7 @@ export async function findBestPlumbers(
     // Query plumbers using the admin client
     const { data: plumbers, error } = await (supabaseAdmin as any)
       .from('auth_users')
-      .select('id, full_name, email, phone, role, company_id')
+      .select('id, full_name, email, role')
       .in('role', ['tech', 'admin'])
       .limit(50);
 
