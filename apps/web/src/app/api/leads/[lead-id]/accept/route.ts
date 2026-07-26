@@ -106,37 +106,39 @@ export async function GET(
     // Get lead info
     let customerName = 'Customer';
     if (admin) {
-      const { data } = await (admin as any)
-        .from('leads')
-        .select('customer_name, customer_address, total_estimate, assigned_plumber_name')
-        .eq('id', leadId)
-        .single()
-        .catch(() => ({ data: null }));
-      if (data) {
-        customerName = data.customer_name || customerName;
-        // Update lead as accepted
-        await (admin as any)
+      try {
+        const { data } = await (admin as any)
           .from('leads')
-          .update({
-            status: 'assigned',
-            assigned_plumber_id: plumberId || data.assigned_plumber_id,
-            assigned_plumber_name: data.assigned_plumber_name || 'Plumber',
-            updated_at: new Date().toISOString(),
-          })
+          .select('customer_name, customer_address, total_estimate, assigned_plumber_name')
           .eq('id', leadId)
-          .in('status', ['matching', 'routing', 'assigned'])
+          .maybeSingle();
 
-        // Create job
-        await (admin as any).from('jobs').insert({
-          lead_id: leadId,
-          company_id: plumberId || data.assigned_plumber_id,
-          customer_name: data.customer_name || '',
-          customer_address: data.customer_address || '',
-          total_estimate: data.total_estimate || 0,
-          diagnosis: 'Accepted via email link',
-          status: 'assigned',
-          created_at: new Date().toISOString(),
-        }).catch(() => {});
+        if (data) {
+          customerName = data.customer_name || customerName;
+          await (admin as any)
+            .from('leads')
+            .update({
+              status: 'assigned',
+              assigned_plumber_id: plumberId || data.assigned_plumber_id,
+              assigned_plumber_name: data.assigned_plumber_name || 'Plumber',
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', leadId)
+            .in('status', ['matching', 'routing', 'assigned']);
+
+          await (admin as any).from('jobs').insert({
+            lead_id: leadId,
+            company_id: plumberId || data.assigned_plumber_id,
+            customer_name: data.customer_name || '',
+            customer_address: data.customer_address || '',
+            total_estimate: data.total_estimate || 0,
+            diagnosis: 'Accepted via email link',
+            status: 'assigned',
+            created_at: new Date().toISOString(),
+          }).catch(() => {});
+        }
+      } catch (e) {
+        console.error('Accept processing error:', e);
       }
     }
 
