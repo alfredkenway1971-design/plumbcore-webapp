@@ -271,7 +271,23 @@ export async function notifyPlumber(plumber: PlumberScore, lead: LeadData): Prom
 
     console.log(`[LeadRouting] Notified ${plumber.companyName} (${plumber.email}) about lead ${lead.id}`);
 
-    // TODO: Send SMS via Twilio when configured
+    // Send SMS notification if Twilio is configured
+    try {
+      const { sendSms, leadSmsTemplate } = await import('@/lib/sms');
+      if (plumber.phone) {
+        const smsBody = leadSmsTemplate({
+          customerName: lead.customerName,
+          address: lead.customerAddress,
+          estimate: lead.estimatedJobValue,
+          diagnosis: lead.diagnosis.substring(0, 60),
+          leadId: lead.id,
+        });
+        await sendSms(plumber.phone, smsBody);
+      }
+    } catch {
+      // SMS is optional — don't fail if it's not configured
+    }
+
     // TODO: Push dashboard notification
   } catch (err: any) {
     console.error(`[LeadRouting] Failed to notify plumber ${plumber.plumberId}:`, err.message);
