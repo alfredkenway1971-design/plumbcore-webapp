@@ -228,7 +228,8 @@ export async function findBestPlumbers(
     // Score each plumber
     const scored: PlumberScore[] = plumbers
       .map((p: any) => scorePlumber(p, customerLat, customerLng))
-      .filter((p: PlumberScore) => p.distanceMiles <= radiusMiles);
+      // Don't filter by distance when plumbers have no location data
+      .filter((p: PlumberScore) => p.distanceMiles === 0 || p.distanceMiles <= radiusMiles);
 
     // Sort by score descending and return top N
     scored.sort((a, b) => b.score - a.score);
