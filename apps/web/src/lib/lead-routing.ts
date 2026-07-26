@@ -194,12 +194,12 @@ export async function findBestPlumbers(
   radiusMiles: number = ROUTING_CONFIG.INITIAL_RADIUS_MILES,
 ): Promise<PlumberScore[]> {
   try {
-    // Query active plumber profiles
+    // Query plumbers from auth_users (profiles table has RLS issues)
     const { data: plumbers, error } = await (supabaseAdmin as any)
-      .from('plumber_profiles')
-      .select('*')
-      .eq('status', 'active')
-      .lte('current_month_leads', supabaseAdmin.rpc ? undefined : 999); // Fallback: just get all active
+      .from('auth_users')
+      .select('id, full_name, email, phone, company_id, role, subscription_tier')
+      .in('role', ['tech', 'admin'])
+      .limit(50);
 
     if (error) {
       console.error('[LeadRouting] Failed to fetch plumbers:', error.message);
