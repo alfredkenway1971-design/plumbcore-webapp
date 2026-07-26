@@ -197,7 +197,7 @@ export async function findBestPlumbers(
     // Query plumbers from auth_users (profiles table has RLS issues)
     const { data: plumbers, error } = await (supabaseAdmin as any)
       .from('auth_users')
-      .select('id, full_name, email, phone, company_id, role, subscription_tier')
+      .select('id, full_name, email, phone, role')
       .in('role', ['tech', 'admin'])
       .limit(50);
 
