@@ -10,6 +10,15 @@ import {
   User, Camera, Filter, ArrowUpDown, Eye, ListOrdered
 } from 'lucide-react';
 
+/* ── Helpers ── */
+function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '').slice(0, 10);
+  if (digits.length === 0) return phone;
+  if (digits.length <= 3) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 /* ── Types ── */
 type DispatchMode = 'manual' | 'round-robin' | 'pool';
 
@@ -223,14 +232,18 @@ export default function LeadsMarketplacePage() {
   const availablePlumbersForLead = plumbers.filter(p => {
     if (!p.available) return false;
     if (!modalLead) return true;
+    // Try ZIP match, but show all plumbers if lead has no ZIP or plumber has no serviceZips
+    if (!modalLead.zip || !p.serviceZips || p.serviceZips.length === 0) return true;
     return p.serviceZips.some(z => modalLead.zip.startsWith(z));
   });
 
   /* ── Dispatch Handlers ── */
 
-  const assignLead = (id: string, plumberId: string) => {
+  const assignLead = async (id: string, plumberId: string) => {
     const plumber = plumbers.find(p => p.id === plumberId);
     if (!plumber) return;
+
+    // Update locally immediately for responsiveness
     setLeads(prev => prev.map(l =>
       l.id === id ? { ...l, status: 'assigned' as const, assignedPlumber: plumber.name, timeToMatch: 'Now' } : l
     ));
@@ -239,6 +252,26 @@ export default function LeadsMarketplacePage() {
     setShowAssignModal(false);
     setModalLeadId(null);
     setSelectedPlumberId(null);
+
+    // Save to database
+    try {
+      const token = useAuthStore.getState().token;
+      await fetch('/api/admin/leads/assign', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          leadId: id,
+          plumberId,
+          plumberName: plumber.name,
+          mode: 'manual',
+        }),
+      });
+    } catch (e) {
+      console.error('Failed to save assignment:', e);
+    }
   };
 
   const rejectLead = (id: string) => {
@@ -250,7 +283,7 @@ export default function LeadsMarketplacePage() {
     setModalLeadId(null);
   };
 
-  const roundRobinSingle = (leadId: string) => {
+  const roundRobinSingle = async (leadId: string) => {
     const lead = leads.find(l => l.id === leadId);
     if (!lead) return;
     const zipPrefix = lead.zip.substring(0, 3) || '787';
@@ -262,10 +295,31 @@ export default function LeadsMarketplacePage() {
     const plumber = plumbers.find(p => p.id === plumberId);
 
     if (plumber && plumber.available) {
+      // Update locally
       setLeads(prev => prev.map(l =>
         l.id === leadId ? { ...l, status: 'assigned' as const, assignedPlumber: plumber.name, timeToMatch: 'RR' } : l
       ));
       setRrRotationIndex(prev => ({ ...prev, [zipPrefix]: (prev[zipPrefix] || 0) + 1 }));
+
+      // Save to database
+      try {
+        const token = useAuthStore.getState().token;
+        await fetch('/api/admin/leads/assign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({
+            leadId,
+            plumberId,
+            plumberName: plumber.name,
+            mode: 'round-robin',
+          }),
+        });
+      } catch (e) {
+        console.error('RR assign failed:', e);
+      }
     }
   };
 
@@ -282,15 +336,15 @@ export default function LeadsMarketplacePage() {
     }
   };
 
-  const autoRoundRobin = () => {
+  const autoRoundRobin = async () => {
     const unassigned = leads.filter(l => l.status === 'matching');
     if (unassigned.length === 0) return;
 
     const newLeads = [...leads];
     const newIndices = { ...rrRotationIndex };
+    const assignments: { leadId: string; plumberId: string; plumberName: string }[] = [];
 
     for (const lead of unassigned) {
-      // Find matching zip config
       const zipPrefix = lead.zip.substring(0, 3);
       const config = rrConfig.find(c => c.zipGroupPrefix === zipPrefix);
       if (!config || config.rotationOrder.length === 0) continue;
@@ -310,11 +364,29 @@ export default function LeadsMarketplacePage() {
           };
         }
         newIndices[zipPrefix] = (newIndices[zipPrefix] || 0) + 1;
+        assignments.push({ leadId: lead.id, plumberId, plumberName: plumber.name });
       }
     }
 
     setRrRotationIndex(newIndices);
     setLeads(newLeads);
+
+    // Persist all assignments to database
+    const token = useAuthStore.getState().token;
+    for (const a of assignments) {
+      try {
+        await fetch('/api/admin/leads/assign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ ...a, mode: 'round-robin' }),
+        });
+      } catch (e) {
+        console.error('Auto-RR assign failed:', a.leadId, e);
+      }
+    }
   };
 
   const broadcastToPool = () => {
@@ -1070,7 +1142,7 @@ export default function LeadsMarketplacePage() {
                       <p className="text-[10px] font-semibold text-muted-foreground/80 uppercase tracking-wider">Phone</p>
                       <p className="text-sm text-slate-800 mt-0.5 flex items-center gap-1">
                         <Phone className="w-3.5 h-3.5 text-muted-foreground/80" />
-                        {detailLead.phone}
+                        {formatPhone(detailLead.phone)}
                       </p>
                     </div>
                   )}
