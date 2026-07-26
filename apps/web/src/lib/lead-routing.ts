@@ -204,8 +204,8 @@ export async function findBestPlumbers(
     if (error) {
       console.error('[LeadRouting] Failed to fetch plumbers:', error.message);
       console.error('[LeadRouting] Error details:', JSON.stringify(error));
-      // Throw instead of silently returning empty so we can see the error
-      return [];
+      // Return error info so we can see what went wrong
+      throw new Error(`auth_users query failed: ${error.message} - ${JSON.stringify(error)}`);
     }
 
     console.log(`[LeadRouting] Found ${plumbers?.length || 0} plumbers from auth_users`);
