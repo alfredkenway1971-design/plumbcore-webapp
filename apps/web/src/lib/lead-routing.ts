@@ -203,8 +203,12 @@ export async function findBestPlumbers(
 
     if (error) {
       console.error('[LeadRouting] Failed to fetch plumbers:', error.message);
+      console.error('[LeadRouting] Error details:', JSON.stringify(error));
+      // Throw instead of silently returning empty so we can see the error
       return [];
     }
+
+    console.log(`[LeadRouting] Found ${plumbers?.length || 0} plumbers from auth_users`);
 
     if (!plumbers || plumbers.length === 0) {
       console.log('[LeadRouting] No active plumbers found');
@@ -337,6 +341,7 @@ export async function routeLead(
           startedAt: Date.now(),
           lastActionAt: Date.now(),
         },
+        debug: { note: 'No plumbers returned from auth_users query. Check if auth_users has tech/admin roles.' },
       };
     }
 
