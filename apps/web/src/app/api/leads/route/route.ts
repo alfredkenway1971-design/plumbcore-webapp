@@ -73,7 +73,7 @@ export async function POST(req: Request) {
       .update({ status: 'routing', updated_at: new Date().toISOString() })
       .eq('id', leadId);
 
-    // Fetch plumbers directly here (bypasses cached lead-routing module)
+    // Fetch plumbers directly 
     const { data: plumbers, error: plumberError } = await (admin as any)
       .from('auth_users')
       .select('id, full_name, email, phone, role')
@@ -84,9 +84,7 @@ export async function POST(req: Request) {
       console.error('plumber query failed:', plumberError);
     }
 
-    console.log(`Plumbers found: ${plumbers?.length || 0}`);
-
-    // Build plumber score list directly
+    // Build plumber score list
     const scoredPlumbers = (plumbers || []).map((p: any) => ({
       plumberId: p.id,
       companyId: p.company_id || p.id,
@@ -122,21 +120,10 @@ export async function POST(req: Request) {
         })
         .eq('id', leadId);
 
-      console.log(`✅ Auto-dispatched to ${firstPlumber.ownerName}`);
-
-      return NextResponse.json({
-        status: 'assigned',
-        plumber: firstPlumber.ownerName,
-        plumberId: firstPlumber.plumberId,
-        _debug: { plumbersCount: plumbers?.length || 0 }
-      });
+      return NextResponse.json({ status: 'assigned', plumber: firstPlumber.ownerName });
     }
 
-    return NextResponse.json({
-      status: 'unmatched',
-      message: 'No plumbers available',
-      _debug: { plumbersCount: plumbers?.length || 0 }
-    });
+    return NextResponse.json({ status: 'unmatched', message: 'No plumbers available' });
   } catch (err: any) {
     console.error('[/api/leads/route] Error:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
