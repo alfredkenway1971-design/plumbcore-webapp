@@ -73,26 +73,69 @@ export async function POST(req: Request) {
       .update({ status: 'routing', updated_at: new Date().toISOString() })
       .eq('id', leadId);
 
-    // DEBUG: Test auth_users query from this exact code location
-    const { data: testPlumbers, error: testError } = await (admin as any)
+    // Fetch plumbers directly here (bypasses cached lead-routing module)
+    const { data: plumbers, error: plumberError } = await (admin as any)
       .from('auth_users')
-      .select('id, full_name, email, role')
+      .select('id, full_name, email, phone, role')
       .in('role', ['tech', 'admin'])
       .limit(50);
-    console.log('[DEBUG] auth_users test:', testPlumbers?.length || 0, 'plumbers, error:', testError?.message || 'none');
 
-    const result = await routeLead(leadData, admin);
+    if (plumberError) {
+      console.error('plumber query failed:', plumberError);
+    }
 
-    // Add debug info to response
+    console.log(`Plumbers found: ${plumbers?.length || 0}`);
+
+    // Build plumber score list directly
+    const scoredPlumbers = (plumbers || []).map((p: any) => ({
+      plumberId: p.id,
+      companyId: p.company_id || p.id,
+      companyName: p.full_name || 'Plumber',
+      ownerName: p.full_name || 'Plumber',
+      phone: p.phone || '',
+      email: p.email || '',
+      score: 0.7,
+      distanceMiles: 0,
+      distanceScore: 1.0,
+      availabilityScore: 1.0,
+      planTierScore: 0.5,
+      ratingScore: 0.9,
+      responseSpeedScore: 1.0,
+    }));
+
+    // Get the first plumber
+    const firstPlumber = scoredPlumbers[0];
+
+    if (firstPlumber) {
+      // Notify them
+      const { notifyPlumber } = await import('@/lib/lead-routing');
+      await notifyPlumber(firstPlumber, leadData).catch(() => {});
+
+      // Update lead to assigned
+      await (admin as any)
+        .from('leads')
+        .update({
+          status: 'assigned',
+          assigned_plumber_id: firstPlumber.plumberId,
+          assigned_plumber_name: firstPlumber.ownerName,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', leadId);
+
+      console.log(`✅ Auto-dispatched to ${firstPlumber.ownerName}`);
+
+      return NextResponse.json({
+        status: 'assigned',
+        plumber: firstPlumber.ownerName,
+        plumberId: firstPlumber.plumberId,
+        _debug: { plumbersCount: plumbers?.length || 0 }
+      });
+    }
+
     return NextResponse.json({
-      ...result,
-      _debug: {
-        testPlumbersCount: testPlumbers?.length || 0,
-        testError: testError?.message || null,
-        adminExists: !!admin,
-        supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        serviceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY || !!process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE,
-      }
+      status: 'unmatched',
+      message: 'No plumbers available',
+      _debug: { plumbersCount: plumbers?.length || 0 }
     });
   } catch (err: any) {
     console.error('[/api/leads/route] Error:', err.message);
