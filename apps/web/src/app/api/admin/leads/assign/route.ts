@@ -47,6 +47,19 @@ export async function POST(req: Request) {
       .eq('id', plumberId)
       .single();
 
+    // Get the plumber's company_id from auth_users so jobs show in their dashboard
+    let companyId = plumberId;
+    try {
+      const { data: plumberUser } = await sb
+        .from('auth_users')
+        .select('company_id')
+        .eq('id', plumberId)
+        .maybeSingle();
+      if (plumberUser?.company_id) companyId = plumberUser.company_id;
+    } catch {
+      // fallback to plumberId
+    }
+
     // 1. Update the lead with assigned plumber
     const { error } = await sb
       .from('leads')
@@ -66,7 +79,7 @@ export async function POST(req: Request) {
     // 2. Auto-create a job from the lead
     try {
       await sb.from('jobs').insert({
-        company_id: plumberId,
+        company_id: companyId,
         customer_name: lead.customer_name || 'Unknown',
         customer_email: lead.customer_email || '',
         customer_phone: lead.customer_phone || '',
