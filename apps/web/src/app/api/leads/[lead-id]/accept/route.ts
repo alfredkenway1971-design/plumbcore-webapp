@@ -134,6 +134,8 @@ export async function GET(
             total_estimate: data.total_estimate || 0,
             diagnosis: 'Accepted via email link',
             status: 'assigned',
+            priority: 'medium',
+            source: 'email-accept',
             created_at: new Date().toISOString(),
           }).catch(() => {});
         }
