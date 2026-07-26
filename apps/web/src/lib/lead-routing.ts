@@ -240,8 +240,8 @@ export async function findBestPlumbers(
  */
 export async function notifyPlumber(plumber: PlumberScore, lead: LeadData): Promise<void> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
-  const acceptUrl = `${appUrl}/api/leads/${lead.id}/accept`;
-  const declineUrl = `${appUrl}/api/leads/${lead.id}/decline`;
+  const acceptUrl = `${appUrl}/api/leads/${lead.id}/accept?plumberId=${plumber.plumberId}`;
+  const declineUrl = `${appUrl}/api/leads/${lead.id}/decline?plumberId=${plumber.plumberId}`;
 
   try {
     // Send email notification
