@@ -572,6 +572,7 @@ export default function QuotePage() {
   const [form, setForm] = useState({ name:'', phone:'', email:'', address:'', city:'', state:'', zip:'', country:'US', desc:'', urgency:'routine', _enhancing: false });
   const [phoneDisplay, setPhoneDisplay] = useState('');
   const [result, setResult] = useState<any>(null);
+  const [photoUrl, setPhotoUrl] = useState('');
   const [error, setError] = useState<string|null>(null);
   const [stripeLoading, setStripeLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -758,7 +759,10 @@ export default function QuotePage() {
           depositPriceId:'price_1Tt6NCDynIU5fZLWmKmTgIgB'
         };
       };
-      if (data.success && data.result) setResult(data.result);
+      if (data.success && data.result) {
+        setResult(data.result);
+        if (data.photoUrl) setPhotoUrl(data.photoUrl);
+      }
       else setResult(fb(locale));
     } catch { setResult(fb(locale)); }
     setStep(4);
@@ -796,6 +800,7 @@ export default function QuotePage() {
             depositCharged: String(result.depositAmount || 4900),
             depositTier: result.depositTier || '',
             trackingToken: trackingId,
+            photoUrl: photoUrl,
             quoteType: 'deposit',
           }
         }),
