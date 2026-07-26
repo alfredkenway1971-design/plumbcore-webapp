@@ -126,7 +126,7 @@ export async function GET(
             .eq('id', leadId)
             .in('status', ['matching', 'routing', 'assigned']);
 
-          await (admin as any).from('jobs').insert({
+          const { error: jobError } = await (admin as any).from('jobs').insert({
             lead_id: leadId,
             company_id: plumberId || data.assigned_plumber_id,
             customer_name: data.customer_name || '',
@@ -137,7 +137,8 @@ export async function GET(
             priority: 'medium',
             source: 'email-accept',
             created_at: new Date().toISOString(),
-          }).catch(() => {});
+          });
+          if (jobError) console.error('Job insert error:', jobError);
         }
       } catch (e) {
         console.error('Accept processing error:', e);
