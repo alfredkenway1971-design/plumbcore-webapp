@@ -315,19 +315,85 @@ function GeographicMap() {
 }
 
 /* ═══════════════════════════════════════════
-   ROW 3b — UNFULFILLED LEADS
+   ROW 3b — LEADS MANAGEMENT
    ═══════════════════════════════════════════ */
 function UnfulfilledLeads() {
+  const [leads, setLeads] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/data?endpoint=leads')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) {
+          setLeads(data.leads || []);
+          setStats(data.stats || {});
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const unfulfilled = leads.filter((l: any) => l.status === 'matching' || l.status === 'unfulfilled');
+  const needsAttention = unfulfilled.slice(0, 20);
+
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between p-5 pb-3">
-        <h3 className="text-sm font-semibold text-gray-900">⚠️ Unfulfilled Leads</h3>
+        <h3 className="text-sm font-semibold text-gray-900">⚠️ Leads Needing Attention</h3>
+        {!loading && (
+          <span className="text-xs text-gray-500">
+            {stats.matching || 0} matching · {stats.unfulfilled || 0} unfulfilled · {leads.length} total
+          </span>
+        )}
       </div>
       <div className="px-5 pb-6">
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <span className="text-4xl mb-3">📥</span>
-          <p className="text-sm text-gray-500">No unfulfilled leads. All matched leads should appear here if they need attention.</p>
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-12 text-sm text-gray-400">Loading leads...</div>
+        ) : needsAttention.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <span className="text-4xl mb-3">✅</span>
+            <p className="text-sm text-gray-500">No leads needing attention. All leads are assigned or completed.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-gray-100 text-gray-400 font-medium">
+                  <th className="text-left py-2 pr-2">Name</th>
+                  <th className="text-left py-2 pr-2">Issue</th>
+                  <th className="text-left py-2 pr-2">Estimate</th>
+                  <th className="text-left py-2 pr-2">Status</th>
+                  <th className="text-left py-2 pr-2">Deposit</th>
+                  <th className="text-left py-2 pr-2">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {needsAttention.map((lead: any) => (
+                  <tr key={lead.id} className="border-b border-gray-50 hover:bg-gray-50">
+                    <td className="py-2.5 pr-2 font-medium text-gray-900">{lead.customer_name || 'Unknown'}</td>
+                    <td className="py-2.5 pr-2 text-gray-600 max-w-[140px] truncate">{lead.diagnosis || '-'}</td>
+                    <td className="py-2.5 pr-2 text-gray-900 font-medium">${lead.total_estimate || lead.estimated_job_value || '?'}</td>
+                    <td className="py-2.5 pr-2">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                        lead.status === 'matching' ? 'bg-yellow-100 text-yellow-700' :
+                        lead.status === 'unfulfilled' ? 'bg-red-100 text-red-700' :
+                        'bg-blue-100 text-blue-700'
+                      }`}>
+                        {lead.status}
+                      </span>
+                    </td>
+                    <td className="py-2.5 pr-2 text-gray-600">${lead.deposit_paid || lead.deposit_charged || '0'}</td>
+                    <td className="py-2.5 pr-2 text-gray-400 whitespace-nowrap">
+                      {lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
