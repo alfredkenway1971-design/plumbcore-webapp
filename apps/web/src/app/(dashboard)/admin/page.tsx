@@ -323,7 +323,11 @@ function UnfulfilledLeads() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/data?endpoint=leads')
+    const token = useAuthStore.getState().token;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    fetch('/api/admin/data?endpoint=leads', { headers })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) {

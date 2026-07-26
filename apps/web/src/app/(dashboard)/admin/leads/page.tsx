@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Card, Button, ErrorState } from '@/pkg/ui-components';
 import { DEPOSIT_TIERS } from '@/lib/plan-pricing';
+import { useAuthStore } from '@/lib/store';
 import {
   Search, X, ChevronUp, ChevronDown, Plus, Settings, Phone,
   MapPin, DollarSign, Star, Clock, CheckCircle, AlertCircle,
@@ -100,11 +101,15 @@ export default function LeadsMarketplacePage() {
     let cancelled = false;
 
     async function fetchData() {
+      const token = useAuthStore.getState().token;
+      const headers: Record<string, string> = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       try {
         const [leadsRes, plumbersRes, statsRes] = await Promise.all([
-          fetch('/api/admin/data?endpoint=leads'),
-          fetch('/api/admin/data?endpoint=plumbers'),
-          fetch('/api/admin/data?endpoint=leads-stats'),
+          fetch('/api/admin/data?endpoint=leads', { headers }),
+          fetch('/api/admin/data?endpoint=plumbers', { headers }),
+          fetch('/api/admin/data?endpoint=leads-stats', { headers }),
         ]);
 
         if (!cancelled) {
