@@ -194,23 +194,16 @@ export async function findBestPlumbers(
   radiusMiles: number = ROUTING_CONFIG.INITIAL_RADIUS_MILES,
 ): Promise<PlumberScore[]> {
   try {
-    // Fallback: use direct REST API to query auth_users
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '';
-    
-    let plumbers: any[] = [];
+    // Query plumbers using the admin client
+    const { data: plumbers, error } = await (supabaseAdmin as any)
+      .from('auth_users')
+      .select('id, full_name, email, phone, role, company_id')
+      .in('role', ['tech', 'admin'])
+      .limit(50);
 
-    if (supabaseUrl && serviceKey) {
-      const apiUrl = `${supabaseUrl}/rest/v1/auth_users?select=id,full_name,email,phone,role&role=in.(tech,admin)&limit=50`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${serviceKey}`,
-          'apikey': serviceKey,
-        },
-      });
-      if (response.ok) {
-        plumbers = await response.json();
-      }
+    if (error) {
+      console.error('[LeadRouting] Failed to fetch plumbers:', error.message);
+      return [];
     }
 
     console.log(`[LeadRouting] Found ${plumbers?.length || 0} plumbers from auth_users`);
