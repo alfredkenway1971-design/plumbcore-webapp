@@ -108,11 +108,11 @@ export async function GET(request: Request) {
         .limit(100);
       if (plumbersError) {
         console.error('Plumbers query error:', plumbersError);
-        // Try auth_users as fallback
+        // Fallback to auth_users (where real plumbers are with role 'tech' or 'admin')
         const { data: users } = await sb
           .from('auth_users')
-          .select('id,full_name,email,role')
-          .eq('role', 'plumber')
+          .select('id,full_name,email,role,company_id')
+          .in('role', ['tech', 'admin'])
           .limit(100);
         result.plumbers = (users || []).map((u: any) => ({
           id: u.id,
@@ -123,6 +123,9 @@ export async function GET(request: Request) {
           available: true,
           serviceZips: [],
           rotationOrder: 0,
+          phone: u.phone || '',
+          email: u.email || '',
+          company_id: u.company_id || '',
         }));
       } else {
         result.plumbers = (plumbers || []).map((p: any) => ({
