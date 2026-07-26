@@ -294,10 +294,10 @@ function PricingSection({ t }: { t: (key: string) => string }) {
 /* ─── Deposit Tiers ─── */
 function DepositSection({ t }: { t: (key: string) => string }) {
   const rows = [
-    { label: t('home.depositUnder1000'), deposit: '$49', keep: '$49' },
-    { label: t('home.deposit1000to1499'), deposit: '$99', keep: '$99' },
-    { label: t('home.deposit1500to1999'), deposit: '$149', keep: '$149' },
-    { label: t('home.deposit2000plus'), deposit: '$199', keep: '$199' },
+    { label: t('home.depositUnder1000'), deposit: '$49', keep: '$0' },
+    { label: t('home.deposit1000to1499'), deposit: '$99', keep: '$0' },
+    { label: t('home.deposit1500to1999'), deposit: '$149', keep: '$0' },
+    { label: t('home.deposit2000plus'), deposit: '$199', keep: '$0' },
   ];
   return (
     <section className="scroll-reveal px-5 lg:px-10 py-11">

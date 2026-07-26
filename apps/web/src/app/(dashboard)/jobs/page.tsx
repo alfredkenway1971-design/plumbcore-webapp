@@ -15,6 +15,7 @@ import {
 import { jobs, clients, teamMembers } from '@/lib/mock-data';
 import type { Job, JobStatus } from '@/lib/mock-data';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
+import { VoiceInput } from '@/components/VoiceInput';
 
 /* ── Helpers ── */
 function formatCurrency(n: number) {
@@ -1052,6 +1053,10 @@ export default function JobsPage() {
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
           />
+          <div className="flex items-center gap-2 mt-1">
+            <VoiceInput onTranscribed={(text) => setEditDescription(editDescription + text)} />
+            <span className="text-xs text-muted-foreground">Tap mic to dictate</span>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-foreground mb-1">Priority</label>

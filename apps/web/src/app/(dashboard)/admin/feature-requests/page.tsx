@@ -18,6 +18,7 @@ import {
   ChevronDown,
   ThumbsUp,
 } from 'lucide-react';
+import { VoiceInput } from '@/components/VoiceInput';
 
 /* ── Types ── */
 
@@ -248,8 +249,11 @@ export default function AdminFeatureRequestsPage() {
                   value={form.description}
                   onChange={(e) => updateField('description', e.target.value)}
                   placeholder="Describe the feature and how it would help..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
+                  className="w-full pl-10 pr-12 py-2.5 rounded-xl bg-white ring-1 ring-border text-sm text-foreground placeholder:text-muted-foreground/80 outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
                 />
+                <div className="absolute right-2 bottom-2">
+                  <VoiceInput onTranscribed={(text) => updateField('description', text)} />
+                </div>
               </div>
             </div>
 
