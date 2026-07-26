@@ -217,12 +217,41 @@ export async function POST(request: NextRequest) {
     }
 
     const finalResult = buildResult(result, result?.severity || 'moderate', urgency || 'routine', customerState, customerCountry)
+
+    // Upload photo to Supabase Storage bucket if we have one
+    let photoUrl = ''
+    if (photoBase64 && photoBase64.length > 100) {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || ''
+        if (supabaseUrl && serviceKey) {
+          const fileName = `${cacheKey}.jpg`
+          const buffer = Buffer.from(photoBase64, 'base64')
+
+          const uploadUrl = `${supabaseUrl}/storage/v1/object/lead-photos/${fileName}`
+          await fetch(uploadUrl, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${serviceKey}`,
+              'Content-Type': 'image/jpeg',
+            },
+            body: buffer,
+          })
+
+          photoUrl = `${supabaseUrl}/storage/v1/object/public/lead-photos/${fileName}`
+        }
+      } catch (uploadErr) {
+        console.error('Photo upload failed (non-blocking):', uploadErr)
+      }
+    }
+
     responseCache.set(cacheKey, { data: finalResult, expiry: Date.now() + CACHE_TTL })
 
     return NextResponse.json({
       success: true,
       result: finalResult,
       model: VISION_MODEL,
+      photoUrl,
     })
 
   } catch (error) {
