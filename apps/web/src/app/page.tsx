@@ -19,7 +19,7 @@ function Navbar({ locale, onLocaleChange, t }: { locale: string; onLocaleChange:
   return (
     <header className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-line)] bg-white relative">
       <a href="/dashboard" className="flex items-center gap-2 no-underline">
-        <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="h-16 w-auto" />
+        <img src="/plumbcore-logo.png" alt="PlumbCore AI" className="h-14 md:h-24 w-auto" />
       </a>
       <div className="flex items-center gap-3">
         <div className="hidden md:flex items-center gap-5 mr-3">
