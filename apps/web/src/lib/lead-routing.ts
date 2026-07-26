@@ -326,24 +326,23 @@ export async function routeLead(
     const expandedPlumbers = await findBestPlumbers(lead, supabaseAdmin, ROUTING_CONFIG.EXPANDED_RADIUS_MILES);
 
     if (expandedPlumbers.length === 0) {
-      console.log(`[LeadRouting] No plumbers found at all for lead ${lead.id} — auto-refunding`);
-      return {
-        status: 'refunded',
-        session: {
-          leadId: lead.id,
-          lead,
-          status: 'refunded' as const,
-          currentIndex: -1,
-          scoredPlumbers: [],
-          notifiedPlumbers: [],
-          declinedPlumbers: [],
-          radiusMiles: ROUTING_CONFIG.EXPANDED_RADIUS_MILES,
-          startedAt: Date.now(),
-          lastActionAt: Date.now(),
-        },
-        debug: { note: 'No plumbers returned from auth_users query. Check if auth_users has tech/admin roles.' },
-      };
-    }
+        console.log(`[LeadRouting] No plumbers found at all for lead ${lead.id} — auto-refunding`);
+        return {
+          status: 'refunded',
+          session: {
+            leadId: lead.id,
+            lead,
+            status: 'refunded' as const,
+            currentIndex: -1,
+            scoredPlumbers: [],
+            notifiedPlumbers: [],
+            declinedPlumbers: [],
+            radiusMiles: ROUTING_CONFIG.EXPANDED_RADIUS_MILES,
+            startedAt: Date.now(),
+            lastActionAt: Date.now(),
+          },
+        } as any;
+      }
 
     // Create session with expanded radius plumbers
     const session: RoutingSession = {
