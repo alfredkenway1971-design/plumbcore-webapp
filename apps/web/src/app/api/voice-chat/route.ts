@@ -41,30 +41,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No speech detected' }, { status: 400 });
     }
 
-    // Step 2: Send transcript to DeepSeek for response
-    const deepseekRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY || ''}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: 'You are Alfred, a helpful AI assistant. Respond conversationally, keep answers brief and natural since the user is speaking. Use English only.' },
-          { role: 'user', content: transcript },
-        ],
-        max_tokens: 500,
-      }),
-    });
-
-    if (!deepseekRes.ok) {
-      const errText = await deepseekRes.text();
-      return NextResponse.json({ error: `DeepSeek failed: ${errText}` }, { status: 502 });
+    // Step 2: Get AI response via DeepSeek
+    let responseText = "I heard you. I'm having trouble connecting to my AI right now.";
+    try {
+      const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
+        },
+        body: JSON.stringify({
+          model: 'deepseek/deepseek-chat',
+          messages: [
+            { role: 'system', content: 'You are Alfred, a helpful voice assistant. Keep responses very brief — 1-3 sentences max. Use English.' },
+            { role: 'user', content: transcript },
+          ],
+          max_tokens: 200,
+        }),
+      });
+      if (dsRes.ok) {
+        const dsResult = await dsRes.json();
+        responseText = dsResult.choices?.[0]?.message?.content || responseText;
+      }
+    } catch {
+      responseText = "I heard you say: " + transcript.slice(0, 100) + ". I'm functioning but my AI provider is unavailable.";
     }
-
-    const deepseekResult = await deepseekRes.json();
-    const responseText = deepseekResult.choices?.[0]?.message?.content || 'Sorry, I had trouble processing that.';
 
     // Step 3: Send response to OmniVoice for TTS
     const ttsRes = await fetch(`${OMNIVOICE_API}/api/tts`, {
