@@ -26,7 +26,7 @@ export async function POST(req: Request) {
           'Authorization': `Bearer ${process.env.ZAI_API_KEY || ''}`,
         },
         body: JSON.stringify({
-          model: 'glm-4.7-flash',
+          model: 'glm-5.2',
           messages: [
             {
               role: 'system',
