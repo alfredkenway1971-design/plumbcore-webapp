@@ -3,91 +3,94 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 export default function VoiceChatPage() {
-  const [recording, setRecording] = useState(false);
+  const [listening, setListening] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
   const [messages, setMessages] = useState<{role: 'user'|'assistant'; text: string}[]>([]);
   const [error, setError] = useState('');
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const chunks = useRef<Blob[]>([]);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const synthRef = useRef(typeof window !== 'undefined' ? window.speechSynthesis : null);
 
-  const startRecording = useCallback(async () => {
+  const startListening = useCallback(() => {
     try {
       setError('');
-      chunks.current = [];
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        setError('Speech recognition not supported in this browser. Try Chrome or Safari.');
+        return;
+      }
 
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.current.push(e.data);
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event: any) => {
+        const text = event.results[0][0].transcript;
+        setTranscript(text);
+        getAIResponse(text);
       };
 
-      recorder.onstop = async () => {
-        stream.getTracks().forEach(t => t.stop());
-        const blob = new Blob(chunks.current, { type: 'audio/webm' });
-        await sendAudio(blob);
+      recognition.onerror = (event: any) => {
+        setError(`Speech error: ${event.error}. Try again.`);
+        setListening(false);
       };
 
-      mediaRecorder.current = recorder;
-      recorder.start();
-      setRecording(true);
+      recognition.onend = () => {
+        setListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+      setListening(true);
     } catch (err: any) {
-      setError('Microphone access denied. Allow mic permissions and try again.');
+      setError('Could not start speech recognition. Allow mic access.');
     }
   }, []);
 
-  const stopRecording = useCallback(() => {
-    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
-      mediaRecorder.current.stop();
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
-    setRecording(false);
+    setListening(false);
   }, []);
 
-  const sendAudio = async (blob: Blob) => {
+  const getAIResponse = async (text: string) => {
     setProcessing(true);
     setError('');
 
     try {
-      const form = new FormData();
-      form.append('audio', blob, 'recording.webm');
-
       const res = await fetch('/api/voice-chat', {
         method: 'POST',
-        body: form,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setError(data.error || 'Failed to process');
+        setError(data.error || 'Failed to get response');
         setProcessing(false);
         return;
       }
 
-      setTranscript(data.transcript);
-      setResponse(data.response);
+      const reply = data.response;
+      setResponse(reply);
       setMessages(prev => [
         ...prev,
-        { role: 'user', text: data.transcript },
-        { role: 'assistant', text: data.response },
+        { role: 'user', text },
+        { role: 'assistant', text: reply },
       ]);
 
-      // Play audio response
-      if (data.audio_url) {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.src = '';
-        }
-        audioRef.current = new Audio(data.audio_url);
-        audioRef.current.play().catch(() => {});
-      } else {
-        // Fallback: use browser TTS
-        const utterance = new SpeechSynthesisUtterance(data.response);
+      // Speak the response
+      if (synthRef.current) {
+        synthRef.current.cancel();
+        const utterance = new SpeechSynthesisUtterance(reply);
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
-        speechSynthesis.speak(utterance);
+        utterance.lang = 'en-US';
+        synthRef.current.speak(utterance);
       }
     } catch (err: any) {
       setError(err.message || 'Network error');
@@ -192,30 +195,32 @@ export default function VoiceChatPage() {
         gap: 16,
       }}>
         <button
-          onMouseDown={startRecording}
-          onMouseUp={stopRecording}
-          onTouchStart={startRecording}
-          onTouchEnd={stopRecording}
+          onMouseDown={startListening}
+          onMouseUp={stopListening}
+          onTouchStart={startListening}
+          onTouchEnd={stopListening}
+          onMouseLeave={stopListening}
           style={{
             width: 72,
             height: 72,
             borderRadius: '50%',
             border: 'none',
-            cursor: recording ? 'pointer' : 'pointer',
-            background: recording
+            cursor: listening || processing ? 'pointer' : 'pointer',
+            background: listening
               ? 'linear-gradient(135deg, #ef4444, #dc2626)'
-              : 'linear-gradient(135deg, #667eea, #764ba2)',
+              : processing
+                ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
+                : 'linear-gradient(135deg, #667eea, #764ba2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: recording
+            boxShadow: listening
               ? '0 0 40px rgba(239,68,68,0.5)'
               : '0 4px 20px rgba(102,126,234,0.4)',
             transition: 'all 0.2s',
-            transform: recording ? 'scale(1.1)' : 'scale(1)',
-            opacity: processing ? 0.5 : 1,
+            transform: listening ? 'scale(1.1)' : 'scale(1)',
             pointerEvents: processing ? 'none' : 'auto',
-            animation: recording ? 'pulse 1s infinite' : 'none',
+            animation: listening ? 'pulse 1s infinite' : 'none',
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -233,7 +238,7 @@ export default function VoiceChatPage() {
         color: 'rgba(255,255,255,0.3)',
         paddingBottom: 16,
       }}>
-        {recording ? 'Release to send' : processing ? 'Processing...' : 'Hold to talk'}
+        {listening ? 'Tap again or speak' : processing ? 'Thinking...' : 'Tap to talk'}
       </div>
 
       <style>{`
