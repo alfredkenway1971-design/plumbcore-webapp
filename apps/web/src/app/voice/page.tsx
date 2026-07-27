@@ -8,39 +8,38 @@ export default function VoiceChatPage() {
   const [messages, setMessages] = useState<{role: 'user'|'assistant'; text: string}[]>([]);
   const [error, setError] = useState('');
   const [inAppBrowser, setInAppBrowser] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [pendingReply, setPendingReply] = useState('');
+  const [showPlayButton, setShowPlayButton] = useState(false);
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
 
-  // Detect in-app browser & request mic permission on load
+  // Detect in-app browser
   useEffect(() => {
     if (typeof window === 'undefined') return;
     synthRef.current = window.speechSynthesis;
     const ua = navigator.userAgent.toLowerCase();
     if (ua.includes('whatsapp') || ua.includes('fb_iab') || ua.includes('instagram')) {
       setInAppBrowser(true);
-      return;
     }
-    // Pre-warm: request mic permission so it's ready when user taps
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-      streamRef.current = stream;
-      setReady(true);
-    }).catch(() => {
-      setError('Microphone permission needed. Allow mic access in Safari settings.');
-    });
   }, []);
 
+  // Show play button instead of auto-speaking (bypasses autoplay blocks)
   const speak = useCallback((text: string) => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = 1.0;
-      utter.pitch = 1.0;
-      utter.lang = 'en-US';
-      synthRef.current.speak(utter);
-    }
+    setPendingReply(text);
+    setShowPlayButton(true);
   }, []);
+
+  // User taps "Hear response" — triggered by direct user gesture, TTS works
+  const playReply = useCallback(() => {
+    if (!pendingReply || !synthRef.current) return;
+    setShowPlayButton(false);
+    synthRef.current.cancel();
+    const utter = new SpeechSynthesisUtterance(pendingReply);
+    utter.rate = 1.0;
+    utter.pitch = 1.0;
+    utter.lang = 'en-US';
+    synthRef.current.speak(utter);
+  }, [pendingReply]);
 
   const getAIResponse = useCallback(async (transcript: string) => {
     setProcessing(true);
@@ -95,7 +94,6 @@ export default function VoiceChatPage() {
     recognition.onend = () => setRecording(false);
 
     recognitionRef.current = recognition;
-    // Small delay to let Safari's audio engine settle
     setTimeout(() => {
       try { recognition.start(); setRecording(true); } catch {
         setError('Could not start. Tap mic again.');
@@ -152,7 +150,7 @@ export default function VoiceChatPage() {
           <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', marginTop: '40%', fontSize: 14 }}>
             Tap the mic button and speak<br />
             <span style={{ fontSize: 12, marginTop: 4, display: 'block', color: 'rgba(255,255,255,0.2)' }}>
-              Powered by Z.AI (GLM 5.2) &middot; Free &amp; fast
+              Powered by Z.AI (GLM 5.2)
             </span>
           </div>
         )}
@@ -168,6 +166,24 @@ export default function VoiceChatPage() {
           </div>
         ))}
         {error && <div style={{ textAlign: 'center', color: '#f87171', fontSize: 13, padding: 8 }}>{error}</div>}
+        {showPlayButton && pendingReply && (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 8 }}>
+            <button
+              onClick={playReply}
+              style={{
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                border: 'none', borderRadius: 20, padding: '10px 24px',
+                color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <polygon points="5,3 19,12 5,21" />
+              </svg>
+              Hear response
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Mic Button */}
