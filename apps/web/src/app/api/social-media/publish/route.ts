@@ -5,6 +5,16 @@
  */
 import { NextResponse } from 'next/server';
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: CORS });
+}
+
 const META_TOKEN = process.env.META_USER_TOKEN || '';
 
 interface PublishResult {
@@ -113,7 +123,7 @@ export async function POST(req: Request) {
     const { topic, platforms, pageId, customText, customImageUrl } = await req.json();
 
     if (!topic && !customText) {
-      return NextResponse.json({ error: 'Provide topic or customText' }, { status: 400 });
+      return NextResponse.json({ error: 'Provide topic or customText' }, { status: 400, headers: CORS });
     }
 
     // Generate content
@@ -166,11 +176,13 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ success: true, content: { text, imageUrl, imagePrompt }, results });
+    return NextResponse.json({
+      success: true, content: { text, imageUrl, imagePrompt }, results,
+    }, { headers: CORS });
 
   } catch (err: any) {
     console.error('[SocialMedia] Error:', err.message);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500, headers: CORS });
   }
 }
 
@@ -193,8 +205,8 @@ export async function GET() {
         igUserId: igData?.instagram_business_account?.id || '',
       });
     }
-    return NextResponse.json({ pages: result });
+    return NextResponse.json({ pages: result }, { headers: CORS });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500, headers: CORS });
   }
 }
