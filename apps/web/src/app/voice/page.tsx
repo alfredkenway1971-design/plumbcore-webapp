@@ -9,6 +9,7 @@ export default function VoiceChatPage() {
   const [error, setError] = useState('');
   const [inAppBrowser, setInAppBrowser] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(false);
+  const [pendingReply, setPendingReply] = useState('');
   const [pendingAudio, setPendingAudio] = useState('');
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
