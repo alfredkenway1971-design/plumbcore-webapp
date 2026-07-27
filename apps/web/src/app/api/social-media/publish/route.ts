@@ -24,9 +24,24 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.
 const SMTP_USER = 'alfredkenway1971@gmail.com';
 const SMTP_PASS = 'uwqgtibtlwleibwu';
 
-// Simple SMTP sender via Gmail
+// ── Telegram Notification ──
+const TG_TOKEN=*** || '';
+const TG_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '8159594758';
+
+async function sendTelegram(message: string): Promise<void> {
+  if (!TG_TOKEN) return;
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: parseInt(TG_CHAT_ID), text: message, parse_mode: 'HTML' }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch {}
+}
+
+// ── Simple SMTP sender via Gmail ──
 async function sendSmtp(to: string, subject: string, html: string): Promise<void> {
-  return new Promise((resolve, reject) => {
     const socket = net.createConnection(465, 'smtp.gmail.com', () => {
       socket.write(`EHLO factory\r\n`);
     });
@@ -271,6 +286,12 @@ export async function POST(req: Request) {
           results.push({ platform, success: false, error: 'Unknown platform' });
       }
     }
+
+    // Send Telegram notification
+    const successCount = results.filter(r => r.success).length;
+    const failCount = results.filter(r => !r.success).length;
+    const msg = `📤 <b>Post Published</b>\n${text.substring(0,100)}${text.length>100?'...':''}\n\n✅ ${successCount} success · ❌ ${failCount} failed\nPlatforms: ${(platforms||['facebook']).join(', ')}`;
+    sendTelegram(msg).catch(()=>{});
 
     return NextResponse.json({
       success: true, content: { text, imageUrl, imagePrompt }, results,
