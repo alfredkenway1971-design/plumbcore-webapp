@@ -3,303 +3,206 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 export default function VoiceChatPage() {
-  const [listening, setListening] = useState(false);
+  const [recording, setRecording] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [transcript, setTranscript] = useState('');
-  const [response, setResponse] = useState('');
   const [messages, setMessages] = useState<{role: 'user'|'assistant'; text: string}[]>([]);
   const [error, setError] = useState('');
   const [inAppBrowser, setInAppBrowser] = useState(false);
-  const recognitionRef = useRef<any>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const chunks = useRef<Blob[]>([]);
+  const audioContext = useRef<AudioContext | null>(null);
   const synthRef = useRef(typeof window !== 'undefined' ? window.speechSynthesis : null);
 
   // Detect in-app browser
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const ua = navigator.userAgent.toLowerCase();
-    const isWhatsApp = ua.includes('whatsapp');
-    const isFB = ua.includes('fb_iab') || ua.includes('fban') || ua.includes('fbav');
-    const isInstagram = ua.includes('instagram');
-    const isInApp = isWhatsApp || isFB || isInstagram;
-    setInAppBrowser(isInApp);
+    if (ua.includes('whatsapp') || ua.includes('fb_iab') || ua.includes('instagram')) {
+      setInAppBrowser(true);
+    }
   }, []);
 
+  // In-app browser overlay
   if (inAppBrowser) {
     return (
       <div style={{
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100dvh',
-        maxWidth: 400,
-        margin: '0 auto',
-        background: '#1a1a2e',
-        color: '#fff',
-        padding: 32,
-        textAlign: 'center',
-        gap: 24,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        height: '100dvh', maxWidth: 400, margin: '0 auto', background: '#1a1a2e', color: '#fff',
+        padding: 32, textAlign: 'center', gap: 24,
       }}>
-        <div style={{
-          width: 64,
-          height: 64,
-          borderRadius: 16,
-          background: 'linear-gradient(135deg, #667eea, #764ba2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 28,
-          fontWeight: 700,
-        }}>A</div>
-        <h1 style={{ fontSize: 20, fontWeight: 600, margin: 0, lineHeight: 1.4 }}>
-          Open in Safari or Chrome
-        </h1>
+        <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700 }}>A</div>
+        <h1 style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Open in Safari</h1>
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6 }}>
-          Voice chat doesn't work inside WhatsApp's browser. Tap the menu button and select
-          {' "'}Open in Safari{'"'} or {' "'}Open in Chrome.{'"'}
+          Voice chat doesn&apos;t work inside WhatsApp. Tap the <strong>•••</strong> button below and select Open in Safari.
         </p>
-        <div style={{
-          background: 'rgba(255,255,255,0.08)',
-          borderRadius: 12,
-          padding: '16px 20px',
-          fontSize: 13,
-          color: 'rgba(255,255,255,0.7)',
-          lineHeight: 1.6,
-          textAlign: 'left',
-          width: '100%',
-        }}>
-          <strong style={{ color: '#fff' }}>Quick steps:</strong><br/>
-          1. Tap the <strong>•••</strong> menu button below<br/>
-          2. Tap {'"'}Open in Safari{'"'}<br/>
-          3. The page will reload and voice will work
-        </div>
-        <a href="https://plumbcore-ai.vercel.app/voice"
-           style={{
-             display: 'inline-block',
-             padding: '14px 32px',
-             borderRadius: 12,
-             background: 'linear-gradient(135deg, #667eea, #764ba2)',
-             color: '#fff',
-             textDecoration: 'none',
-             fontWeight: 600,
-             fontSize: 15,
-           }}>
-          Open in Browser
-        </a>
+        <a href="https://plumbcore-ai.vercel.app/voice" style={{ display: 'inline-block', padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff', textDecoration: 'none', fontWeight: 600, fontSize: 15 }}>Open in Browser</a>
       </div>
     );
   }
 
-  const startListening = useCallback(() => {
+  // ── Record Audio ──
+
+  const startRecording = useCallback(async () => {
     try {
       setError('');
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        setError('Speech recognition not supported in this browser. Try Chrome or Safari.');
-        return;
-      }
+      chunks.current = [];
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
-
-      recognition.onresult = (event: any) => {
-        const text = event.results[0][0].transcript;
-        setTranscript(text);
-        getAIResponse(text);
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.current.push(e.data);
       };
 
-      recognition.onerror = (event: any) => {
-        setError(`Speech error: ${event.error}. Try again.`);
-        setListening(false);
+      recorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(chunks.current, { type: 'audio/webm' });
+        await processAudio(blob);
       };
 
-      recognition.onend = () => {
-        setListening(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-      setListening(true);
-    } catch (err: any) {
-      setError('Could not start speech recognition. Allow mic access.');
+      mediaRecorder.current = recorder;
+      recorder.start();
+      setRecording(true);
+    } catch {
+      setError('Microphone access denied. Go to Settings > Safari > toggle mic permission.');
     }
   }, []);
 
-  const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
+  const stopRecording = useCallback(() => {
+    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+      mediaRecorder.current.stop();
     }
-    setListening(false);
+    setRecording(false);
   }, []);
 
-  const getAIResponse = async (text: string) => {
+  // ── Process Audio ──
+
+  const processAudio = async (blob: Blob) => {
     setProcessing(true);
-    setError('');
 
     try {
-      const res = await fetch('/api/voice-chat', {
+      // Step 1: Send audio to VPS Whisper for transcription
+      const form = new FormData();
+      form.append('file', blob, 'recording.webm');
+
+      const whisperRes = await fetch('http://144.91.106.188:8082/inference', {
+        method: 'POST',
+        headers: { 'x-api-key': 'whisper_key2026' },
+        body: form,
+        signal: AbortSignal.timeout(30000),
+      });
+
+      if (!whisperRes.ok) {
+        throw new Error(`Whisper error: ${whisperRes.status}`);
+      }
+
+      const whisperData = await whisperRes.json();
+      const text = whisperData.text || whisperData.transcription || '';
+
+      if (!text.trim()) {
+        throw new Error('No speech detected');
+      }
+
+      // Step 2: Send transcribed text to AI for response
+      const aiRes = await fetch('/api/voice-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),
       });
 
-      const data = await res.json();
+      const aiData = await aiRes.json();
 
-      if (!res.ok || !data.success) {
-        setError(data.error || 'Failed to get response');
-        setProcessing(false);
-        return;
+      if (!aiRes.ok || !aiData.success) {
+        throw new Error(aiData.error || 'AI failed');
       }
 
-      const reply = data.response;
-      setResponse(reply);
+      const reply = aiData.response;
+
       setMessages(prev => [
         ...prev,
         { role: 'user', text },
         { role: 'assistant', text: reply },
       ]);
 
-      // Speak the response
+      // Step 3: Speak the response using browser TTS
       if (synthRef.current) {
         synthRef.current.cancel();
-        const utterance = new SpeechSynthesisUtterance(reply);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        utterance.lang = 'en-US';
-        synthRef.current.speak(utterance);
+        const utter = new SpeechSynthesisUtterance(reply);
+        utter.rate = 1.0;
+        utter.pitch = 1.0;
+        utter.lang = 'en-US';
+        synthRef.current.speak(utter);
       }
+
     } catch (err: any) {
-      setError(err.message || 'Network error');
+      setError(err.message || 'Something went wrong. Try again.');
     }
 
     setProcessing(false);
   };
 
+  // ── UI ──
+
   return (
     <div style={{
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100dvh',
-      maxWidth: 480,
-      margin: '0 auto',
-      background: '#1a1a2e',
-      color: '#fff',
+      display: 'flex', flexDirection: 'column', height: '100dvh', maxWidth: 480,
+      margin: '0 auto', background: '#1a1a2e', color: '#fff',
     }}>
       {/* Header */}
-      <div style={{
-        padding: '16px 20px',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-      }}>
-        <div style={{
-          width: 36,
-          height: 36,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #667eea, #764ba2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 16,
-          fontWeight: 700,
-        }}>
-          A
-        </div>
+      <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700 }}>A</div>
         <div>
           <div style={{ fontWeight: 600, fontSize: 15 }}>Alfred</div>
-          <div style={{ fontSize: 12, color: processing ? '#fbbf24' : '#34d399' }}>
-            {processing ? 'thinking...' : 'online'}
-          </div>
+          <div style={{ fontSize: 12, color: processing ? '#fbbf24' : '#34d399' }}>{processing ? 'thinking...' : 'online'}</div>
         </div>
       </div>
 
       {/* Messages */}
-      <div style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-      }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages.length === 0 && (
-          <div style={{
-            textAlign: 'center',
-            color: 'rgba(255,255,255,0.3)',
-            marginTop: '40%',
-            fontSize: 14,
-          }}>
-            Tap the mic button and speak<br />
-            <span style={{ fontSize: 12, marginTop: 4, display: 'block' }}>
-              I'll hear you and respond with voice
-            </span>
+          <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', marginTop: '40%', fontSize: 14 }}>
+            Hold the mic button and speak<br />
+            <span style={{ fontSize: 12, marginTop: 4, display: 'block' }}>I&apos;ll respond with voice</span>
           </div>
         )}
         {messages.map((msg, i) => (
           <div key={i} style={{
             alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-            maxWidth: '80%',
-            padding: '10px 14px',
+            maxWidth: '80%', padding: '10px 14px',
             borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
             background: msg.role === 'user' ? '#667eea' : 'rgba(255,255,255,0.1)',
-            fontSize: 14,
-            lineHeight: 1.5,
+            fontSize: 14, lineHeight: 1.5,
           }}>
             {msg.text}
           </div>
         ))}
-        {error && (
-          <div style={{
-            textAlign: 'center',
-            color: '#f87171',
-            fontSize: 13,
-            padding: 8,
-          }}>
-            {error}
-          </div>
-        )}
+        {error && <div style={{ textAlign: 'center', color: '#f87171', fontSize: 13, padding: 8 }}>{error}</div>}
       </div>
 
       {/* Mic Button */}
-      <div style={{
-        padding: '24px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 16,
-      }}>
+      <div style={{ padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
         <button
-          onMouseDown={startListening}
-          onMouseUp={stopListening}
-          onTouchStart={startListening}
-          onTouchEnd={stopListening}
-          onMouseLeave={stopListening}
+          onMouseDown={startRecording}
+          onMouseUp={stopRecording}
+          onTouchStart={startRecording}
+          onTouchEnd={stopRecording}
+          onMouseLeave={stopRecording}
           style={{
-            width: 72,
-            height: 72,
-            borderRadius: '50%',
-            border: 'none',
-            cursor: listening || processing ? 'pointer' : 'pointer',
-            background: listening
+            width: 72, height: 72, borderRadius: '50%', border: 'none', cursor: 'pointer',
+            background: recording
               ? 'linear-gradient(135deg, #ef4444, #dc2626)'
               : processing
                 ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
                 : 'linear-gradient(135deg, #667eea, #764ba2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: listening
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: recording
               ? '0 0 40px rgba(239,68,68,0.5)'
               : '0 4px 20px rgba(102,126,234,0.4)',
             transition: 'all 0.2s',
-            transform: listening ? 'scale(1.1)' : 'scale(1)',
+            transform: recording ? 'scale(1.1)' : 'scale(1)',
             pointerEvents: processing ? 'none' : 'auto',
-            animation: listening ? 'pulse 1s infinite' : 'none',
+            animation: recording ? 'pulse 1s infinite' : 'none',
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -311,21 +214,11 @@ export default function VoiceChatPage() {
         </button>
       </div>
 
-      <div style={{
-        textAlign: 'center',
-        fontSize: 11,
-        color: 'rgba(255,255,255,0.3)',
-        paddingBottom: 16,
-      }}>
-        {listening ? 'Tap again or speak' : processing ? 'Thinking...' : 'Tap to talk'}
+      <div style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.3)', paddingBottom: 16 }}>
+        {recording ? 'Release to send' : processing ? 'Processing...' : 'Hold to talk'}
       </div>
 
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); }
-          50% { box-shadow: 0 0 60px rgba(239,68,68,0.7); }
-        }
-      `}</style>
+      <style>{`@keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 60px rgba(239,68,68,0.7); } }`}</style>
     </div>
   );
 }

@@ -1,9 +1,8 @@
 /**
  * POST /api/voice-chat
  *
- * Receives transcribed text from the browser's SpeechRecognition API,
- * sends it to the AI, and returns a response.
- * TTS is handled client-side via browser SpeechSynthesis.
+ * Receives transcribed text from the voice page, sends to AI, returns response.
+ * TTS is handled client-side.
  */
 import { NextResponse } from 'next/server';
 
@@ -15,22 +14,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
-    // Get AI response via OpenRouter (DeepSeek)
+    // Use Z.AI free model (or DeepSeek as fallback via OpenRouter)
     let responseText = "I heard you. I'm having trouble connecting right now.";
     
+    // Try Z.AI first (free model)
     try {
-      const aiRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      const aiRes = await fetch('https://api.z.ai/api/paas/v4/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
+          'Authorization': `Bearer ${process.env.ZAI_API_KEY || ''}`,
         },
         body: JSON.stringify({
-          model: 'deepseek-chat',
+          model: 'glm-4.7-flash',
           messages: [
             {
               role: 'system',
-              content: 'You are Alfred, a helpful voice assistant for the user. Keep responses very brief — 1-3 sentences max. Natural, conversational tone. English only.',
+              content: 'You are Alfred, a helpful voice assistant. Keep responses very brief — 1-3 sentences max. Natural, conversational tone. English only.',
             },
             { role: 'user', content: text },
           ],
@@ -42,11 +42,31 @@ export async function POST(req: Request) {
       if (aiRes.ok) {
         const result = await aiRes.json();
         responseText = result.choices?.[0]?.message?.content || responseText;
-      } else {
-        console.error('[VoiceChat] AI error:', await aiRes.text().catch(() => ''));
       }
-    } catch (err) {
-      console.error('[VoiceChat] AI fetch failed:', err);
+    } catch {
+      console.error('[VoiceChat] Z.AI failed, trying fallback');
+      // Fallback to OpenRouter
+      try {
+        const fallbackRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
+          },
+          body: JSON.stringify({
+            model: 'deepseek/deepseek-chat',
+            messages: [
+              { role: 'system', content: 'You are Alfred, a helpful voice assistant. Keep responses very brief. English only.' },
+              { role: 'user', content: text },
+            ],
+            max_tokens: 200,
+          }),
+        });
+        if (fallbackRes.ok) {
+          const result = await fallbackRes.json();
+          responseText = result.choices?.[0]?.message?.content || responseText;
+        }
+      } catch {}
     }
 
     return NextResponse.json({
