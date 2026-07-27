@@ -26,6 +26,12 @@ interface PublishResult {
 
 // ── Page Token Helper ──
 async function getPageToken(pageId: string): Promise<string | null> {
+  // Try page-level token first (non-expiring)
+  const pageTokenEnv = process.env.META_PAGE_TOKEN || '';
+  if (pageTokenEnv && pageId === '1341052299081486') {
+    return pageTokenEnv;
+  }
+  // Fallback to user token
   try {
     const res = await fetch(
       `https://graph.facebook.com/v25.0/${pageId}?fields=access_token&access_token=${META_TOKEN}`
