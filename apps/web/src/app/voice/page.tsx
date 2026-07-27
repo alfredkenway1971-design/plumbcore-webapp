@@ -186,45 +186,66 @@ export default function VoiceChatPage() {
         )}
       </div>
 
-      {/* Mic Button */}
+      {/* Mic / Play Button */}
       <div style={{ padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
-        <button
-          onTouchStart={(e) => { e.preventDefault(); startListening(); }}
-          onTouchEnd={(e) => { e.preventDefault(); stopListening(); }}
-          onMouseDown={startListening}
-          onMouseUp={stopListening}
-          onMouseLeave={stopListening}
-          style={{
-            width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
-            background: recording
-              ? 'linear-gradient(135deg, #ef4444, #dc2626)'
-              : processing
-                ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
-                : 'linear-gradient(135deg, #667eea, #764ba2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: recording
-              ? '0 0 50px rgba(239,68,68,0.6)'
-              : '0 4px 24px rgba(102,126,234,0.4)',
-            transition: 'all 0.2s',
-            transform: recording ? 'scale(1.15)' : 'scale(1)',
-            pointerEvents: processing ? 'none' : 'auto',
-            animation: recording ? 'pulse 1s infinite' : 'none',
-          }}
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
-        </button>
+        {showPlayButton ? (
+          <button
+            onClick={playReply}
+            style={{
+              width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
+              background: 'linear-gradient(135deg, #10B981, #059669)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 40px rgba(16,185,129,0.4)',
+              transition: 'all 0.2s',
+              animation: 'pulse-green 1.5s infinite',
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+              <polygon points="6,3 20,12 6,21" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            onTouchStart={(e) => { e.preventDefault(); startListening(); }}
+            onTouchEnd={(e) => { e.preventDefault(); stopListening(); }}
+            onMouseDown={startListening}
+            onMouseUp={stopListening}
+            onMouseLeave={stopListening}
+            style={{
+              width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
+              background: recording
+                ? 'linear-gradient(135deg, #ef4444, #dc2626)'
+                : processing
+                  ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
+                  : 'linear-gradient(135deg, #667eea, #764ba2)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: recording
+                ? '0 0 50px rgba(239,68,68,0.6)'
+                : '0 4px 24px rgba(102,126,234,0.4)',
+              transition: 'all 0.2s',
+              transform: recording ? 'scale(1.15)' : 'scale(1)',
+              pointerEvents: processing ? 'none' : 'auto',
+              animation: recording ? 'pulse 1s infinite' : 'none',
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </svg>
+          </button>
+        )}
       </div>
 
       <div style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.3)', paddingBottom: 16 }}>
-        {recording ? 'Listening — speak now' : processing ? 'Getting response...' : 'Tap mic to talk'}
+        {showPlayButton ? 'Tap to hear my response' : recording ? 'Listening — speak now' : processing ? 'Getting response...' : 'Tap mic to talk'}
       </div>
 
-      <style>{`@keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 70px rgba(239,68,68,0.8); } }`}</style>
+      <style>{`
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 70px rgba(239,68,68,0.8); } }
+        @keyframes pulse-green { 0%,100% { box-shadow: 0 0 20px rgba(16,185,129,0.3); } 50% { box-shadow: 0 0 70px rgba(16,185,129,0.7); } }
+      `}</style>
     </div>
   );
 }
