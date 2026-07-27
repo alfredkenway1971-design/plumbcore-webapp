@@ -9,8 +9,87 @@ export default function VoiceChatPage() {
   const [response, setResponse] = useState('');
   const [messages, setMessages] = useState<{role: 'user'|'assistant'; text: string}[]>([]);
   const [error, setError] = useState('');
+  const [inAppBrowser, setInAppBrowser] = useState(false);
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef(typeof window !== 'undefined' ? window.speechSynthesis : null);
+
+  // Detect in-app browser
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const ua = navigator.userAgent.toLowerCase();
+    const isWhatsApp = ua.includes('whatsapp');
+    const isFB = ua.includes('fb_iab') || ua.includes('fban') || ua.includes('fbav');
+    const isInstagram = ua.includes('instagram');
+    const isInApp = isWhatsApp || isFB || isInstagram;
+    setInAppBrowser(isInApp);
+  }, []);
+
+  if (inAppBrowser) {
+    return (
+      <div style={{
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100dvh',
+        maxWidth: 400,
+        margin: '0 auto',
+        background: '#1a1a2e',
+        color: '#fff',
+        padding: 32,
+        textAlign: 'center',
+        gap: 24,
+      }}>
+        <div style={{
+          width: 64,
+          height: 64,
+          borderRadius: 16,
+          background: 'linear-gradient(135deg, #667eea, #764ba2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 28,
+          fontWeight: 700,
+        }}>A</div>
+        <h1 style={{ fontSize: 20, fontWeight: 600, margin: 0, lineHeight: 1.4 }}>
+          Open in Safari or Chrome
+        </h1>
+        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6 }}>
+          Voice chat doesn't work inside WhatsApp's browser. Tap the menu button and select
+          {' "'}Open in Safari{'"'} or {' "'}Open in Chrome.{'"'}
+        </p>
+        <div style={{
+          background: 'rgba(255,255,255,0.08)',
+          borderRadius: 12,
+          padding: '16px 20px',
+          fontSize: 13,
+          color: 'rgba(255,255,255,0.7)',
+          lineHeight: 1.6,
+          textAlign: 'left',
+          width: '100%',
+        }}>
+          <strong style={{ color: '#fff' }}>Quick steps:</strong><br/>
+          1. Tap the <strong>•••</strong> menu button below<br/>
+          2. Tap {'"'}Open in Safari{'"'}<br/>
+          3. The page will reload and voice will work
+        </div>
+        <a href="https://plumbcore-ai.vercel.app/voice"
+           style={{
+             display: 'inline-block',
+             padding: '14px 32px',
+             borderRadius: 12,
+             background: 'linear-gradient(135deg, #667eea, #764ba2)',
+             color: '#fff',
+             textDecoration: 'none',
+             fontWeight: 600,
+             fontSize: 15,
+           }}>
+          Open in Browser
+        </a>
+      </div>
+    );
+  }
 
   const startListening = useCallback(() => {
     try {
