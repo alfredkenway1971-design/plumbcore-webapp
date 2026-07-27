@@ -4,9 +4,6 @@
  * Facebook ✅ | Instagram 🚧 | LinkedIn 🚧 | Threads 🚧
  */
 import { NextResponse } from 'next/server';
-import { sendEmail } from '@/lib/email';
-import * as net from 'net';
-import * as tls from 'tls';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -18,11 +15,8 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: CORS });
 }
 
-const META_TOKEN=proces...OKEN || '';
-const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL || 'alfredkenway1971@gmail.com';
+const META_TOKEN=*** || '';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
-const SMTP_USER = 'alfredkenway1971@gmail.com';
-const SMTP_PASS = 'uwqgtibtlwleibwu';
 
 // ── Telegram Notification ──
 const TG_TOKEN=*** || '';
@@ -197,15 +191,8 @@ export async function POST(req: Request) {
         </div>
       `;
 
-      await sendEmail({
-        to: APPROVAL_EMAIL,
-        subject: '📝 Social Media Post — Approval Needed',
-        html,
-        text: `Approve: ${approveUrl}\n\nDecline: ${declineUrl}\n\n---\n\n${text}`,
-      }).catch(async () => {
-        // Fallback: send SMTP directly via Gmail
-        await sendSmtp(APPROVAL_EMAIL, '📝 Social Media Post — Approval Needed', html).catch(() => {});
-      });
+      // Send approval request via Telegram
+      await sendTelegram(`📝 <b>Post Approval Needed</b>\n\n${text.substring(0,200)}${text.length>200?'...':''}\n\n✅ <a href="${approveUrl}">Approve &amp; Publish</a>\n✋ <a href="${declineUrl}">Decline</a>`).catch(() => {});
 
       return NextResponse.json({
         success: true,
