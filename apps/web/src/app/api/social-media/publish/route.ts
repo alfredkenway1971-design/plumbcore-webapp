@@ -5,7 +5,8 @@
  */
 import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
-import crypto from 'crypto';
+import * as net from 'net';
+import * as tls from 'tls';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -18,8 +19,48 @@ export async function OPTIONS() {
 }
 
 const META_TOKEN=proces...OKEN || '';
-const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL || 'amer.niyonzima@gmail.com';
+const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL || 'alfredkenway1971@gmail.com';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
+const SMTP_USER = 'alfredkenway1971@gmail.com';
+const SMTP_PASS = 'uwqgtibtlwleibwu';
+
+// Simple SMTP sender via Gmail
+async function sendSmtp(to: string, subject: string, html: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const socket = net.createConnection(465, 'smtp.gmail.com', () => {
+      socket.write(`EHLO factory\r\n`);
+    });
+    let buf = '';
+    socket.on('data', (data) => {
+      buf += data.toString();
+      const lines = buf.split('\r\n');
+      const lastCode = lines[lines.length-2]?.substring(0,3) || '';
+      
+      if (lastCode === '220') socket.write(`EHLO factory\r\n`);
+      else if (lastCode === '250') {
+        if (buf.includes('STARTTLS')) socket.write(`STARTTLS\r\n`);
+        else socket.write(`AUTH LOGIN\r\n`);
+      }
+      else if (lastCode === '334') {
+        if (buf.includes('334 VXNlcm5hbWU6')) socket.write(Buffer.from(SMTP_USER).toString('base64') + '\r\n');
+        else if (buf.includes('334 UGFzc3dvcmQ6')) socket.write(Buffer.from(SMTP_PASS).toString('base64') + '\r\n');
+        else if (buf.includes('235')) socket.write(`MAIL FROM:<${SMTP_USER}>\r\n`);
+      }
+      else if (lastCode === '235') socket.write(`MAIL FROM:<${SMTP_USER}>\r\n`);
+      else if (buf.includes('250 2.1.0 OK')) {
+        if (!buf.includes('RCPT')) socket.write(`RCPT TO:<${to}>\r\n`);
+      }
+      else if (buf.includes('250 2.1.5')) socket.write(`DATA\r\n`);
+      else if (lastCode === '354') {
+        socket.write(`From: Factory <${SMTP_USER}>\r\nTo: ${to}\r\nSubject: ${subject}\r\nContent-Type: text/html; charset=UTF-8\r\nMIME-Version: 1.0\r\n\r\n${html}\r\n.\r\n`);
+      }
+      else if (buf.includes('250 2.0.0 OK')) { socket.end(); resolve(); }
+      else if (lastCode === '500' || lastCode === '501' || lastCode === '503') { socket.destroy(); reject(new Error('SMTP error: ' + lastCode)); }
+    });
+    socket.on('error', reject);
+    socket.setTimeout(15000, () => { socket.destroy(); reject(new Error('SMTP timeout')); });
+  });
+}
 
 interface PublishResult {
   platform: string;
@@ -180,6 +221,9 @@ export async function POST(req: Request) {
         subject: '📝 Social Media Post — Approval Needed',
         html,
         text: `Approve: ${approveUrl}\n\nDecline: ${declineUrl}\n\n---\n\n${text}`,
+      }).catch(async () => {
+        // Fallback: send SMTP directly via Gmail
+        await sendSmtp(APPROVAL_EMAIL, '📝 Social Media Post — Approval Needed', html).catch(() => {});
       });
 
       return NextResponse.json({
