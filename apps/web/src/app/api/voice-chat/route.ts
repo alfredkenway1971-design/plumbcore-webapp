@@ -14,10 +14,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
-    // Use Z.AI free model (or DeepSeek as fallback via OpenRouter)
+    // Get AI response from Z.AI, then generate natural TTS audio via OmniVoice on VPS
     let responseText = "I heard you. I'm having trouble connecting right now.";
+    let audioBase64 = '';
     
-    // Try Z.AI first (free model)
+    // Step 1: Get AI response
     try {
       const aiRes = await fetch('https://api.z.ai/api/paas/v4/chat/completions', {
         method: 'POST',
@@ -44,35 +45,45 @@ export async function POST(req: Request) {
         responseText = result.choices?.[0]?.message?.content || responseText;
       }
     } catch {
-      console.error('[VoiceChat] Z.AI failed, trying fallback');
-      // Fallback to OpenRouter
-      try {
-        const fallbackRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
-          },
-          body: JSON.stringify({
-            model: 'deepseek/deepseek-chat',
-            messages: [
-              { role: 'system', content: 'You are Alfred, a helpful voice assistant. Keep responses very brief. English only.' },
-              { role: 'user', content: text },
-            ],
-            max_tokens: 200,
-          }),
-        });
-        if (fallbackRes.ok) {
-          const result = await fallbackRes.json();
-          responseText = result.choices?.[0]?.message?.content || responseText;
+      console.error('[VoiceChat] Z.AI failed');
+    }
+
+    // Step 2: Generate natural TTS via OmniVoice on VPS (server-to-server, no mixed content issue)
+    try {
+      const ttsRes = await fetch('http://144.91.106.188:8083/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: responseText,
+          voice: 'en-US-Neural2-D',
+          speed: 1.0,
+        }),
+        signal: AbortSignal.timeout(15000),
+      });
+
+      if (ttsRes.ok) {
+        const ttsResult = await ttsRes.json();
+        // OmniVoice may return the audio as a URL or base64 or direct binary
+        if (ttsResult.audio_url) {
+          // Fetch the audio and return as base64
+          const audioResp = await fetch(ttsResult.audio_url, { signal: AbortSignal.timeout(10000) });
+          if (audioResp.ok) {
+            const audioBuffer = await audioResp.arrayBuffer();
+            audioBase64 = Buffer.from(audioBuffer).toString('base64');
+          }
+        } else if (ttsResult.audio_base64) {
+          audioBase64 = ttsResult.audio_base64;
         }
-      } catch {}
+      }
+    } catch {
+      console.error('[VoiceChat] OmniVoice failed');
     }
 
     return NextResponse.json({
       success: true,
       transcript: text,
       response: responseText,
+      audio: audioBase64,
     });
 
   } catch (err: any) {

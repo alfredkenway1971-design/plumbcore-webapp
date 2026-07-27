@@ -8,12 +8,12 @@ export default function VoiceChatPage() {
   const [messages, setMessages] = useState<{role: 'user'|'assistant'; text: string}[]>([]);
   const [error, setError] = useState('');
   const [inAppBrowser, setInAppBrowser] = useState(false);
-  const [pendingReply, setPendingReply] = useState('');
   const [showPlayButton, setShowPlayButton] = useState(false);
+  const [pendingAudio, setPendingAudio] = useState('');
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Detect in-app browser
   useEffect(() => {
     if (typeof window === 'undefined') return;
     synthRef.current = window.speechSynthesis;
@@ -23,23 +23,24 @@ export default function VoiceChatPage() {
     }
   }, []);
 
-  // Show play button instead of auto-speaking (bypasses autoplay blocks)
-  const speak = useCallback((text: string) => {
-    setPendingReply(text);
-    setShowPlayButton(true);
-  }, []);
-
-  // User taps "Hear response" — triggered by direct user gesture, TTS works
+  // Play OmniVoice audio (natural voice) or fallback to browser TTS
   const playReply = useCallback(() => {
-    if (!pendingReply || !synthRef.current) return;
     setShowPlayButton(false);
-    synthRef.current.cancel();
-    const utter = new SpeechSynthesisUtterance(pendingReply);
-    utter.rate = 1.0;
-    utter.pitch = 1.0;
-    utter.lang = 'en-US';
-    synthRef.current.speak(utter);
-  }, [pendingReply]);
+
+    // Try OmniVoice audio first
+    if (pendingAudio && audioRef.current) {
+      try {
+        const binary = atob(pendingAudio);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const blob = new Blob([bytes], { type: 'audio/mpeg' });
+        const url = URL.createObjectURL(blob);
+        audioRef.current.src = url;
+        audioRef.current.play();
+        return;
+      } catch {}
+    }
+  }, [pendingAudio]);
 
   const getAIResponse = useCallback(async (transcript: string) => {
     setProcessing(true);
@@ -54,61 +55,46 @@ export default function VoiceChatPage() {
 
       const reply = data.response;
       setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
-      speak(reply);
+      setPendingAudio(data.audio || '');
+      setShowPlayButton(true);
     } catch (err: any) {
       setError(err.message);
     }
     setProcessing(false);
-  }, [speak]);
+  }, []);
 
   const startListening = useCallback(() => {
     setError('');
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setError('Speech recognition not available on this browser. Try Chrome.');
-      return;
-    }
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) { setError('Speech recognition not supported'); return; }
 
-    const recognition = new SpeechRecognition();
+    const recognition = new SR();
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.lang = 'en-US';
 
-    recognition.onresult = (event: any) => {
-      const text = event.results[0][0].transcript;
+    recognition.onresult = (e: any) => {
+      const text = e.results[0][0].transcript;
       setMessages(prev => [...prev, { role: 'user', text }]);
       getAIResponse(text);
     };
-
-    recognition.onerror = (event: any) => {
-      if (event.error === 'aborted') {
-        setError('Microphone busy. Tap the mic button and wait 1 second before speaking.');
-      } else if (event.error === 'not-allowed') {
-        setError('Microphone blocked. Go to Settings > Safari > toggle mic on.');
-      } else {
-        setError(`Error: ${event.error}. Tap mic again.`);
-      }
+    recognition.onerror = (e: any) => {
+      setError(e.error === 'aborted' ? 'Tap mic and wait 1 sec before speaking' : `Error: ${e.error}`);
       setRecording(false);
     };
-
     recognition.onend = () => setRecording(false);
 
     recognitionRef.current = recognition;
     setTimeout(() => {
-      try { recognition.start(); setRecording(true); } catch {
-        setError('Could not start. Tap mic again.');
-      }
+      try { recognition.start(); setRecording(true); } catch { setError('Could not start'); }
     }, 300);
   }, [getAIResponse]);
 
   const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch {}
-    }
+    if (recognitionRef.current) try { recognitionRef.current.stop(); } catch {}
     setRecording(false);
   }, []);
 
-  // In-app browser overlay
   if (inAppBrowser) {
     return (
       <div style={{
@@ -120,9 +106,8 @@ export default function VoiceChatPage() {
         <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700 }}>A</div>
         <h1 style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Open in Safari</h1>
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.6 }}>
-          Voice chat doesn&apos;t work inside WhatsApp. Tap the <strong>•••</strong> button below and select Open in Safari.
+          Voice chat doesn&apos;t work inside WhatsApp. Tap <strong>•••</strong> {'>'} Open in Safari.
         </p>
-        <a href="https://plumbcore-ai.vercel.app/voice" style={{ display: 'inline-block', padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff', textDecoration: 'none', fontWeight: 600, fontSize: 15 }}>Open in Browser</a>
       </div>
     );
   }
@@ -133,7 +118,6 @@ export default function VoiceChatPage() {
       display: 'flex', flexDirection: 'column', height: '100dvh', maxWidth: 480,
       margin: '0 auto', background: '#1a1a2e', color: '#fff',
     }}>
-      {/* Header */}
       <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700 }}>A</div>
         <div>
@@ -144,13 +128,12 @@ export default function VoiceChatPage() {
         </div>
       </div>
 
-      {/* Messages */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages.length === 0 && (
           <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', marginTop: '40%', fontSize: 14 }}>
             Tap the mic button and speak<br />
             <span style={{ fontSize: 12, marginTop: 4, display: 'block', color: 'rgba(255,255,255,0.2)' }}>
-              Powered by Z.AI (GLM 5.2)
+              Powered by Z.AI (GLM 5.2) + OmniVoice natural TTS
             </span>
           </div>
         )}
@@ -166,40 +149,19 @@ export default function VoiceChatPage() {
           </div>
         ))}
         {error && <div style={{ textAlign: 'center', color: '#f87171', fontSize: 13, padding: 8 }}>{error}</div>}
-        {showPlayButton && pendingReply && (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: 8 }}>
-            <button
-              onClick={playReply}
-              style={{
-                background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                border: 'none', borderRadius: 20, padding: '10px 24px',
-                color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                <polygon points="5,3 19,12 5,21" />
-              </svg>
-              Hear response
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* Mic / Play Button */}
+      <audio ref={audioRef} style={{ display: 'none' }} />
+
       <div style={{ padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
         {showPlayButton ? (
-          <button
-            onClick={playReply}
-            style={{
-              width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
-              background: 'linear-gradient(135deg, #10B981, #059669)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 40px rgba(16,185,129,0.4)',
-              transition: 'all 0.2s',
-              animation: 'pulse-green 1.5s infinite',
-            }}
-          >
+          <button onClick={playReply} style={{
+            width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
+            background: 'linear-gradient(135deg, #10B981, #059669)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 40px rgba(16,185,129,0.4)',
+            animation: 'pulse-green 1.5s infinite',
+          }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
               <polygon points="6,3 20,12 6,21" />
             </svg>
@@ -213,17 +175,13 @@ export default function VoiceChatPage() {
             onMouseLeave={stopListening}
             style={{
               width: 80, height: 80, borderRadius: '50%', border: 'none', cursor: 'pointer',
-              background: recording
-                ? 'linear-gradient(135deg, #ef4444, #dc2626)'
-                : processing
-                  ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
-                  : 'linear-gradient(135deg, #667eea, #764ba2)',
+              background: recording ? 'linear-gradient(135deg, #ef4444, #dc2626)'
+                : processing ? 'linear-gradient(135deg, #fbbf24, #f59e0b)'
+                : 'linear-gradient(135deg, #667eea, #764ba2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: recording
-                ? '0 0 50px rgba(239,68,68,0.6)'
-                : '0 4px 24px rgba(102,126,234,0.4)',
-              transition: 'all 0.2s',
+              boxShadow: recording ? '0 0 50px rgba(239,68,68,0.6)' : '0 4px 24px rgba(102,126,234,0.4)',
               transform: recording ? 'scale(1.15)' : 'scale(1)',
+              transition: 'all 0.2s',
               pointerEvents: processing ? 'none' : 'auto',
               animation: recording ? 'pulse 1s infinite' : 'none',
             }}
@@ -239,7 +197,7 @@ export default function VoiceChatPage() {
       </div>
 
       <div style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.3)', paddingBottom: 16 }}>
-        {showPlayButton ? 'Tap to hear my response' : recording ? 'Listening — speak now' : processing ? 'Getting response...' : 'Tap mic to talk'}
+        {showPlayButton ? 'Tap to hear natural voice response' : recording ? 'Listening — speak now' : processing ? 'Getting response...' : 'Tap mic to talk'}
       </div>
 
       <style>{`
