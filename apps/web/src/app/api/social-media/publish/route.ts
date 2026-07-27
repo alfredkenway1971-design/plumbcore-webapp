@@ -15,11 +15,11 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: CORS });
 }
 
-const META_TOKEN=*** || '';
+const META_TOKEN = process.env.META_USER_TOKEN || '';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
 
 // ── Telegram Notification ──
-const TG_TOKEN=*** || '';
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const TG_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '8159594758';
 
 async function sendTelegram(message: string): Promise<void> {
@@ -168,7 +168,7 @@ export async function POST(req: Request) {
     if (approval) {
       const token = Array.from({length:16},()=>Math.floor(Math.random()*16).toString(16)).join('');
       // Store pending approval
-      const { storePending } = await import('./approve/route');
+      const { storePending } = await import('../approve/route');
       storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
 
       const approveUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=approve`;
