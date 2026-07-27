@@ -23,7 +23,7 @@ export default function VoiceChatPage() {
     }
   }, []);
 
-  // Play OmniVoice audio (natural voice) or fallback to browser TTS
+  // Play OmniVoice audio (natural voice) or fallback to best browser voice
   const playReply = useCallback(() => {
     setShowPlayButton(false);
 
@@ -40,7 +40,21 @@ export default function VoiceChatPage() {
         return;
       } catch {}
     }
-  }, [pendingAudio]);
+
+    // Fallback: best browser voice (e.g. Samantha/Alex on iOS)
+    if (synthRef.current) {
+      synthRef.current.cancel();
+      // Get the best available English voice
+      const voices = synthRef.current.getVoices();
+      const preferred = voices.find(v => v.name.includes('Samantha') || v.name.includes('Alex') || v.name.includes('Premium'));
+      const utter = new SpeechSynthesisUtterance(pendingReply || '');
+      if (preferred) utter.voice = preferred;
+      utter.rate = 1.0;
+      utter.pitch = 1.0;
+      utter.lang = 'en-US';
+      synthRef.current.speak(utter);
+    }
+  }, [pendingAudio, pendingReply]);
 
   const getAIResponse = useCallback(async (transcript: string) => {
     setProcessing(true);

@@ -1,8 +1,7 @@
 /**
  * POST /api/voice-chat
  *
- * Receives transcribed text from the voice page, sends to AI, returns response.
- * TTS is handled client-side.
+ * Transcribed text in → AI response + optional OmniVoice audio out
  */
 import { NextResponse } from 'next/server';
 
@@ -14,20 +13,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
-    // Get AI response from Z.AI, then generate natural TTS audio via OmniVoice on VPS
     let responseText = "I heard you. I'm having trouble connecting right now.";
     let audioBase64 = '';
-    
-    // Step 1: Get AI response
+
+    // Step 1: Get AI response via OpenRouter
     try {
-      const aiRes = await fetch('https://api.z.ai/api/paas/v4/chat/completions', {
+      const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.ZAI_API_KEY || ''}`,
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
         },
         body: JSON.stringify({
-          model: 'glm-5.2',
+          model: 'deepseek/deepseek-chat',
           messages: [
             {
               role: 'system',
@@ -45,10 +43,10 @@ export async function POST(req: Request) {
         responseText = result.choices?.[0]?.message?.content || responseText;
       }
     } catch {
-      console.error('[VoiceChat] Z.AI failed');
+      console.error('[VoiceChat] OpenRouter failed');
     }
 
-    // Step 2: Generate natural TTS via OmniVoice on VPS (server-to-server, no mixed content issue)
+    // Step 2: Try OmniVoice TTS on VPS (may fail from Vercel, that's ok)
     try {
       const ttsRes = await fetch('http://144.91.106.188:8083/api/tts', {
         method: 'POST',
@@ -63,9 +61,7 @@ export async function POST(req: Request) {
 
       if (ttsRes.ok) {
         const ttsResult = await ttsRes.json();
-        // OmniVoice may return the audio as a URL or base64 or direct binary
         if (ttsResult.audio_url) {
-          // Fetch the audio and return as base64
           const audioResp = await fetch(ttsResult.audio_url, { signal: AbortSignal.timeout(10000) });
           if (audioResp.ok) {
             const audioBuffer = await audioResp.arrayBuffer();
@@ -76,7 +72,7 @@ export async function POST(req: Request) {
         }
       }
     } catch {
-      console.error('[VoiceChat] OmniVoice failed');
+      console.error('[VoiceChat] OmniVoice failed — using browser TTS fallback');
     }
 
     return NextResponse.json({
