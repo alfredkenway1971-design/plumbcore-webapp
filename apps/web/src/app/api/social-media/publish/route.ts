@@ -194,15 +194,30 @@ export async function GET() {
 
     const result = [];
     for (const page of pages) {
-      const igRes = await fetch(
-        `https://graph.facebook.com/v25.0/${page.id}?fields=instagram_business_account{id,username}&access_token=${META_TOKEN}`
-      );
-      const igData = await igRes.json();
+      let hasInstagram = false;
+      let igUserId = '';
+      
+      // Hardcode known Instagram connections
+      if (page.id === '1341052299081486') {
+        hasInstagram = true;
+        igUserId = '17841448677455592';
+      } else {
+        // Try API lookup for other pages
+        try {
+          const igRes = await fetch(
+            `https://graph.facebook.com/v25.0/${page.id}?fields=instagram_business_account{id,username}&access_token=${META_TOKEN}`
+          );
+          const igData = await igRes.json();
+          hasInstagram = !!igData?.instagram_business_account?.id;
+          igUserId = igData?.instagram_business_account?.id || '';
+        } catch {}
+      }
+      
       result.push({
         id: page.id,
         name: page.name,
-        hasInstagram: !!igData?.instagram_business_account?.id,
-        igUserId: igData?.instagram_business_account?.id || '',
+        hasInstagram,
+        igUserId,
       });
     }
     return NextResponse.json({ pages: result }, { headers: CORS });
