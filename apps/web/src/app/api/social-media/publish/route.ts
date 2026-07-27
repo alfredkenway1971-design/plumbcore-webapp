@@ -4,6 +4,8 @@
  * Facebook ✅ | Instagram 🚧 | LinkedIn 🚧 | Threads 🚧
  */
 import { NextResponse } from 'next/server';
+import { sendEmail } from '@/lib/email';
+import crypto from 'crypto';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -15,7 +17,9 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: CORS });
 }
 
-const META_TOKEN = process.env.META_USER_TOKEN || '';
+const META_TOKEN=proces...OKEN || '';
+const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL || 'amer.niyonzima@gmail.com';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
 
 interface PublishResult {
   platform: string;
@@ -126,7 +130,7 @@ async function publishInstagram(pageId: string, igUserId: string, text: string, 
 // ── Router Agent ──
 export async function POST(req: Request) {
   try {
-    const { topic, platforms, pageId, customText, customImageUrl } = await req.json();
+    const { topic, platforms, pageId, customText, customImageUrl, approval } = await req.json();
 
     if (!topic && !customText) {
       return NextResponse.json({ error: 'Provide topic or customText' }, { status: 400, headers: CORS });
@@ -143,6 +147,48 @@ export async function POST(req: Request) {
       imagePrompt = content.imagePrompt || topic;
     }
     if (!imageUrl) imageUrl = genImageUrl(imagePrompt || topic);
+
+    // ── Approval flow ──
+    if (approval) {
+      const token = Array.from({length:16},()=>Math.floor(Math.random()*16).toString(16)).join('');
+      // Store pending approval
+      const { storePending } = await import('./approve/route');
+      storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
+
+      const approveUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=approve`;
+      const declineUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=decline`;
+
+      const html = `
+        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px">
+          <h2 style="font-size:20px;margin:0 0 16px;color:#0c1222">📝 Post Approval Request</h2>
+          <div style="background:#f4f6f9;border-radius:8px;padding:16px;margin-bottom:16px;font-size:14px;line-height:1.6;color:#475569">
+            ${text.replace(/\n/g, '<br>')}
+          </div>
+          ${imageUrl ? `<img src="${imageUrl}" style="width:100%;max-height:300px;object-fit:cover;border-radius:8px;margin-bottom:16px" alt="Post image">` : ''}
+          <div style="margin-bottom:16px;font-size:12px;color:#94a3b8">
+            Platforms: ${(platforms || ['facebook']).join(', ')}
+          </div>
+          <div style="display:flex;gap:12px">
+            <a href="${approveUrl}" style="flex:1;display:block;padding:12px;border-radius:8px;background:#059669;color:#fff;text-decoration:none;font-weight:600;text-align:center;font-size:14px">✅ Approve &amp; Publish</a>
+            <a href="${declineUrl}" style="flex:1;display:block;padding:12px;border-radius:8px;background:#f4f6f9;color:#475569;text-decoration:none;font-weight:600;text-align:center;font-size:14px;border:1px solid #e2e8f0">✋ Decline</a>
+          </div>
+        </div>
+      `;
+
+      await sendEmail({
+        to: APPROVAL_EMAIL,
+        subject: '📝 Social Media Post — Approval Needed',
+        html,
+        text: `Approve: ${approveUrl}\n\nDecline: ${declineUrl}\n\n---\n\n${text}`,
+      });
+
+      return NextResponse.json({
+        success: true,
+        status: 'pending_approval',
+        content: { text, imageUrl, imagePrompt },
+        message: 'Approval email sent. Check your inbox.',
+      }, { headers: CORS });
+    }
 
     // Collect page info for Instagram
     let igUserId = '';
