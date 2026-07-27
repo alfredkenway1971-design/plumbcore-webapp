@@ -11,7 +11,7 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const YT_CLIENT_ID=*** || '';
+const YT_CLIENT_ID = process.env.YT_CLIENT_ID || '';
 const YT_CLIENT_SECRET = process.env.YT_CLIENT_SECRET || '';
 const YT_REFRESH_TOKEN = process.env.YT_REFRESH_TOKEN || '';
 
