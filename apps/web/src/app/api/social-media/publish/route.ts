@@ -235,6 +235,10 @@ export async function POST(req: Request) {
         case 'threads':
           results.push({ platform: 'threads', success: false, error: 'Threads API setup needed. Add "Access the Threads API" use case in Meta Developer Portal.' });
           break;
+        case 'youtube':
+          results.push({ platform: 'youtube', success: false,
+            error: 'YouTube Shorts requires Google API credentials. Go to console.cloud.google.com, enable YouTube Data API v3, create OAuth 2.0 credentials. Send me the Client ID + Secret.' });
+          break;
         default:
           results.push({ platform, success: false, error: 'Unknown platform' });
       }
