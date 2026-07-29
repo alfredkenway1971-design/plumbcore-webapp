@@ -10,6 +10,7 @@ import {
   ErrorState,
   Modal,
 } from '@/pkg/ui-components';
+import { useAuthStore } from '@/lib/store';
 import { teamMembers, jobs } from '@/lib/mock-data';
 
 /* ── Types ── */
@@ -157,34 +158,43 @@ export default function TeamPage() {
     setSelectedMember(member);
   };
 
-  const handleSendInvite = () => {
+  const handleSendInvite = async () => {
     if (!inviteForm.name.trim() || !inviteForm.email.trim()) return;
-    const newMember: TeamMemberData = {
-      id: `TEMP-${Date.now()}`,
-      name: inviteForm.name,
-      email: inviteForm.email,
-      phone: '',
-      role: inviteForm.role as TeamRole,
-      status: 'offline',
-      activeJobs: 0,
-      completedToday: 0,
-      rating: 0,
-      specialties: [],
-      joinedAt: new Date().toISOString().split('T')[0],
-    };
-    setMembers((prev) => [...prev, newMember]);
-    setInviteOpen(false);
-    setInviteForm({ name: '', email: '', role: 'tech' });
-
-    const subject = encodeURIComponent(`You've been invited to join the team`);
-    const body = encodeURIComponent(
-      `Hi ${inviteForm.name},\n\n` +
-      `You've been invited to join as a ${inviteForm.role.replace('-', ' ')}.\n\n` +
-      `Click the link below to accept:\n\n` +
-      `https://plumbcore-ai.vercel.app/signup\n\n` +
-      `Welcome aboard!`
-    );
-    window.open(`mailto:${inviteForm.email}?subject=${subject}&body=${body}`, '_blank');
+    
+    try {
+      const token = useAuthStore.getState().token;
+      const res = await fetch('/api/team/invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(inviteForm),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Invite failed');
+      
+      // Add to local state
+      const newMember: TeamMemberData = {
+        id: data.memberId || `TEMP-${Date.now()}`,
+        name: inviteForm.name,
+        email: inviteForm.email,
+        phone: '',
+        role: inviteForm.role as TeamRole,
+        status: 'offline',
+        activeJobs: 0,
+        completedToday: 0,
+        rating: 0,
+        specialties: [],
+        joinedAt: new Date().toISOString().split('T')[0],
+      };
+      setMembers((prev) => [...prev, newMember]);
+      setInviteOpen(false);
+      setInviteForm({ name: '', email: '', role: 'tech' });
+    } catch (err: any) {
+      console.error('Invite error:', err);
+      alert(err.message || 'Failed to send invite');
+    }
   };
 
   const handleEditMember = (member: TeamMemberData) => {
