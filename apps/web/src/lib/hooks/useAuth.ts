@@ -57,12 +57,22 @@ export function useCompany() {
 /* ── useUpdateCompany ── */
 export function useUpdateCompany() {
   const queryClient = useQueryClient();
-  const updateProfile = useAuthStore((s) => s.updateProfile);
 
   return useMutation({
-    mutationFn: async (_data: Partial<Company>) => {
-      // Mock update - replace with Supabase call later
-      await new Promise((r) => setTimeout(r, 200));
+    mutationFn: async (data: Partial<Company>) => {
+      const token = useAuthStore.getState().token;
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to save company');
+      }
       return { success: true };
     },
     onSuccess: () => {
@@ -74,12 +84,22 @@ export function useUpdateCompany() {
 /* ── useUpdateProfile ── */
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
-  const updateProfile = useAuthStore((s) => s.updateProfile);
 
   return useMutation({
     mutationFn: async (data: Partial<Profile>) => {
-      updateProfile(data);
-      await new Promise((r) => setTimeout(r, 200));
+      const token = useAuthStore.getState().token;
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to save profile');
+      }
       return { success: true };
     },
     onSuccess: () => {

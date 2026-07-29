@@ -267,6 +267,8 @@ function ProfileTab() {
     setSaved(false);
     try {
       await updateProfile({ full_name: fullName, avatar_url: avatarUrl || '' });
+      // Update Zustand store so UI reflects changes immediately
+      useAuthStore.getState().updateProfile({ full_name: fullName, avatar_url: avatarUrl || '' });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch {
