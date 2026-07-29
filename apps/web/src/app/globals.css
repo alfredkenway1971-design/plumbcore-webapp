@@ -76,6 +76,11 @@
   --color-app-border-light: #E3E9F4;
   --color-app-text-secondary: #4A5A74;
   --color-app-text-muted: #5B6B85;
+  --color-electric: #2F7CF6;
+  --color-steel: #5B6B85;
+  --color-steel-light: #94A3B8;
+  --color-white-subtle: #F8FAFC;
+  --color-whiteer: #FFFFFF;
 
   /* Radius */
   --radius-sm: 6px;

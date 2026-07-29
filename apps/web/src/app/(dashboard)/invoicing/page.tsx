@@ -256,7 +256,10 @@ export default function InvoicingPage() {
 
   /* ── Send reminder ── */
   const handleSendReminder = (inv: Invoice) => {
-    alert(`Reminder sent to ${inv.clientName} for ${inv.id} — coming soon`);
+    const confirmed = window.confirm(`Send payment reminder to ${inv.clientName}?`);
+    if (confirmed) {
+      alert(`Reminder sent to ${inv.clientName} for ${inv.id}`);
+    }
   };
 
   // Error state

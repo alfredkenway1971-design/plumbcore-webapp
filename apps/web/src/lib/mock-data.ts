@@ -203,6 +203,26 @@ export async function loadDataFromSupabase(companyId?: string) {
     if (dbInvoices && dbInvoices.length > 0) {
       hasRealData = true;
       data.invoices.length = 0;
+      
+      // Load line items for all invoices (avoid N+1)
+      const invoiceIds = dbInvoices.map((inv: any) => inv.id);
+      const { data: dbLineItems } = await supabase
+        .from('line_items')
+        .select('*')
+        .in('invoice_id', invoiceIds);
+      const itemsByInvoice: Record<string, any[]> = {};
+      if (dbLineItems) {
+        dbLineItems.forEach((item: any) => {
+          if (!itemsByInvoice[item.invoice_id]) itemsByInvoice[item.invoice_id] = [];
+          itemsByInvoice[item.invoice_id].push({
+            description: item.description || '',
+            quantity: item.quantity || 1,
+            unitPrice: item.unit_price || item.unitPrice || 0,
+            total: (item.quantity || 1) * (item.unit_price || item.unitPrice || 0),
+          });
+        });
+      }
+      
       dbInvoices.forEach((inv: any) => {
         const client = data.clients.find(c => c.id === inv.client_id);
         data.invoices.push({
@@ -210,7 +230,7 @@ export async function loadDataFromSupabase(companyId?: string) {
           jobId: inv.job_id || '', jobTitle: data.jobs.find(j => j.id === inv.job_id)?.title || '',
           status: inv.status as InvoiceStatus, amount: inv.total || 0, paidAmount: inv.amount_paid,
           dueDate: inv.due_date || '', issueDate: inv.issued_date || '', paidDate: inv.paid_at,
-          lineItems: [], notes: inv.notes
+          lineItems: itemsByInvoice[inv.id] || [], notes: inv.notes
         });
       });
     }

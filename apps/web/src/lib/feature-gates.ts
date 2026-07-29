@@ -164,17 +164,27 @@ export const PLAN_PRICING: Record<string, { label: string; price: number; priceL
 
 export const PLAN_ORDER = ['solo', 'pro', 'business', 'enterprise'] as const;
 
-/** Stripe price IDs for subscription plans */
+/** 
+ * Stripe price IDs — prefer env vars, fall back to hardcoded defaults
+ * Set these in Vercel/Netlify env: STRIPE_PRICE_SOLO, STRIPE_PRICE_PRO, etc.
+ */
+function getPriceId(key: string, fallback: string): string {
+  if (typeof process !== 'undefined' && process.env?.[key]) {
+    return process.env[key]!;
+  }
+  return fallback;
+}
+
 export const STRIPE_PRICE_IDS: Record<string, string> = {
-  solo: 'price_1TuR9DD0AAcByeQ9OFOXelG3',
-  pro: 'price_1TuR9ED0AAcByeQ96N9PVI6O',
-  business: 'price_1TuR9ED0AAcByeQ9iR09rQYE',
+  solo: getPriceId('NEXT_PUBLIC_STRIPE_PRICE_SOLO', 'price_1TuR9DD0AAcByeQ9OFOXelG3'),
+  pro: getPriceId('NEXT_PUBLIC_STRIPE_PRICE_PRO', 'price_1TuR9ED0AAcByeQ96N9PVI6O'),
+  business: getPriceId('NEXT_PUBLIC_STRIPE_PRICE_BUSINESS', 'price_1TuR9ED0AAcByeQ9iR09rQYE'),
 };
 
 /** Stripe deposit price IDs for one-time charges */
 export const DEPOSIT_PRICE_IDS: Record<string, string> = {
-  small: 'price_1Tt6NCDynIU5fZLWmKmTgIgB',
-  medium: 'price_1Tt6NDDynIU5fZLWz6OfYSi5',
-  large: 'price_1Tt6NEDynIU5fZLWeRe1q3MO',
-  premium: 'price_1Tt6NFDynIU5fZLW2hpgTBst',
+  small: getPriceId('NEXT_PUBLIC_STRIPE_DEPOSIT_SMALL', 'price_1Tt6NCDynIU5fZLWmKmTgIgB'),
+  medium: getPriceId('NEXT_PUBLIC_STRIPE_DEPOSIT_MEDIUM', 'price_1Tt6NDDynIU5fZLWz6OfYSi5'),
+  large: getPriceId('NEXT_PUBLIC_STRIPE_DEPOSIT_LARGE', 'price_1Tt6NEDynIU5fZLWeRe1q3MO'),
+  premium: getPriceId('NEXT_PUBLIC_STRIPE_DEPOSIT_PREMIUM', 'price_1Tt6NFDynIU5fZLW2hpgTBst'),
 };
