@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { findUserByEmail, generateId, createSessionToken, buildSession, hashPw } from '@/lib/custom-auth';
+import { findUserByEmail, generateId, createSessionToken, buildSession, hashPw, updateUserPassword } from '@/lib/custom-auth';
 import { sendEmail, passwordResetEmail } from '@/lib/email';
 import { createHmac, randomBytes } from 'crypto';
 
@@ -85,7 +85,9 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    user.passwordHash = hashPw(password);
+    // Hash and persist the new password
+    const newHash = hashPw(password);
+    await updateUserPassword(email, newHash);
 
     // Generate new session
     const session = buildSession(user);

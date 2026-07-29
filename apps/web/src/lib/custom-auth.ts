@@ -359,6 +359,17 @@ export async function updateUserSubscription(email: string, updates: {
   }
 }
 
+export async function updateUserPassword(email: string, passwordHash: string): Promise<void> {
+  if (useDb()) {
+    const sb = getAdminClient();
+    if (!sb) return;
+    await (sb as any).from('auth_users').update({ password_hash: passwordHash }).eq('email', email.toLowerCase());
+    return;
+  }
+  const user = Array.from(inMemoryUsers.values()).find(u => u.email === email.toLowerCase());
+  if (user) user.passwordHash = passwordHash;
+}
+
 export { hashPassword as hashPw, verifyPassword as verifyPw };
 
 export function generateId(): string {
