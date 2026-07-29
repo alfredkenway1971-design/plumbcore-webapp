@@ -227,7 +227,7 @@ export async function POST(request: NextRequest) {
     if (photoBase64 && photoBase64.length > 100) {
       try {
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || ''
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
         if (supabaseUrl && serviceKey) {
           const fileName = `${cacheKey}.jpg`
           const buffer = Buffer.from(photoBase64, 'base64')

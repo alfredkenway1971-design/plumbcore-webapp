@@ -91,7 +91,7 @@ export async function POST(req: Request) {
   try {
     // Try method 1: Direct Supabase REST API with exec_sql RPC
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '';
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
     
     if (url && serviceKey) {
       // Method A: Try calling exec_sql RPC (may not exist yet)

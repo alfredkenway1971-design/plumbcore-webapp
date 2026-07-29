@@ -30,7 +30,7 @@ export async function GET(request: Request) {
         error: 'Database not configured',
         debug: {
           url: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'MISSING',
-          serviceRole: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE ? 'SET' : 'MISSING'
+          serviceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING'
         }
       }, { status: 500 });
     }

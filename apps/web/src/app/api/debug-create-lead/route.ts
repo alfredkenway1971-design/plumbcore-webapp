@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     // 1. Check Supabase config
     console.log('  1. Supabase config:');
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'MISSING';
-    const serviceRole = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || 'MISSING';
+    const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING';
     console.log('     URL:', supabaseUrl.includes('supabase') ? '✅ SET' : '❌ MISSING');
     console.log('     ServiceRole:', serviceRole === 'MISSING' ? '❌ MISSING' : '✅ SET');
 

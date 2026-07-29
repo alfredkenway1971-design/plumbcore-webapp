@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         error: 'Supabase not configured',
         debug: {
           url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'MISSING',
-          serviceRole: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE ? 'SET' : 'MISSING'
+          serviceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING'
         }
       }, { status: 500 });
     }

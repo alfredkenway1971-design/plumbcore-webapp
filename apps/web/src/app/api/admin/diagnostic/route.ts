@@ -8,8 +8,8 @@ export async function GET() {
     supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
     supabaseUrl_value: (process.env.NEXT_PUBLIC_SUPABASE_URL || '').slice(0, 15) + '...',
     serviceRole_from_direct: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-    serviceRole_from_public: !!process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE,
-    serviceRole_public_len: (process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || '').length,
+    // serviceRole_from_public removed — use SUPABASE_SERVICE_ROLE_KEY (non-public)
+    serviceRole_key_set: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
     stripeWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
   };
 
