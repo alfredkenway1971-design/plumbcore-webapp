@@ -8,6 +8,7 @@ import { createHash } from 'crypto'
 import { calcDeposit } from '@/lib/plan-pricing'
 import { DEPOSIT_PRICE_IDS } from '@/lib/feature-gates'
 import { getTaxRate } from '@/lib/tax-rates'
+import { requireAuth } from '@/lib/api-auth'
 
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const responseCache = new Map<string, { data: any; expiry: number }>()
@@ -196,6 +197,9 @@ function buildResult(parsed: any, severity: string = 'moderate', urgency: string
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAuth(request);
+    if (auth instanceof NextResponse) return auth;
+    
     const { photoBase64, customerDescription, customerPhone, urgency, locale, state: customerState, country: customerCountry } = await request.json()
     const cacheKey = createHash('md5').update((photoBase64 || '') + (customerDescription || 'default') + (locale || 'en') + (customerState || '')).digest('hex')
 

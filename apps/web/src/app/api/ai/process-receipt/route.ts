@@ -1,5 +1,6 @@
 // AI Receipt Processing API — extracts parts from a receipt photo
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/api-auth'
 
 const AI_SYSTEM_PROMPT = `You are a plumbing inventory specialist. Analyze the photo of a receipt or invoice from a plumbing supply purchase and extract every item purchased.
 
@@ -40,6 +41,8 @@ CRITICAL RULES:
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAuth(request);
+    if (auth instanceof NextResponse) return auth;
     const { photoBase64 } = await request.json()
 
     if (!photoBase64 || photoBase64.length < 100) {

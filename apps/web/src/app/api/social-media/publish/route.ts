@@ -4,6 +4,7 @@
  * Facebook ✅ | Instagram 🚧 | LinkedIn 🚧 | Threads 🚧
  */
 import { NextResponse } from 'next/server';
+import { loadSchema, buildSystemPrompt, DEFAULT_SCHEMA } from '@/lib/content-schema';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -44,7 +45,18 @@ interface PublishResult {
   error?: string;
 }
 
-// ── Page Token Helper ──
+// ── Known Instagram Business Account IDs ──
+// API detection bug: instagram_business_account may return null even when connected
+const KNOWN_IG: Record<string, {id: string, username: string}> = {
+  '1341052299081486': {id: '17841442604185356', username: 'plumbcoreai'},
+};
+
+// ── Known Threads Business Account IDs ──
+const KNOWN_THREADS: Record<string, string> = {
+  // Add known Threads user IDs here when connected:
+  // '1341052299081486': 'THREADS_USER_ID',
+};
+
 async function getPageToken(pageId: string): Promise<string | null> {
   // Try page-level token first (non-expiring)
   const pageTokenEnv = process.env.META_PAGE_TOKEN || '';
@@ -61,8 +73,12 @@ async function getPageToken(pageId: string): Promise<string | null> {
   } catch { return null; }
 }
 
-// ── AI Content Generation ──
-async function generateContent(topic: string) {
+// ── AI Content Generation (Schema-Powered) ──
+async function generateContent(topic: string, platforms?: string[]) {
+  const schemaUrl = process.env.CONTENT_SCHEMA_URL || '';
+  const schema = await loadSchema(schemaUrl);
+  const systemPrompt = buildSystemPrompt(schema, platforms || ['facebook'], topic);
+
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -72,16 +88,28 @@ async function generateContent(topic: string) {
     body: JSON.stringify({
       model: 'deepseek/deepseek-chat',
       messages: [
-        { role: 'system', content: `You are a social media content creator. Return ONLY valid JSON:
-{ "text": "post text under 200 chars", "imagePrompt": "detailed image generation prompt" }` },
+        { role: 'system', content: systemPrompt },
         { role: 'user', content: topic },
       ],
-      max_tokens: 300,
+      max_tokens: 800,
     }),
   });
   const data = await res.json();
-  try { return JSON.parse(data.choices?.[0]?.message?.content || '{}'); }
-  catch { return { text: topic, imagePrompt: topic }; }
+  try {
+    const parsed = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+    // Extract text from the primary platform, or use the first available
+    const posts = parsed.posts || {};
+    const primaryPlatform = platforms?.[0] || 'facebook';
+    const platformContent = posts[primaryPlatform] || {};
+    return {
+      text: platformContent.text || parsed.text || topic,
+      imagePrompt: platformContent.imagePrompt || parsed.imagePrompt || topic,
+      hashtags: parsed.hashtags || [],
+      posts, // return all platform-specific posts for multi-platform publishing
+    };
+  } catch {
+    return { text: topic, imagePrompt: topic, hashtags: [], posts: {} };
+  }
 }
 
 // ── Image Generation ──
@@ -143,24 +171,83 @@ async function publishInstagram(pageId: string, igUserId: string, text: string, 
   }
 }
 
+// ── Threads ──
+async function publishThreads(pageId: string, thUserId: string, text: string, imageUrl?: string): Promise<PublishResult> {
+  try {
+    const token = await getPageToken(pageId);
+    if (!token) return { platform: 'threads', success: false, error: 'No page token' };
+
+    // Step 1: Create container (TEXT or IMAGE)
+    const body = imageUrl
+      ? new URLSearchParams({ media_type: 'IMAGE', image_url: imageUrl, text, access_token: token })
+      : new URLSearchParams({ media_type: 'TEXT', text, access_token: token });
+
+    const containerRes = await fetch(`https://graph.facebook.com/v25.0/${thUserId}/threads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    const container = await containerRes.json();
+    if (!container.id) return { platform: 'threads', success: false, error: container.error?.message || 'Container creation failed' };
+
+    // Step 2: Publish
+    const pubRes = await fetch(`https://graph.facebook.com/v25.0/${thUserId}/threads_publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ creation_id: container.id, access_token: token }),
+    });
+    const pub = await pubRes.json();
+    return pub.id
+      ? { platform: 'threads', success: true, postId: pub.id }
+      : { platform: 'threads', success: false, error: pub.error?.message || 'Publish failed' };
+  } catch (err: any) {
+    return { platform: 'threads', success: false, error: err.message };
+  }
+}
+
 // ── Router Agent ──
 export async function POST(req: Request) {
   try {
-    const { topic, platforms, pageId, customText, customImageUrl, approval } = await req.json();
+    const { topic, platforms, pageId, customText, customImageUrl, approval, schemaUrl } = await req.json();
+
+    // ── Report mode: send via Telegram ──
+    if (platforms === 'report' || platforms?.[0] === 'report') {
+      const msg = customText || topic || '';
+      if (msg) {
+        await sendTelegram(msg);
+        return NextResponse.json({ success: true, ok: true }, { headers: CORS });
+      }
+      return NextResponse.json({ error: 'No message' }, { status: 400, headers: CORS });
+    }
 
     if (!topic && !customText) {
       return NextResponse.json({ error: 'Provide topic or customText' }, { status: 400, headers: CORS });
     }
 
-    // Generate content
+    // Set schema URL from request if provided (overrides env var)
+    if (schemaUrl) {
+      process.env.CONTENT_SCHEMA_URL = schemaUrl;
+    }
+
+    // Generate content (schema-powered, platform-aware)
     let text = customText || '';
     let imageUrl = customImageUrl || '';
     let imagePrompt = '';
+    let hashtags: string[] = [];
+    let platformPosts: Record<string, any> = {};
 
     if (!customText) {
-      const content = await generateContent(topic);
+      const content = await generateContent(topic, platforms);
       text = content.text || topic;
       imagePrompt = content.imagePrompt || topic;
+      hashtags = content.hashtags || [];
+      platformPosts = content.posts || {};
+      
+      // Use platform-specific text when available
+      if (platforms && platforms.length > 1) {
+        // For each platform, publish its specific text if available
+        // (otherwise falls back to the primary text)
+      }
     }
     if (!imageUrl) imageUrl = genImageUrl(imagePrompt || topic);
 
@@ -202,7 +289,7 @@ export async function POST(req: Request) {
       }, { headers: CORS });
     }
 
-    // Collect page info for Instagram
+    // Collect page info for Instagram & Threads
     let igUserId = '';
     if (platforms?.includes('instagram')) {
       try {
@@ -212,32 +299,62 @@ export async function POST(req: Request) {
         const igData = await igRes.json();
         igUserId = igData?.instagram_business_account?.id || '';
       } catch {}
+      if (!igUserId) {
+        const known = KNOWN_IG[pageId];
+        if (known) igUserId = known.id;
+      }
     }
 
-    // Publish to each platform
+    // Collect page info for Threads
+    let thUserId = '';
+    if (platforms?.includes('threads')) {
+      // Check for Threads business account via API
+      try {
+        const thRes = await fetch(
+          `https://graph.facebook.com/v25.0/${pageId}?fields=threads_business_account{id}&access_token=${META_TOKEN}`
+        );
+        const thData = await thRes.json();
+        thUserId = thData?.threads_business_account?.id || '';
+      } catch {}
+      // Fallback: known Threads IDs
+      if (!thUserId) {
+        thUserId = KNOWN_THREADS[pageId] || '';
+      }
+    }
+
+    // Publish to each platform (with platform-specific text from schema)
     const results: PublishResult[] = [];
     for (const platform of platforms || ['facebook']) {
+      // Use platform-specific text if available, otherwise fall back to generated text
+      const platformText = platformPosts[platform]?.text || text;
+      const platformImagePrompt = platformPosts[platform]?.imagePrompt || imagePrompt;
+      const platformImageUrl = imageUrl || genImageUrl(platformImagePrompt);
+      
       switch (platform) {
         case 'facebook':
-          results.push(await publishFacebook(pageId, text, imageUrl));
+          results.push(await publishFacebook(pageId, platformText, platformImageUrl));
           break;
         case 'instagram':
           if (!igUserId) {
             results.push({ platform: 'instagram', success: false,
               error: 'No Instagram Business account linked. Go to business.facebook.com/settings to link Instagram to this page.' });
           } else {
-            results.push(await publishInstagram(pageId, igUserId, text, imageUrl));
+            results.push(await publishInstagram(pageId, igUserId, platformText, platformImageUrl));
           }
           break;
         case 'linkedin':
           results.push({ platform: 'linkedin', success: false, error: 'LinkedIn API token needed. Create a LinkedIn app at developer.linkedin.com to get started.' });
           break;
         case 'threads':
-          results.push({ platform: 'threads', success: false, error: 'Threads API setup needed. Add "Access the Threads API" use case in Meta Developer Portal.' });
+          if (!thUserId) {
+            results.push({ platform: 'threads', success: false,
+              error: 'No Threads account linked. Go to business.facebook.com/settings to link a Threads account, or I can hardcode the ID.' });
+          } else {
+            results.push(await publishThreads(pageId, thUserId, platformText, platformImageUrl));
+          }
           break;
         case 'youtube':
-          results.push({ platform: 'youtube', success: false,
-            error: 'YouTube Shorts requires Google API credentials. Go to console.cloud.google.com, enable YouTube Data API v3, create OAuth 2.0 credentials. Send me the Client ID + Secret.' });
+          // YouTube Shorts handled by Factory API directly
           break;
         default:
           results.push({ platform, success: false, error: 'Unknown platform' });
@@ -262,29 +379,60 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const res = await fetch(`https://graph.facebook.com/v25.0/me/accounts?access_token=${META_TOKEN}`);
-    const data = await res.json();
-    const pages: any[] = data.data || [];
+    const pageToken = process.env.META_PAGE_TOKEN || '';
+    let pages: any[] = [];
+
+    // Try user token first (lists all pages)
+    if (META_TOKEN) {
+      try {
+        const res = await fetch(`https://graph.facebook.com/v25.0/me/accounts?access_token=${META_TOKEN}`);
+        const data = await res.json();
+        if (data.data && data.data.length > 0) {
+          pages = data.data;
+        }
+      } catch {}
+    }
+
+    // Fallback: use page token to query known pages directly
+    if (pages.length === 0 && pageToken) {
+      // Known page IDs for Amer
+      const knownPageIds = ['1341052299081486'];
+      for (const pid of knownPageIds) {
+        try {
+          const res = await fetch(
+            `https://graph.facebook.com/v25.0/${pid}?fields=name&access_token=${pageToken}`
+          );
+          const data = await res.json();
+          if (data.id) {
+            pages.push(data);
+          }
+        } catch {}
+      }
+    }
 
     const result = [];
     for (const page of pages) {
       let hasInstagram = false;
       let igUserId = '';
       
-      // Hardcode known Instagram connections
-      if (page.id === '1341052299081486') {
+      // Check known IG IDs first (API detection bug workaround)
+      const known = KNOWN_IG[page.id];
+      if (known) {
         hasInstagram = true;
-        igUserId = '17841448677455592';
+        igUserId = known.id;
       } else {
         // Try API lookup for other pages
-        try {
-          const igRes = await fetch(
-            `https://graph.facebook.com/v25.0/${page.id}?fields=instagram_business_account{id,username}&access_token=${META_TOKEN}`
-          );
-          const igData = await igRes.json();
-          hasInstagram = !!igData?.instagram_business_account?.id;
-          igUserId = igData?.instagram_business_account?.id || '';
-        } catch {}
+        const token = META_TOKEN || pageToken;
+        if (token) {
+          try {
+            const igRes = await fetch(
+              `https://graph.facebook.com/v25.0/${page.id}?fields=instagram_business_account{id,username}&access_token=${token}`
+            );
+            const igData = await igRes.json();
+            hasInstagram = !!igData?.instagram_business_account?.id;
+            igUserId = igData?.instagram_business_account?.id || '';
+          } catch {}
+        }
       }
       
       result.push({
