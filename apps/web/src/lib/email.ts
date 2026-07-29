@@ -4,6 +4,8 @@
  * All env vars read at call time for Vercel serverless compatibility.
  */
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app';
+
 interface SendEmailParams {
   to: string;
   subject: string;
@@ -178,7 +180,7 @@ export function welcomeEmail(name: string, companyName: string): { subject: stri
             <li>Configure your pricebook</li>
             <li>Try AI photo estimates</li>
           </ul>
-          <a href="https://plumbcore-ai.vercel.app/dashboard" style="display: inline-block; padding: 12px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 12px;">Go to Dashboard</a>
+          <a href="${APP_URL}/dashboard" style="display: inline-block; padding: 12px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 12px;">Go to Dashboard</a>
           <p style="color: #94a3b8; font-size: 13px; margin-top: 24px;">If you didn't create this account, you can ignore this email.</p>
         </div>
       </div>
@@ -239,8 +241,8 @@ interface DepositEmailParams {
 export function depositConfirmationEmail({ customerName, diagnosis, totalEstimate, amountPaid, leadId, customerCity, confidence }: DepositEmailParams): { subject: string; html: string } {
   const balance = totalEstimate - amountPaid;
   const trackingUrl = leadId
-    ? `https://plumbcore-ai.vercel.app/track/${leadId}`
-    : 'https://plumbcore-ai.vercel.app/track';
+    ? `${APP_URL}/track/${leadId}`
+    : `${APP_URL}/track`;
   const city = customerCity || 'your area';
   return {
     subject: `Your plumbing estimate is confirmed — we're finding your plumber now`,
@@ -322,7 +324,7 @@ interface RefundNotificationParams {
 }
 
 export function refundNotificationEmail({ customerName, diagnosis, totalEstimate, amountPaid, leadId }: RefundNotificationParams): { subject: string; html: string } {
-  const trackingUrl = `https://plumbcore-ai.vercel.app/track/${leadId}`;
+  const trackingUrl = `${APP_URL}/track/${leadId}`;
   return {
     subject: `Refund processed — We couldn't find a plumber in your area`,
     html: `
@@ -415,7 +417,7 @@ export function adminNotificationEmail({ customerName, customerEmail, customerPh
             <tr><td style="padding: 6px 0; color: #64748b;">Estimate:</td><td style="color: #0f172a; font-weight: 600;">$${totalEstimate.toFixed(2)}</td></tr>
             <tr><td style="padding: 6px 0; color: #64748b;">Company:</td><td style="color: #0f172a;">${companySlug}</td></tr>
           </table>
-          <a href="https://plumbcore-ai.vercel.app/admin" style="display: inline-block; padding: 12px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 20px;">View in Admin</a>
+          <a href="${APP_URL}/admin" style="display: inline-block; padding: 12px 32px; background: #3B82F6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 20px;">View in Admin</a>
         </div>
       </div>
     `,

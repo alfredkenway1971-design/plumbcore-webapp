@@ -290,7 +290,7 @@ export async function POST(req: Request) {
           console.log(`  → Marked ${email} as cancelled`);
 
           // Send cancellation email
-          const billingUrl = 'https://plumbcore-ai.vercel.app/billing';
+          const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/billing`;
           const cancelledEmail = {
             subject: 'Your PlumbCore AI subscription has been cancelled',
             html: `
@@ -335,7 +335,7 @@ export async function POST(req: Request) {
           console.log(`  → Marked ${customerEmail} as past_due`);
 
           // Send past due email
-          const billingUrl = 'https://plumbcore-ai.vercel.app/billing';
+          const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://plumbcore-ai.vercel.app'}/billing`;
           const emailContent = subscriptionPastDueEmail(customerName, billingUrl);
           await sendEmail({ to: customerEmail, subject: emailContent.subject, html: emailContent.html });
           console.log(`  → Sent past due notice to ${customerEmail}`);

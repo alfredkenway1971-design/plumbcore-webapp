@@ -445,7 +445,7 @@ export default function PricebookPage() {
                 onChange={(e) => updateForm('unitType', e.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-muted px-4 py-2.5 text-sm text-foreground outline-none focus:border-electric/50 focus:ring-1 focus:ring-electric/20"
               >
-                {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor', 'tube'].map(u => (
+                {['each', 'roll', 'length', 'pack', 'kit', 'tube', 'can', 'tub', 'labor'].map(u => (
                   <option key={u} value={u}>{u}</option>
                 ))}
               </select>
