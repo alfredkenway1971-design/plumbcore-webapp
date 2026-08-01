@@ -143,8 +143,8 @@ async function generateImage(prompt: string): Promise<string> {
     const buffer = Buffer.from(match[2], 'base64');
     const fileName = `posts/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    const supabaseUrl = process.env.FACTORY_SUPABASE_URL || '';
+    const serviceKey = process.env.FACTORY_SUPABASE_SERVICE_ROLE_KEY || '';
     if (!supabaseUrl || !serviceKey) return '';
 
     const upload = await fetch(`${supabaseUrl}/storage/v1/object/factory-images/${fileName}`, {
