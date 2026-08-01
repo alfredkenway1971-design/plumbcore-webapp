@@ -312,7 +312,7 @@ export async function POST(req: Request) {
       const token = Array.from({length:16},()=>Math.floor(Math.random()*16).toString(16)).join('');
       // Store pending approval (persisted in Supabase — survives cold starts)
       const { storePending } = await import('../approve/route');
-      const storeResult = await storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
+      await storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
 
       const approveUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=approve`;
       const declineUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=decline`;
@@ -341,7 +341,6 @@ export async function POST(req: Request) {
         success: true,
         status: 'pending_approval',
         content: { text, imageUrl, imagePrompt },
-        storeResult,
         message: 'Approval email sent. Check your inbox.',
       }, { headers: CORS });
     }
