@@ -42,8 +42,12 @@ export async function storePending(token: string, data: any) {
       method: 'POST',
       body: JSON.stringify({ token, data, created_at: Date.now() }),
     });
-    if (res) await res;
-  } catch {}
+    if (!res) return { ok: false, error: 'no supabase env' };
+    const text = await res.text();
+    return { ok: res.ok, status: res.status, body: text.slice(0, 200) };
+  } catch (e: any) {
+    return { ok: false, error: e.message };
+  }
 }
 
 export async function getPending(token: string): Promise<any | null> {
