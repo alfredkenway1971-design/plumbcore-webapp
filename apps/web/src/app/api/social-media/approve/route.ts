@@ -48,7 +48,7 @@ export async function storePending(token: string, data: any) {
 
 export async function getPending(token: string): Promise<any | null> {
   try {
-    const res = await supabaseFetch(`pending_approvals?token=eq.${token}&select=data`);
+    const res = await supabaseFetch(`pending_approvals?token=eq.${token}&select=data,created_at`);
     if (!res || !res.ok) return null;
     const rows = await res.json();
     if (!rows || rows.length === 0) return null;
