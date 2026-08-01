@@ -86,7 +86,7 @@ async function generateContent(topic: string, platforms?: string[]) {
       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || ''}`,
     },
     body: JSON.stringify({
-      model: 'deepseek/deepseek-chat',
+      model: 'openai/gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: topic },
@@ -112,7 +112,58 @@ async function generateContent(topic: string, platforms?: string[]) {
   }
 }
 
-// ── Image Generation ──
+// ── Image Generation (Nano Banana Lite via OpenRouter, uploaded to Supabase Storage) ──
+async function generateImage(prompt: string): Promise<string> {
+  try {
+    const key = process.env.OPENROUTER_API_KEY || '';
+    if (!key) return '';
+
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-3.1-flash-lite-image',
+        messages: [{ role: 'user', content: prompt }],
+        modalities: ['image', 'text'],
+        max_tokens: 2000,
+      }),
+    });
+    const data = await res.json();
+    const images = data?.choices?.[0]?.message?.images;
+    const url = images?.[0]?.image_url?.url || '';
+    if (!url.startsWith('data:')) return url || '';
+
+    // Decode base64 data URL and upload to Supabase Storage
+    const match = url.match(/^data:image\/([^;]+);base64,([\s\S]*)$/);
+    if (!match) return '';
+    const ext = match[1] === 'png' ? 'png' : 'jpg';
+    const buffer = Buffer.from(match[2], 'base64');
+    const fileName = `posts/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    if (!supabaseUrl || !serviceKey) return '';
+
+    const upload = await fetch(`${supabaseUrl}/storage/v1/object/factory-images/${fileName}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${serviceKey}`,
+        'apikey': serviceKey,
+        'Content-Type': `image/${ext}`,
+      },
+      body: buffer,
+    });
+    if (!upload.ok) return '';
+    return `${supabaseUrl}/storage/v1/object/public/factory-images/${fileName}`;
+  } catch {
+    return '';
+  }
+}
+
+// Legacy URL builder kept for backward compatibility (custom image URLs only)
 function genImageUrl(prompt: string): string {
   return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1080&height=1080&nologo=true`;
 }
@@ -249,7 +300,12 @@ export async function POST(req: Request) {
         // (otherwise falls back to the primary text)
       }
     }
-    if (!imageUrl) imageUrl = genImageUrl(imagePrompt || topic);
+    if (!imageUrl) {
+      // Generate image via Nano Banana Lite (OpenRouter) → Supabase Storage URL
+      imageUrl = await generateImage(imagePrompt || topic);
+      // Fallback to legacy generator if OpenRouter image gen failed
+      if (!imageUrl) imageUrl = genImageUrl(imagePrompt || topic);
+    }
 
     // ── Approval flow ──
     if (approval) {

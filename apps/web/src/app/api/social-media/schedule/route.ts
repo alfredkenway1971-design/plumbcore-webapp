@@ -1,10 +1,12 @@
 /**
  * POST /api/social-media/schedule — schedule a post for later
  * GET  /api/social-media/schedule — check and publish due posts
+ *
+ * Scheduled posts are stored in Supabase (table: scheduled_posts).
+ * NOTE: Previously stored in /tmp which Vercel wipes on cold start —
+ * that's why scheduled posts never published. Supabase persists them.
  */
 import { NextResponse } from 'next/server';
-import * as fs from 'fs';
-import * as path from 'path';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -12,16 +14,14 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const SCHEDULE_FILE = '/tmp/scheduled_posts.json';
-
 interface ScheduledPost {
   id: string;
   text: string;
-  imageUrl: string;
+  image_url: string;
   platforms: string[];
-  pageId: string;
-  scheduledAt: number; // Unix timestamp
-  createdAt: number;
+  page_id: string;
+  scheduled_at: number; // Unix timestamp
+  created_at: number;
   published: boolean;
 }
 
@@ -29,19 +29,41 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: CORS });
 }
 
-function readSchedules(): ScheduledPost[] {
-  try {
-    if (fs.existsSync(SCHEDULE_FILE)) {
-      return JSON.parse(fs.readFileSync(SCHEDULE_FILE, 'utf8'));
-    }
-  } catch {}
-  return [];
+function supabaseFetch(path: string, init?: RequestInit) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!url || !key) return null;
+  return fetch(`${url}/rest/v1/${path}`, {
+    ...init,
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation',
+      ...(init?.headers || {}),
+    },
+  });
 }
 
-function writeSchedules(schedules: ScheduledPost[]) {
+async function readSchedules(): Promise<ScheduledPost[]> {
   try {
-    fs.writeFileSync(SCHEDULE_FILE, JSON.stringify(schedules, null, 2));
-  } catch {}
+    const res = await supabaseFetch('scheduled_posts?select=*&order=scheduled_at.asc');
+    if (!res) return [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data || []).map((r: any) => ({
+      id: r.id,
+      text: r.text,
+      image_url: r.image_url || '',
+      platforms: Array.isArray(r.platforms) ? r.platforms : ['facebook'],
+      page_id: r.page_id || '1341052299081486',
+      scheduled_at: r.scheduled_at,
+      created_at: r.created_at,
+      published: r.published,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 // POST: Schedule a post
@@ -56,17 +78,26 @@ export async function POST(req: Request) {
     const post: ScheduledPost = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       text,
-      imageUrl: imageUrl || '',
+      image_url: imageUrl || '',
       platforms,
-      pageId: pageId || '1341052299081486',
-      scheduledAt,
-      createdAt: Date.now(),
+      page_id: pageId || '1341052299081486',
+      scheduled_at: scheduledAt,
+      created_at: Date.now(),
       published: false,
     };
 
-    const schedules = readSchedules();
-    schedules.push(post);
-    writeSchedules(schedules);
+    const res = await supabaseFetch('scheduled_posts', {
+      method: 'POST',
+      body: JSON.stringify(post),
+    });
+
+    if (!res) {
+      return NextResponse.json({ error: 'Supabase not configured' }, { status: 500, headers: CORS });
+    }
+    if (!res.ok) {
+      const errText = await res.text();
+      return NextResponse.json({ error: `Failed to save schedule: ${errText.slice(0, 200)}` }, { status: 500, headers: CORS });
+    }
 
     return NextResponse.json({
       success: true,
@@ -83,9 +114,11 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const now = Date.now();
-    const schedules = readSchedules();
-    const due = schedules.filter(s => !s.published && s.scheduledAt <= now);
-    const remaining = schedules.filter(s => s.published || s.scheduledAt > now);
+    const schedules = await readSchedules();
+    const due = schedules.filter(s => !s.published && s.scheduled_at <= now);
+    const remainingIds = schedules
+      .filter(s => s.published || s.scheduled_at > now)
+      .map(s => s.id);
 
     const results: any[] = [];
 
@@ -99,9 +132,9 @@ export async function GET(req: Request) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               customText: post.text,
-              customImageUrl: post.imageUrl || undefined,
+              customImageUrl: post.image_url || undefined,
               platforms: post.platforms,
-              pageId: post.pageId,
+              pageId: post.page_id,
             }),
           }
         );
@@ -119,14 +152,29 @@ export async function GET(req: Request) {
           });
         } catch {}
 
+        // Mark as published in Supabase
+        try {
+          await supabaseFetch(`scheduled_posts?id=eq.${post.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ published: true }),
+          });
+        } catch {}
+
         results.push({ id: post.id, success: true, results: publishData.results });
       } catch (err: any) {
         results.push({ id: post.id, success: false, error: err.message });
       }
     }
 
-    // Save remaining (remove published ones)
-    writeSchedules(remaining);
+    // Clean up published posts older than 7 days (keep history light)
+    try {
+      const weekAgo = now - 7 * 24 * 3600 * 1000;
+      const stale = schedules.filter(s => s.published && s.created_at < weekAgo).map(s => s.id);
+      for (const id of stale) {
+        const delRes = await supabaseFetch(`scheduled_posts?id=eq.${id}`, { method: 'DELETE' });
+        if (delRes) { try { await delRes; } catch {} }
+      }
+    } catch {}
 
     return NextResponse.json({
       checked: schedules.length,
