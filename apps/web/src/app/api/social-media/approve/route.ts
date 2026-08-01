@@ -1,6 +1,10 @@
 /**
  * POST /api/social-media/approve
- * Handles approval/rejection callbacks from email links
+ * Handles approval/rejection callbacks from Telegram/email links
+ *
+ * Pending approvals are stored in Supabase (table: pending_approvals).
+ * NOTE: Previously stored in-memory — Vercel wipes memory on cold start,
+ * so approval links died within minutes. Supabase persists them (1h expiry).
  */
 import { NextResponse } from 'next/server';
 import { generateContent, generateImageUrl, socialMediaRouter } from '@/lib/social-media';
@@ -15,23 +19,56 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: CORS });
 }
 
-// Simple in-memory store for pending approvals
-// { token: { text, platforms, pageId, imageUrl } }
-const pendingApprovals = new Map<string, any>();
-
-// Export for use by the publish API
-export function storePending(token: string, data: any) {
-  pendingApprovals.set(token, data);
-  // Auto-expire after 1 hour
-  setTimeout(() => pendingApprovals.delete(token), 60 * 60 * 1000);
+function supabaseFetch(path: string, init?: RequestInit) {
+  const url = process.env.FACTORY_SUPABASE_URL || '';
+  const key = process.env.FACTORY_SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!url || !key) return null;
+  return fetch(`${url}/rest/v1/${path}`, {
+    ...init,
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation',
+      ...(init?.headers || {}),
+    },
+  });
 }
 
-export function getPending(token: string) {
-  return pendingApprovals.get(token);
+// Store pending approval in Supabase with 1h expiry
+export async function storePending(token: string, data: any) {
+  try {
+    const res = await supabaseFetch('pending_approvals', {
+      method: 'POST',
+      body: JSON.stringify({ token, data, created_at: Date.now() }),
+    });
+    if (res) await res;
+  } catch {}
 }
 
-export function removePending(token: string) {
-  pendingApprovals.delete(token);
+export async function getPending(token: string): Promise<any | null> {
+  try {
+    const res = await supabaseFetch(`pending_approvals?token=eq.${token}&select=data`);
+    if (!res || !res.ok) return null;
+    const rows = await res.json();
+    if (!rows || rows.length === 0) return null;
+    const created = rows[0]?.created_at || 0;
+    // Auto-expire after 1 hour
+    if (Date.now() - created > 60 * 60 * 1000) {
+      await removePending(token);
+      return null;
+    }
+    return rows[0]?.data || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function removePending(token: string) {
+  try {
+    const res = await supabaseFetch(`pending_approvals?token=eq.${token}`, { method: 'DELETE' });
+    if (res) { try { await res; } catch {} }
+  } catch {}
 }
 
 export async function GET(req: Request) {
@@ -43,7 +80,7 @@ export async function GET(req: Request) {
     return new Response('Missing token or action', { status: 400, headers: CORS });
   }
 
-  const pending = getPending(token);
+  const pending = await getPending(token);
   if (!pending) {
     return new Response(htmlPage(
       'Expired or Invalid',
@@ -62,7 +99,7 @@ export async function GET(req: Request) {
         pageId: pending.pageId,
       });
 
-      removePending(token);
+      await removePending(token);
 
       const successCount = results.filter(r => r.success).length;
       const totalCount = results.length;
@@ -83,7 +120,7 @@ export async function GET(req: Request) {
   }
 
   if (action === 'decline') {
-    removePending(token);
+    await removePending(token);
     return new Response(htmlPage(
       'Declined',
       'The post was declined and will not be published. You can create a new post from the dashboard.',

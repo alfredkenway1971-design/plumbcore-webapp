@@ -310,9 +310,9 @@ export async function POST(req: Request) {
     // ── Approval flow ──
     if (approval) {
       const token = Array.from({length:16},()=>Math.floor(Math.random()*16).toString(16)).join('');
-      // Store pending approval
+      // Store pending approval (persisted in Supabase — survives cold starts)
       const { storePending } = await import('../approve/route');
-      storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
+      await storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
 
       const approveUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=approve`;
       const declineUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=decline`;
