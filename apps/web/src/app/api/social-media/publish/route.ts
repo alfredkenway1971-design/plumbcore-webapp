@@ -77,7 +77,7 @@ async function getPageToken(pageId: string): Promise<string | null> {
 async function generateContent(topic: string, platforms?: string[]) {
   const schemaUrl = process.env.CONTENT_SCHEMA_URL || '';
   const schema = await loadSchema(schemaUrl);
-  const systemPrompt = buildSystemPrompt(schema, platforms || ['facebook'], topic);
+  const systemPrompt = buildSystemPrompt(schema, platforms || ['facebook', 'instagram'], topic);
 
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -312,7 +312,7 @@ export async function POST(req: Request) {
       const token = Array.from({length:16},()=>Math.floor(Math.random()*16).toString(16)).join('');
       // Store pending approval (persisted in Supabase — survives cold starts)
       const { storePending } = await import('../approve/route');
-      await storePending(token, { text, imageUrl, platforms: platforms || ['facebook'], pageId });
+      await storePending(token, { text, imageUrl, platforms: platforms || ['facebook', 'instagram'], pageId });
 
       const approveUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=approve`;
       const declineUrl = `${APP_URL}/api/social-media/approve?token=${token}&action=decline`;
@@ -325,7 +325,7 @@ export async function POST(req: Request) {
           </div>
           ${imageUrl ? `<img src="${imageUrl}" style="width:100%;max-height:300px;object-fit:cover;border-radius:8px;margin-bottom:16px" alt="Post image">` : ''}
           <div style="margin-bottom:16px;font-size:12px;color:#94a3b8">
-            Platforms: ${(platforms || ['facebook']).join(', ')}
+            Platforms: ${(platforms || ['facebook', 'instagram']).join(', ')}
           </div>
           <div style="display:flex;gap:12px">
             <a href="${approveUrl}" style="flex:1;display:block;padding:12px;border-radius:8px;background:#059669;color:#fff;text-decoration:none;font-weight:600;text-align:center;font-size:14px">✅ Approve &amp; Publish</a>
@@ -380,7 +380,7 @@ export async function POST(req: Request) {
 
     // Publish to each platform (with platform-specific text from schema)
     const results: PublishResult[] = [];
-    for (const platform of platforms || ['facebook']) {
+    for (const platform of platforms || ['facebook', 'instagram']) {
       // Use platform-specific text if available, otherwise fall back to generated text
       const platformText = platformPosts[platform]?.text || text;
       const platformImagePrompt = platformPosts[platform]?.imagePrompt || imagePrompt;
@@ -420,7 +420,7 @@ export async function POST(req: Request) {
     // Send Telegram notification
     const successCount = results.filter(r => r.success).length;
     const failCount = results.filter(r => !r.success).length;
-    const msg = `📤 <b>Post Published</b>\n${text.substring(0,100)}${text.length>100?'...':''}\n\n✅ ${successCount} success · ❌ ${failCount} failed\nPlatforms: ${(platforms||['facebook']).join(', ')}`;
+    const msg = `📤 <b>Post Published</b>\n${text.substring(0,100)}${text.length>100?'...':''}\n\n✅ ${successCount} success · ❌ ${failCount} failed\nPlatforms: ${(platforms||['facebook', 'instagram']).join(', ')}`;
     sendTelegram(msg).catch(()=>{});
 
     return NextResponse.json({

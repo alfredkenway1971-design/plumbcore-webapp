@@ -45,6 +45,10 @@ function supabaseFetch(path: string, init?: RequestInit) {
   });
 }
 
+function defaultPlatforms(): string[] {
+  return ['facebook', 'instagram'];
+}
+
 async function readSchedules(): Promise<ScheduledPost[]> {
   try {
     const res = await supabaseFetch('scheduled_posts?select=*&order=scheduled_at.asc');
@@ -55,7 +59,7 @@ async function readSchedules(): Promise<ScheduledPost[]> {
       id: r.id,
       text: r.text,
       image_url: r.image_url || '',
-      platforms: Array.isArray(r.platforms) ? r.platforms : ['facebook'],
+      platforms: Array.isArray(r.platforms) ? r.platforms : defaultPlatforms(),
       page_id: r.page_id || '1341052299081486',
       scheduled_at: r.scheduled_at,
       created_at: r.created_at,
@@ -71,7 +75,10 @@ export async function POST(req: Request) {
   try {
     const { text, imageUrl, platforms, pageId, scheduledAt } = await req.json();
     
-    if (!text || !scheduledAt || !platforms?.length) {
+    // Default to Facebook + Instagram when no platforms given
+    const targetPlatforms = platforms && platforms.length ? platforms : defaultPlatforms();
+    
+    if (!text || !scheduledAt || !targetPlatforms.length) {
       return NextResponse.json({ error: 'Missing text, platforms, or scheduledAt' }, { status: 400, headers: CORS });
     }
 
@@ -79,7 +86,7 @@ export async function POST(req: Request) {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       text,
       image_url: imageUrl || '',
-      platforms,
+      platforms: targetPlatforms,
       page_id: pageId || '1341052299081486',
       scheduled_at: scheduledAt,
       created_at: Date.now(),
