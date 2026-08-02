@@ -73,11 +73,19 @@ async function getPageToken(pageId: string): Promise<string | null> {
   } catch { return null; }
 }
 
+// Alternate post language: even days → French, odd days → English
+// (1 post/day = alternates FR/EN/FR/EN naturally)
+function getPostLanguage(): string {
+  const day = new Date().getUTCDate();
+  return day % 2 === 0 ? 'French' : 'English';
+}
+
 // ── AI Content Generation (Schema-Powered) ──
 async function generateContent(topic: string, platforms?: string[]) {
   const schemaUrl = process.env.CONTENT_SCHEMA_URL || '';
   const schema = await loadSchema(schemaUrl);
-  const systemPrompt = buildSystemPrompt(schema, platforms || ['facebook', 'instagram'], topic);
+  const language = getPostLanguage();
+  const systemPrompt = buildSystemPrompt(schema, platforms || ['facebook', 'instagram'], topic, language);
 
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',

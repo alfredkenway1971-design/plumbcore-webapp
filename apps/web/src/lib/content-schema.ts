@@ -83,14 +83,17 @@ export async function loadSchema(schemaUrl?: string): Promise<string> {
   }
 }
 
-export function buildSystemPrompt(schema: string, platforms: string[], topic: string): string {
+export function buildSystemPrompt(schema: string, platforms: string[], topic: string, language?: string): string {
+  const langLine = language
+    ? `\nIMPORTANT: Write ALL post text, captions, and hashtags in ${language}.`
+    : '';
   return `You are a professional social media content creator. Follow this schema exactly:
 
 ${schema}
 
 Today's topic: ${topic}
 Target platforms: ${platforms.join(', ')}
-
+${langLine}
 Return ONLY valid JSON with this structure:
 {
   "posts": {
